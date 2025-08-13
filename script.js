@@ -193,7 +193,7 @@ class Portfolio {
 
     downloadResume() {
         const link = document.createElement('a');
-        link.href = 'https://drive.google.com/uc?export=download&id=1Yu5zaoPb_n8x25H9r_YNECKWgV1HRDO7';
+        link.href = 'https://github.com/trwbcy/portfolio/raw/main/Resume%20-%20Tri%20Wibowo%20Cahyo.pdf';
         link.download = 'TRI_WIBOWO_CAHYO_Resume.pdf';
         link.click();
         this.showNotification('📄 Resume downloaded successfully!');
