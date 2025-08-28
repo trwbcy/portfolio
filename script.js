@@ -30,6 +30,13 @@ const portfolioData = {
 
     projects: [
         {
+            title: "GhostStager: Advanced C# Fileless Binary Loader",
+            image: "img/ghoststager.jpg",
+            desc: "Advanced C# fileless binary loader with AMSI/ETW bypass, reflective PE loading, and encrypted C2 communication for red team operations.",
+            tech: ["C#", "AMSI Bypass", "ETW Evasion", "Reflective Loading", "Red Team", "Sliver C2"],
+            url: "https://nickel-bedbug-8cc.notion.site/GhostStager-Advanced-C-Fileless-Binary-Loader-For-Red-Team-Operation-23b416e03a138025b44ff54e56424636"
+        },
+        {
             title: "Red Teaming 101: VBA Exploitation with Microsoft Word",
             image: "img/vba.png",
             desc: "Demonstration of VBA macro exploitation in Microsoft Word to obtain a reverse shell for red teaming simulation.",
@@ -101,7 +108,7 @@ class Portfolio {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         
-        const chars = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?/~";
+        const chars = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?/~";
         const fontSize = 14;
         const columns = Math.floor(canvas.width / fontSize);
         const drops = Array(columns).fill(1);
