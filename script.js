@@ -30,11 +30,25 @@ const portfolioData = {
 
     projects: [
         {
+            title: "EnvGuard: Advanced Environment Assessment Framework",
+            image: "img/octopus.jpg",
+            desc: "EnvGuard is a Advanced environment assessment framework for red team operations. Implements 12 classification techniques to distinguish production environments from analysis systems before payload deployment.",
+            tech: ["C++", "Advanced Environment Assesment", "12 Advanced Techniques", "Sandbox", "Red Team", "Windows API"],
+            url: "https://nickel-bedbug-8cc.notion.site/EnvGuard-Advanced-Environment-Assessment-Framework-For-Red-Team-Operations-274416e03a1380b58fefde598b68c47b"
+        },
+        {
             title: "GhostStager: Advanced C# Fileless Binary Loader",
             image: "img/ghoststager.jpg",
             desc: "Advanced C# fileless binary loader with AMSI/ETW bypass, reflective PE loading, and encrypted C2 communication for red team operations.",
             tech: ["C#", "AMSI Bypass", "ETW Evasion", "Reflective Loading", "Red Team", "Sliver C2"],
             url: "https://nickel-bedbug-8cc.notion.site/GhostStager-Advanced-C-Fileless-Binary-Loader-For-Red-Team-Operation-23b416e03a138025b44ff54e56424636"
+        },
+                {
+            title: "Astaroth-Style Red Team Campaign",
+            image: "img/astaroth.png",
+            desc: "Fileless attack simulation leveraging LOLBins such as mshta.exe, inspired by the Astaroth malware campaign.",
+            tech: ["LOLBins", "Red Team", "Fileless Attack", "Defender Evasion"],
+            url: "https://nickel-bedbug-8cc.notion.site/Astaroth-Style-Red-Team-Campaign-23a416e03a138092a3afec2952c813ad"
         },
         {
             title: "Red Teaming 101: VBA Exploitation with Microsoft Word",
@@ -49,13 +63,6 @@ const portfolioData = {
             desc: "Hands-on internal penetration testing focused on identifying and exploiting vulnerabilities in Active Directory environments.",
             tech: ["Active Directory", "Windows Server", "Kerberoasting", "Privilege Escalation"],
             url: "https://nickel-bedbug-8cc.notion.site/Internal-Pentest-Active-Directory-Exploitation-and-Lesson-Learned-17a416e03a1380449524cf6cad46accb"
-        },
-        {
-            title: "Astaroth-Style Red Team Campaign",
-            image: "img/astaroth.png",
-            desc: "Fileless attack simulation leveraging LOLBins such as mshta.exe, inspired by the Astaroth malware campaign.",
-            tech: ["LOLBins", "Red Team", "Fileless Attack", "Defender Evasion"],
-            url: "https://nickel-bedbug-8cc.notion.site/Astaroth-Style-Red-Team-Campaign-23a416e03a138092a3afec2952c813ad"
         },
         {
             title: "From Blue to Blackpearl: Guided Exploitation Through 5 Machines",
