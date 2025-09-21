@@ -31,7 +31,7 @@ const portfolioData = {
     projects: [
         {
             title: "EnvGuard: Advanced Environment Assessment Framework",
-            image: "img/octopus.jpg",
+            image: "img/octopus.png",
             desc: "EnvGuard is a Advanced environment assessment framework for red team operations. Implements 12 classification techniques to distinguish production environments from analysis systems before payload deployment.",
             tech: ["C++", "Advanced Environment Assesment", "12 Advanced Techniques", "Sandbox", "Red Team", "Windows API"],
             url: "https://nickel-bedbug-8cc.notion.site/EnvGuard-Advanced-Environment-Assessment-Framework-For-Red-Team-Operations-274416e03a1380b58fefde598b68c47b"
