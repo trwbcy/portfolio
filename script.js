@@ -30,6 +30,13 @@ const portfolioData = {
 
     projects: [
         {
+            title: "ShadowShell: Advanced ETW Evasion Framework ",
+            image: "img/cctv.png",
+            desc: "ShadowShell is a comprehensive framework designed to evade the Windows Event Tracing (ETW) logging system during red team operations.",
+            tech: ["Powershell/C#", "ETW Evasion", "Windows", "Red Team", "Windows Internals"],
+            url: "https://nickel-bedbug-8cc.notion.site/ShadowShell-Advanced-ETW-Evasion-Framework-for-Red-Team-Operations-277416e03a13801b97c1ec43b2ac6c77"
+        },
+        {
             title: "EnvGuard: Advanced Environment Assessment Framework",
             image: "img/octopus.png",
             desc: "Advanced environment assessment framework for red team operations. Implements 12 classification techniques to distinguish production environments from analysis systems.",
