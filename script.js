@@ -1,6 +1,27 @@
 // === PORTFOLIO DATA ===
 const portfolioData = {
-    ctfMachines: [
+  red: {
+    hero: {
+      about:
+        "I approach offensive security with curiosity and patience — building and testing tools, running experiments in my own lab, and learning from every result. I focus on uncovering vulnerabilities through methodical exploration, then turning those insights into practical improvements.",
+      subtitle:
+        "I don't aim to break for the sake of breaking, I aim to understand so we can build stronger.",
+      typedStrings: [
+        "Cyber Security Enthusiast",
+        "CTF Player",
+        "Innovative Problem Solver",
+        "Lifelong Learner",
+        "Clear Communicator",
+        "Pragmatic Pentester",
+        "SecOps Knight",
+        "TRWBCY"
+      ],
+    },
+    ctf: {
+      title: "OFFENSIVE CTF WRITE-UPS",
+      description:
+        "Browse my collection of offensive security CTF writeups focused on exploitation and penetration testing.",
+      machines: [
         { title: "CTF Machine Tartarus", image: "img/tartarus.png", desc: "Enumerate biography to creating dummy apk android to gain root access", url: "https://nickel-bedbug-8cc.notion.site/Tartarus-c50bfdc57e7d4cce8489d5fe989e4dc2" },
         { title: "CTF Machine Exodus", image: "img/exodus.png", desc: "Practicing NFS Enumeration, Exploiting Webmin, Privesc through SUID Binary", url: "https://nickel-bedbug-8cc.notion.site/Exodus-100416e03a138073ba4cd8a5f721751f" },
         { title: "CTF Machine Laboum", image: "img/laboum.png", desc: "CTF based on Drama-Film, OSINT at first Reverse Engineering at last", url: "https://nickel-bedbug-8cc.notion.site/Laboum-129416e03a1380bdbad4d3f15fb34af3" },
@@ -27,8 +48,12 @@ const portfolioData = {
         { title: "CTF Machine Zeus", image: "img/zeus.png", desc: "Enumerating SMB to gain access to Windows Machine", url: "https://nickel-bedbug-8cc.notion.site/Zeus-aa5bb955bf1e4271ab303cc428c49fad" },
         { title: "CTF Machine Ariadne", image: "img/ariadne.png", desc: "Enumeration FTP to gain initial access & root to Linux Machine", url: "https://nickel-bedbug-8cc.notion.site/Ariadne-100416e03a1380969762d25c3cd1c9e5" }
     ],
-
-    projects: [
+    },
+    projects: {
+      title: "OFFENSIVE SECURITY PROJECTS",
+      description:
+        "Red team tools and frameworks I've developed for penetration testing and security research.",
+      items: [
         {
             title: "ShadowShell: Advanced ETW Evasion Framework ",
             image: "img/cctv.png",
@@ -78,318 +103,565 @@ const portfolioData = {
             tech: ["CTF", "Windows", "Linux", "Privilege Escalation"],
             url: "https://nickel-bedbug-8cc.notion.site/From-Blue-to-Blackpearl-A-Guided-Exploitation-Through-5-Machines-17f416e03a1380558fb0dbf4285266f2"
         }
-    ],
-
-    certifications: [
-        { year: "2025", title: "AWS Certified Cloud Practitioner", desc: "Belajar konsep cloud dari nol sambil mendalami security best practice AWS.", status: "(In Progress)" },
-        { year: "2025", title: "Certified API Security Practitioner", desc: "Memahami OWASP API Security Top 10 secara mendalam dan menguasai API pentesting tools.", verifyUrl:"https://drive.google.com/uc?export=view&id=10kOw2485qsHQT-VgK1B06WI8XZSbAHxR" },
-        { year: "2025", title: "Red Team Internship Certification", desc: "Menjalani simulasi serangan penuh sambil menulis laporan teknis yang bisa dimengerti non-teknis.", verifyUrl:"https://drive.google.com/uc?export=view&id=1Ry7eiu4hi7wD1S_oAhM_5PqfgsSLuz0q" },
-        { year: "2024", title: "Practical Ethical Hacking", desc: "Menggabungkan pengetahuan CTF dengan skenario nyata, dari recon sampai exploit dan report.", verifyUrl:"https://drive.google.com/uc?export=view&id=1WMzQ4d18zRD1WO1mv7Zt5mWs8ejCgPco" },
-        { year: "2024", title: "Practical Web Application and Testing", desc: "Menguasai berbagai teknik web pentest, termasuk bypass auth dan exploit logic flaw.", verifyUrl:"https://drive.google.com/uc?export=view&id=12YtixJFXIFDwPFOKplTLT0O2QcFchgzR" },
-        { year: "2024", title: "Practical Web Hacking", desc: "Latihan intensif eksploitasi web seperti SQLi, XSS, CSRF, dan SSRF di lab realistis.", verifyUrl:"https://drive.google.com/uc?export=view&id=1rLENAUnTDPxb92U_gP_fwNU30eTPXVk7" },
-        { year: "2023", title: "Advent of Cyber", desc: "Menyelesaikan challenge harian yang menuntut kemampuan multi-domain: OSINT, crypto, exploitation.", verifyUrl:"https://drive.google.com/uc?export=view&id=1xSjfQwVGEDhUSmHyVAh3sKMqxEpCxTPn" },
-        { year: "2023", title: "IT Support Google", desc: "Menyesuaikan mindset dari troubleshooting umum menjadi pendekatan terstruktur berbasis ITIL dan best practices.", verifyUrl:"https://drive.google.com/uc?export=view&id=1CWkrYvwaM-yKB717lCAmNY5Tx7Nviuxg" }
-    ]
+      ],
+    },
+  },
+  blue: {
+    hero: {
+      about:
+        "I approach defensive security with a proactive mindset — building detection systems, analyzing threat patterns, and strengthening organizational security posture. I focus on understanding attacker methodologies to build more effective defensive strategies.",
+      subtitle:
+        "Defense isn't just about blocking attacks, it's about understanding them to prevent future ones.",
+      typedStrings: [
+        "Blue Team Analyst",
+        "SOC Engineer",
+        "Threat Hunter",
+        "Security Architect",
+        "Incident Responder",
+        "Defense Specialist",
+        "TRWBCY",
+      ],
+    },
+    ctf: {
+      title: "DEFENSIVE CTF CHALLENGES",
+      description:
+        "Browse my collection of blue team CTF challenges focused on detection, analysis, and incident response.",
+      machines: [
+        {
+          title: "Blue Team Challenge: Network Forensics",
+          image:
+            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
+          desc: "Deep packet analysis to identify malicious network traffic patterns and IOCs",
+          url: "#",
+        },
+        {
+          title: "SOC Analysis: APT Campaign Detection",
+          image:
+            "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+          desc: "Analyzing logs and artifacts to track advanced persistent threat activities",
+          url: "#",
+        },
+        {
+          title: "Incident Response: Malware Analysis",
+          image:
+            "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400",
+          desc: "Reverse engineering malware samples to understand attack vectors and TTPs",
+          url: "#",
+        },
+        {
+          title: "Threat Hunting: Anomaly Detection",
+          image:
+            "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400",
+          desc: "Proactive hunting for indicators of compromise in enterprise environments",
+          url: "#",
+        },
+        {
+          title: "Digital Forensics: Evidence Recovery",
+          image:
+            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
+          desc: "Forensic analysis of compromised systems and data recovery techniques",
+          url: "#",
+        },
+        {
+          title: "SIEM Configuration: Alert Tuning",
+          image:
+            "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400",
+          desc: "Optimizing SIEM rules and reducing false positives in security monitoring",
+          url: "#",
+        },
+      ],
+    },
+    projects: {
+      title: "DEFENSIVE SECURITY PROJECTS",
+      description:
+        "Blue team tools and systems I've built for threat detection, monitoring, and incident response.",
+      items: [
+        {
+          title: "ThreatScope: Advanced SIEM Analytics",
+          image:
+            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
+          desc: "Machine learning-powered SIEM correlation engine for automated threat detection and response.",
+          tech: ["Python", "ELK Stack", "Machine Learning", "Threat Intelligence"],
+          url: "#",
+        },
+        {
+          title: "HuntMaster: Threat Hunting Platform",
+          image:
+            "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
+          desc: "Comprehensive threat hunting framework with automated IOC correlation and MITRE ATT&CK mapping.",
+          tech: ["Python", "Splunk", "MITRE ATT&CK", "Threat Hunting"],
+          url: "#",
+        },
+        {
+          title: "SecureShield: Endpoint Detection Response",
+          image:
+            "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400",
+          desc: "Custom EDR solution with behavioral analysis and automated response capabilities.",
+          tech: ["C++", "Windows API", "Behavioral Analysis", "EDR"],
+          url: "#",
+        },
+      ],
+    },
+  },
+  certifications: [
+    {
+      year: "2025",
+      title: "AWS Certified Cloud Practitioner",
+      desc: "Belajar konsep cloud dari nol sambil mendalami security best practice AWS.",
+      status: "(In Progress)",
+    },
+    {
+      year: "2025",
+      title: "Certified API Security Practitioner",
+      desc: "Memahami OWASP API Security Top 10 secara mendalam dan menguasai API pentesting tools.",
+      verifyUrl:
+        "https://drive.google.com/file/d/10kOw2485qsHQT-VgK1B06WI8XZSbAHxR/view",
+    },
+    {
+      year: "2025",
+      title: "Red Team Internship Certification",
+      desc: "Menjalani simulasi serangan penuh sambil menulis laporan teknis yang bisa dimengerti non-teknis.",
+      verifyUrl:
+        "https://drive.google.com/file/d/1Ry7eiu4hi7wD1S_oAhM_5PqfgsSLuz0q/view",
+    },
+    {
+      year: "2024",
+      title: "Practical Ethical Hacking",
+      desc: "Menggabungkan pengetahuan CTF dengan skenario nyata, dari recon sampai exploit dan report.",
+      verifyUrl:
+        "https://drive.google.com/file/d/1WMzQ4d18zRD1WO1mv7Zt5mWs8ejCgPco/view",
+    },
+    {
+      year: "2024",
+      title: "Practical Web Application and Testing",
+      desc: "Menguasai berbagai teknik web pentest, termasuk bypass auth dan exploit logic flaw.",
+      verifyUrl:
+        "https://drive.google.com/file/d/12YtixJFXIFDwPFOKplTLT0O2QcFchgzR/view",
+    },
+    {
+      year: "2024",
+      title: "Practical Web Hacking",
+      desc: "Latihan intensif eksploitasi web seperti SQLi, XSS, CSRF, dan SSRF di lab realistis.",
+      verifyUrl:
+        "https://drive.google.com/file/d/1rLENAUnTDPxb92U_gP_fwNU30eTPXVk7/view",
+    },
+    {
+      year: "2023",
+      title: "Advent of Cyber",
+      desc: "Menyelesaikan challenge harian yang menuntut kemampuan multi-domain: OSINT, crypto, exploitation.",
+      verifyUrl:
+        "https://drive.google.com/file/d/1xSjfQwVGEDhUSmHyVAh3sKMqxEpCxTPn/view",
+    },
+    {
+      year: "2023",
+      title: "IT Support Google",
+      desc: "Menyesuaikan mindset dari troubleshooting umum menjadi pendekatan terstruktur berbasis ITIL dan best practices.",
+      verifyUrl:
+        "https://drive.google.com/file/d/1CWkrYvwaM-yKB717lCAmNY5Tx7Nviuxg/view",
+    },
+  ],
 };
 
 // === MAIN APPLICATION CLASS ===
-class Portfolio {
-    constructor() {
-        this.currentPage = 'home';
-        this.isTransitioning = false;
-        this.init();
+class EnhancedPortfolio {
+  constructor() {
+    this.currentPage = "home";
+    this.currentTheme = "red";
+    this.isTransitioning = false;
+    this.typedInstance = null;
+    this.matrixInterval = null;
+    this.init();
+  }
+
+  init() {
+    this.initThemeToggle();
+    this.initBackgroundEffects();
+    this.initNavigation();
+    this.initTypedJS();
+    this.initScrollArrows();
+    this.initContentLoaders();
+    this.hideLoading();
+    // console.log('🚀 Enhanced Portfolio initialized successfully!');
+  }
+
+  // === THEME SYSTEM ===
+  initThemeToggle() {
+    const themeToggle = document.getElementById("themeToggle");
+    const themeLabel = document.getElementById("themeLabel");
+
+    if (!themeToggle) return;
+
+    themeToggle.addEventListener("change", () => {
+      // Trigger glitch animation
+      document.body.classList.add('theme-transitioning');
+      setTimeout(() => {
+        document.body.classList.remove('theme-transitioning');
+      }, 500);
+
+      this.currentTheme = themeToggle.checked ? "blue" : "red";
+      this.applyTheme();
+      this.updateContent();
+      // Optional: when you have custom images, you can toggle .logo--img and --logo-image here.
+      // Example for future use:
+      // const logo = document.querySelector('.logo');
+      // if (this.currentTheme === 'blue') {
+      //   logo?.classList.add('logo--img');
+      //   document.documentElement.style.setProperty('--logo-image', "url('/portfolio/shield.png')");
+      // } else {
+      //   logo?.classList.add('logo--img');
+      //   document.documentElement.style.setProperty('--logo-image', "url('/portfolio/sword.png')");
+      // }
+    });
+  }
+
+  applyTheme() {
+    const body = document.body;
+    const themeLabel = document.getElementById("themeLabel");
+
+    if (this.currentTheme === "blue") {
+      body.setAttribute("data-theme", "blue");
+      if (themeLabel) themeLabel.textContent = "Blue Team";
+    } else {
+      body.removeAttribute("data-theme");
+      if (themeLabel) themeLabel.textContent = "Red Team";
+    }
+  }
+
+  updateContent() {
+    const data = portfolioData[this.currentTheme];
+
+    // Update hero/about content
+    const aboutContent = document.getElementById("aboutContent");
+    if (aboutContent) {
+      aboutContent.innerHTML = `
+        <p>${data.hero.about}</p>
+        <br />
+        <p><i>${data.hero.subtitle}</i></p>
+      `;
     }
 
-    init() {
-        this.initBackgroundEffects();
-        this.initNavigation();
-        this.initTypedJS();
-        this.initScrollArrows();
-        this.initContentLoaders();
-        this.hideLoading();
-        console.log('🎉 Portfolio initialized successfully!');
+    // Update typed strings (keep animation style the same)
+    if (this.typedInstance) {
+      this.typedInstance.destroy();
+      this.initTypedJS();
     }
 
-    // === BACKGROUND EFFECTS ===
-    initBackgroundEffects() {
-        this.createMatrixRain();
+    // Update CTF section headers
+    const ctfTitle = document.getElementById("ctfTitle");
+    const ctfDescription = document.getElementById("ctfDescription");
+    if (ctfTitle) ctfTitle.textContent = data.ctf.title;
+    if (ctfDescription) ctfDescription.textContent = data.ctf.description;
+
+    // Update Projects section headers
+    const projectsTitle = document.getElementById("projectsTitle");
+    const projectsDescription = document.getElementById("projectsDescription");
+    if (projectsTitle) projectsTitle.textContent = data.projects.title;
+    if (projectsDescription)
+      projectsDescription.textContent = data.projects.description;
+
+    // Update nav link label for CTF
+    const ctfLink = document.getElementById("ctfLink");
+    if (ctfLink) {
+      ctfLink.textContent = this.currentTheme === "red" ? "CTF Writeups" : "Blue Team CTFs";
     }
 
-    createMatrixRain() {
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        const chars = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?/~";
-        const fontSize = 14;
-        const columns = Math.floor(canvas.width / fontSize);
-        const drops = Array(columns).fill(1);
+    // Reload content lists
+    this.loadCTFMachines();
+    this.loadProjects();
+  }
 
-        const draw = () => {
-            ctx.fillStyle = 'rgba(26, 26, 26, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = 'rgba(129, 129, 129, 0.8)';
-            ctx.font = `${fontSize}px monospace`;
-            
-            drops.forEach((drop, i) => {
-                const char = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(char, i * fontSize, drop * fontSize);
-                
-                if (drop * fontSize > canvas.height || Math.random() > 0.95) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            });
-        };
+  // === BACKGROUND EFFECTS ===
+  initBackgroundEffects() {
+    this.createMatrixRain();
+  }
 
-        setInterval(draw, 50);
-        
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-    }
+  createMatrixRain() {
+    const canvas = document.getElementById("matrix-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
 
-    // === NAVIGATION ===
-    initNavigation() {
-        document.querySelectorAll('[data-page]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const pageId = e.target.getAttribute('data-page');
-                this.showPage(pageId);
-            });
-        });
+    const setSize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
 
-        document.querySelector('.logo').addEventListener('click', (e) => {
-            e.preventDefault();
-            this.showPage('home');
-        });
+    setSize();
 
-        const mobileMenu = document.getElementById('mobileMenu');
-        const navLinks = document.getElementById('navLinks');
-        
-        if (mobileMenu) {
-            mobileMenu.addEventListener('click', () => {
-                mobileMenu.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
+    const chars =
+      "アァカサタナハマヤャラワガザダバパイィキシチニヒミリィギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレェゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const fontSize = 14;
+    let columns = Math.floor(canvas.width / fontSize);
+    let drops = Array(columns).fill(1);
+
+    const draw = () => {
+      ctx.fillStyle = "rgba(26, 26, 26, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const color =
+        this.currentTheme === "blue"
+          ? "rgba(74, 144, 226, 0.8)"
+          : "rgba(255, 85, 85, 0.8)";
+
+      ctx.fillStyle = color;
+      ctx.font = `${fontSize}px monospace`;
+
+      drops.forEach((drop, i) => {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(char, i * fontSize, drop * fontSize);
+
+        if (drop * fontSize > canvas.height || Math.random() > 0.95) {
+          drops[i] = 0;
         }
+        drops[i]++;
+      });
+    };
 
-        const downloadBtn = document.getElementById('downloadBtn');
-        if (downloadBtn) {
-            downloadBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.downloadResume();
-            });
-        }
+    if (this.matrixInterval) clearInterval(this.matrixInterval);
+    this.matrixInterval = setInterval(draw, 50);
+
+    window.addEventListener("resize", () => {
+      setSize();
+      columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(1);
+    });
+  }
+
+  // === NAVIGATION ===
+  initNavigation() {
+    document.querySelectorAll("[data-page]").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const pageId = e.currentTarget.getAttribute("data-page");
+        if (pageId) this.showPage(pageId);
+      });
+    });
+
+    const logoEl = document.querySelector(".logo");
+    logoEl?.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.showPage("home");
+    });
+
+    const mobileMenu = document.getElementById("mobileMenu");
+    const navCenter = document.getElementById("navCenter");
+    if (mobileMenu && navCenter) {
+      mobileMenu.addEventListener("click", () => {
+        mobileMenu.classList.toggle("active");
+        navCenter.classList.toggle("active");
+      });
     }
 
-    showPage(pageId) {
-        if (this.isTransitioning || this.currentPage === pageId) return;
-        
-        this.isTransitioning = true;
-        const currentSection = document.querySelector('.page-section.active');
-        const targetSection = document.getElementById(pageId);
-        
-        if (currentSection && targetSection) {
-            currentSection.classList.add('slide-out');
-            
-            setTimeout(() => {
-                currentSection.classList.remove('active', 'slide-out');
-                targetSection.classList.add('slide-in');
-                
-                setTimeout(() => {
-                    targetSection.classList.remove('slide-in');
-                    targetSection.classList.add('active');
-                    this.currentPage = pageId;
-                    this.isTransitioning = false;
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }, 50);
-            }, 300);
-        }
+    const downloadBtn = document.getElementById("downloadBtn");
+    if (downloadBtn) {
+      downloadBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.downloadResume();
+      });
     }
+  }
 
-    downloadResume() {
-        const link = document.createElement('a');
-        link.href = 'https://github.com/trwbcy/portfolio/raw/main/Resume%20-%20Tri%20Wibowo%20Cahyo.pdf';
-        link.download = 'TRI_WIBOWO_CAHYO_Resume.pdf';
-        link.click();
-        this.showNotification('📄 Resume downloaded successfully!');
+  showPage(pageId) {
+    if (this.isTransitioning || this.currentPage === pageId) return;
+
+    this.isTransitioning = true;
+    const currentSection = document.querySelector(".page-section.active");
+    const targetSection = document.getElementById(pageId);
+
+    if (currentSection && targetSection) {
+      currentSection.classList.add("slide-out");
+
+      setTimeout(() => {
+        currentSection.classList.remove("active", "slide-out");
+        targetSection.classList.add("slide-in");
+
+        setTimeout(() => {
+          targetSection.classList.remove("slide-in");
+          targetSection.classList.add("active");
+          this.currentPage = pageId;
+          this.isTransitioning = false;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }, 50);
+      }, 300);
+    } else {
+      this.isTransitioning = false;
     }
+  }
 
-    // === TYPED.JS ===
-    initTypedJS() {
-        if (typeof Typed !== 'undefined') {
-            new Typed(".typed", {
-                strings: [
-                    "Cyber Security Enthusiast",
-                    "CTF Player",
-                    "Innovative Problem Solver",
-                    "Lifelong Learner",
-                    "Clear Communicator",
-                    "Pragmatic Pentester",
-                    "SecOps Knight",
-                    "TRWBCY"
-                ],
-                typeSpeed: 50,
-                backSpeed: 30,
-                loop: true,
-                cursorChar: '|'
-            });
-        }
+  downloadResume() {
+    // Simple notification
+    this.showNotification("📄 Resume download feature would work here!");
+  }
+
+  // === TYPED.JS ===
+  initTypedJS() {
+    const data = portfolioData[this.currentTheme];
+    if (typeof Typed !== "undefined") {
+      this.typedInstance = new Typed(".typed", {
+        strings: data.hero.typedStrings,
+        typeSpeed: 50,
+        backSpeed: 30,
+        loop: true,
+        cursorChar: "|",
+      });
     }
+  }
 
-    // === SCROLL ARROWS ===
-    initScrollArrows() {
-        document.querySelectorAll('.scroll-arrow').forEach(arrow => {
-            arrow.addEventListener('click', () => {
-                const target = arrow.getAttribute('data-target');
-                this.scrollToSection(target);
-            });
-        });
+  // === SCROLL ARROWS ===
+  initScrollArrows() {
+    document.querySelectorAll(".scroll-arrow").forEach((arrow) => {
+      arrow.addEventListener("click", () => {
+        const target = arrow.getAttribute("data-target");
+        if (target) this.scrollToSection(target);
+      });
+    });
 
-        const backToTop = document.getElementById('backToTop');
-        if (backToTop) {
-            backToTop.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        }
+    const backToTop = document.getElementById("backToTop");
+    backToTop?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  scrollToSection(targetId) {
+    const target = document.getElementById(targetId);
+    if (target) {
+      const offsetTop = target.offsetTop - 90;
+      window.scrollTo({ top: offsetTop, behavior: "smooth" });
     }
+  }
 
-    scrollToSection(targetId) {
-        const target = document.getElementById(targetId);
-        if (target) {
-            const offsetTop = target.offsetTop - 90;
-            window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-        }
-    }
+  // === CONTENT LOADERS ===
+  initContentLoaders() {
+    this.loadCTFMachines();
+    this.loadProjects();
+    this.loadCertifications();
+    this.initTimelineAnimation();
+  }
 
-    // === CONTENT LOADERS ===
-    initContentLoaders() {
-        this.loadCTFMachines();
-        this.loadProjects();
-        this.loadCertifications();
-        this.initTimelineAnimation();
-    }
-
-    loadCTFMachines() {
-        const grid = document.getElementById('ctfGrid');
-        if (!grid) return;
-
-        grid.innerHTML = portfolioData.ctfMachines.map(machine => `
-            <a href="${machine.url}" target="_blank" class="card">
-                <img src="${machine.image}" alt="${machine.title}" loading="lazy">
-                <div class="card-content">
-                    <h3>${machine.title}</h3>
-                    <p><em>${machine.desc}</em></p>
-                </div>
-            </a>
-        `).join('');
-    }
-
-    loadProjects() {
-    const grid = document.getElementById('projectsGrid');
+  loadCTFMachines() {
+    const grid = document.getElementById("ctfGrid");
     if (!grid) return;
 
-    grid.innerHTML = portfolioData.projects.map(project => `
-        <a href="${project.url}" target="_blank" class="card">
-            <img src="${project.image}" alt="${project.title}" loading="lazy">
-            <div class="card-content">
-                <h3>${project.title}</h3>
-                <p>${project.desc}</p>
-                <div class="tech-stack">
-                    ${project.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
-                </div>
+    const data = portfolioData[this.currentTheme];
+    grid.innerHTML = data.ctf.machines
+      .map(
+        (machine) => `
+        <div class="card" onclick="window.open('${machine.url}', '_blank')">
+          <img src="${machine.image}" alt="${machine.title}" loading="lazy" />
+          <div class="card-content">
+            <h3>${machine.title}</h3>
+            <p><em>${machine.desc}</em></p>
+          </div>
+        </div>
+      `
+      )
+      .join("");
+  }
+
+  loadProjects() {
+    const grid = document.getElementById("projectsGrid");
+    if (!grid) return;
+
+    const data = portfolioData[this.currentTheme];
+    grid.innerHTML = data.projects.items
+      .map(
+        (project) => `
+        <div class="card" onclick="window.open('${project.url}', '_blank')">
+          <img src="${project.image}" alt="${project.title}" loading="lazy" />
+          <div class="card-content">
+            <h3>${project.title}</h3>
+            <p>${project.desc}</p>
+            <div class="tech-stack">
+              ${project.tech
+                .map((t) => `<span class="tech-tag">${t}</span>`)
+                .join("")}
             </div>
-        </a>
-    `).join('');
-    }
+          </div>
+        </div>
+      `
+      )
+      .join("");
+  }
 
+  loadCertifications() {
+    const timeline = document.getElementById("timeline");
+    if (!timeline) return;
 
+    timeline.innerHTML = portfolioData.certifications
+      .map((cert, index) => {
+        const side = index % 2 === 0 ? "left" : "right";
+        const verifyButton = cert.verifyUrl
+          ? `<a href="${cert.verifyUrl}" target="_blank" class="verify-btn">Verify</a>`
+          : "";
 
-    loadCertifications() {
-        const timeline = document.getElementById('timeline');
-        if (!timeline) return;
+        return `
+        <div class="timeline-item ${side}">
+          <div class="timeline-content">
+            <span class="timeline-year">${cert.year}</span>
+            <h3>${cert.title} ${cert.status || ""}</h3>
+            <p><strong>Journey:</strong> ${cert.desc}</p>
+            ${verifyButton}
+          </div>
+        </div>
+      `;
+      })
+      .join("");
+  }
 
-        timeline.innerHTML = portfolioData.certifications.map((cert, index) => {
-            const side = index % 2 === 0 ? 'left' : 'right';
-            return `
-                <div class="timeline-item ${side}">
-                    <div class="timeline-content">
-                        <span class="timeline-year">${cert.year}</span>
-                        <h3>${cert.title} ${cert.status || ''}</h3>
-                        <p><strong>Struggle:</strong> ${cert.desc}</p>
-                        <a href="${cert.verifyUrl}" target="_blank" class="verify-btn">Verify</a>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    initTimelineAnimation() {
-        const observeTimeline = () => {
-            const timelineItems = document.querySelectorAll('.timeline-item');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('show');
-                    }
-                });
-            }, { threshold: 0.3 });
-
-            timelineItems.forEach(item => observer.observe(item));
-        };
-
-        setTimeout(observeTimeline, 100);
-    }
-
-    // === UTILITIES ===
-    hideLoading() {
-        setTimeout(() => {
-            const loading = document.getElementById('loading');
-            if (loading) {
-                loading.classList.add('hide');
-                setTimeout(() => loading.remove(), 500);
+  initTimelineAnimation() {
+    const observeTimeline = () => {
+      const timelineItems = document.querySelectorAll(".timeline-item");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("show");
             }
-        }, 1500);
-    }
+          });
+        },
+        { threshold: 0.3 }
+      );
 
-    showNotification(message) {
-        const notification = document.createElement('div');
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            padding: 15px 20px;
-            border-radius: 8px;
-            z-index: 10000;
-            font-size: 14px;
-            animation: slideInRight 0.3s ease;
-            border-left: 4px solid var(--primary-color);
-        `;
-        
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 3000);
-    }
+      timelineItems.forEach((item) => observer.observe(item));
+    };
+
+    setTimeout(observeTimeline, 100);
+  }
+
+  // === UTILITIES ===
+  hideLoading() {
+    setTimeout(() => {
+      const loading = document.getElementById("loading");
+      if (loading) {
+        loading.classList.add("hide");
+        setTimeout(() => loading.remove(), 500);
+      }
+    }, 1500);
+  }
+
+  showNotification(message) {
+    const notification = document.createElement("div");
+    notification.textContent = message;
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--glass-bg);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      padding: 15px 20px;
+      border-radius: 8px;
+      z-index: 10000;
+      font-size: 14px;
+      animation: slideInRight 0.3s ease;
+      backdrop-filter: blur(10px);
+    `;
+
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+  }
 }
 
 // === INITIALIZE APPLICATION ===
-document.addEventListener('DOMContentLoaded', () => {
-    new Portfolio();
+document.addEventListener("DOMContentLoaded", () => {
+  new EnhancedPortfolio();
 });
-
-// === CSS ANIMATION KEYFRAMES ===
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-`;
-document.head.appendChild(style);
