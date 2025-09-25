@@ -40,7 +40,7 @@ a {
   --theme-name: "Red Team";
 
   /* Variabel untuk logo & icon */
-  --theme-icon-url: url('/img/sword.png'); /* Backup sword */
+  --theme-icon-url: url('./img/sword.png'); /* Backup sword */
   --theme-icon-filter: brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(3011%) hue-rotate(335deg) brightness(100%) contrast(102%); /* Red filter */
 }
 
@@ -53,7 +53,7 @@ a {
   --theme-name: "Blue Team";
   
   /* Variabel untuk logo & icon override */
-  --theme-icon-url: url('/img/shield-icon.png'); /* Backup shield */
+  --theme-icon-url: url('./img/shield-icon.png'); /* Backup shield */
   --theme-icon-filter: brightness(0) saturate(100%) invert(58%) sepia(89%) saturate(1067%) hue-rotate(181deg) brightness(91%) contrast(89%); /* Blue filter */
 }
 
@@ -727,9 +727,9 @@ input:checked + .slider:before {
   PENTING: Di HTML, tambahkan class yang sesuai ke tag <a> untuk setiap tombol kontak.
   Contoh: <a href="..." class="contact-btn email">...</a>
 */
-.contact-btn.email     { --icon-url: url('/img/icon-email.png'); } /* Ganti URL ini dengan path ke icon email lo */
-.contact-btn.linkedin  { --icon-url: url('/img/icon-linkedin.png'); } /* Ganti URL ini dengan path ke icon linkedin lo */
-.contact-btn.tryhackme { --icon-url: url('/img/icon-thm.png'); } /* Ganti URL ini dengan path ke icon tryhackme lo */
+.contact-btn.email     { --icon-url: url('./img/icon-email.png'); } /* Ganti URL ini dengan path ke icon email lo */
+.contact-btn.linkedin  { --icon-url: url('./img/icon-linkedin.png'); } /* Ganti URL ini dengan path ke icon linkedin lo */
+.contact-btn.tryhackme { --icon-url: url('./img/icon-thm.png'); } /* Ganti URL ini dengan path ke icon tryhackme lo */
 
 
 .contact-btn:hover {
