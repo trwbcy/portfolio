@@ -487,10 +487,15 @@ class EnhancedPortfolio {
     }
   }
 
-  downloadResume() {
-    // Simple notification
-    this.showNotification("📄 Resume download feature would work here!");
-  }
+    downloadResume() {
+    const link = document.createElement('a');
+    link.href = './Resume - Tri Wibowo Cahyo.pdf'; // Pastikan nama file dan path ini benar
+    link.download = 'Tri_Wibowo_Resume.pdf'; // Nama file saat didownload
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    this.showNotification("📄 Resume is downloading...");
+    }
 
   // === TYPED.JS ===
   initTypedJS() {
