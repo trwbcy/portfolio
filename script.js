@@ -536,10 +536,13 @@ class EnhancedPortfolio {
 
   // === CONTENT LOADERS ===
   initContentLoaders() {
+    // 1. Amati Static Sections (About, Experience, Contact)
+    this.setupRevealAnimation('.content-section'); 
+
     this.loadCTFMachines();
     this.loadProjects();
     this.loadCertifications();
-    this.initTimelineAnimation();
+    // this.initTimelineAnimation(); // Hapus/Komentari method lama yang sudah diganti
   }
 
   loadCTFMachines() {
@@ -560,6 +563,9 @@ class EnhancedPortfolio {
       `
       )
       .join("");
+    
+    // Panggil Reveal Animation setelah semua card CTF dibuat
+    this.setupRevealAnimation('.ctf-grid .card');
   }
 
   loadProjects() {
@@ -585,6 +591,9 @@ class EnhancedPortfolio {
       `
       )
       .join("");
+
+    // Panggil Reveal Animation setelah semua card Project dibuat
+    this.setupRevealAnimation('.projects-grid .card');
   }
 
   loadCertifications() {
@@ -610,29 +619,36 @@ class EnhancedPortfolio {
       `;
       })
       .join("");
-  }
 
-  initTimelineAnimation() {
-    const observeTimeline = () => {
-      const timelineItems = document.querySelectorAll(".timeline-item");
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("show");
-            }
-          });
-        },
-        { threshold: 0.3 }
-      );
-
-      timelineItems.forEach((item) => observer.observe(item));
-    };
-
-    setTimeout(observeTimeline, 100);
+    // Panggil Reveal Animation setelah semua item timeline dibuat (threshold 0.3 agar lebih tepat)
+    this.setupRevealAnimation('.timeline-item', 0.3);
   }
 
   // === UTILITIES ===
+  
+  // === SCROLL REVEAL UTILITY (BARU) ===
+  setupRevealAnimation(targetSelector, thresholdValue = 0.1) {
+    const revealElements = document.querySelectorAll(targetSelector);
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: thresholdValue 
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    revealElements.forEach(element => {
+        observer.observe(element);
+    });
+  }
+
   hideLoading() {
     setTimeout(() => {
       const loading = document.getElementById("loading");

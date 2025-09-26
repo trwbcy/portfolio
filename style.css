@@ -423,6 +423,91 @@ input:checked + .slider:before {
   opacity: 0;
 }
 
+/* === HERO CONTENT WITH PHOTO === */
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  max-width: 1000px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* === PROFILE PHOTO WITH HEXAGON FRAME === */
+.profile-photo {
+  flex-shrink: 0;
+}
+
+.hexagon-frame {
+  position: relative;
+  width: 270px;
+  height: 365px;
+  margin: 0 auto;
+}
+
+/* 1. FRAME/BORDER HEXAGONAL */
+.hexagon-border {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; 
+  height: 100%;
+  background: var(--primary-color); 
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 1; 
+  transition: background 0.4s ease, transform 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); 
+}
+
+/* Hover effect pada border */
+.hexagon-frame:hover .hexagon-border {
+  transform: translate(-50%, -50%) scale(1.03); /* Sedikit membesar saat hover */
+  box-shadow: 0 0 25px var(--primary-color); /* Glow lebih kuat sesuai warna tema */
+}
+
+/* 2. PHOTO (di dalamnya) */
+.hexagon-frame img {
+  position: absolute;
+  /* (Lebar tetap, Tinggi di-set 360px sesuai permintaan) */
+  width: 264px; 
+  height: 360px; /* <--- UKURAN FOTO 360px */
+  object-fit: cover;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 2; 
+  transition: all 0.3s ease;
+}
+
+.hexagon-frame:hover img {
+  transform: translate(-50%, -50%) scale(1.01);
+}
+
+/* === HERO TEXT === */
+.hero-text {
+  flex: 1;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* <-- UBAH KE CENTER */
+}
+
+.hero-text h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  position: relative;
+  color: #fff;
+  text-shadow: 0 0 10px var(--primary-color);
+  transition: text-shadow 0.4s ease;
+  line-height: 1.1;
+  text-align: center; /* <--- TAMBAHKAN INI */
+}
+
 /* === HERO SECTION === */
 .hero {
   min-height: calc(100vh - 140px);
@@ -431,7 +516,7 @@ input:checked + .slider:before {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 150px 20px 300px;
+  padding: 100px 20px 300px;
   position: relative;
 }
 
@@ -482,52 +567,138 @@ input:checked + .slider:before {
 .typed-container {
   min-height: 2rem;
   margin-bottom: 10px;
+  margin-left: 0;
+  margin-top: 5px;
+  text-align: center; /* <--- UBAH KE CENTER */
 }
 
 .typed {
   font-size: 1.4rem;
   color: #fff;
+  margin-left: 0; 
+  /* Hapus width: 100%; dan text-align: left; */
 }
 
-/* === SCROLL ARROWS === */
-.scroll-arrow {
-  font-size: 1.3rem;
-  color: var(--primary-color);
-  cursor: pointer;
-  animation: bounce 2s infinite;
-  transition: all 0.3s ease;
-  margin: 20px 0 10px;
+/* === QUOTE STYLING BARU === */
+.quote-text {
+  font-style: italic;
+  font-size: 1.4rem;
+  color: #ccc; /* Warna abu-abu yang lebih lembut */
+  margin-top: 15px; /* Beri jarak dari typed text di atasnya */
+  max-width: 500px; /* Batasi lebar agar tidak terlalu panjang */
   text-align: center;
+  line-height: 1.4;
   opacity: 0.8;
-  position: relative;
-  z-index: 10;
+  transition: color 0.4s ease;
 }
 
-.scroll-arrow:hover {
-  color: #fff;
-  transform: scale(1.2);
-  text-shadow: 0 0 10px var(--primary-color);
+.quote-text:hover {
+  color: var(--primary-color); /* Beri sedikit efek tema saat di-hover */
   opacity: 1;
 }
 
+/* Penyesuaian agar quote tidak hilang saat mobile */
+@media (max-width: 768px) {
+  .quote-text {
+    font-size: 0.95rem;
+    margin-top: 10px;
+    padding: 0 10px;
+  }
+}
+
+/* === SCROLL ARROWS (DOUBLE CHEVRON) === */
+
+/* Container Dasar (diperlukan agar panah bisa di tengah) */
+.scroll-arrow,
 .back-to-top {
-  font-size: 1.3rem;
-  color: var(--primary-color);
+  /* Container Setup */
+  width: 60px; /* Lebar container */
+  height: 60px; /* Tinggi container */
+  margin: 30px auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  animation: bounceUp 2s infinite;
-  transition: all 0.3s ease;
-  margin: 10px 0;
-  text-align: center;
-  opacity: 0.8;
   position: relative;
   z-index: 10;
+  border: none !important; 
+  background: none !important; 
+  box-shadow: none !important; 
+
+  /* Sembunyikan karakter lama jika masih ada */
+  color: transparent; 
+  text-shadow: none !important;
+
+  /* Base Styling & Animation */
+  opacity: 0.9;
+  animation: bounce 2s infinite; /* Mempertahankan animasi bounce */
+  transition: all 0.3s ease;
 }
 
+/* Base style untuk Double V (Menggunakan ::before dan ::after untuk dua 'V' yang berbeda) */
+.scroll-arrow::before,
+.scroll-arrow::after,
+.back-to-top::before,
+.back-to-top::after {
+  content: '';
+  position: absolute;
+  width: 20px; /* Panjang garis V */
+  height: 20px; 
+  /* Menggambar V dengan border */
+  border-right: 3px solid var(--primary-color);
+  border-bottom: 3px solid var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+/* --- SCROLL DOWN ARROW --- */
+
+/* V pertama (di atas) */
+.scroll-arrow::before {
+  top: 10px; /* Posisi V pertama */
+  transform: rotate(45deg); /* Membuat bentuk V ke bawah */
+}
+
+/* V kedua (di bawah) */
+.scroll-arrow::after {
+  top: 17px; /* Posisi V kedua (lebih rendah) */
+  transform: rotate(45deg); /* Membuat bentuk V ke bawah */
+}
+
+/* --- BACK TO TOP ARROW --- */
+
+/* V pertama (di atas) */
+.back-to-top::before {
+  top: 18px; /* Posisi V pertama */
+  transform: rotate(-135deg); /* Membuat bentuk V ke atas */
+}
+
+/* V kedua (di bawah) */
+.back-to-top::after {
+  top: 11px; /* Posisi V kedua (lebih tinggi) */
+  transform: rotate(-135deg); /* Membuat bentuk V ke atas */
+}
+
+
+/* === HOVER EFFECT === */
+.scroll-arrow:hover::before,
+.scroll-arrow:hover::after,
+.back-to-top:hover::before,
+.back-to-top:hover::after {
+  border-color: #fff; /* Ubah warna V menjadi putih saat di-hover */
+  transform: scale(1.1) rotate(45deg);
+}
+
+.back-to-top:hover::before,
+.back-to-top:hover::after {
+  transform: scale(1.1) rotate(-135deg);
+}
+
+.scroll-arrow:hover,
 .back-to-top:hover {
-  color: #fff;
-  transform: scale(1.2);
-  text-shadow: 0 0 10px var(--primary-color);
   opacity: 1;
+  transform: scale(1.2);
+  /* Optional: Tambah shadow saat hover */
+  box-shadow: 0 0 10px var(--primary-color); 
 }
 
 @keyframes bounce {
@@ -1009,4 +1180,60 @@ footer {
   }
 
   footer { padding: 20px 20px 10px; }
+}
+
+/* === MOBILE HERO RESPONSIVE === */
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .hero-text h1 { 
+    font-size: 2.5rem; 
+  }
+
+ /* === MOBILE HEXAGON PHOTO === */
+@media (max-width: 768px) {
+  .hexagon-frame {
+    width: 200px;
+    height: 260px; /* <-- TINGGI FRAME BARU */
+  }
+
+  .hexagon-frame .hexagon-border {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hexagon-frame img {
+    width: 184px; 
+    height: 240px; /* <-- TINGGI FOTO BARU */
+  }
+  
+  .hero-text {
+    text-align: center;
+  }
+}
+}
+
+/* === SCROLL REVEAL ANIMATION INITIAL STATE === */
+.content-section, 
+.card,
+.timeline-item { /* Target semua section, card, dan timeline item */
+  opacity: 0;
+  transform: translateY(30px); /* Geser 30px ke bawah */
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out; 
+}
+
+/* === REVEALED STATE (Class 'reveal' ditambahkan oleh JavaScript) === */
+.content-section.reveal, 
+.card.reveal,
+.timeline-item.reveal {
+  opacity: 1;
+  transform: translateY(0); /* Kembali ke posisi normal */
 }
