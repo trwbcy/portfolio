@@ -1230,6 +1230,25 @@ footer {
   transition: opacity 0.8s ease-out, transform 0.8s ease-out; 
 }
 
+/* === THEME SLIDE TRANSITION === */
+
+/* Keyframes untuk efek slide keluar */
+@keyframes themeSlideOut {
+}
+
+/* Keyframes untuk efek slide masuk */
+@keyframes themeSlideIn {
+}
+
+/* Class untuk mengaplikasikan animasi slide keluar */
+body.theme-slide-out {
+}
+
+/* Class untuk mengaplikasikan animasi slide masuk */
+body.theme-slide-in {
+
+}
+
 /* === REVEALED STATE (Class 'reveal' ditambahkan oleh JavaScript) === */
 .content-section.reveal, 
 .card.reveal,

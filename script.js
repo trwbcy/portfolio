@@ -292,26 +292,36 @@ class EnhancedPortfolio {
     if (!themeToggle) return;
 
     themeToggle.addEventListener("change", () => {
-      // Trigger glitch animation
-      document.body.classList.add('theme-transitioning');
-      setTimeout(() => {
-        document.body.classList.remove('theme-transitioning');
-      }, 500);
-
       this.currentTheme = themeToggle.checked ? "blue" : "red";
+      
+      // Panggil method transisi slide baru
+      this.transitionTheme(); 
+    });
+  }
+
+  // === THEME TRANSITION LOGIC (BARU) ===
+  transitionTheme() {
+    if (this.isTransitioning) return;
+    this.isTransitioning = true;
+
+    // 1. Tambahkan class transisi flicker/fade-out cepat
+    document.body.classList.add("theme-transitioning"); 
+    
+    // Hapus sisa class slide lama (jika ada) untuk memastikan bersih
+    document.body.classList.remove("theme-slide-out", "theme-slide-in");
+
+    setTimeout(() => {
+      // 2. Aplikasikan tema baru saat flicker/fade-out sudah terjadi
       this.applyTheme();
       this.updateContent();
-      // Optional: when you have custom images, you can toggle .logo--img and --logo-image here.
-      // Example for future use:
-      // const logo = document.querySelector('.logo');
-      // if (this.currentTheme === 'blue') {
-      //   logo?.classList.add('logo--img');
-      //   document.documentElement.style.setProperty('--logo-image', "url('/portfolio/shield.png')");
-      // } else {
-      //   logo?.classList.add('logo--img');
-      //   document.documentElement.style.setProperty('--logo-image', "url('/portfolio/sword.png')");
-      // }
-    });
+
+      // 3. Hapus class transisi setelah konten di-update
+      setTimeout(() => {
+        document.body.classList.remove("theme-transitioning");
+        this.isTransitioning = false;
+      }, 50); // Delay sangat singkat untuk memastikan update visual
+      
+    }, 350); // Tunggu 350ms (durasi CSS .theme-transitioning)
   }
 
   applyTheme() {
@@ -325,6 +335,8 @@ class EnhancedPortfolio {
       body.removeAttribute("data-theme");
       if (themeLabel) themeLabel.textContent = "Red Team";
     }
+    // Wajib panggil ulang Matrix Rain untuk update warna!
+    this.createMatrixRain(); 
   }
 
   updateContent() {
@@ -542,7 +554,7 @@ class EnhancedPortfolio {
     this.loadCTFMachines();
     this.loadProjects();
     this.loadCertifications();
-    // this.initTimelineAnimation(); // Hapus/Komentari method lama yang sudah diganti
+    // this.initTimelineAnimation(); // Hapus/Komentari method lama
   }
 
   loadCTFMachines() {
@@ -626,7 +638,7 @@ class EnhancedPortfolio {
 
   // === UTILITIES ===
   
-  // === SCROLL REVEAL UTILITY (BARU) ===
+  // === SCROLL REVEAL UTILITY ===
   setupRevealAnimation(targetSelector, thresholdValue = 0.1) {
     const revealElements = document.querySelectorAll(targetSelector);
     const observerOptions = {
