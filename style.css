@@ -1240,19 +1240,229 @@ footer {
 @keyframes themeSlideIn {
 }
 
-/* Class untuk mengaplikasikan animasi slide keluar */
-body.theme-slide-out {
-}
-
-/* Class untuk mengaplikasikan animasi slide masuk */
-body.theme-slide-in {
-
-}
-
 /* === REVEALED STATE (Class 'reveal' ditambahkan oleh JavaScript) === */
 .content-section.reveal, 
 .card.reveal,
 .timeline-item.reveal {
   opacity: 1;
   transform: translateY(0); /* Kembali ke posisi normal */
+}
+
+/* === NAVBAR MOBILE FIX - ADDITIONAL === */
+@media (max-width: 768px) {
+  nav {
+    padding: 0 12px; /* Kurangi lagi padding */
+    height: 55px; /* Kurangi tinggi navbar */
+  }
+
+  .logo {
+    font-size: 0.85rem; /* Kecilkan font logo lagi */
+    white-space: nowrap; /* Prevent text wrap */
+  }
+
+  .logo::before {
+    width: 20px; /* Kecilkan icon logo lagi */
+    height: 20px;
+    margin-right: 5px;
+  }
+
+  .nav-right {
+    gap: 6px; /* Kurangi gap lagi */
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+
+  /* Theme toggle - lebih kecil */
+  .toggle-switch {
+    width: 35px; /* Lebih kecil lagi */
+    height: 18px;
+  }
+
+  .slider {
+    border-radius: 18px;
+  }
+
+  .slider:before {
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    bottom: 2px;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(17px); /* Adjust untuk ukuran baru */
+  }
+
+  /* === HEXAGON BORDER MOBILE FIX === */
+@media (max-width: 768px) {
+  .hexagon-frame {
+    width: 180px;
+    height: 240px;
+  }
+
+  .hexagon-border {
+    width: 100%;
+    height: 100%;
+    /* Bikin border lebih tipis dengan cara adjust ukuran */
+  }
+
+  .hexagon-frame img {
+    width: 176px; /* Lebih deket ke border - selisih 4px dari frame */
+    height: 236px; /* Lebih deket ke border - selisih 4px dari frame */
+    /* Border akan keliatan tipis karena selisih cuma 2px per sisi */
+  }
+}
+
+/* === UNTUK LAYAR EXTRA KECIL === */
+@media (max-width: 390px) {
+  .hexagon-frame {
+    width: 160px;
+    height: 220px;
+  }
+
+  .hexagon-frame img {
+    width: 156px; /* Selisih 4px dari frame */
+    height: 216px; /* Selisih 4px dari frame */
+    /* Border tipis sekali karena layar kecil */
+  }
+}
+
+  /* Download button - lebih compact */
+  .download-btn {
+    padding: 5px 10px;
+    font-size: 0.7rem;
+    white-space: nowrap; /* Prevent text wrap */
+  }
+
+  /* Mobile menu - lebih kecil */
+  .mobile-menu {
+    padding: 3px;
+  }
+
+  .mobile-menu span {
+    width: 18px; /* Lebih kecil lagi */
+    height: 2px;
+    margin: 2px 0;
+  }
+
+  /* Nav center adjustment */
+  .nav-center {
+    top: 55px; /* Sesuaikan dengan navbar height baru */
+    height: calc(100vh - 55px);
+  }
+
+  /* Main container adjustment */
+  .main-container {
+    padding-top: 55px; /* Sesuaikan dengan navbar height */
+  }
+}
+
+/* === EXTRA SMALL SCREENS === */
+@media (max-width: 390px) {
+  nav {
+    padding: 0 10px; /* Padding minimal */
+  }
+
+  .logo {
+    font-size: 0.8rem; /* Font lebih kecil lagi */
+  }
+
+  .logo::before {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+  }
+
+  .nav-right {
+    gap: 4px; /* Gap minimal */
+  }
+
+  .download-btn {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+  }
+
+  .toggle-switch {
+    width: 32px;
+    height: 16px;
+  }
+
+  .slider:before {
+    height: 10px;
+    width: 10px;
+    left: 2px;
+    bottom: 2px;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(16px);
+  }
+}
+
+/* === LOGO SIZE CONSISTENCY FIX === */
+@media (max-width: 768px) {
+  /* Pastikan kedua logo sama ukuran */
+  .logo::before,
+  body[data-theme="blue"] .logo::before {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+
+  .footer-logo::before,
+  body[data-theme="blue"] .footer-logo::before {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+}
+
+/* === HAMBURGER MENU ANIMATION FIX === */
+@media (max-width: 768px) {
+  .mobile-menu {
+    padding: 4px;
+    position: relative;
+    width: 26px;
+    height: 22px;
+    cursor: pointer;
+  }
+
+  .mobile-menu span {
+    position: absolute;
+    width: 18px;
+    height: 2px;
+    background: var(--primary-color);
+    border-radius: 1px;
+    transition: all 0.3s ease;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Posisi default 3 garis */
+  .mobile-menu span:nth-child(1) {
+    top: 3px;
+  }
+
+  .mobile-menu span:nth-child(2) {
+    top: 9px;
+  }
+
+  .mobile-menu span:nth-child(3) {
+    top: 15px;
+  }
+
+  /* Animasi jadi X */
+  .mobile-menu.active span:nth-child(1) {
+    top: 9px;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .mobile-menu.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-50%) scale(0);
+  }
+
+  .mobile-menu.active span:nth-child(3) {
+    top: 9px;
+    transform: translateX(-50%) rotate(-45deg);
+  }
 }

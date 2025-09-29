@@ -444,7 +444,11 @@ class EnhancedPortfolio {
       link.addEventListener("click", (e) => {
         e.preventDefault();
         const pageId = e.currentTarget.getAttribute("data-page");
-        if (pageId) this.showPage(pageId);
+        if (pageId) {
+          this.showPage(pageId);
+          // AUTO-CLOSE MOBILE MENU saat klik navigation
+          this.closeMobileMenu();
+        }
       });
     });
 
@@ -452,6 +456,8 @@ class EnhancedPortfolio {
     logoEl?.addEventListener("click", (e) => {
       e.preventDefault();
       this.showPage("home");
+      // AUTO-CLOSE MOBILE MENU saat klik logo
+      this.closeMobileMenu();
     });
 
     const mobileMenu = document.getElementById("mobileMenu");
@@ -468,7 +474,20 @@ class EnhancedPortfolio {
       downloadBtn.addEventListener("click", (e) => {
         e.preventDefault();
         this.downloadResume();
+        // AUTO-CLOSE MOBILE MENU saat klik download
+        this.closeMobileMenu();
       });
+    }
+  }
+
+  // TAMBAHIN method baru ini setelah initNavigation()
+  closeMobileMenu() {
+    const mobileMenu = document.getElementById("mobileMenu");
+    const navCenter = document.getElementById("navCenter");
+    
+    if (mobileMenu && navCenter) {
+      mobileMenu.classList.remove("active");
+      navCenter.classList.remove("active");
     }
   }
 
