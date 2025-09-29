@@ -1466,3 +1466,72 @@ footer {
     transform: translateX(-50%) rotate(-45deg);
   }
 }
+
+/* === SCROLL ARROW VISIBILITY FIX - MOBILE === */
+@media (max-width: 768px) {
+  /* Hero section - fit to viewport height */
+  .hero {
+    min-height: calc(100vh - 55px); /* Full viewport minus navbar */
+    max-height: calc(100vh - 55px); /* Lock to viewport */
+    padding: 60px 15px 40px; /* Compact padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    overflow: hidden; /* Prevent content overflow */
+  }
+
+  /* Hero content - adjust spacing */
+  .hero-content {
+    gap: 18px; /* Kurangi gap */
+    margin-bottom: 20px; /* Moderate margin bottom */
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+
+  /* Quote text - kurangi margin */
+  .quote-text {
+    margin-top: 8px;
+    margin-bottom: 10px; /* Kurangi margin */
+  }
+
+  /* Scroll arrow - ensure visible at bottom */
+  .hero .scroll-arrow {
+    margin: 15px auto 30px; /* Enough space from content */
+    position: relative;
+    z-index: 10;
+    flex-shrink: 0; /* Don't let it get squished */
+  }
+
+  /* About section - add top margin to prevent peeking */
+  #about {
+    margin-top: 40px; /* Push it down so it doesn't peek */
+  }
+}
+
+/* === ALTERNATIVE: Untuk layar yang sangat panjang === */
+@media (max-width: 768px) and (min-height: 700px) {
+  /* Kalau layar tinggi, bisa kasih padding lebih */
+  .hero {
+    padding: 80px 15px 80px;
+  }
+}
+
+/* === EXTRA SMALL SCREENS === */
+@media (max-width: 390px) {
+  .hero {
+    padding: 70px 15px 50px; /* Lebih compact lagi */
+  }
+
+  .hero-content {
+    gap: 18px;
+    margin-bottom: 25px;
+  }
+
+  .quote-text {
+    margin-top: 6px;
+    margin-bottom: 12px;
+  }
+
+  .hero .scroll-arrow {
+    margin: 15px auto 15px;
+  }
+}
