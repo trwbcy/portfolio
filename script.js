@@ -374,7 +374,7 @@ class EnhancedPortfolio {
     // Update nav link label for CTF
     const ctfLink = document.getElementById("ctfLink");
     if (ctfLink) {
-      ctfLink.textContent = this.currentTheme === "red" ? "CTF Writeups" : "Blue Team CTFs";
+      ctfLink.textContent = this.currentTheme === "red" ? "Red Team CTFs" : "Blue Team CTFs";
     }
 
     // Reload content lists
