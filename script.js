@@ -177,12 +177,11 @@ const portfolioData = {
         "Blue team tools and systems I've built for threat detection, monitoring, and incident response.",
       items: [
         {
-          title: "ThreatScope: Advanced SIEM Analytics",
-          image:
-            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
-          desc: "Machine learning-powered SIEM correlation engine for automated threat detection and response.",
-          tech: ["Python", "ELK Stack", "Machine Learning", "Threat Intelligence"],
-          url: "#",
+          title: "From Zero to SOC Hero: Building My First SIEM Lab",
+          image: "img/SIEM.png",
+          desc: "The first blue teaming project focused on building a functional SIEM environment using Splunk Free Edition.",
+          tech: ["Splunk", "Ubuntu Server", "Windows 10", "Sysmon", "Dashboard Monitoring"],
+          url: "https://nickel-bedbug-8cc.notion.site/From-Zero-to-SOC-Hero-Building-My-First-SIEM-Lab-27d416e03a1380ba9aded15f489ca23b"
         },
         {
           title: "HuntMaster: Threat Hunting Platform",
@@ -215,49 +214,49 @@ const portfolioData = {
       title: "Certified API Security Practitioner",
       desc: "Memahami OWASP API Security Top 10 secara mendalam dan menguasai API pentesting tools.",
       verifyUrl:
-        "https://drive.google.com/file/d/10kOw2485qsHQT-VgK1B06WI8XZSbAHxR/view",
+        "https://drive.google.com/file/d/1CRK94BK63ABk-ajIGjfTTr02uAQHlVX0/view",
     },
     {
       year: "2025",
       title: "Red Team Internship Certification",
       desc: "Menjalani simulasi serangan penuh sambil menulis laporan teknis yang bisa dimengerti non-teknis.",
       verifyUrl:
-        "https://drive.google.com/file/d/1Ry7eiu4hi7wD1S_oAhM_5PqfgsSLuz0q/view",
+        "https://drive.google.com/file/d/1niU5gbyWGn9RKDlraltHsQJB2qQcSuJt/view",
     },
     {
       year: "2024",
       title: "Practical Ethical Hacking",
       desc: "Menggabungkan pengetahuan CTF dengan skenario nyata, dari recon sampai exploit dan report.",
       verifyUrl:
-        "https://drive.google.com/file/d/1WMzQ4d18zRD1WO1mv7Zt5mWs8ejCgPco/view",
+        "https://drive.google.com/file/d/1RlF6sWO6n0KrmY_BC-iOStDghOD3elSQ/view",
     },
     {
       year: "2024",
       title: "Practical Web Application and Testing",
       desc: "Menguasai berbagai teknik web pentest, termasuk bypass auth dan exploit logic flaw.",
       verifyUrl:
-        "https://drive.google.com/file/d/12YtixJFXIFDwPFOKplTLT0O2QcFchgzR/view",
+        "https://drive.google.com/file/d/1jd3WiqBs_8ZlITE3XoE-h6NCZ5X1Ywks/view",
     },
     {
       year: "2024",
       title: "Practical Web Hacking",
       desc: "Latihan intensif eksploitasi web seperti SQLi, XSS, CSRF, dan SSRF di lab realistis.",
       verifyUrl:
-        "https://drive.google.com/file/d/1rLENAUnTDPxb92U_gP_fwNU30eTPXVk7/view",
+        "https://drive.google.com/file/d/1mYYeCWeE8bAZDGc9m6f2L1qKh1MA40up/view",
     },
     {
       year: "2023",
       title: "Advent of Cyber",
       desc: "Menyelesaikan challenge harian yang menuntut kemampuan multi-domain: OSINT, crypto, exploitation.",
       verifyUrl:
-        "https://drive.google.com/file/d/1xSjfQwVGEDhUSmHyVAh3sKMqxEpCxTPn/view",
+        "https://drive.google.com/file/d/1kWtmymgK864zAoBswX9tGLuLlGp1yGU6/view",
     },
     {
       year: "2023",
       title: "IT Support Google",
       desc: "Menyesuaikan mindset dari troubleshooting umum menjadi pendekatan terstruktur berbasis ITIL dan best practices.",
       verifyUrl:
-        "https://drive.google.com/file/d/1CWkrYvwaM-yKB717lCAmNY5Tx7Nviuxg/view",
+        "https://drive.google.com/file/d/1RB5ehE_-DovC1sgoII2FhV55qoF9Zdgr/view",
     },
   ],
 };
