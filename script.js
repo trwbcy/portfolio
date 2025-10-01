@@ -180,7 +180,7 @@ const portfolioData = {
           title: "From Zero to SOC Hero: Building My First SIEM Lab",
           image: "img/SIEM.png",
           desc: "The first blue teaming project focused on building a functional SIEM environment using Splunk Free Edition.",
-          tech: ["Splunk", "Ubuntu Server", "Windows 10", "Sysmon", "Dashboard Monitoring"],
+          tech: ["Splunk", "Ubuntu Server", "Windows 10", "Sysmon", "Dashboard Monitoring", "SPL"],
           url: "https://nickel-bedbug-8cc.notion.site/From-Zero-to-SOC-Hero-Building-My-First-SIEM-Lab-27d416e03a1380ba9aded15f489ca23b"
         },
         {
