@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🛡 CYBERTREE | TRWBCY</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+  </div>
+  <div class="theme-transition-overlay"></div>
+
+  <!-- Background Effects -->
+  <div class="bg-effects">
+    <canvas id="matrix-canvas"></canvas>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">
+        CYBERTREE | <span class="accent">TRWBCY</span>
+    </div>
+    <div class="nav-center" id="navCenter">
+      <a href="#" data-page="ctf" id="ctfLink">Red Team CTFs</a>
+      <a href="#" data-page="projects" id="projectsLink">Projects</a>
+      <a href="#" data-page="certification">Certifications</a>
+    </div>
+    <div class="nav-right">
+      <div class="theme-toggle">
+        <span class="theme-label" id="themeLabel">Red Team</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="themeToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <a href="#" class="download-btn" id="downloadBtn">Download Resume</a>
+      <div class="mobile-menu" id="mobileMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <!-- HOME PAGE -->
+    <section class="page-section active" id="home">
+      <!-- Hero -->
+    <div class="hero">
+    <div class="hero-content">
+        <!-- Profile Photo with Hexagon Frame -->
+        <div class="profile-photo">
+        <div class="hexagon-frame">
+            <div class="hexagon-border"></div> 
+            <img src="./img/tri.jpg" alt="Profile Photo" id="profileImage" />
+        </div>
+        </div>
+        
+        <!-- Name and Text -->
+        <div class="hero-text">
+        <h1 class="glitch" data-text="TRI WIBOWO CAHYO">TRI WIBOWO CAHYO</h1>
+        <div class="typed-container">
+            <span class="typed"></span>
+        </div>
+        <p class="quote-text">"quote that haunts me: the only real IQ test is do you get what you want out of life"</p>
+        </div>
+    </div>
+    <div class="scroll-arrow" data-target="about"></div>
+    </div>
+
+      <!-- About -->
+      <div class="content-section" id="about">
+        <h2 id="aboutTitle">WHAT I'M ABOUT</h2>
+        <div id="aboutContent">
+          <p>I approach offensive security with curiosity and patience — building and testing tools, running experiments in my own lab, and learning from every result. I focus on uncovering vulnerabilities through methodical exploration, then turning those insights into practical improvements.</p>
+          <br />
+          <p><i>I don't aim to break for the sake of breaking, I aim to understand so we can build stronger.</i></p>
+        </div>
+        <div class="scroll-arrow" data-target="experience">▼</div>
+      </div>
+
+      <!-- Experience -->
+      <div class="content-section" id="experience">
+        <h2 id="experienceTitle">WORK EXPERIENCE</h2>
+        <div class="experience-item" id="experienceContent">
+          <h3>L2 Support Developer — PT Solusi247</h3>
+          <ul>
+            <li>Diagnosed, troubleshot, and resolved AI/ML application issues with precision and speed.</li>
+            <li>Solved complex tickets using <strong>SQL</strong>, <strong>Bash</strong>, and <strong>Python</strong>, ensuring SLA compliance.</li>
+            <li>Collaborated with engineering teams for <strong>Root Cause Analysis (RCA)</strong> on escalated issues.</li>
+            <li>Managed high-volume support requests, prioritized critical tasks, and maintained clear communication with stakeholders.</li>
+            <li>Improved incident workflows and trained L1 teams to boost resolution efficiency.</li>
+          </ul>
+        </div>
+        <div class="scroll-arrow" data-target="contact">▼</div>
+      </div>
+
+      <!-- Contact -->
+      <div class="content-section" id="contact">
+        <h2>Get In Touch</h2>
+        <p id="contactDescription">Interested in collaborating or discussing cybersecurity? Let's connect!</p>
+        <div class="contact-grid">
+          <a href="mailto:twibowo288@gmail.com" class="contact-btn email"> twibowo288@gmail.com </a>
+          <a href="https://www.linkedin.com/in/tri-wibowo-cahyo/" target="_blank" class="contact-btn linkedin"> Connect on LinkedIn </a>
+          <a href="https://tryhackme.com/p/trwbcy" target="_blank" class="contact-btn tryhackme"> View My TryHackMe </a>
+        </div>
+        <div class="back-to-top" id="backToTop"></div>
+      </div>
+    </section>
+
+    <!-- CTF WRITEUPS PAGE -->
+    <section class="page-section" id="ctf">
+      <div class="page-header">
+        <h2 id="ctfTitle">CTF WRITE-UPS</h2>
+        <p id="ctfDescription">Browse my collection of CTF writeups. Click on any machine to read the full writeup on Notion.</p>
+      </div>
+      <div class="grid ctf-grid" id="ctfGrid">
+        <!-- CTF cards will be loaded by JavaScript -->
+      </div>
+    </section>
+
+    <!-- PROJECTS PAGE -->
+    <section class="page-section" id="projects">
+      <div class="page-header">
+        <h2 id="projectsTitle">PROJECTS</h2>
+        <p id="projectsDescription">Cybersecurity projects I've developed.</p>
+      </div>
+      <div class="grid projects-grid" id="projectsGrid">
+        <!-- Project cards will be loaded by JavaScript -->
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS PAGE -->
+    <section class="page-section" id="certification">
+      <div class="page-header">
+        <h2>CERTIFICATIONS</h2>
+        <p>My cybersecurity certification journey and the challenges I overcame along the way.</p>
+      </div>
+      <div class="timeline" id="timeline">
+        <!-- Timeline items will be loaded by JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+    <footer>
+    <div class="footer-content">
+        <a href="#hero" class="logo">
+        <span>CYBERTREE | </span><span class="accent">TRWBCY</span>
+        </a>
+        <div class="footer-copyright">
+        cybertree © 2025
+        </div>
+    </div>
+    </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="./script.js" defer></script>
+</body>
+</html>
