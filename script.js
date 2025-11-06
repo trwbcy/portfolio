@@ -128,18 +128,18 @@ const portfolioData = {
         "Browse my collection of blue team CTF challenges focused on detection, analysis, and incident response.",
       machines: [
         {
-          title: "Blue Team Challenge: Network Forensics",
+          title: "CTF Machine Deviasi",
           image:
-            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
-          desc: "Deep packet analysis to identify malicious network traffic patterns and IOCs",
-          url: "#",
+            "img/deviasi.jpg",
+          desc: "Deep log analysis to identify malicious suspicous patterns and IOCs",
+          url: "https://nickel-bedbug-8cc.notion.site/Deviasi-Hacktrace-Ranges-2a0416e03a1380babf06e961fa506f1a",
         },
         {
-          title: "SOC Analysis: APT Campaign Detection",
+          title: "CTF Machine Undercover",
           image:
-            "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400",
-          desc: "Analyzing logs and artifacts to track advanced persistent threat activities",
-          url: "#",
+            "img/undercover.png",
+          desc: "Binary Investigation to track advanced persistent threat activities",
+          url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543",
         },
         {
           title: "Incident Response: Malware Analysis",
@@ -147,28 +147,7 @@ const portfolioData = {
             "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400",
           desc: "Reverse engineering malware samples to understand attack vectors and TTPs",
           url: "#",
-        },
-        {
-          title: "Threat Hunting: Anomaly Detection",
-          image:
-            "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400",
-          desc: "Proactive hunting for indicators of compromise in enterprise environments",
-          url: "#",
-        },
-        {
-          title: "Digital Forensics: Evidence Recovery",
-          image:
-            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400",
-          desc: "Forensic analysis of compromised systems and data recovery techniques",
-          url: "#",
-        },
-        {
-          title: "SIEM Configuration: Alert Tuning",
-          image:
-            "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400",
-          desc: "Optimizing SIEM rules and reducing false positives in security monitoring",
-          url: "#",
-        },
+        }
       ],
     },
     projects: {
@@ -185,7 +164,7 @@ const portfolioData = {
         },
         {
           title: "From Zero to SOC Hero: Building My First SIEM Lab",
-          image: "img/SIEM.png",
+          image: "img/SIEM.jpg",
           desc: "The first blue teaming project focused on building a functional SIEM environment using Splunk Free Edition.",
           tech: ["Splunk", "Ubuntu Server", "Windows 10", "Sysmon", "Dashboard Monitoring", "SPL"],
           url: "https://nickel-bedbug-8cc.notion.site/From-Zero-to-SOC-Hero-Building-My-First-SIEM-Lab-27d416e03a1380ba9aded15f489ca23b"
