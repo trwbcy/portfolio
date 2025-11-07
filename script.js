@@ -142,10 +142,10 @@ const portfolioData = {
           url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543",
         },
         {
-          title: "Incident Response: Malware Analysis",
+          title: "CTF Machine BluuShell",
           image:
-            "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400",
-          desc: "Reverse engineering malware samples to understand attack vectors and TTPs",
+            "img/BluuShell.jpg",
+          desc: "Forensic breakdown of a malicious Word (DOCX) and artifact extraction to revealing C2 indicators.",
           url: "#",
         }
       ],
@@ -155,6 +155,14 @@ const portfolioData = {
       description:
         "Blue team tools and systems I've built for threat detection, monitoring, and incident response.",
       items: [
+                {
+          title: "SOC Confessions",
+          image:
+            "img/SOC_Confessions.png",
+          desc: "A surreal portrayal of life inside the Security Operations Center, 'SOC Confessions' uncovers the unseen emotions behind blue team vigilance.",
+          tech: ["Blue Team", "Threat Monitoring", "Incident Response", "SOC Workflow", "Storytelling", "Cyber Narrative"],
+          url: "#",
+        },
         {
           title: "Building EDR Detection Lab with Wazuh: From Detection to Response",
           image:"img/EDR.png",
@@ -168,15 +176,7 @@ const portfolioData = {
           desc: "The first blue teaming project focused on building a functional SIEM environment using Splunk Free Edition.",
           tech: ["Splunk", "Ubuntu Server", "Windows 10", "Sysmon", "Dashboard Monitoring", "SPL"],
           url: "https://nickel-bedbug-8cc.notion.site/From-Zero-to-SOC-Hero-Building-My-First-SIEM-Lab-27d416e03a1380ba9aded15f489ca23b"
-        },
-        {
-          title: "SecureShield: Endpoint Detection Response",
-          image:
-            "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400",
-          desc: "Custom EDR solution with behavioral analysis and automated response capabilities.",
-          tech: ["C++", "Windows API", "Behavioral Analysis", "EDR"],
-          url: "#",
-        },
+        }
       ],
     },
   },
