@@ -146,7 +146,7 @@ const portfolioData = {
           image:
             "img/BluuShell.jpg",
           desc: "Forensic breakdown of a malicious Word (DOCX) and artifact extraction to revealing C2 indicators.",
-          url: "#",
+          url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0",
         }
       ],
     },
