@@ -147,8 +147,15 @@ const portfolioData = {
             "img/BluuShell.jpg",
           desc: "Forensic breakdown of a malicious Word (DOCX) and artifact extraction to revealing C2 indicators.",
           url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0",
+        },
+        {
+          title: "CTF Machine Vigil",
+          image:
+            "img/vigil.png",
+          desc: "Investigated a phishing email with malicious PDF attachment. Performed email forensics, malware analysis, and threat intelligence mapping using MITRE ATT&CK framework.",
+          url: "https://nickel-bedbug-8cc.notion.site/Vigil-Hacktrace-Ranges-2a7416e03a1380608f90dc3d1c968d0a",
         }
-      ],
+      ]
     },
     projects: {
       title: "DEFENSIVE SECURITY PROJECTS",
