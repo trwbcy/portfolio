@@ -154,6 +154,13 @@ const portfolioData = {
             "img/vigil.png",
           desc: "Investigated a phishing email with malicious PDF attachment. Performed email forensics, malware analysis, and threat intelligence mapping using MITRE ATT&CK framework.",
           url: "https://nickel-bedbug-8cc.notion.site/Vigil-Hacktrace-Ranges-2a7416e03a1380608f90dc3d1c968d0a",
+        },
+        {
+          title: "CTF Machine Actry",
+          image:
+            "img/Actry.png",
+          desc: "A concise network-forensics analysis of the Actry machine, uncovering brute-force activity, targeted services, and a full attack timeline leading to privilege escalation.",
+          url: "https://nickel-bedbug-8cc.notion.site/Actry-Hacktrace-Ranges-2ab416e03a1380eea7e2c575be751af4",
         }
       ]
     },
