@@ -161,6 +161,13 @@ const portfolioData = {
             "img/Actry.png",
           desc: "A concise network-forensics analysis of the Actry machine, uncovering brute-force activity, targeted services, and a full attack timeline leading to privilege escalation.",
           url: "https://nickel-bedbug-8cc.notion.site/Actry-Hacktrace-Ranges-2ab416e03a1380eea7e2c575be751af4",
+        },
+        {
+          title: "CTF Machine PhishHunt",
+          image:
+            "img/PhisHunt.png",
+          desc: "Email forensics challenge focusing on phishing analysis, header investigation, and malware extraction to identify a Trojan disguised as a financial document.",
+          url: "https://nickel-bedbug-8cc.notion.site/PhishHunt-Hacktrace-Ranges-2ab416e03a1380a8823dd96948d18587",
         }
       ]
     },
