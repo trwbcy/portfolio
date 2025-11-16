@@ -168,6 +168,13 @@ const portfolioData = {
             "img/PhisHunt.png",
           desc: "Email forensics challenge focusing on phishing analysis, header investigation, and malware extraction to identify a Trojan disguised as a financial document.",
           url: "https://nickel-bedbug-8cc.notion.site/PhishHunt-Hacktrace-Ranges-2ab416e03a1380a8823dd96948d18587",
+        },
+        {
+          title: "CTF Machine Unlucky",
+          image:
+            "img/unlucky.png",
+          desc: "Analyzed Excel malware exploiting CVE-2017-11882. Extracted shellcode, identified LokiBot payload, and traced C2 servers via sandbox analysis.",
+          url: "https://nickel-bedbug-8cc.notion.site/Unlucky-Hacktrace-Ranges-2ad416e03a13804f9869e0a43a83d82f",
         }
       ]
     },
