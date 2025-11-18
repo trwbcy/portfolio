@@ -189,6 +189,13 @@ const portfolioData = {
             "img/LogBreaker.png",
           desc: "Investigate a compromised web server through log analysis to uncover attack patterns, identify tools used, and trace the complete exploitation timeline.",
           url: "https://nickel-bedbug-8cc.notion.site/LogBreaker-Hacktrace-Ranges-2af416e03a13805791b8df781eea969e",
+        },
+        {
+          title: "CTF Machine PcapProbe",
+          image:
+            "img/PcapProbe.jpg",
+          desc: "Analyze network traffic to uncover SQL injection attacks, identify exploitation tools, decode malicious payloads, and discover backdoor uploads.",
+          url: "https://nickel-bedbug-8cc.notion.site/PcapProbe-Hacktrace-Ranges-2af416e03a1380099b84c435321ca93c",
         }
       ]
     },
