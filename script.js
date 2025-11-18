@@ -175,6 +175,20 @@ const portfolioData = {
             "img/unlucky.png",
           desc: "Analyzed Excel malware exploiting CVE-2017-11882. Extracted shellcode, identified LokiBot payload, and traced C2 servers via sandbox analysis.",
           url: "https://nickel-bedbug-8cc.notion.site/Unlucky-Hacktrace-Ranges-2ad416e03a13804f9869e0a43a83d82f",
+        },
+        {
+          title: "CTF Machine NowYouSeeMe",
+          image:
+            "img/NowYouSeeMe.png",
+          desc: "Email forensic challenge analyzing .eml attachment containing malicious .hta file, revealing phishing intent, payload execution traces, and hidden flag details.",
+          url: "https://nickel-bedbug-8cc.notion.site/NowYouSeeMe-Hacktrace-Ranges-2ae416e03a1380348bd4c349333f4992",
+        },
+        {
+          title: "CTF Machine LogBreaker",
+          image:
+            "img/LogBreaker.png",
+          desc: "Investigate a compromised web server through log analysis to uncover attack patterns, identify tools used, and trace the complete exploitation timeline.",
+          url: "https://nickel-bedbug-8cc.notion.site/LogBreaker-Hacktrace-Ranges-2af416e03a13805791b8df781eea969e",
         }
       ]
     },
