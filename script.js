@@ -196,6 +196,13 @@ const portfolioData = {
             "img/PcapProbe.jpg",
           desc: "Analyze network traffic to uncover SQL injection attacks, identify exploitation tools, decode malicious payloads, and discover backdoor uploads.",
           url: "https://nickel-bedbug-8cc.notion.site/PcapProbe-Hacktrace-Ranges-2af416e03a1380099b84c435321ca93c",
+        },
+        {
+          title: "CTF Machine Temptandum",
+          image:
+            "img/Temptandum.png",
+          desc: "Forensic network analysis of an infostealer data breach. Analyze FTP traffic to uncover stolen credentials and identify exfiltration tactics.",
+          url: "https://nickel-bedbug-8cc.notion.site/Temptandum-Hacktrace-Ranges-2be416e03a1380ab9801efa7208c6b3c",
         }
       ]
     },
