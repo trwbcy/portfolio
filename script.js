@@ -203,6 +203,13 @@ const portfolioData = {
             "img/Temptandum.png",
           desc: "Forensic network analysis of an infostealer data breach. Analyze FTP traffic to uncover stolen credentials and identify exfiltration tactics.",
           url: "https://nickel-bedbug-8cc.notion.site/Temptandum-Hacktrace-Ranges-2be416e03a1380ab9801efa7208c6b3c",
+        },
+        {
+          title: "CTF Machine Misconf",
+          image:
+            "img/Misconf.png",
+          desc: "Forensics challenge analyzing network traffic and system logs to reconstruct a multi-stage attack with SSH reconnaissance, Git exposure, and privilege escalation.",
+          url: "https://nickel-bedbug-8cc.notion.site/Misconf-Hacktrace-Ranges-2cd416e03a138083a4e4deb69831f362",
         }
       ]
     },
