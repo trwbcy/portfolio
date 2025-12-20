@@ -210,6 +210,13 @@ const portfolioData = {
             "img/Misconf.png",
           desc: "Forensics challenge analyzing network traffic and system logs to reconstruct a multi-stage attack with SSH reconnaissance, Git exposure, and privilege escalation.",
           url: "https://nickel-bedbug-8cc.notion.site/Misconf-Hacktrace-Ranges-2cd416e03a138083a4e4deb69831f362",
+        },
+        {
+          title: "CTF Machine Remembrance",
+          image:
+            "img/Remembrance.png",
+          desc: "Memory forensics challenge analyzing Windows RAM dump to identify malware, extract credentials, and reconstruct the complete incident timeline.",
+          url: "https://nickel-bedbug-8cc.notion.site/Remembrance-Hacktrace-Ranges-2cf416e03a13800da0bbe5580bc5bcb6",
         }
       ]
     },
