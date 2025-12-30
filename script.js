@@ -274,56 +274,62 @@ const portfolioData = {
   certifications: [
     {
       year: "2025",
-      title: "AWS Certified Cloud Practitioner",
-      desc: "Belajar konsep cloud dari nol sambil mendalami security best practice AWS.",
-      status: "(In Progress)",
+      title: "Certified Network Security Practicioner",
+      desc: "Developed a deep understanding of network security through more than 15 structured modules and graduated with merit.",
+      verifyUrl: "https://drive.google.com/file/d/1n3vkEEz4tGQjkw7M0-AJ-gqs6zbWM8jx/view?",
+    },
+    {
+      year: "2025",
+      title: "Advent of Cyber",
+      desc: "Completed 24 hands-on challenges on TryHackMe, covering SOC operations, pentesting, malware analysis, and related domains.",
+      verifyUrl: "https://drive.google.com/file/d/14oS0UMAs2i_Tpg1qxue56YKdQgNQV7ED/view",
     },
     {
       year: "2025",
       title: "Certified API Security Practitioner",
-      desc: "Memahami OWASP API Security Top 10 secara mendalam dan menguasai API pentesting tools.",
+      desc: "Gained in-depth knowledge of the OWASP API Security Top 10 and hands-on experience with API pentesting tools.",
       verifyUrl:
         "https://drive.google.com/file/d/1CRK94BK63ABk-ajIGjfTTr02uAQHlVX0/view",
     },
     {
       year: "2025",
       title: "Red Team Internship Certification",
-      desc: "Menjalani simulasi serangan penuh sambil menulis laporan teknis yang bisa dimengerti non-teknis.",
+      desc: "Conducted full attack simulations and produced technical reports tailored for both technical and non-technical audiences.",
       verifyUrl:
         "https://drive.google.com/file/d/1niU5gbyWGn9RKDlraltHsQJB2qQcSuJt/view",
     },
     {
       year: "2024",
       title: "Practical Ethical Hacking",
-      desc: "Menggabungkan pengetahuan CTF dengan skenario nyata, dari recon sampai exploit dan report.",
+      desc: "Bridged CTF knowledge with real-world scenarios, covering reconnaissance, exploitation, and professional reporting.",
       verifyUrl:
         "https://drive.google.com/file/d/1RlF6sWO6n0KrmY_BC-iOStDghOD3elSQ/view",
     },
     {
       year: "2024",
       title: "Practical Web Application and Testing",
-      desc: "Menguasai berbagai teknik web pentest, termasuk bypass auth dan exploit logic flaw.",
+      desc: "Mastered diverse web pentesting techniques, including authentication bypasses and business logic exploitation.",
       verifyUrl:
         "https://drive.google.com/file/d/1jd3WiqBs_8ZlITE3XoE-h6NCZ5X1Ywks/view",
     },
     {
       year: "2024",
       title: "Practical Web Hacking",
-      desc: "Latihan intensif eksploitasi web seperti SQLi, XSS, CSRF, dan SSRF di lab realistis.",
+      desc: "Intensive hands-on training in web exploitation techniques such as SQLi, XSS, CSRF, and SSRF in realistic lab environments.",
       verifyUrl:
         "https://drive.google.com/file/d/1mYYeCWeE8bAZDGc9m6f2L1qKh1MA40up/view",
     },
     {
       year: "2023",
       title: "Advent of Cyber",
-      desc: "Menyelesaikan challenge harian yang menuntut kemampuan multi-domain: OSINT, crypto, exploitation.",
+      desc: "Completed daily challenges requiring multi-domain skills including OSINT, cryptography, and exploitation.",
       verifyUrl:
         "https://drive.google.com/file/d/1kWtmymgK864zAoBswX9tGLuLlGp1yGU6/view",
     },
     {
       year: "2023",
       title: "IT Support Google",
-      desc: "Menyesuaikan mindset dari troubleshooting umum menjadi pendekatan terstruktur berbasis ITIL dan best practices.",
+      desc: "Shifted from general troubleshooting to a structured, ITIL-based approach aligned with industry best practices.",
       verifyUrl:
         "https://drive.google.com/file/d/1RB5ehE_-DovC1sgoII2FhV55qoF9Zdgr/view",
     },
