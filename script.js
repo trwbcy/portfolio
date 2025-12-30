@@ -217,7 +217,28 @@ const portfolioData = {
             "img/Remembrance.png",
           desc: "Memory forensics challenge analyzing Windows RAM dump to identify malware, extract credentials, and reconstruct the complete incident timeline.",
           url: "https://nickel-bedbug-8cc.notion.site/Remembrance-Hacktrace-Ranges-2cf416e03a13800da0bbe5580bc5bcb6",
-        }
+        },
+        {
+          title: "CTF Machine Uncut",
+          image:
+            "img/Uncut.png",
+          desc: "Malware analysis challenge: identify AgentTesla infostealer through VirusTotal forensics, CVE mapping, and MITRE ATT&CK technique classification from suspicious RTF document.",
+          url: "https://nickel-bedbug-8cc.notion.site/Uncut-Hacktrace-Ranges-2cf416e03a1380f18348c766b1242559",
+        },
+        {
+          title: "CTF Machine IntrudeX",
+          image:
+            "img/IntrudeX.png",
+          desc: "Network forensics challenge analyzing FTP exploitation, credential extraction, and malicious file uploads through PCAP analysis with Wireshark.",
+          url: "https://nickel-bedbug-8cc.notion.site/IntrudeX-Hacktrace-Ranges-2d8416e03a13806d909de39cafc43993",
+        },
+        {
+          title: "CTF Machine Argus",
+          image:
+            "img/Argus.png",
+          desc: "Investigate malicious network traffic to uncover infection chains, exploit kits, payload delivery, and command-and-control activity from a compromised internal host.",
+          url: "https://nickel-bedbug-8cc.notion.site/Argus-Hacktrace-Ranges-2d8416e03a1380659811c01a0f7e4fe8",
+        },
       ]
     },
     projects: {
