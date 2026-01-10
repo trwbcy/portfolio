@@ -239,6 +239,13 @@ const portfolioData = {
           desc: "Investigate malicious network traffic to uncover infection chains, exploit kits, payload delivery, and command-and-control activity from a compromised internal host.",
           url: "https://nickel-bedbug-8cc.notion.site/Argus-Hacktrace-Ranges-2d8416e03a1380659811c01a0f7e4fe8",
         },
+        {
+          title: "CTF Machine SuperWhale",
+          image:
+            "img/SuperWhale.png",
+          desc: "A forensic-focused CTF investigating exposed Docker services, vulnerable Flask applications, container abuse, and attacker activity reconstruction from real artifacts.",
+          url: "https://nickel-bedbug-8cc.notion.site/Superwhale-Hacktrace-Ranges-2e2416e03a13803d8e09fc008db0ce5f",
+        },
       ]
     },
     projects: {
