@@ -246,6 +246,20 @@ const portfolioData = {
           desc: "A forensic-focused CTF investigating exposed Docker services, vulnerable Flask applications, container abuse, and attacker activity reconstruction from real artifacts.",
           url: "https://nickel-bedbug-8cc.notion.site/Superwhale-Hacktrace-Ranges-2e2416e03a13803d8e09fc008db0ce5f",
         },
+        {
+          title: "CTF Machine Deimos",
+          image:
+            "img/Deimos.jpeg",
+          desc: "Network forensics challenge analyzing malware infection chain through PCAP analysis, C2 communication tracking, and static malware analysis to reconstruct the complete attack timeline.",
+          url: "https://nickel-bedbug-8cc.notion.site/Deimos-Hacktrace-Ranges-2e7416e03a1380cc9248e5b7179215b9",
+        },
+        {
+          title: "CTF Machine Immortal",
+          image:
+            "img/Immortal.jpeg",
+          desc: "Disk forensics challenge involving USB drive analysis, VeraCrypt container decryption, and cryptocurrency wallet recovery using BIP39 seed phrase reconstruction techniques.",
+          url: "https://nickel-bedbug-8cc.notion.site/Immortal-Hacktrace-Ranges-2e7416e03a1380e8946adf53073f10cf",
+        },
       ]
     },
     projects: {
