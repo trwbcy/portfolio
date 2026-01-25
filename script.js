@@ -55,6 +55,13 @@ const portfolioData = {
         "Red team tools and frameworks I've developed for penetration testing and security research.",
       items: [
         {
+            title: "SandTrap: Breaking Virtual Boundaries",
+            image: "img/SandTrap.png",
+            desc: "Offensive security toolkit leveraging hardware fingerprinting and timing attacks to identify and bypass virtual machine sandbox environments.",
+            tech: ["C++", "Sandbox Evasion", "Windows Internals", "Red Team"],
+            url: "https://nickel-bedbug-8cc.notion.site/SandTrap-Breaking-Virtual-Boundaries-2f2416e03a13802bba9aebc2cace4536"
+        },
+        {
             title: "ShadowShell: Advanced ETW Evasion Framework ",
             image: "img/cctv.png",
             desc: "ShadowShell is a comprehensive framework designed to evade the Windows Event Tracing (ETW) logging system during red team operations.",
