@@ -274,6 +274,13 @@ const portfolioData = {
           desc: "Forensic analysis of Agent Tesla phishing campaign revealing email spoofing, malware persistence mechanisms, and complete attack chain reconstruction.",
           url: "https://nickel-bedbug-8cc.notion.site/Inscept-Hacktrace-Ranges-304416e03a1380ee89b7c72c4914e891",
         },
+        {
+          title: "CTF Machine Credsnoop",
+          image:
+            "img/Credsnoop.png",
+          desc: "Forensics challenge analyzing PCAP and Windows Event Logs to reconstruct an attack chain involving Nmap reconnaissance, SMB exploitation, RDP access, and WinPEAS post-exploitation enumeration.",
+          url: "https://nickel-bedbug-8cc.notion.site/Credsnoop-Hacktrace-Ranges-300416e03a1380d6ac3dde6e3a934858",
+        },
       ]
     },
     projects: {
