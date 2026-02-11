@@ -267,6 +267,13 @@ const portfolioData = {
           desc: "Disk forensics challenge involving USB drive analysis, VeraCrypt container decryption, and cryptocurrency wallet recovery using BIP39 seed phrase reconstruction techniques.",
           url: "https://nickel-bedbug-8cc.notion.site/Immortal-Hacktrace-Ranges-2e7416e03a1380e8946adf53073f10cf",
         },
+        {
+          title: "CTF Machine Inscept",
+          image:
+            "img/Inscept.png",
+          desc: "Forensic analysis of Agent Tesla phishing campaign revealing email spoofing, malware persistence mechanisms, and complete attack chain reconstruction.",
+          url: "https://nickel-bedbug-8cc.notion.site/Inscept-Hacktrace-Ranges-304416e03a1380ee89b7c72c4914e891",
+        },
       ]
     },
     projects: {
