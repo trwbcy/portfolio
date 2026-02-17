@@ -1,164 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🛡 CYBERTREE | TRWBCY</title>
-  <link rel="stylesheet" href="./style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRWBCY | Security Operator</title>
+    <meta name="description" content="Tri Wibowo Cahyo - Purple Team Security Specialist. Top 5 Indonesia.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Loading Screen -->
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-  </div>
-  <div class="theme-transition-overlay"></div>
 
-  <!-- Background Effects -->
-  <div class="bg-effects">
-    <canvas id="matrix-canvas"></canvas>
-  </div>
+    <!-- ANIMATED BACKGROUND -->
+    <canvas id="networkCanvas"></canvas>
 
-  <!-- Navigation -->
-  <nav>
-    <div class="logo">
-        CYBERTREE | <span class="accent">TRWBCY</span>
-    </div>
-    <div class="nav-center" id="navCenter">
-      <a href="#" data-page="ctf" id="ctfLink">Red Team CTFs</a>
-      <a href="#" data-page="projects" id="projectsLink">Projects</a>
-      <a href="#" data-page="certification">Certifications</a>
-    </div>
-    <div class="nav-right">
-      <div class="theme-toggle">
-        <span class="theme-label" id="themeLabel">Red Team</span>
-        <label class="toggle-switch">
-          <input type="checkbox" id="themeToggle" />
-          <span class="slider"></span>
-        </label>
-      </div>
-      <a href="#" class="download-btn" id="downloadBtn">Download Resume</a>
-      <div class="mobile-menu" id="mobileMenu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <main class="main-container">
-    <!-- HOME PAGE -->
-    <section class="page-section active" id="home">
-      <!-- Hero -->
-    <div class="hero">
-    <div class="hero-content">
-        <!-- Profile Photo with Hexagon Frame -->
-        <div class="profile-photo">
-        <div class="hexagon-frame">
-            <div class="hexagon-border"></div> 
-            <img src="./img/tri.jpg" alt="Profile Photo" id="profileImage" />
-        </div>
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <!-- Logo Kiri (Absolute) -->
+        <div class="nav-logo">
+            <a href="#home">root@trwbcy:~#</a>
         </div>
         
-        <!-- Name and Text -->
-        <div class="hero-text">
-        <h1 class="glitch" data-text="TRI WIBOWO CAHYO">TRI WIBOWO CAHYO</h1>
-        <div class="typed-container">
-            <span class="typed"></span>
+        <!-- Menu Tengah (Normal Flow) -->
+        <div class="nav-menu" id="navMenu">
+            <a href="#stats">./stats</a>
+            <a href="#career">./career</a>
+            <a href="#projects">./projects</a>
+            <a href="#certs">./certs</a>
+            <a href="#ctf">./exploits</a>
         </div>
-        <p class="quote-text">"quote that haunts me: the only real IQ test is do you get what you want out of life"</p>
+
+        <!-- Tombol Kanan (Absolute Pojok) -->
+        <div class="nav-actions">
+            <div class="theme-switch">
+                <input type="checkbox" id="slider" onchange="toggleTheme()">
+                <label for="slider" class="icons"></label>
+            </div>
         </div>
+
+        <!-- Hamburger Mobile -->
+        <div class="nav-toggle" id="navToggle">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <a href="#stats">./stats</a>
+        <a href="#career">./career</a>
+        <a href="#projects">./projects</a>
+        <a href="#certs">./certs</a>
+        <a href="#ctf">./exploits</a>
     </div>
-    <div class="scroll-arrow" data-target="about"></div>
-    </div>
 
-      <!-- About -->
-      <div class="content-section" id="about">
-        <h2 id="aboutTitle">WHAT I'M ABOUT</h2>
-        <div id="aboutContent">
-          <p>I approach offensive security with curiosity and patience — building and testing tools, running experiments in my own lab, and learning from every result. I focus on uncovering vulnerabilities through methodical exploration, then turning those insights into practical improvements.</p>
-          <br />
-          <p><i>I don't aim to break for the sake of breaking, I aim to understand so we can build stronger.</i></p>
+    <!-- HERO SECTION -->
+    <header id="home" class="hero">
+        <div class="hero-bg">
+            <div class="vignette"></div>
         </div>
-        <div class="scroll-arrow" data-target="experience">▼</div>
-      </div>
+        <div class="hero-content">
+            <div class="intro-tag"><span class="bracket">[</span> SYSTEM INITIALIZED <span class="bracket">]</span></div>
+            <h1>TRI WIBOWO <span class="highlight">CAHYO</span></h1>
+            <div class="typed-text">
+                <span id="typed-role"></span><span class="cursor">_</span>
+            </div>
+            <p class="hero-desc">
+                Purple Team Practitioner. Breaking systems to defend them better.
+                <br>Ranked <strong>Top 5 Indonesia</strong> in Major CTF Platforms.
+            </p>
+            <div class="hero-actions">
+                <a href="#projects" class="btn-exec">Execute Projects</a>
+                <a href="https://docs.google.com/document/d/1CKDGh19Gfq2fTi2dRniVygrTHsCAn6gN" target="_blank" class="btn-ghost">Download Resume</a>
+            </div>
+        </div>
+    </header>
 
-      <!-- Experience -->
-      <div class="content-section" id="experience">
-        <h2 id="experienceTitle">WORK EXPERIENCE</h2>
-        <div class="experience-item" id="experienceContent">
-          <h3>L2 Support Developer — PT Solusi247</h3>
-          <ul>
-            <li>Diagnosed, troubleshot, and resolved AI/ML application issues with precision and speed.</li>
-            <li>Solved complex tickets using <strong>SQL</strong>, <strong>Bash</strong>, and <strong>Python</strong>, ensuring SLA compliance.</li>
-            <li>Collaborated with engineering teams for <strong>Root Cause Analysis (RCA)</strong> on escalated issues.</li>
-            <li>Managed high-volume support requests, prioritized critical tasks, and maintained clear communication with stakeholders.</li>
-            <li>Improved incident workflows and trained L1 teams to boost resolution efficiency.</li>
-          </ul>
+    <!-- SYSTEM STATS -->
+    <section id="stats" class="container">
+        <div class="section-title"><span class="hash">#</span> SYSTEM_STATUS</div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-label">TRYHACKME_RANK</div>
+                <div class="stat-val">#4<span class="unit">ID</span></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">HACKTRACE_DEFENSE</div>
+                <div class="stat-val">#5<span class="unit">ID</span></div>
+            </div>
+            <div class="stat-box accent">
+                <div class="stat-label">CVE_REPRODUCED</div>
+                <div class="stat-val">9.8<span class="unit">CRITICAL</span></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">SOC_EVENTS</div>
+                <div class="stat-val">10K+<span class="unit">DAILY</span></div>
+            </div>
         </div>
-        <div class="scroll-arrow" data-target="contact">▼</div>
-      </div>
-
-      <!-- Contact -->
-      <div class="content-section" id="contact">
-        <h2>Get In Touch</h2>
-        <p id="contactDescription">Interested in collaborating or discussing cybersecurity? Let's connect!</p>
-        <div class="contact-grid">
-          <a href="mailto:twibowo288@gmail.com" class="contact-btn email"> twibowo288@gmail.com </a>
-          <a href="https://www.linkedin.com/in/tri-wibowo-cahyo/" target="_blank" class="contact-btn linkedin"> Connect on LinkedIn </a>
-          <a href="https://tryhackme.com/p/trwbcy" target="_blank" class="contact-btn tryhackme"> View My TryHackMe </a>
-        </div>
-        <div class="back-to-top" id="backToTop"></div>
-      </div>
     </section>
 
-    <!-- CTF WRITEUPS PAGE -->
-    <section class="page-section" id="ctf">
-      <div class="page-header">
-        <h2 id="ctfTitle">CTF WRITE-UPS</h2>
-        <p id="ctfDescription">Browse my collection of CTF writeups. Click on any machine to read the full writeup on Notion.</p>
-      </div>
-      <div class="grid ctf-grid" id="ctfGrid">
-        <!-- CTF cards will be loaded by JavaScript -->
-      </div>
-    </section>
-
-    <!-- PROJECTS PAGE -->
-    <section class="page-section" id="projects">
-      <div class="page-header">
-        <h2 id="projectsTitle">PROJECTS</h2>
-        <p id="projectsDescription">Cybersecurity projects I've developed.</p>
-      </div>
-      <div class="grid projects-grid" id="projectsGrid">
-        <!-- Project cards will be loaded by JavaScript -->
-      </div>
-    </section>
-
-    <!-- CERTIFICATIONS PAGE -->
-    <section class="page-section" id="certification">
-      <div class="page-header">
-        <h2>CERTIFICATIONS</h2>
-        <p>My cybersecurity certification journey and the challenges I overcame along the way.</p>
-      </div>
-      <div class="timeline" id="timeline">
-        <!-- Timeline items will be loaded by JavaScript -->
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-    <footer>
-    <div class="footer-content">
-        <a href="#hero" class="logo">
-        <span>CYBERTREE | </span><span class="accent">TRWBCY</span>
-        </a>
-        <div class="footer-copyright">
-        cybertree © 2025
+    <!-- CAREER LOG -->
+    <section id="career" class="container">
+        <div class="section-title"><span class="hash">#</span> CAREER_LOG</div>
+        <div class="timeline">
+            <!-- Job 1 -->
+            <div class="log-entry current">
+                <div class="log-time">2025-PRESENT</div>
+                <div class="log-content">
+                    <div class="job-header">
+                        <span class="role">Security Analyst</span>
+                        <span class="company">@ PT Mitra Pinasthika Mulia</span>
+                    </div>
+                    <div class="job-log-details">
+                        <p>[+] Monitor and analyze <strong>10,000+ daily security events</strong> using IBM QRadar SIEM with custom AQL query development, reducing false positives by <strong>40%</strong>.</p>
+                        <p>[+] Designed and implemented standardized incident summary documentation for TheHive SOAR, improving MTTR by <strong>25%</strong>.</p>
+                        <p>[+] Orchestrate automated incident response reducing manual intervention by <strong>60%</strong>.</p>
+                        <p>[+] Conduct proactive manual threat hunting identifying sophisticated attacks including malicious user agents, LOLBin abuse, and data exfiltration.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Job 2 -->
+            <div class="log-entry red">
+                <div class="log-time">2025</div>
+                <div class="log-content">
+                    <div class="job-header">
+                        <span class="role">Red Team Intern</span>
+                        <span class="company">@ Hack Secure</span>
+                    </div>
+                    <div class="job-log-details">
+                        <p>[!] Executed comprehensive penetration testing operations across <strong>15+ target systems</strong> using Nmap, Burp Suite, SQLMap, Metasploit.</p>
+                        <p>[!] Performed advanced adversary simulation exercises utilizing Metasploit, Empire, and Sliver C2 frameworks, successfully demonstrating <strong>8 full system compromises</strong>.</p>
+                        <p>[!] Delivered 10+ actionable security assessment reports documenting vulnerabilities, exploitation techniques, and CVSS scoring.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Job 3 -->
+            <div class="log-entry">
+                <div class="log-time">2023-2025</div>
+                <div class="log-content">
+                    <div class="job-header">
+                        <span class="role">L2 Support Engineer</span>
+                        <span class="company">@ PT Solusi247</span>
+                    </div>
+                    <div class="job-log-details">
+                        <p>[+] Delivered critical L2 technical support for AI/ML platforms (Apache Airflow, Cloudera, Hadoop ecosystem) using SQL, Bash, and Python.</p>
+                        <p>[+] Performed systematic root cause analysis across <strong>500+ monthly tickets</strong>.</p>
+                        <p>[+] Managed high-pressure incident escalations maintaining <strong>98% resolution rate</strong>.</p>
+                        <p>[+] Automated system troubleshooting workflows, reducing MTTR by <strong>35%</strong>.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- PROJECT MODULES -->
+    <section id="projects" class="container">
+        <div class="section-title"><span class="hash">#</span> PROJECT_MODULES</div>
+        <div class="filter-tabs">
+            <button class="tab active" onclick="filterProjects('all')">ALL</button>
+            <button class="tab" onclick="filterProjects('red')">OFFENSIVE</button>
+            <button class="tab" onclick="filterProjects('blue')">DEFENSIVE</button>
+        </div>
+        <div class="projects-grid" id="projectsGrid"></div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certs" class="container">
+        <div class="section-title"><span class="hash">#</span> CERTIFICATIONS_ACHIEVED</div>
+        <div class="certs-grid" id="certsGrid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- CTF / EXPLOITS -->
+    <section id="ctf" class="container">
+        <div class="section-title"><span class="hash">#</span> EXPLOIT_ARCHIVE</div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="grep [machine_name]..." onkeyup="searchCTF()">
+        </div>
+        <div class="ctf-grid" id="ctfGrid"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-text">Connection established. &copy; 2025 TRWBCY</div>
     </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <script src="./script.js" defer></script>
+    <script src="script.js"></script>
 </body>
 </html>

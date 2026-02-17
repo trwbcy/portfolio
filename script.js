@@ -1,835 +1,336 @@
-// === PORTFOLIO DATA ===
-const portfolioData = {
-  red: {
-    hero: {
-      about:
-        "I approach offensive security with curiosity and patience — building and testing tools, running experiments in my own lab, and learning from every result. I focus on uncovering vulnerabilities through methodical exploration, then turning those insights into practical improvements.",
-      subtitle:
-        "I don't aim to break for the sake of breaking, I aim to understand so we can build stronger.",
-      typedStrings: [
-        "Cyber Security Enthusiast",
-        "CTF Player",
-        "Innovative Problem Solver",
-        "Lifelong Learner",
-        "Clear Communicator",
-        "Pragmatic Pentester",
-        "SecOps Knight",
-        "TRWBCY"
-      ],
+// === DATA SOURCE ===
+const projectsData = [
+    { 
+        title: "CVE-2026-XXXX Reproduction: Firefox SpiderMonkey UAF", 
+        desc: "Successfully reproduced critical Use-After-Free vulnerability (CVSS 9.8) in WebAssembly GC. Developed custom exploitation chain achieving 100% detection rate without using the original researcher's method.", 
+        tags: ["Exploit Dev", "RCE", "Reproduction"], 
+        type: "red", 
+        url: "#" 
     },
-    ctf: {
-      title: "OFFENSIVE CTF WRITE-UPS",
-      description:
-        "Browse my collection of offensive security CTF writeups focused on exploitation and penetration testing.",
-      machines: [
-        { title: "CTF Machine Tartarus", image: "img/tartarus.png", desc: "Enumerate biography to creating dummy apk android to gain root access", url: "https://nickel-bedbug-8cc.notion.site/Tartarus-c50bfdc57e7d4cce8489d5fe989e4dc2" },
-        { title: "CTF Machine Exodus", image: "img/exodus.png", desc: "Practicing NFS Enumeration, Exploiting Webmin, Privesc through SUID Binary", url: "https://nickel-bedbug-8cc.notion.site/Exodus-100416e03a138073ba4cd8a5f721751f" },
-        { title: "CTF Machine Laboum", image: "img/laboum.png", desc: "CTF based on Drama-Film, OSINT at first Reverse Engineering at last", url: "https://nickel-bedbug-8cc.notion.site/Laboum-129416e03a1380bdbad4d3f15fb34af3" },
-        { title: "CTF Machine Autobot", image: "img/autobot.png", desc: "From creating encryption to SQL Injection Database", url: "https://nickel-bedbug-8cc.notion.site/Autobot-111416e03a13800ebe53de57e0e45947" },
-        { title: "CTF Machine Developed", image: "img/developed.png", desc: "Enumeration info.php leading to gain root access by cracking /etc/shadow hash", url: "https://nickel-bedbug-8cc.notion.site/Developed-479c658cb5154c8b856254c1be04df53" },
-        { title: "CTF Machine NebulaMQ", image: "img/nebula.png", desc: "Exploiting Apache ActiveMQ, Leaking sensitive file pwned root access", url: "https://nickel-bedbug-8cc.notion.site/NebulaMQ-912a195578dc4b498834b4e5129a9e06" },
-        { title: "CTF Machine CornFlix", image: "img/cornflix.png", desc: "SSRF-ing Parameter to open redirect URL, Leading to NTLM Spoofing", url: "https://nickel-bedbug-8cc.notion.site/CornFlix-724ee0c531aa4a96b68907276667abfb" },
-        { title: "CTF Machine Ares", image: "img/aries.webp", desc: "Exploited Mantis Bug Tracker to gain root on a Linux Machine", url: "https://nickel-bedbug-8cc.notion.site/Ares-121416e03a1380cd9977d8edbbbc4387" },
-        { title: "CTF Machine Toolbox", image: "img/toolbox.png", desc: "Bruteforcing Directory leading to git history and gaining access to root", url: "https://nickel-bedbug-8cc.notion.site/Toolbox-b68ce23a0ea74620bb35b3568b8381bd" },
-        { title: "CTF Machine Multishop", image: "img/multishopo.png", desc: "Injecting malicious command to gain access root", url: "https://nickel-bedbug-8cc.notion.site/Multishop-6c1a05a6222c4b30a09fb39e692f78b4" },
-        { title: "CTF Machine Ballpoint", image: "img/ballpoint.webp", desc: "Exploiting LeptonCMS to compromise full privilege windows access", url: "https://nickel-bedbug-8cc.notion.site/Ballpoint-dcd2095e6cb14cedb53676fd482ebf11" },
-        { title: "CTF Machine Syringe", image: "img/syringe.webp", desc: "Injecting CMD mini shell in PHPMyAdmin to gain remote access", url: "https://nickel-bedbug-8cc.notion.site/Syringe-6fa9bd8970cc4867a85f850f41c055ef" },
-        { title: "CTF Machine Bro", image: "img/bro.webp", desc: "Abusing SSTI Payload to gain access in Linux system", url: "https://nickel-bedbug-8cc.notion.site/Bro-657a1bca712048a681c9cca960c0a6b4" },
-        { title: "CTF Machine Telolet", image: "img/telolet.png", desc: "Enumerating TorrentPier lead into leaking sensitive information", url: "https://nickel-bedbug-8cc.notion.site/Telolet-5368deb4f4744eefa8a502ab7816faf7" },
-        { title: "CTF Machine Artemis", image: "img/artemis.webp", desc: "Enumerating Web to gain root access to Linux machine", url: "https://nickel-bedbug-8cc.notion.site/Artemis-c2b66778e56f4a2facb6db3e763e0f77" },
-        { title: "CTF Machine FOS", image: "img/FOS.png", desc: "Bruteforcing weak credentials leading to command injection", url: "https://nickel-bedbug-8cc.notion.site/FOS-112416e03a1380a083aef2624f4f9a5d" },
-        { title: "CTF Machine Guesser", image: "img/guesser.png", desc: "Exploiting RiteCMS to gain full privilege access to Linux machine", url: "https://nickel-bedbug-8cc.notion.site/Guesser-7f9d10c565034756ba7209478a746dc6" },
-        { title: "CTF Machine Doom", image: "img/doom.png", desc: "Enumerating Web to gain full privilege access to Linux Machine", url: "https://nickel-bedbug-8cc.notion.site/Doom-ff9747879d4f4b19a68ddc0fabb29dbc" },
-        { title: "CTF Machine Galz", image: "img/galz.png", desc: "Enumerating Web, Docker Breakout to gain full privilege access", url: "https://nickel-bedbug-8cc.notion.site/Galz-10a416e03a1380ecb522e65b4573dcd8" },
-        { title: "CTF Machine Terra", image: "img/terra.png", desc: "Creating database for remote access Adminer", url: "https://nickel-bedbug-8cc.notion.site/Terra-106416e03a13809790dac7e3c050c6bf" },
-        { title: "CTF Machine Traverse Mode", image: "img/traverse.png", desc: "Enumarating Web, Parameter injection to gain full access Linux Machine", url: "https://nickel-bedbug-8cc.notion.site/TraverseMode-99e7bf565d304c68a43f84ecefdb9f75" },
-        { title: "CTF Machine Navigate", image: "img/navigate.png", desc: "Exploiting NavigateCMS to gain root access in Linux Machine", url: "https://nickel-bedbug-8cc.notion.site/Navigate-f5678769d93c49589e207a84a72f6815" },
-        { title: "CTF Machine Atulieer", image: "img/atulieer.png", desc: "Modifying JasonWebTokens to gain root access in Linux Machine", url: "https://nickel-bedbug-8cc.notion.site/Atulieer-fdd3d8ac7a4f4ba4847550b8fdd46409" },
-        { title: "CTF Machine Zeus", image: "img/zeus.png", desc: "Enumerating SMB to gain access to Windows Machine", url: "https://nickel-bedbug-8cc.notion.site/Zeus-aa5bb955bf1e4271ab303cc428c49fad" },
-        { title: "CTF Machine Ariadne", image: "img/ariadne.png", desc: "Enumeration FTP to gain initial access & root to Linux Machine", url: "https://nickel-bedbug-8cc.notion.site/Ariadne-100416e03a1380969762d25c3cd1c9e5" }
-    ],
-    },
-    projects: {
-      title: "OFFENSIVE SECURITY PROJECTS",
-      description:
-        "Red team tools and frameworks I've developed for penetration testing and security research.",
-      items: [
-        {
-            title: "SandTrap: Breaking Virtual Boundaries",
-            image: "img/SandTrap.png",
-            desc: "Offensive security toolkit leveraging hardware fingerprinting and timing attacks to identify and bypass virtual machine sandbox environments.",
-            tech: ["C++", "Sandbox Evasion", "Windows Internals", "Red Team"],
-            url: "https://nickel-bedbug-8cc.notion.site/SandTrap-Breaking-Virtual-Boundaries-2f2416e03a13802bba9aebc2cace4536"
-        },
-        {
-            title: "ShadowShell: Advanced ETW Evasion Framework ",
-            image: "img/cctv.png",
-            desc: "ShadowShell is a comprehensive framework designed to evade the Windows Event Tracing (ETW) logging system during red team operations.",
-            tech: ["Powershell/C#", "ETW Evasion", "Windows", "Red Team", "Windows Internals"],
-            url: "https://nickel-bedbug-8cc.notion.site/ShadowShell-Advanced-ETW-Evasion-Framework-for-Red-Team-Operations-277416e03a13801b97c1ec43b2ac6c77"
-        },
-        {
-            title: "EnvGuard: Advanced Environment Assessment Framework",
-            image: "img/octopus.png",
-            desc: "Advanced environment assessment framework for red team operations. Implements 12 classification techniques to distinguish production environments from analysis systems.",
-            tech: ["C++", "Environment Assessment", "12 Advanced Techniques", "Sandbox", "Red Team", "Windows API"],
-            url: "https://nickel-bedbug-8cc.notion.site/EnvGuard-Advanced-Environment-Assessment-Framework-For-Red-Team-Operations-274416e03a1380b58fefde598b68c47b"
-        },
-        {
-            title: "GhostStager: Advanced C# Fileless Binary Loader",
-            image: "img/ghoststager.jpg",
-            desc: "Advanced C# fileless binary loader with AMSI/ETW bypass, reflective PE loading, and encrypted C2 communication for red team operations.",
-            tech: ["C#", "AMSI Bypass", "ETW Evasion", "Reflective Loading", "Red Team", "Sliver C2"],
-            url: "https://nickel-bedbug-8cc.notion.site/GhostStager-Advanced-C-Fileless-Binary-Loader-For-Red-Team-Operation-23b416e03a138025b44ff54e56424636"
-        },
-                {
-            title: "Astaroth-Style Red Team Campaign",
-            image: "img/astaroth.png",
-            desc: "Fileless attack simulation leveraging LOLBins such as mshta.exe, inspired by the Astaroth malware campaign.",
-            tech: ["LOLBins", "Red Team", "Fileless Attack", "Defender Evasion"],
-            url: "https://nickel-bedbug-8cc.notion.site/Astaroth-Style-Red-Team-Campaign-23a416e03a138092a3afec2952c813ad"
-        },
-        {
-            title: "Red Teaming 101: VBA Exploitation with Microsoft Word",
-            image: "img/vba.png",
-            desc: "Demonstration of VBA macro exploitation in Microsoft Word to obtain a reverse shell for red teaming simulation.",
-            tech: ["VBA", "Microsoft Word", "Reverse Shell", "Exploitation"],
-            url: "https://nickel-bedbug-8cc.notion.site/Red-Teaming-101-My-First-Dive-into-VBA-Exploitation-with-Microsoft-Word-1b9416e03a138087944af10d31b6830c"
-        },
-        {
-            title: "Internal Pentest: Active Directory Exploitation",
-            image: "img/AD.webp",
-            desc: "Hands-on internal penetration testing focused on identifying and exploiting vulnerabilities in Active Directory environments.",
-            tech: ["Active Directory", "Windows Server", "Kerberoasting", "Privilege Escalation"],
-            url: "https://nickel-bedbug-8cc.notion.site/Internal-Pentest-Active-Directory-Exploitation-and-Lesson-Learned-17a416e03a1380449524cf6cad46accb"
-        },
-        {
-            title: "From Blue to Blackpearl: Guided Exploitation Through 5 Machines",
-            image: "img/blue.webp",
-            desc: "Step-by-step exploitation journey across five machines, combining vulnerability analysis, exploitation, and mitigation strategies.",
-            tech: ["CTF", "Windows", "Linux", "Privilege Escalation"],
-            url: "https://nickel-bedbug-8cc.notion.site/From-Blue-to-Blackpearl-A-Guided-Exploitation-Through-5-Machines-17f416e03a1380558fb0dbf4285266f2"
-        }
-      ],
-    },
-  },
-  blue: {
-    hero: {
-      about:
-        "I approach defensive security with a proactive mindset — building detection systems, analyzing threat patterns, and strengthening organizational security posture. I focus on understanding attacker methodologies to build more effective defensive strategies.",
-      subtitle:
-        "Defense isn't just about blocking attacks, it's about understanding them to prevent future ones.",
-      typedStrings: [
-        "Blue Team Analyst",
-        "SOC Engineer",
-        "Threat Hunter",
-        "Security Architect",
-        "Incident Responder",
-        "Defense Specialist",
-        "TRWBCY",
-      ],
-    },
-    ctf: {
-      title: "DEFENSIVE CTF CHALLENGES",
-      description:
-        "Browse my collection of blue team CTF challenges focused on detection, analysis, and incident response.",
-      machines: [
-        {
-          title: "CTF Machine Deviasi",
-          image:
-            "img/deviasi.jpg",
-          desc: "Deep log analysis to identify malicious suspicous patterns and IOCs",
-          url: "https://nickel-bedbug-8cc.notion.site/Deviasi-Hacktrace-Ranges-2a0416e03a1380babf06e961fa506f1a",
-        },
-        {
-          title: "CTF Machine Undercover",
-          image:
-            "img/undercover.png",
-          desc: "Binary Investigation to track advanced persistent threat activities",
-          url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543",
-        },
-        {
-          title: "CTF Machine BluuShell",
-          image:
-            "img/BluuShell.jpg",
-          desc: "Forensic breakdown of a malicious Word (DOCX) and artifact extraction to revealing C2 indicators.",
-          url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0",
-        },
-        {
-          title: "CTF Machine Vigil",
-          image:
-            "img/vigil.png",
-          desc: "Investigated a phishing email with malicious PDF attachment. Performed email forensics, malware analysis, and threat intelligence mapping using MITRE ATT&CK framework.",
-          url: "https://nickel-bedbug-8cc.notion.site/Vigil-Hacktrace-Ranges-2a7416e03a1380608f90dc3d1c968d0a",
-        },
-        {
-          title: "CTF Machine Actry",
-          image:
-            "img/Actry.png",
-          desc: "A concise network-forensics analysis of the Actry machine, uncovering brute-force activity, targeted services, and a full attack timeline leading to privilege escalation.",
-          url: "https://nickel-bedbug-8cc.notion.site/Actry-Hacktrace-Ranges-2ab416e03a1380eea7e2c575be751af4",
-        },
-        {
-          title: "CTF Machine PhishHunt",
-          image:
-            "img/PhisHunt.png",
-          desc: "Email forensics challenge focusing on phishing analysis, header investigation, and malware extraction to identify a Trojan disguised as a financial document.",
-          url: "https://nickel-bedbug-8cc.notion.site/PhishHunt-Hacktrace-Ranges-2ab416e03a1380a8823dd96948d18587",
-        },
-        {
-          title: "CTF Machine Unlucky",
-          image:
-            "img/unlucky.png",
-          desc: "Analyzed Excel malware exploiting CVE-2017-11882. Extracted shellcode, identified LokiBot payload, and traced C2 servers via sandbox analysis.",
-          url: "https://nickel-bedbug-8cc.notion.site/Unlucky-Hacktrace-Ranges-2ad416e03a13804f9869e0a43a83d82f",
-        },
-        {
-          title: "CTF Machine NowYouSeeMe",
-          image:
-            "img/NowYouSeeMe.png",
-          desc: "Email forensic challenge analyzing .eml attachment containing malicious .hta file, revealing phishing intent, payload execution traces, and hidden flag details.",
-          url: "https://nickel-bedbug-8cc.notion.site/NowYouSeeMe-Hacktrace-Ranges-2ae416e03a1380348bd4c349333f4992",
-        },
-        {
-          title: "CTF Machine LogBreaker",
-          image:
-            "img/LogBreaker.png",
-          desc: "Investigate a compromised web server through log analysis to uncover attack patterns, identify tools used, and trace the complete exploitation timeline.",
-          url: "https://nickel-bedbug-8cc.notion.site/LogBreaker-Hacktrace-Ranges-2af416e03a13805791b8df781eea969e",
-        },
-        {
-          title: "CTF Machine PcapProbe",
-          image:
-            "img/PcapProbe.jpg",
-          desc: "Analyze network traffic to uncover SQL injection attacks, identify exploitation tools, decode malicious payloads, and discover backdoor uploads.",
-          url: "https://nickel-bedbug-8cc.notion.site/PcapProbe-Hacktrace-Ranges-2af416e03a1380099b84c435321ca93c",
-        },
-        {
-          title: "CTF Machine Temptandum",
-          image:
-            "img/Temptandum.png",
-          desc: "Forensic network analysis of an infostealer data breach. Analyze FTP traffic to uncover stolen credentials and identify exfiltration tactics.",
-          url: "https://nickel-bedbug-8cc.notion.site/Temptandum-Hacktrace-Ranges-2be416e03a1380ab9801efa7208c6b3c",
-        },
-        {
-          title: "CTF Machine Misconf",
-          image:
-            "img/Misconf.png",
-          desc: "Forensics challenge analyzing network traffic and system logs to reconstruct a multi-stage attack with SSH reconnaissance, Git exposure, and privilege escalation.",
-          url: "https://nickel-bedbug-8cc.notion.site/Misconf-Hacktrace-Ranges-2cd416e03a138083a4e4deb69831f362",
-        },
-        {
-          title: "CTF Machine Remembrance",
-          image:
-            "img/Remembrance.png",
-          desc: "Memory forensics challenge analyzing Windows RAM dump to identify malware, extract credentials, and reconstruct the complete incident timeline.",
-          url: "https://nickel-bedbug-8cc.notion.site/Remembrance-Hacktrace-Ranges-2cf416e03a13800da0bbe5580bc5bcb6",
-        },
-        {
-          title: "CTF Machine Uncut",
-          image:
-            "img/Uncut.png",
-          desc: "Malware analysis challenge: identify AgentTesla infostealer through VirusTotal forensics, CVE mapping, and MITRE ATT&CK technique classification from suspicious RTF document.",
-          url: "https://nickel-bedbug-8cc.notion.site/Uncut-Hacktrace-Ranges-2cf416e03a1380f18348c766b1242559",
-        },
-        {
-          title: "CTF Machine IntrudeX",
-          image:
-            "img/IntrudeX.png",
-          desc: "Network forensics challenge analyzing FTP exploitation, credential extraction, and malicious file uploads through PCAP analysis with Wireshark.",
-          url: "https://nickel-bedbug-8cc.notion.site/IntrudeX-Hacktrace-Ranges-2d8416e03a13806d909de39cafc43993",
-        },
-        {
-          title: "CTF Machine Argus",
-          image:
-            "img/Argus.png",
-          desc: "Investigate malicious network traffic to uncover infection chains, exploit kits, payload delivery, and command-and-control activity from a compromised internal host.",
-          url: "https://nickel-bedbug-8cc.notion.site/Argus-Hacktrace-Ranges-2d8416e03a1380659811c01a0f7e4fe8",
-        },
-        {
-          title: "CTF Machine SuperWhale",
-          image:
-            "img/SuperWhale.png",
-          desc: "A forensic-focused CTF investigating exposed Docker services, vulnerable Flask applications, container abuse, and attacker activity reconstruction from real artifacts.",
-          url: "https://nickel-bedbug-8cc.notion.site/Superwhale-Hacktrace-Ranges-2e2416e03a13803d8e09fc008db0ce5f",
-        },
-        {
-          title: "CTF Machine Deimos",
-          image:
-            "img/Deimos.jpeg",
-          desc: "Network forensics challenge analyzing malware infection chain through PCAP analysis, C2 communication tracking, and static malware analysis to reconstruct the complete attack timeline.",
-          url: "https://nickel-bedbug-8cc.notion.site/Deimos-Hacktrace-Ranges-2e7416e03a1380cc9248e5b7179215b9",
-        },
-        {
-          title: "CTF Machine Immortal",
-          image:
-            "img/Immortal.jpeg",
-          desc: "Disk forensics challenge involving USB drive analysis, VeraCrypt container decryption, and cryptocurrency wallet recovery using BIP39 seed phrase reconstruction techniques.",
-          url: "https://nickel-bedbug-8cc.notion.site/Immortal-Hacktrace-Ranges-2e7416e03a1380e8946adf53073f10cf",
-        },
-        {
-          title: "CTF Machine Inscept",
-          image:
-            "img/Inscept.png",
-          desc: "Forensic analysis of Agent Tesla phishing campaign revealing email spoofing, malware persistence mechanisms, and complete attack chain reconstruction.",
-          url: "https://nickel-bedbug-8cc.notion.site/Inscept-Hacktrace-Ranges-304416e03a1380ee89b7c72c4914e891",
-        },
-        {
-          title: "CTF Machine Credsnoop",
-          image:
-            "img/Credsnoop.png",
-          desc: "Forensics challenge analyzing PCAP and Windows Event Logs to reconstruct an attack chain involving Nmap reconnaissance, SMB exploitation, RDP access, and WinPEAS post-exploitation enumeration.",
-          url: "https://nickel-bedbug-8cc.notion.site/Credsnoop-Hacktrace-Ranges-300416e03a1380d6ac3dde6e3a934858",
-        },
-      ]
-    },
-    projects: {
-      title: "DEFENSIVE SECURITY PROJECTS",
-      description:
-        "Blue team tools and systems I've built for threat detection, monitoring, and incident response.",
-      items: [
-                {
-          title: "SOC Confessions",
-          image:
-            "img/SOC_Confessions.png",
-          desc: "A surreal portrayal of life inside the Security Operations Center, 'SOC Confessions' uncovers the unseen emotions behind blue team vigilance.",
-          tech: ["Blue Team", "Threat Monitoring", "Incident Response", "SOC Workflow", "Storytelling", "Cyber Narrative"],
-          url: "#",
-        },
-        {
-          title: "Building EDR Detection Lab with Wazuh: From Detection to Response",
-          image:"img/EDR.png",
-          desc: "blue teaming project focused on building an EDR environment using the open-source Wazuh",
-          tech: ["Wazuh", "Sysmon", "Windows Event Manager", "Simulation Attack", "MITRE ATT&CK", "SOC Analyst"],
-          url: "https://nickel-bedbug-8cc.notion.site/Building-EDR-Detection-Lab-with-Wazuh-From-Detection-to-Response-27f416e03a1380b9b318fb215aeca082",
-        },
-        {
-          title: "From Zero to SOC Hero: Building My First SIEM Lab",
-          image: "img/SIEM.jpg",
-          desc: "The first blue teaming project focused on building a functional SIEM environment using Splunk Free Edition.",
-          tech: ["Splunk", "Ubuntu Server", "Windows 10", "Sysmon", "Dashboard Monitoring", "SPL"],
-          url: "https://nickel-bedbug-8cc.notion.site/From-Zero-to-SOC-Hero-Building-My-First-SIEM-Lab-27d416e03a1380ba9aded15f489ca23b"
-        }
-      ],
-    },
-  },
-  certifications: [
-    {
-      year: "2025",
-      title: "Certified Network Security Practicioner",
-      desc: "Developed a deep understanding of network security through more than 15 structured modules and graduated with merit.",
-      verifyUrl: "https://drive.google.com/file/d/1n3vkEEz4tGQjkw7M0-AJ-gqs6zbWM8jx/view?",
-    },
-    {
-      year: "2025",
-      title: "Advent of Cyber",
-      desc: "Completed 24 hands-on challenges on TryHackMe, covering SOC operations, pentesting, malware analysis, and related domains.",
-      verifyUrl: "https://drive.google.com/file/d/14oS0UMAs2i_Tpg1qxue56YKdQgNQV7ED/view",
-    },
-    {
-      year: "2025",
-      title: "Certified API Security Practitioner",
-      desc: "Gained in-depth knowledge of the OWASP API Security Top 10 and hands-on experience with API pentesting tools.",
-      verifyUrl:
-        "https://drive.google.com/file/d/1CRK94BK63ABk-ajIGjfTTr02uAQHlVX0/view",
-    },
-    {
-      year: "2025",
-      title: "Red Team Internship Certification",
-      desc: "Conducted full attack simulations and produced technical reports tailored for both technical and non-technical audiences.",
-      verifyUrl:
-        "https://drive.google.com/file/d/1niU5gbyWGn9RKDlraltHsQJB2qQcSuJt/view",
-    },
-    {
-      year: "2024",
-      title: "Practical Ethical Hacking",
-      desc: "Bridged CTF knowledge with real-world scenarios, covering reconnaissance, exploitation, and professional reporting.",
-      verifyUrl:
-        "https://drive.google.com/file/d/1RlF6sWO6n0KrmY_BC-iOStDghOD3elSQ/view",
-    },
-    {
-      year: "2024",
-      title: "Practical Web Application and Testing",
-      desc: "Mastered diverse web pentesting techniques, including authentication bypasses and business logic exploitation.",
-      verifyUrl:
-        "https://drive.google.com/file/d/1jd3WiqBs_8ZlITE3XoE-h6NCZ5X1Ywks/view",
-    },
-    {
-      year: "2024",
-      title: "Practical Web Hacking",
-      desc: "Intensive hands-on training in web exploitation techniques such as SQLi, XSS, CSRF, and SSRF in realistic lab environments.",
-      verifyUrl:
-        "https://drive.google.com/file/d/1mYYeCWeE8bAZDGc9m6f2L1qKh1MA40up/view",
-    },
-    {
-      year: "2023",
-      title: "Advent of Cyber",
-      desc: "Completed daily challenges requiring multi-domain skills including OSINT, cryptography, and exploitation.",
-      verifyUrl:
-        "https://drive.google.com/file/d/1kWtmymgK864zAoBswX9tGLuLlGp1yGU6/view",
-    },
-    {
-      year: "2023",
-      title: "IT Support Google",
-      desc: "Shifted from general troubleshooting to a structured, ITIL-based approach aligned with industry best practices.",
-      verifyUrl:
-        "https://drive.google.com/file/d/1RB5ehE_-DovC1sgoII2FhV55qoF9Zdgr/view",
-    },
-  ],
-};
+    { title: "Astaroth-Style Red Team Campaign", desc: "Fileless attack simulation leveraging LOLBins. Achieved 100% success rate with 0 Defender alerts on fully patched Windows 10.", tags: ["Red Team", "LOLBins", "Evasion"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/Astaroth-Style-Red-Team-Campaign-23a416e03a138092a3afec2952c813ad" },
+    { title: "EDR Detection Lab with Wazuh", desc: "Built comprehensive EDR environment detecting 15/15 MITRE ATT&CK techniques. Automated response reduced time to sub-5 minutes.", tags: ["Blue Team", "Wazuh", "Detection"], type: "blue", url: "https://nickel-bedbug-8cc.notion.site/Building-EDR-Detection-Lab-with-Wazuh-From-Detection-to-Response-27f416e03a1380b9b318fb215aeca082" },
+    { title: "SandTrap: Breaking Virtual Boundaries", desc: "Offensive toolkit leveraging hardware fingerprinting and timing attacks to bypass VM sandbox environments.", tags: ["C++", "Sandbox Evasion", "Red Team"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/SandTrap-Breaking-Virtual-Boundaries-2f2416e03a13802bba9aebc2cace4536" },
+    { title: "ShadowShell: ETW Evasion Framework", desc: "Comprehensive framework designed to evade Windows Event Tracing (ETW) logging system during red team operations.", tags: ["C#", "ETW Evasion", "Windows"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/ShadowShell-Advanced-ETW-Evasion-Framework-for-Red-Team-Operations-277416e03a13801b97c1ec43b2ac6c77" },
+    { title: "GhostStager: Fileless Binary Loader", desc: "Advanced C# fileless binary loader with AMSI/ETW bypass and encrypted C2 communication.", tags: ["C#", "Red Team", "Sliver C2"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/GhostStager-Advanced-C-Fileless-Binary-Loader-For-Red-Team-Operation-23b416e03a138025b44ff54e56424636" },
+    { title: "EnvGuard: Environment Assessment", desc: "Advanced framework implementing 12 classification techniques to distinguish production from analysis systems.", tags: ["C++", "Sandbox", "Red Team"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/EnvGuard-Advanced-Environment-Assessment-Framework-For-Red-Team-Operations-274416e03a1380b58fefde598b68c47b" },
+    { title: "SOC Confessions", desc: "A narrative project uncovering the unseen emotions behind blue team vigilance in a Security Operations Center.", tags: ["Blue Team", "Storytelling", "SOC"], type: "blue", url: "#" },
+    { title: "Internal Pentest: Active Directory", desc: "Hands-on internal penetration testing identifying and exploiting vulnerabilities in Active Directory environments.", tags: ["Pentest", "AD", "Windows"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/Internal-Pentest-Active-Directory-Exploitation-and-Lesson-Learned-17a416e03a1380449524cf6cad46accb" },
+    { title: "Building SIEM Lab with Splunk", desc: "First blue team project building a functional SIEM environment using Splunk Free Edition.", tags: ["Splunk", "SIEM", "Blue Team"], type: "blue", url: "https://nickel-bedbug-8cc.notion.site/From-Zero-to-SOC-Hero-Building-My-First-SIEM-Lab-27d416e03a1380ba9aded15f489ca23b" }
+];
 
-// === MAIN APPLICATION CLASS ===
-class EnhancedPortfolio {
-  constructor() {
-    this.currentPage = "home";
-    this.currentTheme = "red";
-    this.isTransitioning = false;
-    this.typedInstance = null;
-    this.matrixInterval = null;
-    this.init();
-  }
+const certsData = [
+    { 
+        name: "Certified Network Security Practitioner", 
+        issuer: "The SecOps Group", 
+        year: "2025", 
+        status: "Merit Graduate", 
+        url: "https://drive.google.com/file/d/1n3vkEEz4tGQjkw7M0-AJ-gqs6zbWM8jx/view" 
+    },
+    { 
+        name: "Certified API Security Practitioner", 
+        issuer: "APISEC University", 
+        year: "2025", 
+        status: "", 
+        url: "https://drive.google.com/file/d/1CRK94BK63ABk-ajIGjfTTr02uAQHlVX0/view" 
+    },
+    { 
+        name: "Red Team Internship Certification", 
+        issuer: "HackSecure", 
+        year: "2025", 
+        status: "", 
+        url: "https://drive.google.com/file/d/1niU5gbyWGn9RKDlraltHsQJB2qQcSuJt/view" 
+    },
+    { 
+        name: "Advent of Cyber", 
+        issuer: "TryHackMe", 
+        year: "2023, 2025", 
+        status: "", 
+        url: "https://drive.google.com/file/d/14oS0UMAs2i_Tpg1qxue56YKdQgNQV7ED/view" 
+    },
+    { 
+        name: "Practical Ethical Hacking", 
+        issuer: "TCM Security", 
+        year: "2024", 
+        status: "", 
+        url: "https://drive.google.com/file/d/1RlF6sWO6n0KrmY_BC-iOStDghOD3elSQ/view" 
+    },
+    { 
+        name: "Practical Web App Penetration Testing", 
+        issuer: "TCM Security", 
+        year: "2024", 
+        status: "", 
+        url: "https://drive.google.com/file/d/1jd3WiqBs_8ZlITE3XoE-h6NCZ5X1Ywks/view" 
+    },
+    { 
+        name: "Practical Web Hacking", 
+        issuer: "TCM Security", 
+        year: "2024", 
+        status: "", 
+        url: "https://drive.google.com/file/d/1mYYeCWeE8bAZDGc9m6f2L1qKh1MA40up/view" 
+    },
+    { 
+        name: "IT Support Specialist", 
+        issuer: "Google", 
+        year: "2023", 
+        status: "", 
+        url: "https://drive.google.com/file/d/1RB5ehE_-DovC1sgoII2FhV55qoF9Zdgr/view" 
+    }
+];
 
-  init() {
-    this.initThemeToggle();
-    this.initBackgroundEffects();
-    this.initNavigation();
-    this.initTypedJS();
-    this.initScrollArrows();
-    this.initContentLoaders();
-    this.hideLoading();
-    // console.log('🚀 Enhanced Portfolio initialized successfully!');
-  }
+const ctfData = [
+    // === RED TEAM / OFFENSIVE ===
+    { title: "Tartarus", type: "red", desc: "Android dummy APK & root access", url: "https://nickel-bedbug-8cc.notion.site/Tartarus-c50bfdc57e7d4cce8489d5fe989e4dc2" },
+    { title: "Exodus", type: "red", desc: "NFS Enumeration, Webmin Exploit", url: "https://nickel-bedbug-8cc.notion.site/Exodus-100416e03a138073ba4cd8a5f721751f" },
+    { title: "Laboum", type: "red", desc: "OSINT & Reverse Engineering", url: "https://nickel-bedbug-8cc.notion.site/Laboum-129416e03a1380bdbad4d3f15fb34af3" },
+    { title: "Autobot", type: "red", desc: "SQL Injection Database", url: "https://nickel-bedbug-8cc.notion.site/Autobot-111416e03a13800ebe53de57e0e45947" },
+    { title: "Developed", type: "red", desc: "Info.php & Shadow Cracking", url: "https://nickel-bedbug-8cc.notion.site/Developed-479c658cb5154c8b856254c1be04df53" },
+    { title: "NebulaMQ", type: "red", desc: "Apache ActiveMQ Exploit", url: "https://nickel-bedbug-8cc.notion.site/NebulaMQ-912a195578dc4b498834b4e5129a9e06" },
+    { title: "CornFlix", type: "red", desc: "SSRF to NTLM Spoofing", url: "https://nickel-bedbug-8cc.notion.site/CornFlix-724ee0c531aa4a96b68907276667abfb" },
+    { title: "Ares", type: "red", desc: "Mantis Bug Tracker Exploit", url: "https://nickel-bedbug-8cc.notion.site/Ares-121416e03a1380cd9977d8edbbbc4387" },
+    { title: "Toolbox", type: "red", desc: "Git History Exposure", url: "https://nickel-bedbug-8cc.notion.site/Toolbox-b68ce23a0ea74620bb35b3568b8381bd" },
+    { title: "Multishop", type: "red", desc: "Command Injection", url: "https://nickel-bedbug-8cc.notion.site/Multishop-6c1a05a6222c4b30a09fb39e692f78b4" },
+    { title: "Ballpoint", type: "red", desc: "LeptonCMS RCE", url: "https://nickel-bedbug-8cc.notion.site/Ballpoint-dcd2095e6cb14cedb53676fd482ebf11" },
+    { title: "Syringe", type: "red", desc: "PHPMyAdmin Shell Injection", url: "https://nickel-bedbug-8cc.notion.site/Syringe-6fa9bd8970cc4867a85f850f41c055ef" },
+    { title: "Bro", type: "red", desc: "SSTI Payload", url: "https://nickel-bedbug-8cc.notion.site/Bro-657a1bca712048a681c9cca960c0a6b4" },
+    { title: "Telolet", type: "red", desc: "TorrentPier Info Leak", url: "https://nickel-bedbug-8cc.notion.site/Telolet-5368deb4f4744eefa8a502ab7816faf7" },
+    { title: "Artemis", type: "red", desc: "Web Enumeration to Root", url: "https://nickel-bedbug-8cc.notion.site/Artemis-c2b66778e56f4a2facb6db3e763e0f77" },
+    { title: "FOS", type: "red", desc: "Weak Creds to Command Inj", url: "https://nickel-bedbug-8cc.notion.site/FOS-112416e03a1380a083aef2624f4f9a5d" },
+    { title: "Guesser", type: "red", desc: "RiteCMS Exploit", url: "https://nickel-bedbug-8cc.notion.site/Guesser-7f9d10c565034756ba7209478a746dc6" },
+    { title: "Doom", type: "red", desc: "Full Privilege Access", url: "https://nickel-bedbug-8cc.notion.site/Doom-ff9747879d4f4b19a68ddc0fabb29dbc" },
+    { title: "Galz", type: "red", desc: "Docker Breakout", url: "https://nickel-bedbug-8cc.notion.site/Galz-10a416e03a1380ecb522e65b4573dcd8" },
+    { title: "Terra", type: "red", desc: "Adminer Remote Access", url: "https://nickel-bedbug-8cc.notion.site/Terra-106416e03a13809790dac7e3c050c6bf" },
+    { title: "Traverse Mode", type: "red", desc: "Parameter Injection", url: "https://nickel-bedbug-8cc.notion.site/TraverseMode-99e7bf565d304c68a43f84ecefdb9f75" },
+    { title: "Navigate", type: "red", desc: "NavigateCMS Root Access", url: "https://nickel-bedbug-8cc.notion.site/Navigate-f5678769d93c49589e207a84a72f6815" },
+    { title: "Atulieer", type: "red", desc: "JWT Modification", url: "https://nickel-bedbug-8cc.notion.site/Atulieer-fdd3d8ac7a4f4ba4847550b8fdd46409" },
+    { title: "Zeus", type: "red", desc: "SMB Enumeration Windows", url: "https://nickel-bedbug-8cc.notion.site/Zeus-aa5bb955bf1e4271ab303cc428c49fad" },
+    { title: "Ariadne", type: "red", desc: "FTP Enumeration", url: "https://nickel-bedbug-8cc.notion.site/Ariadne-100416e03a1380969762d25c3cd1c9e5" },
 
-  // === THEME SYSTEM ===
-  initThemeToggle() {
-    const themeToggle = document.getElementById("themeToggle");
-    const themeLabel = document.getElementById("themeLabel");
+    // === BLUE TEAM / DEFENSIVE ===
+    { title: "Deviasi", type: "blue", desc: "Deep Log Analysis & IOCs", url: "https://nickel-bedbug-8cc.notion.site/Deviasi-Hacktrace-Ranges-2a0416e03a1380babf06e961fa506f1a" },
+    { title: "Undercover", type: "blue", desc: "Binary Investigation APT", url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543" },
+    { title: "BluuShell", type: "blue", desc: "Malicious DOCX Forensics", url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0" },
+    { title: "Vigil", type: "blue", desc: "Phishing Email Investigation", url: "https://nickel-bedbug-8cc.notion.site/Vigil-Hacktrace-Ranges-2a7416e03a1380608f90dc3d1c968d0a" },
+    { title: "Actry", type: "blue", desc: "Brute-force Network Analysis", url: "https://nickel-bedbug-8cc.notion.site/Actry-Hacktrace-Ranges-2ab416e03a1380eea7e2c575be751af4" },
+    { title: "PhishHunt", type: "blue", desc: "Email Header & Malware Extraction", url: "https://nickel-bedbug-8cc.notion.site/PhishHunt-Hacktrace-Ranges-2ab416e03a1380a8823dd96948d18587" },
+    { title: "Unlucky", type: "blue", desc: "CVE-2017-11882 Excel Malware", url: "https://nickel-bedbug-8cc.notion.site/Unlucky-Hacktrace-Ranges-2ad416e03a13804f9869e0a43a83d82f" },
+    { title: "NowYouSeeMe", type: "blue", desc: "EML Attachment Forensics", url: "https://nickel-bedbug-8cc.notion.site/NowYouSeeMe-Hacktrace-Ranges-2ae416e03a1380348bd4c349333f4992" },
+    { title: "LogBreaker", type: "blue", desc: "Web Server Log Analysis", url: "https://nickel-bedbug-8cc.notion.site/LogBreaker-Hacktrace-Ranges-2af416e03a13805791b8df781eea969e" },
+    { title: "PcapProbe", type: "blue", desc: "SQLi Traffic Analysis", url: "https://nickel-bedbug-8cc.notion.site/PcapProbe-Hacktrace-Ranges-2af416e03a1380099b84c435321ca93c" },
+    { title: "Temptandum", type: "blue", desc: "Infostealer FTP Analysis", url: "https://nickel-bedbug-8cc.notion.site/Temptandum-Hacktrace-Ranges-2be416e03a1380ab9801efa7208c6b3c" },
+    { title: "Misconf", type: "blue", desc: "Git Exposure Forensics", url: "https://nickel-bedbug-8cc.notion.site/Misconf-Hacktrace-Ranges-2cd416e03a138083a4e4deb69831f362" },
+    { title: "Remembrance", type: "blue", desc: "Windows Memory Forensics", url: "https://nickel-bedbug-8cc.notion.site/Remembrance-Hacktrace-Ranges-2cf416e03a13800da0bbe5580bc5bcb6" },
+    { title: "Uncut", type: "blue", desc: "AgentTesla Identification", url: "https://nickel-bedbug-8cc.notion.site/Uncut-Hacktrace-Ranges-2cf416e03a1380f18348c766b1242559" },
+    { title: "IntrudeX", type: "blue", desc: "FTP Exploitation Forensics", url: "https://nickel-bedbug-8cc.notion.site/IntrudeX-Hacktrace-Ranges-2d8416e03a13806d909de39cafc43993" },
+    { title: "Argus", type: "blue", desc: "Infection Chain Investigation", url: "https://nickel-bedbug-8cc.notion.site/Argus-Hacktrace-Ranges-2d8416e03a1380659811c01a0f7e4fe8" },
+    { title: "SuperWhale", type: "blue", desc: "Docker Container Abuse", url: "https://nickel-bedbug-8cc.notion.site/Superwhale-Hacktrace-Ranges-2e2416e03a13803d8e09fc008db0ce5f" },
+    { title: "Deimos", type: "blue", desc: "PCAP Malware Analysis", url: "https://nickel-bedbug-8cc.notion.site/Deimos-Hacktrace-Ranges-2e7416e03a1380cc9248e5b7179215b9" },
+    { title: "Immortal", type: "blue", desc: "VeraCrypt Disk Forensics", url: "https://nickel-bedbug-8cc.notion.site/Immortal-Hacktrace-Ranges-2e7416e03a1380e8946adf53073f10cf" },
+    { title: "Inscept", type: "blue", desc: "Agent Tesla Campaign Analysis", url: "https://nickel-bedbug-8cc.notion.site/Inscept-Hacktrace-Ranges-304416e03a1380ee89b7c72c4914e891" },
+    { title: "Credsnoop", type: "blue", desc: "PCAP & Event Log Correlation", url: "https://nickel-bedbug-8cc.notion.site/Credsnoop-Hacktrace-Ranges-300416e03a1380d6ac3dde6e3a934858" }
+];
 
-    if (!themeToggle) return;
+// === LOGIC ===
 
-    themeToggle.addEventListener("change", () => {
-      this.currentTheme = themeToggle.checked ? "blue" : "red";
-      
-      // Panggil method transisi slide baru
-      this.transitionTheme(); 
-    });
-  }
+document.addEventListener('DOMContentLoaded', () => {
+    renderProjects('all');
+    renderCTF(ctfData);
+    renderCerts();
+    initTyping();
+    initMobileMenu();
+    initBackground();
+});
 
-  // === THEME TRANSITION LOGIC (BARU) ===
-  transitionTheme() {
-    if (this.isTransitioning) return;
-    this.isTransitioning = true;
-
-    // 1. Tambahkan class transisi flicker/fade-out cepat
-    document.body.classList.add("theme-transitioning"); 
-    
-    // Hapus sisa class slide lama (jika ada) untuk memastikan bersih
-    document.body.classList.remove("theme-slide-out", "theme-slide-in");
-
-    setTimeout(() => {
-      // 2. Aplikasikan tema baru saat flicker/fade-out sudah terjadi
-      this.applyTheme();
-      this.updateContent();
-
-      // 3. Hapus class transisi setelah konten di-update
-      setTimeout(() => {
-        document.body.classList.remove("theme-transitioning");
-        this.isTransitioning = false;
-      }, 50); // Delay sangat singkat untuk memastikan update visual
-      
-    }, 350); // Tunggu 350ms (durasi CSS .theme-transitioning)
-  }
-
-  applyTheme() {
-    const body = document.body;
-    const themeLabel = document.getElementById("themeLabel");
-
-    if (this.currentTheme === "blue") {
-      body.setAttribute("data-theme", "blue");
-      if (themeLabel) themeLabel.textContent = "Blue Team";
+// Theme Toggle
+function toggleTheme() {
+    const html = document.documentElement;
+    if (html.getAttribute('data-theme') === 'dark') {
+        html.setAttribute('data-theme', 'light');
     } else {
-      body.removeAttribute("data-theme");
-      if (themeLabel) themeLabel.textContent = "Red Team";
+        html.setAttribute('data-theme', 'dark');
     }
-    // Wajib panggil ulang Matrix Rain untuk update warna!
-    this.createMatrixRain(); 
-  }
-
-  updateContent() {
-    const data = portfolioData[this.currentTheme];
-
-    // Update hero/about content
-    const aboutContent = document.getElementById("aboutContent");
-    if (aboutContent) {
-      aboutContent.innerHTML = `
-        <p>${data.hero.about}</p>
-        <br />
-        <p><i>${data.hero.subtitle}</i></p>
-      `;
-    }
-
-    // Update typed strings (keep animation style the same)
-    if (this.typedInstance) {
-      this.typedInstance.destroy();
-      this.initTypedJS();
-    }
-
-    // Update CTF section headers
-    const ctfTitle = document.getElementById("ctfTitle");
-    const ctfDescription = document.getElementById("ctfDescription");
-    if (ctfTitle) ctfTitle.textContent = data.ctf.title;
-    if (ctfDescription) ctfDescription.textContent = data.ctf.description;
-
-    // Update Projects section headers
-    const projectsTitle = document.getElementById("projectsTitle");
-    const projectsDescription = document.getElementById("projectsDescription");
-    if (projectsTitle) projectsTitle.textContent = data.projects.title;
-    if (projectsDescription)
-      projectsDescription.textContent = data.projects.description;
-
-    // Update nav link label for CTF
-    const ctfLink = document.getElementById("ctfLink");
-    if (ctfLink) {
-      ctfLink.textContent = this.currentTheme === "red" ? "Red Team CTFs" : "Blue Team CTFs";
-    }
-
-    // Reload content lists
-    this.loadCTFMachines();
-    this.loadProjects();
-  }
-
-  // === BACKGROUND EFFECTS ===
-  initBackgroundEffects() {
-    this.createMatrixRain();
-  }
-
-  createMatrixRain() {
-    const canvas = document.getElementById("matrix-canvas");
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-
-    const setSize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    setSize();
-
-    const chars =
-      "アァカサタナハマヤャラワガザダバパイィキシチニヒミリィギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレェゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const fontSize = 14;
-    let columns = Math.floor(canvas.width / fontSize);
-    let drops = Array(columns).fill(1);
-
-    const draw = () => {
-      ctx.fillStyle = "rgba(26, 26, 26, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      const color =
-        this.currentTheme === "blue"
-          ? "rgba(74, 144, 226, 0.8)"
-          : "rgba(255, 85, 85, 0.8)";
-
-      ctx.fillStyle = color;
-      ctx.font = `${fontSize}px monospace`;
-
-      drops.forEach((drop, i) => {
-        const char = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(char, i * fontSize, drop * fontSize);
-
-        if (drop * fontSize > canvas.height || Math.random() > 0.95) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      });
-    };
-
-    if (this.matrixInterval) clearInterval(this.matrixInterval);
-    this.matrixInterval = setInterval(draw, 50);
-
-    window.addEventListener("resize", () => {
-      setSize();
-      columns = Math.floor(canvas.width / fontSize);
-      drops = Array(columns).fill(1);
-    });
-  }
-
-  // === NAVIGATION ===
-  initNavigation() {
-    document.querySelectorAll("[data-page]").forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const pageId = e.currentTarget.getAttribute("data-page");
-        if (pageId) {
-          this.showPage(pageId);
-          // AUTO-CLOSE MOBILE MENU saat klik navigation
-          this.closeMobileMenu();
-        }
-      });
-    });
-
-    const logoEl = document.querySelector(".logo");
-    logoEl?.addEventListener("click", (e) => {
-      e.preventDefault();
-      this.showPage("home");
-      // AUTO-CLOSE MOBILE MENU saat klik logo
-      this.closeMobileMenu();
-    });
-
-    const mobileMenu = document.getElementById("mobileMenu");
-    const navCenter = document.getElementById("navCenter");
-    if (mobileMenu && navCenter) {
-      mobileMenu.addEventListener("click", () => {
-        mobileMenu.classList.toggle("active");
-        navCenter.classList.toggle("active");
-      });
-    }
-
-    const downloadBtn = document.getElementById("downloadBtn");
-    if (downloadBtn) {
-      downloadBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        this.downloadResume();
-        // AUTO-CLOSE MOBILE MENU saat klik download
-        this.closeMobileMenu();
-      });
-    }
-  }
-
-  // TAMBAHIN method baru ini setelah initNavigation()
-  closeMobileMenu() {
-    const mobileMenu = document.getElementById("mobileMenu");
-    const navCenter = document.getElementById("navCenter");
-    
-    if (mobileMenu && navCenter) {
-      mobileMenu.classList.remove("active");
-      navCenter.classList.remove("active");
-    }
-  }
-
-  showPage(pageId) {
-    if (this.isTransitioning || this.currentPage === pageId) return;
-
-    this.isTransitioning = true;
-    const currentSection = document.querySelector(".page-section.active");
-    const targetSection = document.getElementById(pageId);
-
-    if (currentSection && targetSection) {
-      currentSection.classList.add("slide-out");
-
-      setTimeout(() => {
-        currentSection.classList.remove("active", "slide-out");
-        targetSection.classList.add("slide-in");
-
-        setTimeout(() => {
-          targetSection.classList.remove("slide-in");
-          targetSection.classList.add("active");
-          this.currentPage = pageId;
-          this.isTransitioning = false;
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }, 50);
-      }, 300);
-    } else {
-      this.isTransitioning = false;
-    }
-  }
-
-    downloadResume() {
-    const link = document.createElement('a');
-    link.href = './Resume - Tri Wibowo Cahyo.pdf'; // Pastikan nama file dan path ini benar
-    link.download = 'Tri_Wibowo_Resume.pdf'; // Nama file saat didownload
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    this.showNotification("📄 Resume is downloading...");
-    }
-
-  // === TYPED.JS ===
-  initTypedJS() {
-    const data = portfolioData[this.currentTheme];
-    if (typeof Typed !== "undefined") {
-      this.typedInstance = new Typed(".typed", {
-        strings: data.hero.typedStrings,
-        typeSpeed: 50,
-        backSpeed: 30,
-        loop: true,
-        cursorChar: "|",
-      });
-    }
-  }
-
-  // === SCROLL ARROWS ===
-  initScrollArrows() {
-    document.querySelectorAll(".scroll-arrow").forEach((arrow) => {
-      arrow.addEventListener("click", () => {
-        const target = arrow.getAttribute("data-target");
-        if (target) this.scrollToSection(target);
-      });
-    });
-
-    const backToTop = document.getElementById("backToTop");
-    backToTop?.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-
-  scrollToSection(targetId) {
-    const target = document.getElementById(targetId);
-    if (target) {
-      const offsetTop = target.offsetTop - 90;
-      window.scrollTo({ top: offsetTop, behavior: "smooth" });
-    }
-  }
-
-  // === CONTENT LOADERS ===
-  initContentLoaders() {
-    // 1. Amati Static Sections (About, Experience, Contact)
-    this.setupRevealAnimation('.content-section'); 
-
-    this.loadCTFMachines();
-    this.loadProjects();
-    this.loadCertifications();
-    // this.initTimelineAnimation(); // Hapus/Komentari method lama
-  }
-
-  loadCTFMachines() {
-    const grid = document.getElementById("ctfGrid");
-    if (!grid) return;
-
-    const data = portfolioData[this.currentTheme];
-    grid.innerHTML = data.ctf.machines
-      .map(
-        (machine) => `
-        <div class="card" onclick="window.open('${machine.url}', '_blank')">
-          <img src="${machine.image}" alt="${machine.title}" loading="lazy" />
-          <div class="card-content">
-            <h3>${machine.title}</h3>
-            <p><em>${machine.desc}</em></p>
-          </div>
-        </div>
-      `
-      )
-      .join("");
-    
-    // Panggil Reveal Animation setelah semua card CTF dibuat
-    this.setupRevealAnimation('.ctf-grid .card');
-  }
-
-  loadProjects() {
-    const grid = document.getElementById("projectsGrid");
-    if (!grid) return;
-
-    const data = portfolioData[this.currentTheme];
-    grid.innerHTML = data.projects.items
-      .map(
-        (project) => `
-        <div class="card" onclick="window.open('${project.url}', '_blank')">
-          <img src="${project.image}" alt="${project.title}" loading="lazy" />
-          <div class="card-content">
-            <h3>${project.title}</h3>
-            <p>${project.desc}</p>
-            <div class="tech-stack">
-              ${project.tech
-                .map((t) => `<span class="tech-tag">${t}</span>`)
-                .join("")}
-            </div>
-          </div>
-        </div>
-      `
-      )
-      .join("");
-
-    // Panggil Reveal Animation setelah semua card Project dibuat
-    this.setupRevealAnimation('.projects-grid .card');
-  }
-
-  loadCertifications() {
-    const timeline = document.getElementById("timeline");
-    if (!timeline) return;
-
-    timeline.innerHTML = portfolioData.certifications
-      .map((cert, index) => {
-        const side = index % 2 === 0 ? "left" : "right";
-        const verifyButton = cert.verifyUrl
-          ? `<a href="${cert.verifyUrl}" target="_blank" class="verify-btn">Verify</a>`
-          : "";
-
-        return `
-        <div class="timeline-item ${side}">
-          <div class="timeline-content">
-            <span class="timeline-year">${cert.year}</span>
-            <h3>${cert.title} ${cert.status || ""}</h3>
-            <p><strong>Journey:</strong> ${cert.desc}</p>
-            ${verifyButton}
-          </div>
-        </div>
-      `;
-      })
-      .join("");
-
-    // Panggil Reveal Animation setelah semua item timeline dibuat (threshold 0.3 agar lebih tepat)
-    this.setupRevealAnimation('.timeline-item', 0.3);
-  }
-
-  // === UTILITIES ===
-  
-  // === SCROLL REVEAL UTILITY ===
-  setupRevealAnimation(targetSelector, thresholdValue = 0.1) {
-    const revealElements = document.querySelectorAll(targetSelector);
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: thresholdValue 
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('reveal');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    revealElements.forEach(element => {
-        observer.observe(element);
-    });
-  }
-
-  hideLoading() {
-    setTimeout(() => {
-      const loading = document.getElementById("loading");
-      if (loading) {
-        loading.classList.add("hide");
-        setTimeout(() => loading.remove(), 500);
-      }
-    }, 1500);
-  }
-
-  showNotification(message) {
-    const notification = document.createElement("div");
-    notification.textContent = message;
-    notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--glass-bg);
-      color: var(--text-color);
-      border: 1px solid var(--border-color);
-      padding: 15px 20px;
-      border-radius: 8px;
-      z-index: 10000;
-      font-size: 14px;
-      animation: slideInRight 0.3s ease;
-      backdrop-filter: blur(10px);
-    `;
-
-    document.body.appendChild(notification);
-    setTimeout(() => notification.remove(), 3000);
-  }
 }
 
-// === INITIALIZE APPLICATION ===
-document.addEventListener("DOMContentLoaded", () => {
-  new EnhancedPortfolio();
-});
+// Background Animation (Purple Network)
+function initBackground() {
+    const canvas = document.getElementById('networkCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    
+    const setCanvasSize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    };
+    setCanvasSize();
+    window.addEventListener('resize', setCanvasSize);
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.radius = Math.random() * 2;
+        }
+        
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            const style = getComputedStyle(document.documentElement);
+            const color = style.getPropertyValue('--text-muted').trim() || '#666';
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < 60; i++) {
+        particles.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach((p1, i) => {
+            particles.slice(i + 1).forEach(p2 => {
+                const dx = p1.x - p2.x;
+                const dy = p1.y - p2.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                
+                if (dist < 120) {
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    const style = getComputedStyle(document.documentElement);
+                    const color = style.getPropertyValue('--border').trim() || '#222';
+                    ctx.strokeStyle = color;
+                    ctx.stroke();
+                }
+            });
+        });
+        
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+// Mobile Menu
+function initMobileMenu() {
+    const toggle = document.getElementById('navToggle');
+    const drawer = document.getElementById('mobileDrawer');
+    toggle.addEventListener('click', () => {
+        drawer.classList.toggle('active');
+    });
+    drawer.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => drawer.classList.remove('active'));
+    });
+}
+
+// Typing Effect
+function initTyping() {
+    const roles = [
+  "Pragmatic Red Team Operator",
+  "Methodical Threat Hunter",
+  "Security Analyst @ MPM",
+  "Relentless CTF Player",
+  "Calculated Purple Teamer",
+  "Meticulous SOC Engineer",
+  "Curious Vulnerability Researcher",
+  "Decisive Incident Responder",
+];
+    let i = 0, j = 0, currentRole = "", isDeleting = false;
+    const el = document.getElementById('typed-role');
+
+    function type() {
+        if (i < roles.length) {
+            if (!isDeleting && j <= roles[i].length) {
+                currentRole = roles[i].substring(0, j++);
+                el.textContent = currentRole;
+            } else if (isDeleting && j >= 0) {
+                currentRole = roles[i].substring(0, j--);
+                el.textContent = currentRole;
+            }
+
+            if (!isDeleting && j === roles[i].length + 1) {
+                isDeleting = true;
+                setTimeout(type, 1000); return;
+            } else if (isDeleting && j === 0) {
+                isDeleting = false;
+                i = (i + 1) % roles.length;
+            }
+        }
+        setTimeout(type, isDeleting ? 50 : 100);
+    }
+    type();
+}
+
+// Render Projects
+function renderProjects(filter) {
+    const grid = document.getElementById('projectsGrid');
+    let data = projectsData;
+    if (filter !== 'all') data = projectsData.filter(p => p.type === filter);
+
+    grid.innerHTML = data.map(p => `
+        <a href="${p.url}" target="_blank" class="pro-card ${p.type}">
+            <div>
+                <span class="pro-type">${p.type === 'red' ? '// OFFENSIVE' : '// DEFENSIVE'}</span>
+                <h3 class="pro-title">${p.title}</h3>
+                <p class="pro-desc">${p.desc}</p>
+            </div>
+            <div class="pro-tags">
+                ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+        </a>
+    `).join('');
+}
+
+function filterProjects(type) {
+    document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    renderProjects(type);
+}
+
+// Render Certs
+function renderCerts() {
+    const grid = document.getElementById('certsGrid');
+    grid.innerHTML = certsData.map(c => `
+        <a href="${c.url}" target="_blank" class="cert-card">
+            <div class="cert-icon">⏻</div>
+            <div class="cert-info">
+                <h3>${c.name} ${c.status ? `<span style="color:var(--purple-primary);font-size:0.8rem;">(${c.status})</span>` : ''}</h3>
+                <p>${c.issuer} • ${c.year}</p>
+            </div>
+        </a>
+    `).join('');
+}
+
+// Render CTF
+function renderCTF(data) {
+    const grid = document.getElementById('ctfGrid');
+    grid.innerHTML = data.map(c => `
+        <a href="${c.url}" target="_blank" class="ctf-card ${c.type}">
+            <div class="ctf-info">
+                <h3>${c.title}</h3>
+                <p>${c.desc}</p>
+            </div>
+            <div class="ctf-badge ${c.type}">
+                ${c.type === 'red' ? 'ROOTED' : 'ANALYZED'}
+            </div>
+        </a>
+    `).join('');
+}
+
+function searchCTF() {
+    const term = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = ctfData.filter(c => c.title.toLowerCase().includes(term) || c.desc.toLowerCase().includes(term));
+    renderCTF(filtered);
+}
