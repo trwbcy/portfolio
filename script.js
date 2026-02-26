@@ -1,13 +1,14 @@
 // === DATA SOURCE ===
 const projectsData = [
     { 
-        title: "CVE-2026-XXXX Reproduction: Firefox SpiderMonkey UAF", 
+        title: "CVE-2026-2770 Reproduction: Firefox SpiderMonkey UAF", 
         desc: "Successfully reproduced critical Use-After-Free vulnerability (CVSS 9.8) in WebAssembly GC. Developed custom exploitation chain achieving 100% detection rate without using the original researcher's method.", 
         tags: ["Exploit Dev", "RCE", "Reproduction"], 
         type: "red", 
-        url: "#" 
+        url: "https://drive.google.com/file/d/1bPNmwY9bWuNRNkc1ZIat1raaMYG7Tr9s/view?usp=sharing" 
     },
-    { title: "Astaroth-Style Red Team Campaign", desc: "Fileless attack simulation leveraging LOLBins. Achieved 100% success rate with 0 Defender alerts on fully patched Windows 10.", tags: ["Red Team", "LOLBins", "Evasion"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/Astaroth-Style-Red-Team-Campaign-23a416e03a138092a3afec2952c813ad" },
+    { title: "Astaroth-Style Red Team Campaign", desc: "Fileless attack simulation leveraging LOLBins. Achieved 100% success rate with 0 Defender alerts on fully patched Windows 10.", tags: ["Red Team", "LOLBins", "Evasion"], type: "red", url: "https://drive.google.com/file/d/1DhZtAo6jz6IwP4tEQVmE8hZRTYvcBGdf/view?usp=sharing" },
+    {title: "SOC Homelab Project", desc:"Replicating a full enterprise SOC stack SIEM, NDR, XDR, SOAR, Firewall, WAF, Vulnerability Scanner & Email Security. Using 100% opensource tools", tags: ["Blue Team", "Mini SOC Ecosystem", "Superb Project"], type: "blue", url: "https://drive.google.com/file/d/1roFjqEnSYcKne11lQxaABe4SydxYulCv/view?usp=sharing"},
     { title: "EDR Detection Lab with Wazuh", desc: "Built comprehensive EDR environment detecting 15/15 MITRE ATT&CK techniques. Automated response reduced time to sub-5 minutes.", tags: ["Blue Team", "Wazuh", "Detection"], type: "blue", url: "https://nickel-bedbug-8cc.notion.site/Building-EDR-Detection-Lab-with-Wazuh-From-Detection-to-Response-27f416e03a1380b9b318fb215aeca082" },
     { title: "SandTrap: Breaking Virtual Boundaries", desc: "Offensive toolkit leveraging hardware fingerprinting and timing attacks to bypass VM sandbox environments.", tags: ["C++", "Sandbox Evasion", "Red Team"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/SandTrap-Breaking-Virtual-Boundaries-2f2416e03a13802bba9aebc2cace4536" },
     { title: "ShadowShell: ETW Evasion Framework", desc: "Comprehensive framework designed to evade Windows Event Tracing (ETW) logging system during red team operations.", tags: ["C#", "ETW Evasion", "Windows"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/ShadowShell-Advanced-ETW-Evasion-Framework-for-Red-Team-Operations-277416e03a13801b97c1ec43b2ac6c77" },
@@ -126,7 +127,8 @@ const ctfData = [
     { title: "Deimos", type: "blue", desc: "PCAP Malware Analysis", url: "https://nickel-bedbug-8cc.notion.site/Deimos-Hacktrace-Ranges-2e7416e03a1380cc9248e5b7179215b9" },
     { title: "Immortal", type: "blue", desc: "VeraCrypt Disk Forensics", url: "https://nickel-bedbug-8cc.notion.site/Immortal-Hacktrace-Ranges-2e7416e03a1380e8946adf53073f10cf" },
     { title: "Inscept", type: "blue", desc: "Agent Tesla Campaign Analysis", url: "https://nickel-bedbug-8cc.notion.site/Inscept-Hacktrace-Ranges-304416e03a1380ee89b7c72c4914e891" },
-    { title: "Credsnoop", type: "blue", desc: "PCAP & Event Log Correlation", url: "https://nickel-bedbug-8cc.notion.site/Credsnoop-Hacktrace-Ranges-300416e03a1380d6ac3dde6e3a934858" }
+    { title: "Credsnoop", type: "blue", desc: "PCAP & Event Log Correlation", url: "https://nickel-bedbug-8cc.notion.site/Credsnoop-Hacktrace-Ranges-300416e03a1380d6ac3dde6e3a934858" },
+    {title: "Loki", type: "blue", desc: ".NET Reverse Engineering", url: "https://nickel-bedbug-8cc.notion.site/Loki-Hacktrace-Ranges-2fc416e03a1380fdb604e3e4c6553b22"}
 ];
 
 // === LOGIC ===
@@ -239,13 +241,14 @@ function initMobileMenu() {
 function initTyping() {
     const roles = [
   "Pragmatic Red Team Operator",
-  "Methodical Threat Hunter",
+  "Earned Through Repetition",
   "Security Analyst @ MPM",
   "Relentless CTF Player",
-  "Calculated Purple Teamer",
-  "Meticulous SOC Engineer",
-  "Curious Vulnerability Researcher",
-  "Decisive Incident Responder",
+  "Purple on Purpose",
+  "innovative SOC Engineer",
+  "Slow Burn Builder",
+  "Chasing Depth",
+  "Still Becoming",
 ];
     let i = 0, j = 0, currentRole = "", isDeleting = false;
     const el = document.getElementById('typed-role');
