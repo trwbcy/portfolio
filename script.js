@@ -22,6 +22,13 @@ const projectsData = [
 
 const certsData = [
     { 
+        name: "Certified Blue Team Practicioner", 
+        issuer: "The SecOps Group", 
+        year: "2026", 
+        status: "Merit Graduate", 
+        url: "https://drive.google.com/file/d/1-Bb-n_D1DiiYCAYBilZkvrQpXZ2LbmRT/view?usp=sharing" 
+    },
+    { 
         name: "Certified Network Security Practitioner", 
         issuer: "The SecOps Group", 
         year: "2025", 
