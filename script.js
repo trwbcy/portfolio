@@ -136,7 +136,8 @@ const ctfData = [
     { title: "Immortal", type: "blue", desc: "VeraCrypt Disk Forensics", url: "https://nickel-bedbug-8cc.notion.site/Immortal-Hacktrace-Ranges-2e7416e03a1380e8946adf53073f10cf" },
     { title: "Inscept", type: "blue", desc: "Agent Tesla Campaign Analysis", url: "https://nickel-bedbug-8cc.notion.site/Inscept-Hacktrace-Ranges-304416e03a1380ee89b7c72c4914e891" },
     { title: "Credsnoop", type: "blue", desc: "PCAP & Event Log Correlation", url: "https://nickel-bedbug-8cc.notion.site/Credsnoop-Hacktrace-Ranges-300416e03a1380d6ac3dde6e3a934858" },
-    {title: "Loki", type: "blue", desc: ".NET Reverse Engineering", url: "https://nickel-bedbug-8cc.notion.site/Loki-Hacktrace-Ranges-2fc416e03a1380fdb604e3e4c6553b22"}
+    { title: "Loki", type: "blue", desc: ".NET Reverse Engineering", url: "https://nickel-bedbug-8cc.notion.site/Loki-Hacktrace-Ranges-2fc416e03a1380fdb604e3e4c6553b22"},
+    { title: "Cilent", type: "blue", desc:"Phishing HTML Attachment * Telegram Exfil", url: "https://nickel-bedbug-8cc.notion.site/CTF-Writeup-Cilent-Hacktrace-Defensive-321416e03a13803fa136e019d0515260"}
 ];
 
 // === LOGIC ===
