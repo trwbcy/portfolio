@@ -137,7 +137,8 @@ const ctfData = [
     { title: "Inscept", type: "blue", desc: "Agent Tesla Campaign Analysis", url: "https://nickel-bedbug-8cc.notion.site/Inscept-Hacktrace-Ranges-304416e03a1380ee89b7c72c4914e891" },
     { title: "Credsnoop", type: "blue", desc: "PCAP & Event Log Correlation", url: "https://nickel-bedbug-8cc.notion.site/Credsnoop-Hacktrace-Ranges-300416e03a1380d6ac3dde6e3a934858" },
     { title: "Loki", type: "blue", desc: ".NET Reverse Engineering", url: "https://nickel-bedbug-8cc.notion.site/Loki-Hacktrace-Ranges-2fc416e03a1380fdb604e3e4c6553b22"},
-    { title: "Cilent", type: "blue", desc:"Phishing HTML Attachment & Telegram Exfil", url: "https://nickel-bedbug-8cc.notion.site/CTF-Writeup-Cilent-Hacktrace-Defensive-321416e03a13803fa136e019d0515260"}
+    { title: "Cilent", type: "blue", desc:"Phishing HTML Attachment & Telegram Exfil", url: "https://nickel-bedbug-8cc.notion.site/CTF-Writeup-Cilent-Hacktrace-Defensive-321416e03a13803fa136e019d0515260"},
+    { title: "Keyboard Warrior", type: "blue", desc:"Malware Analysis", url: "https://docs.google.com/document/d/1n9O_sKtLHmfe_T4wEok8o_9h3orpX6zA/edit?usp=sharing&ouid=112970802675533255155&rtpof=true&sd=true"},
 ];
 
 // === LOGIC ===
