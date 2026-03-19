@@ -139,6 +139,7 @@ const ctfData = [
     { title: "Loki", type: "blue", desc: ".NET Reverse Engineering", url: "https://nickel-bedbug-8cc.notion.site/Loki-Hacktrace-Ranges-2fc416e03a1380fdb604e3e4c6553b22"},
     { title: "Cilent", type: "blue", desc:"Phishing HTML Attachment & Telegram Exfil", url: "https://nickel-bedbug-8cc.notion.site/CTF-Writeup-Cilent-Hacktrace-Defensive-321416e03a13803fa136e019d0515260"},
     { title: "Keyboard Warrior", type: "blue", desc:"Malware Analysis", url: "https://docs.google.com/document/d/1n9O_sKtLHmfe_T4wEok8o_9h3orpX6zA/edit?usp=sharing&ouid=112970802675533255155&rtpof=true&sd=true"},
+    { title: "Shortway", type: "blue", desc: "Malware Infection Analysis", url: "https://docs.google.com/document/d/1NV_NmB1Zby9emp42q3OGM4oxgGQbWb_S/edit?usp=sharing&ouid=112970802675533255155&rtpof=true&sd=true"},
 ];
 
 // === LOGIC ===
