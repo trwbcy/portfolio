@@ -1,13 +1,6 @@
 // === DATA SOURCE ===
 // ===RELOAD===
 const projectsData = [
-    { 
-        title: "CVE-2026-2770 Reproduction: Firefox SpiderMonkey UAF", 
-        desc: "Successfully reproduced critical Use-After-Free vulnerability (CVSS 9.8) in WebAssembly GC. Developed custom exploitation chain achieving 100% detection rate without using the original researcher's method.", 
-        tags: ["Exploit Dev", "RCE", "Reproduction"], 
-        type: "red", 
-        url: "https://drive.google.com/file/d/1bPNmwY9bWuNRNkc1ZIat1raaMYG7Tr9s/view?usp=sharing" 
-    },
     { title: "Astaroth-Style Red Team Campaign", desc: "Fileless attack simulation leveraging LOLBins. Achieved 100% success rate with 0 Defender alerts on fully patched Windows 10.", tags: ["Red Team", "LOLBins", "Evasion"], type: "red", url: "https://drive.google.com/file/d/1DhZtAo6jz6IwP4tEQVmE8hZRTYvcBGdf/view" },
     { title: "SOC Homelab Project", desc:"Replicating a full enterprise SOC stack SIEM, NDR, XDR, SOAR, Firewall, WAF, Vulnerability Scanner & Email Security. Using 100% opensource tools", tags: ["Blue Team", "Mini SOC Ecosystem", "Superb Project"], type: "blue", url: "https://drive.google.com/file/d/1SPe8eGGo-Ii_4Mdu3jFf49F4ConbT5kP/view?usp=sharing"},
     { title: "EDR Detection Lab with Wazuh", desc: "Built comprehensive EDR environment detecting 15/15 MITRE ATT&CK techniques. Automated response reduced time to sub-5 minutes.", tags: ["Blue Team", "Wazuh", "Detection"], type: "blue", url: "https://nickel-bedbug-8cc.notion.site/Building-EDR-Detection-Lab-with-Wazuh-From-Detection-to-Response-27f416e03a1380b9b318fb215aeca082" },
