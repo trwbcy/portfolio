@@ -1,86 +1,31 @@
 // === DATA SOURCE ===
-// ===RELOAD===
 const projectsData = [
-    { title: "Astaroth-Style Red Team Campaign", desc: "Fileless attack simulation leveraging LOLBins. Achieved 100% success rate with 0 Defender alerts on fully patched Windows 10.", tags: ["Red Team", "LOLBins", "Evasion"], type: "red", url: "https://drive.google.com/file/d/1DhZtAo6jz6IwP4tEQVmE8hZRTYvcBGdf/view" },
-    { title: "SOC Homelab Project", desc:"Replicating a full enterprise SOC stack SIEM, NDR, XDR, SOAR, Firewall, WAF, Vulnerability Scanner & Email Security. Using 100% opensource tools", tags: ["Blue Team", "Mini SOC Ecosystem", "Superb Project"], type: "blue", url: "https://drive.google.com/file/d/1SPe8eGGo-Ii_4Mdu3jFf49F4ConbT5kP/view?usp=sharing"},
+    { title: "Astaroth-Style Red Team Campaign", desc: "Fileless attack simulation leveraging LOLBins. Achieved 100% success rate with 0 Defender alerts on fully patched Windows 10. Translated findings into detection rules and MITRE ATT&CK mapping.", tags: ["Red Team", "LOLBins", "Evasion"], type: "red", url: "https://drive.google.com/file/d/1DhZtAo6jz6IwP4tEQVmE8hZRTYvcBGdf/view" },
+    { title: "SOC Homelab Project", desc: "Replicating a full enterprise SOC stack: SIEM, NDR, XDR, SOAR, Firewall, WAF, Vulnerability Scanner. 13 integrated open-source services across 5 VMs, replicating $500K+ commercial tooling.", tags: ["Blue Team", "SOC Ecosystem", "Detection"], type: "blue", url: "https://drive.google.com/file/d/1SPe8eGGo-Ii_4Mdu3jFf49F4ConbT5kP/view?usp=sharing"},
     { title: "EDR Detection Lab with Wazuh", desc: "Built comprehensive EDR environment detecting 15/15 MITRE ATT&CK techniques. Automated response reduced time to sub-5 minutes.", tags: ["Blue Team", "Wazuh", "Detection"], type: "blue", url: "https://nickel-bedbug-8cc.notion.site/Building-EDR-Detection-Lab-with-Wazuh-From-Detection-to-Response-27f416e03a1380b9b318fb215aeca082" },
-    { title: "SandTrap: Breaking Virtual Boundaries", desc: "Offensive toolkit leveraging hardware fingerprinting and timing attacks to bypass VM sandbox environments.", tags: ["C++", "Sandbox Evasion", "Red Team"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/SandTrap-Breaking-Virtual-Boundaries-2f2416e03a13802bba9aebc2cace4536" },
-    { title: "ShadowShell: ETW Evasion Framework", desc: "Comprehensive framework designed to evade Windows Event Tracing (ETW) logging system during red team operations.", tags: ["C#", "ETW Evasion", "Windows"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/ShadowShell-Advanced-ETW-Evasion-Framework-for-Red-Team-Operations-277416e03a13801b97c1ec43b2ac6c77" },
-    { title: "GhostStager: Fileless Binary Loader", desc: "Advanced C# fileless binary loader with AMSI/ETW bypass and encrypted C2 communication.", tags: ["C#", "Red Team", "Sliver C2"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/GhostStager-Advanced-C-Fileless-Binary-Loader-For-Red-Team-Operation-23b416e03a138025b44ff54e56424636" },
+    { title: "SandTrap: Breaking Virtual Boundaries", desc: "Offensive toolkit leveraging hardware fingerprinting and timing attacks to bypass VM sandbox environments.", tags: ["C++", "Sandbox Evasion", "Red Team"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/SandTrap-Breaking-Virtual-Boundaries-2f2416e03a13802bba9aebc2cace4536k" },
+    { title: "ShadowShell: ETW Evasion Framework", desc: "Comprehensive framework to evade Windows Event Tracing (ETW) logging during red team operations.", tags: ["C#", "ETW Evasion", "Windows"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/ShadowShell-Advanced-ETW-Evasion-Framework-for-Red-Team-Operations-277416e03a13801b97c1ec43b2ac6c77" },
+    { title: "GhostStager: Fileless Binary Loader", desc: "Advanced C# fileless binary loader with AMSI/ETW bypass and encrypted C2 communication via Sliver.", tags: ["C#", "Red Team", "Sliver C2"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/GhostStager-Advanced-C-Fileless-Binary-Loader-For-Red-Team-Operation-23b416e03a138025b44ff54e56424636" },
     { title: "EnvGuard: Environment Assessment", desc: "Advanced framework implementing 12 classification techniques to distinguish production from analysis systems.", tags: ["C++", "Sandbox", "Red Team"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/EnvGuard-Advanced-Environment-Assessment-Framework-For-Red-Team-Operations-274416e03a1380b58fefde598b68c47b" },
+    { title: "Incident Response: Phishing-Triggered Fileless Exec", desc: "Real-world LOLBin execution triggered by phishing in active enterprise. Endpoint isolation via XDR, evidence collection, MITRE mapping T1218.005. Contained without further escalation.", tags: ["Blue Team", "IR", "MITRE"], type: "blue", url: "#" },
     { title: "SOC Confessions", desc: "A narrative project uncovering the unseen emotions behind blue team vigilance in a Security Operations Center.", tags: ["Blue Team", "Storytelling", "SOC"], type: "blue", url: "#" },
     { title: "Internal Pentest: Active Directory", desc: "Hands-on internal penetration testing identifying and exploiting vulnerabilities in Active Directory environments.", tags: ["Pentest", "AD", "Windows"], type: "red", url: "https://nickel-bedbug-8cc.notion.site/Internal-Pentest-Active-Directory-Exploitation-and-Lesson-Learned-17a416e03a1380449524cf6cad46accb" },
-    { title: "Building SIEM Lab with Splunk", desc: "First blue team project building a functional SIEM environment using Splunk Free Edition.", tags: ["Splunk", "SIEM", "Blue Team"], type: "blue", url: "https://nickel-bedbug-8cc.notion.site/From-Zero-to-SOC-Hero-Building-My-First-SIEM-Lab-27d416e03a1380ba9aded15f489ca23b" }
+    { title: "Building SIEM Lab with Splunk", desc: "First blue team project — building a functional SIEM environment using Splunk Free Edition from scratch.", tags: ["Splunk", "SIEM", "Blue Team"], type: "blue", url: "https://nickel-bedbug-8cc.notion.site/From-Zero-to-SOC-Hero-Building-My-First-SIEM-Lab-27d416e03a1380ba9aded15f489ca23b" }
 ];
 
 const certsData = [
-    { 
-        name: "Certified Blue Team Practicioner", 
-        issuer: "The SecOps Group", 
-        year: "2026", 
-        status: "Merit Graduate", 
-        url: "https://drive.google.com/file/d/1-Bb-n_D1DiiYCAYBilZkvrQpXZ2LbmRT/view?usp=sharing" 
-    },
-    { 
-        name: "Certified Network Security Practitioner", 
-        issuer: "The SecOps Group", 
-        year: "2025", 
-        status: "Merit Graduate", 
-        url: "https://drive.google.com/file/d/1n3vkEEz4tGQjkw7M0-AJ-gqs6zbWM8jx/view" 
-    },
-    { 
-        name: "Certified API Security Practitioner", 
-        issuer: "APISEC University", 
-        year: "2025", 
-        status: "", 
-        url: "https://drive.google.com/file/d/1CRK94BK63ABk-ajIGjfTTr02uAQHlVX0/view" 
-    },
-    { 
-        name: "Red Team Internship Certification", 
-        issuer: "HackSecure", 
-        year: "2025", 
-        status: "", 
-        url: "https://drive.google.com/file/d/1niU5gbyWGn9RKDlraltHsQJB2qQcSuJt/view" 
-    },
-    { 
-        name: "Advent of Cyber", 
-        issuer: "TryHackMe", 
-        year: "2023, 2025", 
-        status: "", 
-        url: "https://drive.google.com/file/d/14oS0UMAs2i_Tpg1qxue56YKdQgNQV7ED/view" 
-    },
-    { 
-        name: "Practical Ethical Hacking", 
-        issuer: "TCM Security", 
-        year: "2024", 
-        status: "", 
-        url: "https://drive.google.com/file/d/1RlF6sWO6n0KrmY_BC-iOStDghOD3elSQ/view" 
-    },
-    { 
-        name: "Practical Web App Penetration Testing", 
-        issuer: "TCM Security", 
-        year: "2024", 
-        status: "", 
-        url: "https://drive.google.com/file/d/1jd3WiqBs_8ZlITE3XoE-h6NCZ5X1Ywks/view" 
-    },
-    { 
-        name: "Practical Web Hacking", 
-        issuer: "TCM Security", 
-        year: "2024", 
-        status: "", 
-        url: "https://drive.google.com/file/d/1mYYeCWeE8bAZDGc9m6f2L1qKh1MA40up/view" 
-    },
-    { 
-        name: "IT Support Specialist", 
-        issuer: "Google", 
-        year: "2023", 
-        status: "", 
-        url: "https://drive.google.com/file/d/1RB5ehE_-DovC1sgoII2FhV55qoF9Zdgr/view" 
-    }
+    { name: "Certified Blue Team Practitioner", issuer: "The SecOps Group", year: "2026", status: "Merit Graduate", url: "https://drive.google.com/file/d/1-Bb-n_D1DiiYCAYBilZkvrQpXZ2LbmRT/view?usp=sharing" },
+    { name: "Certified Network Security Practitioner", issuer: "The SecOps Group", year: "2025", status: "Merit Graduate", url: "https://drive.google.com/file/d/1n3vkEEz4tGQjkw7M0-AJ-gqs6zbWM8jx/view" },
+    { name: "Certified API Security Practitioner", issuer: "APISEC University", year: "2025", status: "", url: "https://drive.google.com/file/d/1CRK94BK63ABk-ajIGjfTTr02uAQHlVX0/view" },
+    { name: "Red Team Internship Certification", issuer: "HackSecure", year: "2025", status: "", url: "https://drive.google.com/file/d/1niU5gbyWGn9RKDlraltHsQJB2qQcSuJt/view" },
+    { name: "Advent of Cyber", issuer: "TryHackMe", year: "2023, 2025", status: "", url: "https://drive.google.com/file/d/14oS0UMAs2i_Tpg1qxue56YKdQgNQV7ED/view" },
+    { name: "Practical Ethical Hacking", issuer: "TCM Security", year: "2024", status: "", url: "https://drive.google.com/file/d/1RlF6sWO6n0KrmY_BC-iOStDghOD3elSQ/view" },
+    { name: "Practical Web App Penetration Testing", issuer: "TCM Security", year: "2024", status: "", url: "https://drive.google.com/file/d/1jd3WiqBs_8ZlITE3XoE-h6NCZ5X1Ywks/view" },
+    { name: "Practical Web Hacking", issuer: "TCM Security", year: "2024", status: "", url: "https://drive.google.com/file/d/1mYYeCWeE8bAZDGc9m6f2L1qKh1MA40up/view" },
+    { name: "IT Support Specialist", issuer: "Google", year: "2023", status: "", url: "https://drive.google.com/file/d/1RB5ehE_-DovC1sgoII2FhV55qoF9Zdgr/view" }
 ];
 
 const ctfData = [
-    // === RED TEAM / OFFENSIVE ===
     { title: "Tartarus", type: "red", desc: "Android dummy APK & root access", url: "https://nickel-bedbug-8cc.notion.site/Tartarus-c50bfdc57e7d4cce8489d5fe989e4dc2" },
     { title: "Exodus", type: "red", desc: "NFS Enumeration, Webmin Exploit", url: "https://nickel-bedbug-8cc.notion.site/Exodus-100416e03a138073ba4cd8a5f721751f" },
     { title: "Laboum", type: "red", desc: "OSINT & Reverse Engineering", url: "https://nickel-bedbug-8cc.notion.site/Laboum-129416e03a1380bdbad4d3f15fb34af3" },
@@ -106,8 +51,6 @@ const ctfData = [
     { title: "Atulieer", type: "red", desc: "JWT Modification", url: "https://nickel-bedbug-8cc.notion.site/Atulieer-fdd3d8ac7a4f4ba4847550b8fdd46409" },
     { title: "Zeus", type: "red", desc: "SMB Enumeration Windows", url: "https://nickel-bedbug-8cc.notion.site/Zeus-aa5bb955bf1e4271ab303cc428c49fad" },
     { title: "Ariadne", type: "red", desc: "FTP Enumeration", url: "https://nickel-bedbug-8cc.notion.site/Ariadne-100416e03a1380969762d25c3cd1c9e5" },
-
-    // === BLUE TEAM / DEFENSIVE ===
     { title: "Deviasi", type: "blue", desc: "Deep Log Analysis & IOCs", url: "https://nickel-bedbug-8cc.notion.site/Deviasi-Hacktrace-Ranges-2a0416e03a1380babf06e961fa506f1a" },
     { title: "Undercover", type: "blue", desc: "Binary Investigation APT", url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543" },
     { title: "BluuShell", type: "blue", desc: "Malicious DOCX Forensics", url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0" },
@@ -136,209 +79,422 @@ const ctfData = [
     { title: "Volatify", type: "blue", desc: "Memory Forensics", url: "https://docs.google.com/document/d/1a0vIHmZ3PQi-7ZOk16lcNCtavdavIwR-/edit?usp=sharing&ouid=112970802675533255155&rtpof=true&sd=true"},
 ];
 
-// === LOGIC ===
-
+// ── INIT ──────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    renderProjects('all');
-    renderCTF(ctfData);
-    renderCerts();
-    initTyping();
+    initLoader();          
+    initLenis();           
+    initCursor();          
     initMobileMenu();
-    initBackground();
+    initTyping();
+    initHeroNoise();
+    renderProjects('all');
+    renderCerts();
+    renderCTF(ctfData);
+    initFilterTabs();
+    
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', searchCTF);
+    }
 });
 
-// Theme Toggle
-function toggleTheme() {
-    const html = document.documentElement;
-    if (html.getAttribute('data-theme') === 'dark') {
-        html.setAttribute('data-theme', 'light');
-    } else {
-        html.setAttribute('data-theme', 'dark');
-    }
+function initGSAP() {
+    if (typeof gsap === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+    initParallaxTypography(); 
+    initScrollReveal();       
+    initManifestoScroll();
+    initShuffleHover();    
+    initSmoothScroll();
 }
 
-// Background Animation (Purple Network)
-function initBackground() {
-    const canvas = document.getElementById('networkCanvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
+// ── 1. LENIS — Smooth Scroll ─────────────
+function initLenis() {
+    if (typeof Lenis === 'undefined') return;
+    const lenis = new Lenis({
+        duration: 1.2, 
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+        smoothWheel: true,
+        wheelMultiplier: 1.0, 
+        touchMultiplier: 2.0,
+    });
+
+    lenis.on('scroll', () => { if (window.ScrollTrigger) ScrollTrigger.update(); });
+    if (typeof gsap !== 'undefined') {
+        gsap.ticker.add(time => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+    }
+    window._lenis = lenis;
+}
+
+// ── 2. LOADER ────────────────────────────────────────
+function initLoader() {
+    const loader  = document.getElementById('loader');
+    const bar     = document.getElementById('loaderBar');
+    const pct     = document.getElementById('loaderPct');
+    const sub     = document.getElementById('loaderSub');
+    const label   = document.getElementById('loaderLabel');
+    if (!loader) return;
+
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&';
+    const stages = [
+        { at:  0, lbl: 'INITIALIZING',         sub: 'BOOTING SECURITY MODULES'  },
+        { at: 20, lbl: 'LOADING ARSENAL',       sub: 'IMPORTING OFFENSIVE TOOLS'  },
+        { at: 45, lbl: 'CONFIGURING SIEM',      sub: 'TUNING AQL CORRELATION RULES' },
+        { at: 65, lbl: 'THREAT HUNTING',        sub: 'SCANNING FOR ANOMALIES'     },
+        { at: 82, lbl: 'COMPILING WRITEUPS',    sub: '50+ DOCUMENTED FINDINGS'    },
+        { at: 95, lbl: 'HANDSHAKE',             sub: 'ESTABLISHING CONNECTION'    },
+        { at:100, lbl: 'ACCESS GRANTED',        sub: 'WELCOME, OPERATOR'          },
+    ];
+
+    function shuffle(el, target, duration = 600) {
+        const frames = Math.round(duration / 30);
+        let frame = 0;
+        const timer = setInterval(() => {
+            frame++;
+            const progress = frame / frames;
+            const resolved = Math.floor(progress * target.length);
+            el.textContent =
+                target.slice(0, resolved) +
+                Array.from({ length: target.length - resolved }, () =>
+                    CHARS[Math.floor(Math.random() * CHARS.length)]
+                ).join('');
+            if (frame >= frames) {
+                el.textContent = target;
+                clearInterval(timer);
+            }
+        }, 30);
+    }
+
+    let cur = 0, si = 0;
+    document.body.style.overflow = 'hidden';
+
+    const tick = setInterval(() => {
+        const speed = cur < 40 ? 1.5 : cur < 75 ? 0.65 : 1.9;
+        cur = Math.min(100, cur + speed * (Math.random() * .8 + .5));
+        bar.style.width = cur + '%';
+        pct.textContent = Math.floor(cur) + '%';
+
+        for (let i = stages.length - 1; i >= 0; i--) {
+            if (cur >= stages[i].at && si <= i) {
+                si = i;
+                shuffle(label, stages[i].lbl, 400);
+                sub.textContent = stages[i].sub;
+                break;
+            }
+        }
+
+        if (cur >= 100) {
+            clearInterval(tick);
+            setTimeout(() => {
+                loader.classList.add('out');
+                document.body.style.overflow = '';
+                setTimeout(initGSAP, 100);
+            }, 500);
+        }
+    }, 30);
+}
+
+// ── 3. CURSOR ───────────────────────
+function initCursor() {
+    const dot  = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (!dot || !ring) return;
+
+    let rx = 0, ry = 0, mx = -100, my = -100; 
+    let isHovering = false;
+
+    document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.transform = `translate3d(${mx - 2.5}px, ${my - 2.5}px, 0)`;
+    });
+
+    document.addEventListener('mouseover', e => {
+        const t = e.target.closest('a, button, .wave-target, .proj-item, .cert-item, .ctf-item');
+        if (t && !isHovering) {
+            isHovering = true;
+            ring.style.width  = '56px';
+            ring.style.height = '56px';
+            ring.style.borderColor = 'var(--purple)';
+        }
+    });
     
-    const setCanvasSize = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    };
-    setCanvasSize();
-    window.addEventListener('resize', setCanvasSize);
-
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.radius = Math.random() * 2;
+    document.addEventListener('mouseout', e => {
+        const t = e.target.closest('a, button, .wave-target, .proj-item, .cert-item, .ctf-item');
+        if (t && isHovering) {
+            isHovering = false;
+            ring.style.width  = '30px';
+            ring.style.height = '30px';
+            ring.style.borderColor = 'rgba(157,0,255,.45)';
         }
-        
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-        }
-        
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            const style = getComputedStyle(document.documentElement);
-            const color = style.getPropertyValue('--text-muted').trim() || '#666';
-            ctx.fillStyle = color;
-            ctx.fill();
-        }
-    }
+    });
 
-    for (let i = 0; i < 60; i++) {
-        particles.push(new Particle());
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        particles.forEach((p1, i) => {
-            particles.slice(i + 1).forEach(p2 => {
-                const dx = p1.x - p2.x;
-                const dy = p1.y - p2.y;
-                const dist = Math.sqrt(dx*dx + dy*dy);
-                
-                if (dist < 120) {
-                    ctx.beginPath();
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    const style = getComputedStyle(document.documentElement);
-                    const color = style.getPropertyValue('--border').trim() || '#222';
-                    ctx.strokeStyle = color;
-                    ctx.stroke();
-                }
-            });
-        });
-        
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
-        requestAnimationFrame(animate);
-    }
-    animate();
+    (function loop() {
+        rx += (mx - rx) * 0.15; 
+        ry += (my - ry) * 0.15;
+        ring.style.transform = `translate3d(${rx - 15}px, ${ry - 15}px, 0)`;
+        requestAnimationFrame(loop);
+    })();
 }
 
-// Mobile Menu
+// ── 4. PARALLAX & BREAKOUT TYPOGRAPHY ──────────────────────────────────
+function initParallaxTypography() {
+    const line1 = document.querySelector('.line-1'); 
+    const line2 = document.querySelector('.line-2'); 
+
+    if (line1) {
+        gsap.to(line1, {
+            x: -150, y: -100, 
+            scale: 1.15, opacity: 0,
+            ease: 'none',
+            scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
+        });
+    }
+    if (line2) {
+        gsap.to(line2, {
+            x: 150, y: 100,   
+            scale: 1.15, opacity: 0,
+            ease: 'none',
+            scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
+        });
+    }
+
+    document.querySelectorAll('.big-heading').forEach(el => {
+        gsap.fromTo(el,
+            { yPercent: 6 },
+            { yPercent: -6, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 1.2 } }
+        );
+    });
+}
+
+// ── 5. SCROLL REVEAL (BLUR/LOADED EFFECT FADE IN BAWAH) ─────────────────────────
+function initScrollReveal() {
+    const elements = gsap.utils.toArray('.section-tag, .career-item, .stat-row, .skill-row, .proj-item, .cert-item, .ctf-item, .body-text');
+    
+    elements.forEach((el, i) => {
+        gsap.fromTo(el, 
+            { opacity: 0, y: 50, filter: 'blur(8px)' }, 
+            { 
+                opacity: 1, y: 0, filter: 'blur(0px)', 
+                duration: 0.85, ease: 'power3.out', 
+                scrollTrigger: { 
+                    trigger: el, 
+                    start: 'top 85%', 
+                    toggleActions: 'play none none reverse' 
+                } 
+            }
+        );
+    });
+}
+
+// ── 6. MANIFESTO ─────────────────
+function initManifestoScroll() {
+    const words = [...document.querySelectorAll('.mw')];
+    if (!words.length) return;
+
+    function update() {
+        const vh  = window.innerHeight;
+        const top = vh * 0.22;
+        const bot = vh * 0.80;
+
+        words.forEach((w, i) => {
+            const rect = w.getBoundingClientRect();
+            const mid  = rect.top + rect.height / 2;
+            const inZone = mid > top && mid < bot;
+            const delay  = i * 55;
+            if (inZone) {
+                w.style.transition = `opacity .5s ease ${delay}ms, color .5s ease ${delay}ms`;
+                w.classList.add('lit');
+            } else {
+                w.style.transition = 'opacity .35s ease, color .35s ease';
+                w.classList.remove('lit');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+}
+
+// ── SHUFFLE HOVER ──────────────────────────────────────
+const SCHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%';
+
+function initShuffleHover() {
+    document.querySelectorAll('.wave-target').forEach(el => {
+        const original = el.innerHTML;
+        let timer = null;
+
+        el.addEventListener('mouseenter', () => {
+            if (timer) return;
+            let frame = 0;
+            const totalFrames = 10;
+            timer = setInterval(() => {
+                frame++;
+                const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+                let node;
+                while ((node = walker.nextNode())) {
+                    const orig = node.textContent;
+                    node.textContent = orig.split('').map(ch =>
+                        ch === ' ' || ch === '\n' ? ch
+                        : frame > totalFrames * 0.7
+                            ? ch
+                            : SCHARS[Math.random() * SCHARS.length | 0]
+                    ).join('');
+                }
+                if (frame >= totalFrames) {
+                    clearInterval(timer);
+                    timer = null;
+                    el.innerHTML = original; 
+                }
+            }, 40);
+        });
+
+        el.addEventListener('mouseleave', () => {
+            if (timer) { clearInterval(timer); timer = null; }
+            el.innerHTML = original; 
+        });
+    });
+}
+
+// ── 7. NAVBAR LINKS SMOOTH SCROLL (FIXED) ───────────────────────────────────────
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const targetId = a.getAttribute('href');
+            if (targetId === '#') return; // Lewati kalau href cuma '#'
+
+            const targetElement = document.querySelector(targetId);
+            if (!targetElement) return; // Lewati kalau elemen gak ada
+
+            e.preventDefault(); // Mencegah lompatan standar browser
+
+            // Scroll mulus pake Lenis (Offset -80 biar gak ketutup navbar dan fade mask)
+            if (window._lenis) {
+                window._lenis.scrollTo(targetElement, { offset: -80, duration: 1.2 });
+            } else {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Tutup menu drawer di HP kalau lagi kebuka
+            const drawer = document.getElementById('mobileDrawer');
+            if (drawer) drawer.classList.remove('open');
+        });
+    });
+
+    // Logo Balik Ke Atas
+    document.getElementById('navSite')?.addEventListener('click', () => {
+        window._lenis ? window._lenis.scrollTo(0, { duration: 1.2 })
+                      : window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+// ── MOBILE MENU ────────────────────────────────────────────────────────
 function initMobileMenu() {
     const toggle = document.getElementById('navToggle');
     const drawer = document.getElementById('mobileDrawer');
-    toggle.addEventListener('click', () => {
-        drawer.classList.toggle('active');
-    });
-    drawer.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => drawer.classList.remove('active'));
-    });
+    if (!toggle || !drawer) return;
+    toggle.addEventListener('click', () => drawer.classList.toggle('open'));
+    drawer.querySelectorAll('a').forEach(a =>
+        a.addEventListener('click', () => drawer.classList.remove('open'))
+    );
 }
 
-// Typing Effect
+// ── TYPING ─────────────────────────────────────────────────────────────
 function initTyping() {
     const roles = [
-  "Pragmatic Red Team Operator",
-  "Earned Through Repetition",
-  "Security Analyst @ MPM",
-  "Relentless CTF Player",
-  "Purple on Purpose",
-  "innovative SOC Engineer",
-  "Slow Burn Builder",
-  "Chasing Depth",
-  "Still Becoming",
-];
-    let i = 0, j = 0, currentRole = "", isDeleting = false;
-    const el = document.getElementById('typed-role');
-
-    function type() {
-        if (i < roles.length) {
-            if (!isDeleting && j <= roles[i].length) {
-                currentRole = roles[i].substring(0, j++);
-                el.textContent = currentRole;
-            } else if (isDeleting && j >= 0) {
-                currentRole = roles[i].substring(0, j--);
-                el.textContent = currentRole;
-            }
-
-            if (!isDeleting && j === roles[i].length + 1) {
-                isDeleting = true;
-                setTimeout(type, 1000); return;
-            } else if (isDeleting && j === 0) {
-                isDeleting = false;
-                i = (i + 1) % roles.length;
-            }
-        }
-        setTimeout(type, isDeleting ? 50 : 100);
-    }
-    type();
+        'Purple Team Practitioner',
+        'Security Analyst @ MPM',
+        'Relentless CTF Player',
+        'Earned Through Repetition',
+        'Purple on Purpose',
+        'Threat Hunter',
+        'Slow Burn Builder',
+        'Still Becoming',
+    ];
+    let i = 0, j = 0, del = false;
+    const el = document.getElementById('typedRole');
+    if (!el) return;
+    (function type() {
+        const w = roles[i];
+        if (!del) { el.textContent = w.slice(0, ++j); if (j > w.length) { del = true; return setTimeout(type, 1300); } }
+        else       { el.textContent = w.slice(0, --j); if (j < 0) { del = false; i = (i+1)%roles.length; } }
+        setTimeout(type, del ? 40 : 80);
+    })();
 }
 
-// Render Projects
+// ── HERO NOISE ─────────────────────────────────────────────────────────
+function initHeroNoise() {
+    const el = document.getElementById('heroNoise');
+    if (!el) return;
+    const chars = '!@#$%^&*()_+-=[]{}|;:.<>?/~`abcdefABCDEF0123456789';
+    el.textContent = Array.from({length:1200}, () => chars[Math.random()*chars.length|0]).join('');
+}
+
+// ── FILTER TABS ────────────────────────────────────────────────────────
+function initFilterTabs() {
+    document.querySelectorAll('.ftab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderProjects(btn.dataset.filter);
+        });
+    });
+}
+
+// ── RENDER PROJECTS ────────────────────────────────────────────────────
 function renderProjects(filter) {
     const grid = document.getElementById('projectsGrid');
-    let data = projectsData;
-    if (filter !== 'all') data = projectsData.filter(p => p.type === filter);
-
+    if (!grid) return;
+    const data = filter === 'all' ? projectsData : projectsData.filter(p => p.type === filter);
     grid.innerHTML = data.map(p => `
-        <a href="${p.url}" target="_blank" class="pro-card ${p.type}">
+        <a href="${p.url}" target="_blank" class="proj-item ${p.type}">
             <div>
-                <span class="pro-type">${p.type === 'red' ? '// OFFENSIVE' : '// DEFENSIVE'}</span>
-                <h3 class="pro-title">${p.title}</h3>
-                <p class="pro-desc">${p.desc}</p>
+                <span class="proj-badge">${p.type === 'red' ? '// OFFENSIVE' : '// DEFENSIVE'}</span>
+                <div class="proj-title">${p.title}</div>
+                <p class="proj-desc">${p.desc}</p>
+                <div class="proj-tags">${p.tags.map(t => `<span class="ptag">${t}</span>`).join('')}</div>
             </div>
-            <div class="pro-tags">
-                ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
-            </div>
+            <div class="proj-arrow">→</div>
         </a>
     `).join('');
+    
+    if (typeof gsap !== 'undefined') {
+        gsap.fromTo('.proj-item', 
+            { opacity: 0, y: 20 }, 
+            { opacity: 1, y: 0, stagger: 0.05, duration: 0.5, ease: 'power2.out' }
+        );
+    }
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
 }
 
-function filterProjects(type) {
-    document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    renderProjects(type);
-}
-
-// Render Certs
+// ── RENDER CERTS ───────────────────────────────────────────────────────
 function renderCerts() {
     const grid = document.getElementById('certsGrid');
+    if (!grid) return;
     grid.innerHTML = certsData.map(c => `
-        <a href="${c.url}" target="_blank" class="cert-card">
-            <div class="cert-icon">⏻</div>
-            <div class="cert-info">
-                <h3>${c.name} ${c.status ? `<span style="color:var(--purple-primary);font-size:0.8rem;">(${c.status})</span>` : ''}</h3>
-                <p>${c.issuer} • ${c.year}</p>
-            </div>
+        <a href="${c.url}" target="_blank" class="cert-item">
+            ${c.status ? `<div class="cert-status">${c.status}</div>` : ''}
+            <div class="cert-name">${c.name}</div>
+            <div class="cert-meta">${c.issuer} · ${c.year}</div>
         </a>
     `).join('');
 }
 
-// Render CTF
+// ── RENDER CTF ─────────────────────────────────────────────────────────
 function renderCTF(data) {
     const grid = document.getElementById('ctfGrid');
+    if (!grid) return;
     grid.innerHTML = data.map(c => `
-        <a href="${c.url}" target="_blank" class="ctf-card ${c.type}">
-            <div class="ctf-info">
-                <h3>${c.title}</h3>
-                <p>${c.desc}</p>
-            </div>
-            <div class="ctf-badge ${c.type}">
-                ${c.type === 'red' ? 'ROOTED' : 'ANALYZED'}
-            </div>
+        <a href="${c.url}" target="_blank" class="ctf-item ${c.type}">
+            <div><h3>${c.title}</h3><p>${c.desc}</p></div>
+            <div class="ctf-badge ${c.type}">${c.type === 'red' ? 'ROOTED' : 'ANALYZED'}</div>
         </a>
     `).join('');
 }
 
 function searchCTF() {
     const term = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = ctfData.filter(c => c.title.toLowerCase().includes(term) || c.desc.toLowerCase().includes(term));
-    renderCTF(filtered);
+    renderCTF(ctfData.filter(c =>
+        c.title.toLowerCase().includes(term) || c.desc.toLowerCase().includes(term)
+    ));
 }

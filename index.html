@@ -1,190 +1,225 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRWBCY | Security Operator</title>
+    <title>TRWBCY - Security Operator</title>
     <meta name="description" content="Tri Wibowo Cahyo - Purple Team Security Specialist. Top 5 Indonesia.">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2L4 7v9c0 7 5.4 13.5 12 15 6.6-1.5 12-8 12-15V7L16 2z' fill='%239d00ff'/%3E%3Cpath d='M11 16l3.5 3.5L21 12' stroke='%23f0ece4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- redeploy -->
-    <!-- ANIMATED BACKGROUND -->
-    <canvas id="networkCanvas"></canvas>
 
-    <!-- NAVIGATION -->
-    <nav class="navbar">
-        <!-- Logo Kiri (Absolute) -->
-        <div class="nav-logo">
-            <a href="#home">root@trwbcy:~#</a>
-        </div>
-        
-        <!-- Menu Tengah (Normal Flow) -->
-        <div class="nav-menu" id="navMenu">
-            <a href="#stats">./stats</a>
-            <a href="#career">./career</a>
-            <a href="#projects">./projects</a>
-            <a href="#certs">./certs</a>
-            <a href="#ctf">./CTFs</a>
-        </div>
-
-        <!-- Tombol Kanan (Absolute Pojok) -->
-        <div class="nav-actions">
-            <div class="theme-switch">
-                <input type="checkbox" id="slider" onchange="toggleTheme()">
-                <label for="slider" class="icons"></label>
+    <div class="loader" id="loader">
+        <div class="loader-inner">
+            <div class="loader-shield">
+                <svg viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 2L3 11v16c0 11.2 8.9 21.7 21 24 12.1-2.3 21-12.8 21-24V11L24 2z" stroke="#9d00ff" stroke-width="1.5"/>
+                    <path d="M24 2L3 11v16c0 11.2 8.9 21.7 21 24 12.1-2.3 21-12.8 21-24V11L24 2z" fill="#9d00ff" opacity="0.08"/>
+                    <path d="M15 28l6 6 12-14" stroke="#9d00ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
             </div>
+            <div class="loader-label" id="loaderLabel">INITIALIZING</div>
+            <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
+            <div class="loader-pct" id="loaderPct">0%</div>
+            <div class="loader-sub" id="loaderSub">LOADING SECURITY MODULES...</div>
         </div>
-
-        <!-- Hamburger Mobile -->
-        <div class="nav-toggle" id="navToggle">
-            <span></span><span></span><span></span>
-        </div>
-    </nav>
-
-    <!-- MOBILE MENU -->
-    <div class="mobile-drawer" id="mobileDrawer">
-        <a href="#stats">./stats</a>
-        <a href="#career">./career</a>
-        <a href="#projects">./projects</a>
-        <a href="#certs">./certs</a>
-        <a href="#ctf">./CTFs</a>
     </div>
 
-    <!-- HERO SECTION -->
-    <header id="home" class="hero">
-        <div class="hero-bg">
-            <div class="vignette"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <nav class="nav">
+        <div class="nav-site" id="navSite">TRWBCY</div>
+        <div class="nav-links" id="navLinks">
+            <a href="#about">/ ABOUT</a>
+            <a href="#career">/ CAREER</a>
+            <a href="#projects">/ PROJECTS</a>
+            <a href="#certs">/ CERTS</a>
+            <a href="#ctf">/ CTF</a>
         </div>
-        <div class="hero-content">
-            <div class="intro-tag"><span class="bracket">[</span> SYSTEM INITIALIZED <span class="bracket">]</span></div>
-            <h1>TRI WIBOWO <span class="highlight">CAHYO</span></h1>
-            <div class="typed-text">
-                <span id="typed-role"></span><span class="cursor">_</span>
-            </div>
-            <p class="hero-desc">
-                Purple Team Practitioner. Breaking systems to defend them better.
-                <br>Ranked <strong>Top 5 Indonesia</strong> in Major CTF Platforms.
-            </p>
+        <div class="nav-vol">VOL. 1 / 2026</div>
+        <button class="nav-toggle" id="navToggle">☰</button>
+    </nav>
+
+    <div class="nav-fade-mask"></div>
+
+    <div class="mobile-drawer" id="mobileDrawer">
+        <a href="#about">/ ABOUT</a>
+        <a href="#career">/ CAREER</a>
+        <a href="#projects">/ PROJECTS</a>
+        <a href="#certs">/ CERTS</a>
+        <a href="#ctf">/ CTF</a>
+    </div>
+
+    <section class="hero" id="home">
+        <div class="hero-meta">
+            <span>/ SECURITY OPERATOR / P. 001</span>
+            <span class="hero-meta-right">↓ SCROLL TO BREACH IN</span>
+        </div>
+        <div class="hero-name">
+            <div class="name-line line-1 wave-target">TRI WIBOWO</div>
+            <div class="name-line line-2 name-purple wave-target">CAHYO<span class="dot-accent">.</span></div>
+        </div>
+        <div class="hero-bottom">
+            <div class="hero-role">/ <span id="typedRole"></span><span class="blink-cursor">_</span></div>
             <div class="hero-actions">
-                <a href="#projects" class="btn-exec">Execute Projects</a>
-                <a href="https://drive.google.com/file/d/1BshW219vILkUJiSZLRxfLZhq_xSkkrX4" class="btn-ghost">Download Resume</a>
+                <a href="#projects" class="btn-primary">EXECUTE PROJECTS →</a>
+                <a href="https://drive.google.com/uc?export=download&id=1xpfOvO4yjdRtsnEi42iKO6JmLCNEK58H" class="btn-ghost">DOWNLOAD CV ↗</a>
             </div>
         </div>
-    </header>
+        <div class="hero-noise" id="heroNoise" aria-hidden="true"></div>
+    </section>
 
-    <!-- SYSTEM STATS -->
-    <section id="stats" class="container">
-        <div class="section-title"><span class="hash">#</span> SYSTEM_STATUS</div>
-        <div class="stats-grid">
-            <div class="stat-box">
-                <div class="stat-label">TRYHACKME_RANK</div>
-                <div class="stat-val">#4<span class="unit">ID</span></div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">HACKTRACE_DEFENSE</div>
-                <div class="stat-val">#5<span class="unit">ID</span></div>
-            </div>
-            <div class="stat-box accent">
-                <div class="stat-label">HACKTRACE_OFFENSIVE</div>
-                <div class="stat-val">#33<span class="unit">ID</span></div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">SOC_EVENTS</div>
-                <div class="stat-val">10K+<span class="unit">DAILY</span></div>
-            </div>
+    <section class="manifesto" id="manifesto">
+        <div class="section-tag">/ MANIFESTO / P. 002</div>
+        <div class="manifesto-body" id="manifestoBody">
+            <div class="m-line"><span class="mw">BREAK</span> <span class="mw">IT.</span> <span class="mw">UNDERSTAND</span> <span class="mw">IT.</span> <span class="mw">DEFEND</span> <span class="mw">IT.</span></div>
+            <div class="m-line"><span class="mw">SECURITY</span> <span class="mw">IS</span> <span class="mw">NOT</span> <span class="mw">A</span> <span class="mw">PRODUCT.</span> <span class="mw">IT&#39;S</span> <span class="mw">A</span> <span class="mw">PRACTICE.</span></div>
         </div>
     </section>
 
-    <!-- CAREER LOG -->
-    <section id="career" class="container">
-        <div class="section-title"><span class="hash">#</span> CAREER_LOG</div>
-        <div class="timeline">
-            <!-- Job 1 -->
-            <div class="log-entry current">
-                <div class="log-time">2025-PRESENT</div>
-                <div class="log-content">
-                    <div class="job-header">
-                        <span class="role">Security Analyst</span>
-                        <span class="company">@ PT Mitra Pinasthika Mulia</span>
-                    </div>
-                    <div class="job-log-details">
-                        <p>[+] Monitor and analyze <strong>10,000+ daily security events</strong> using IBM QRadar SIEM with custom AQL query development, reducing false positives by <strong>40%</strong>.</p>
-                        <p>[+] Designed and implemented standardized incident summary documentation for TheHive SOAR, improving MTTR by <strong>25%</strong>.</p>
-                        <p>[+] Orchestrate automated incident response reducing manual intervention by <strong>60%</strong>.</p>
-                        <p>[+] Conduct proactive manual threat hunting identifying sophisticated attacks including malicious user agents, LOLBin abuse, and data exfiltration.</p>
-                    </div>
-                </div>
+    <section class="section" id="about">
+        <div class="section-tag">/ SYSTEM STATUS / P. 003</div>
+        <div class="split-layout">
+            <div class="split-left">
+                <div class="big-heading wave-target">WHAT<br>I <span class="accent">HUNT.</span></div>
+                <p class="body-text">Purple Team Practitioner. Breaking systems to defend them better. SOC Analyst with offensive roots — currently defending enterprise environments while building detection capabilities grounded in red team methodology.</p>
+                <p class="body-text">Ranked <strong>Top 5 Indonesia</strong> across major defensive security platforms. 500+ active learning days. Still becoming.</p>
             </div>
-            <!-- Job 2 -->
-            <div class="log-entry red">
-                <div class="log-time">2025</div>
-                <div class="log-content">
-                    <div class="job-header">
-                        <span class="role">Red Team Intern</span>
-                        <span class="company">@ Hack Secure</span>
-                    </div>
-                    <div class="job-log-details">
-                        <p>[!] Executed comprehensive penetration testing operations across <strong>15+ target systems</strong> using Nmap, Burp Suite, SQLMap, Metasploit.</p>
-                        <p>[!] Performed advanced adversary simulation exercises utilizing Metasploit, Empire, and Sliver C2 frameworks, successfully demonstrating <strong>8 full system compromises</strong>.</p>
-                        <p>[!] Delivered 10+ actionable security assessment reports documenting vulnerabilities, exploitation techniques, and CVSS scoring.</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Job 3 -->
-            <div class="log-entry">
-                <div class="log-time">2023-2025</div>
-                <div class="log-content">
-                    <div class="job-header">
-                        <span class="role">L2 Support Engineer</span>
-                        <span class="company">@ PT Solusi247</span>
-                    </div>
-                    <div class="job-log-details">
-                        <p>[+] Delivered critical L2 technical support for AI/ML platforms (Apache Airflow, Cloudera, Hadoop ecosystem) using SQL, Bash, and Python.</p>
-                        <p>[+] Performed systematic root cause analysis across <strong>500+ monthly tickets</strong>.</p>
-                        <p>[+] Managed high-pressure incident escalations maintaining <strong>98% resolution rate</strong>.</p>
-                        <p>[+] Automated system troubleshooting workflows, reducing MTTR by <strong>35%</strong>.</p>
-                    </div>
+            <div class="split-right">
+                <div class="stats-stack">
+                    <div class="stat-row"><span class="stat-key">TRYHACKME_RANK</span><span class="stat-val">#4 <em>ID</em></span></div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-row"><span class="stat-key">HACKTRACE_DEFENSE</span><span class="stat-val">#5 <em>ID</em></span></div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-row"><span class="stat-key">HACKTRACE_OFFENSIVE</span><span class="stat-val">#33 <em>ID</em></span></div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-row"><span class="stat-key">SOC_EVENTS_DAILY</span><span class="stat-val">10K+ <em>ALERTS</em></span></div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-row"><span class="stat-key">WRITEUPS_PUBLISHED</span><span class="stat-val">50+ <em>DOCS</em></span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PROJECT MODULES -->
-    <section id="projects" class="container">
-        <div class="section-title"><span class="hash">#</span> PROJECT_MODULES</div>
-        <div class="filter-tabs">
-            <button class="tab active" onclick="filterProjects('all')">ALL</button>
-            <button class="tab" onclick="filterProjects('red')">OFFENSIVE</button>
-            <button class="tab" onclick="filterProjects('blue')">DEFENSIVE</button>
+    <section class="section" id="career">
+        <div class="section-tag">/ CAREER LOG / P. 004</div>
+        <div class="big-heading wave-target">WHAT<br>I <span class="accent">OPERATE.</span></div>
+        <div class="career-list">
+            <div class="career-item career-current reveal">
+                <div class="career-meta">
+                    <span class="career-badge badge-purple">CURRENT</span>
+                    <span class="career-date">2025 — PRESENT</span>
+                </div>
+                <div class="career-body">
+                    <div class="career-role">Security Analyst</div>
+                    <div class="career-company">PT Mitra Pinasthika Mulia</div>
+                    <div class="career-details">
+                        <p>[+] Monitor &amp; analyze <strong>10,000+ daily security events</strong> via IBM QRadar SIEM — custom AQL correlation rules reduced false positives by <strong>40%</strong>.</p>
+                        <p>[+] Designed 5W-based investigation framework for TheHive SOAR — improved MTTR by <strong>25%</strong> across team.</p>
+                        <p>[+] Conduct proactive Manual Threat Hunting — hypothesis to finding, documented per session.</p>
+                        <p>[+] Investigate incidents across Palo Alto Cortex XDR, MS Defender for O365, and NDR solutions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="career-item career-red reveal">
+                <div class="career-meta">
+                    <span class="career-badge badge-red">OFFENSIVE</span>
+                    <span class="career-date">APR — MAY 2025</span>
+                </div>
+                <div class="career-body">
+                    <div class="career-role">Red Team Intern</div>
+                    <div class="career-company">Hack Secure</div>
+                    <div class="career-details">
+                        <p>[!] Penetration testing across <strong>15+ target systems</strong> — Burp Suite, SQLMap, Metasploit.</p>
+                        <p>[!] Adversary simulation via Sliver C2 — <strong>10+ assessment reports</strong> with CVSS scoring.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="career-item reveal">
+                <div class="career-meta">
+                    <span class="career-badge badge-muted">PREV</span>
+                    <span class="career-date">2023 — 2025</span>
+                </div>
+                <div class="career-body">
+                    <div class="career-role">L2 Support Engineer</div>
+                    <div class="career-company">PT Solusi247</div>
+                    <div class="career-details">
+                        <p>[+] L2 support for AI/ML platforms — Apache Airflow, Cloudera, Hadoop — using SQL, Bash, Python.</p>
+                        <p>[+] RCA across <strong>500+ monthly tickets</strong>. MTTR reduced <strong>35%</strong>. 98% SLA compliance.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="projects-grid" id="projectsGrid"></div>
     </section>
 
-    <!-- CERTIFICATIONS -->
-    <section id="certs" class="container">
-        <div class="section-title"><span class="hash">#</span> CERTIFICATIONS_ACHIEVED</div>
-        <div class="certs-grid" id="certsGrid">
-            <!-- Populated by JS -->
+    <section class="section" id="skills">
+        <div class="section-tag">/ TECH STACK / P. 005</div>
+        <div class="skills-split">
+            <div class="skills-col">
+                <div class="skill-col-label badge-cyan">THE DEFENSE</div>
+                <div class="big-heading wave-target heading-cyan">WHAT I<br>DETECT.</div>
+                <div class="skill-table">
+                    <div class="skill-row"><span class="sk sk-cyan">SIEM</span><span class="sv">QRadar · Wazuh · Splunk</span></div>
+                    <div class="skill-row"><span class="sk sk-cyan">SOAR</span><span class="sv">TheHive · Cortex</span></div>
+                    <div class="skill-row"><span class="sk sk-cyan">EDR/XDR</span><span class="sv">Palo Alto Cortex · MS Defender</span></div>
+                    <div class="skill-row"><span class="sk sk-cyan">NDR</span><span class="sv">Suricata · Zeek</span></div>
+                    <div class="skill-row"><span class="sk sk-cyan">FRAMEWORK</span><span class="sv">MITRE ATT&amp;CK</span></div>
+                </div>
+            </div>
+            <div class="skills-vdivider"></div>
+            <div class="skills-col">
+                <div class="skill-col-label badge-red">THE OFFENSE</div>
+                <div class="big-heading wave-target heading-red">WHAT I<br>BREAK.</div>
+                <div class="skill-table">
+                    <div class="skill-row"><span class="sk sk-red">WEB</span><span class="sv">Burp Suite · SQLMap · OWASP</span></div>
+                    <div class="skill-row"><span class="sk sk-red">AD</span><span class="sv">BloodHound · Mimikatz · Impacket</span></div>
+                    <div class="skill-row"><span class="sk sk-red">C2</span><span class="sv">Metasploit · Sliver</span></div>
+                    <div class="skill-row"><span class="sk sk-red">EVASION</span><span class="sv">LOLBins · Fileless · ETW Bypass</span></div>
+                    <div class="skill-row"><span class="sk sk-red">INFRA</span><span class="sv">Python · Bash · Docker · AWS</span></div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- CTF / EXPLOITS -->
-    <section id="ctf" class="container">
-        <div class="section-title"><span class="hash">#</span> HACKTRACE-RANGES_ARCHIVE</div>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="grep [machine_name]..." onkeyup="searchCTF()">
+    <section class="section" id="projects">
+        <div class="section-tag">/ PROJECT MODULES / P. 006</div>
+        <div class="big-heading wave-target">WHAT I<br><span class="accent">BUILT.</span></div>
+        <div class="filter-row">
+            <button class="ftab active" data-filter="all">ALL</button>
+            <button class="ftab" data-filter="red">OFFENSIVE</button>
+            <button class="ftab" data-filter="blue">DEFENSIVE</button>
         </div>
-        <div class="ctf-grid" id="ctfGrid"></div>
+        <div class="proj-list" id="projectsGrid"></div>
     </section>
 
-    <!-- FOOTER -->
+    <section class="section" id="certs">
+        <div class="section-tag">/ CERTIFICATIONS / P. 007</div>
+        <div class="big-heading wave-target">WHAT I<br><span class="accent">EARNED.</span></div>
+        <div class="cert-grid" id="certsGrid"></div>
+    </section>
+
+    <section class="section" id="ctf">
+        <div class="section-tag">/ HACKTRACE RANGES / P. 008</div>
+        <div class="big-heading wave-target">WHAT I<br><span class="accent">PWNED.</span></div>
+        <div class="ctf-search">
+            <input type="text" id="searchInput" placeholder="grep [machine_name]..." oninput="searchCTF()">
+        </div>
+        <div class="ctf-list" id="ctfGrid"></div>
+    </section>
+
     <footer class="footer">
-        <div class="footer-text">Connection established. &copy; 2025 TRWBCY</div>
+        <span>TRWBCY</span>
+        <span>Connection established. Still hunting.</span>
+        <span>© 2026</span>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    
     <script src="script.js"></script>
 </body>
 </html>
