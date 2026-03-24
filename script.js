@@ -77,7 +77,7 @@ const ctfData = [
     { title: "Keyboard Warrior", type: "blue", desc:"Malware Analysis", url: "https://docs.google.com/document/d/1n9O_sKtLHmfe_T4wEok8o_9h3orpX6zA/edit?usp=sharing&ouid=112970802675533255155&rtpof=true&sd=true"},
     { title: "Shortway", type: "blue", desc: "Malware Infection Analysis", url: "https://docs.google.com/document/d/1NV_NmB1Zby9emp42q3OGM4oxgGQbWb_S/edit?usp=sharing&ouid=112970802675533255155&rtpof=true&sd=true"},
     { title: "Volatify", type: "blue", desc: "Memory Forensics", url: "https://docs.google.com/document/d/1a0vIHmZ3PQi-7ZOk16lcNCtavdavIwR-/edit?usp=sharing&ouid=112970802675533255155&rtpof=true&sd=true"},
-    { title: "Subvert", type: "blue", desc: ".NET Malware Analysis & MSSQL Injection", url: "https://docs.google.com/document/d/1oWK7A_SfjVptXSFStPl0or7j-Z0o_mVT/edit?usp=sharing&ouid=112970802675533255155&rtpof=true&sd=true"}
+    { title: "Subvert", type: "blue", desc: ".NET Malware Analysis & MSSQL Injection", url: "https://drive.google.com/file/d/1d60zUDWBP3id0whogPcUE-_QtQ7vF1FM/view?usp=sharing"}
 ];
 
 // ── INIT ──────────────────────────────────────────────────────────────
