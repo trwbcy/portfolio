@@ -432,3 +432,143 @@ body::after {
     .manifesto-body { font-size:clamp(2rem,8vw,3.5rem); }
     .cert-grid { grid-template-columns:1fr; }
 }
+/* ── CTF STATS SECTION ─────────────────────────────── */
+.ctf-stats-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 4rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.ctf-platform-block {
+    flex: 1;
+    min-width: 280px;
+}
+
+.ctf-platform-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--purple);
+    margin-bottom: 1.2rem;
+    opacity: 0.8;
+}
+
+.ctf-tree {
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid var(--purple);
+    padding-left: 1.5rem;
+    gap: 0;
+}
+
+.ctf-tree-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(157,0,255,0.08);
+    position: relative;
+}
+
+.ctf-tree-row:last-child {
+    border-bottom: none;
+}
+
+.ctf-tree-row::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 50%;
+    width: 0.75rem;
+    height: 1px;
+    background: var(--purple);
+    opacity: 0.4;
+}
+
+.ctf-tree-branch { display: none; }
+
+.ctf-tree-key {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+
+.ctf-tree-val {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--fg);
+    text-align: right;
+}
+
+.ctf-tree-val em {
+    font-style: normal;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    opacity: 0.4;
+    margin-left: 5px;
+}
+
+.ctf-tree-val.accent {
+    color: var(--purple);
+}
+
+.ctf-total-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 4rem;
+    border-left: 1px solid rgba(157,0,255,0.15);
+}
+
+.ctf-total-num {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 10vw, 9rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--purple);
+    opacity: 0.15;
+    letter-spacing: -0.02em;
+}
+
+.ctf-total-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    opacity: 0.4;
+    line-height: 1.6;
+    margin-top: 0.5rem;
+}
+
+.ctf-footer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3rem;
+    opacity: 0.35;
+}
+
+.ctf-footer-line {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+.ctf-footer-text {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .ctf-stats-wrap { flex-direction: column; gap: 2rem; }
+    .ctf-total-block { border-left: none; border-top: 1px solid rgba(157,0,255,0.15); padding-left: 0; padding-top: 2rem; }
+}
