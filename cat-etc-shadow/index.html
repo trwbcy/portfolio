@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRWBCY — CTF Writeups Collection</title>
+    <meta name="description" content="Tri Wibowo Cahyo — Hacktrace Ranges CTF Writeups. Offensive & Defensive machine walkthroughs.">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="googlebot" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=IBM+Plex+Mono:wght@400;500&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2L4 7v9c0 7 5.4 13.5 12 15 6.6-1.5 12-8 12-15V7L16 2z' fill='%239d00ff'/%3E%3Cpath d='M11 16l3.5 3.5L21 12' stroke='%23f0ece4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="writeups.css">
+</head>
+<body>
+
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <nav class="nav">
+        <a class="nav-site" href="https://trwbcy.github.io/portfolio">TRWBCY</a>
+        <div class="nav-links">
+            <a href="https://trwbcy.github.io/portfolio">/ PORTFOLIO</a>
+            <a href="#" onclick="setFilter('red')">/ OFFENSIVE</a>
+            <a href="#" onclick="setFilter('blue')">/ DEFENSIVE</a>
+        </div>
+        <div class="nav-vol">WRITEUPS / 2026</div>
+        <button class="nav-toggle" id="navToggle">☰</button>
+    </nav>
+
+    <div class="nav-fade-mask"></div>
+
+    <div class="mobile-drawer" id="mobileDrawer">
+        <a href="https://trwbcy.github.io/portfolio">/ PORTFOLIO</a>
+        <a href="#" onclick="setFilter('red')">/ OFFENSIVE</a>
+        <a href="#" onclick="setFilter('blue')">/ DEFENSIVE</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero-meta">
+            <span>/ CTF WRITEUPS / HACKTRACE RANGES</span>
+            <span class="hero-meta-right">↓ BROWSE COLLECTION</span>
+        </div>
+        <div class="hero-title">WHAT I<br><span class="accent">PWNED.</span></div>
+        <p class="hero-sub">Documented walkthroughs from <strong>Hacktrace Ranges</strong> — offensive machines rooted & defensive scenarios analyzed. Each writeup details the full methodology from reconnaissance to exploitation or investigation.</p>
+        <a href="https://trwbcy.github.io/portfolio" class="hero-back">← BACK TO PORTFOLIO</a>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat-cell">
+            <div class="stat-label">TOTAL MACHINES</div>
+            <div class="stat-num" id="statTotal">53</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-label">OFFENSIVE</div>
+            <div class="stat-num accent-r" id="statOff">25 <em>ROOTED</em></div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-label">DEFENSIVE</div>
+            <div class="stat-num accent-c" id="statDef">28 <em>ANALYZED</em></div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-label">DEFENSE RANK</div>
+            <div class="stat-num">#5 <em>INDONESIA</em></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="controls-row">
+            <div class="search-wrap">
+                <input type="text" id="searchInput" placeholder="grep -i 'writeup' *" autocomplete="off">
+                <span class="search-icon">⌘K</span>
+            </div>
+            <div class="filter-tabs">
+                <button class="ftab active" data-filter="all">ALL</button>
+                <button class="ftab" data-filter="red">OFFENSIVE</button>
+                <button class="ftab" data-filter="blue">DEFENSIVE</button>
+            </div>
+        </div>
+        <div class="result-count" id="resultCount"></div>
+    </div>
+
+    <section class="writeups-section">
+        <div class="writeup-grid" id="writeupGrid"></div>
+    </section>
+
+    <footer class="footer">
+        <span>TRWBCY</span>
+        <span>Connection established. Still hunting.</span>
+        <span>© 2026</span>
+    </footer>
+
+    <script src="writeups.js"></script>
+</body>
+</html>
