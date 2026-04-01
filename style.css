@@ -534,7 +534,7 @@ body::after {
     font-weight: 900;
     line-height: 1;
     color: var(--purple);
-    opacity: 0.15;
+    opacity: 0.6;
     letter-spacing: -0.02em;
 }
 
