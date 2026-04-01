@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initTyping();
     initHeroNoise();
+    initPCBRain();
     renderProjects('all');
     renderCerts();
     renderCTF(ctfData);
@@ -500,4 +501,156 @@ function searchCTF() {
     renderCTF(ctfData.filter(c =>
         c.title.toLowerCase().includes(term) || c.desc.toLowerCase().includes(term)
     ));
+}
+
+// ── PCB RAIN EFFECT ───────────────────────────────────────────────────
+function initPCBRain() {
+    const canvas = document.getElementById('pcbRain');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let W, H;
+    const traces = [];
+    const MAX_TRACES = 45;
+    const PURPLE = { r: 157, g: 0, b: 255 };
+
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Trace {
+        constructor() { this.reset(); }
+
+        reset() {
+            const gridSize = 30 + Math.random() * 40;
+            this.x = Math.floor(Math.random() * W / gridSize) * gridSize;
+            this.y = -Math.random() * H * 0.5;
+            this.speed = 0.4 + Math.random() * 1.2;
+            this.lineWidth = 0.5 + Math.random() * 1;
+            this.alpha = 0.15 + Math.random() * 0.4;
+
+            this.segments = [];
+            this.totalLength = 0;
+            const numSegments = 3 + Math.floor(Math.random() * 5);
+
+            for (let i = 0; i < numSegments; i++) {
+                const isVertical = i % 2 === 0;
+                let len;
+                if (isVertical) {
+                    len = 40 + Math.random() * 120;
+                    this.segments.push({ dx: 0, dy: len, length: len });
+                } else {
+                    len = 15 + Math.random() * 50;
+                    const dir = Math.random() > 0.5 ? 1 : -1;
+                    this.segments.push({ dx: dir * len, dy: 0, length: len });
+                }
+                this.totalLength += len;
+            }
+
+            this.nodes = [];
+            if (Math.random() > 0.4) {
+                const nodeCount = 1 + Math.floor(Math.random() * 2);
+                for (let n = 0; n < nodeCount; n++) {
+                    this.nodes.push(Math.floor(Math.random() * (numSegments - 1)) + 1);
+                }
+            }
+
+            this.progress = 0;
+            this.fadeOut = false;
+            this.fadeAlpha = 1;
+        }
+
+        update() {
+            this.progress += this.speed * 2;
+            if (this.progress > this.totalLength) {
+                this.fadeOut = true;
+                this.fadeAlpha -= 0.008;
+            }
+            if (this.fadeAlpha <= 0) this.reset();
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.lineWidth = this.lineWidth;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            let cx = 0, cy = 0, drawn = 0;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+
+            for (let i = 0; i < this.segments.length; i++) {
+                const seg = this.segments[i];
+                const segEnd = drawn + seg.length;
+                if (drawn >= this.progress) break;
+
+                if (this.progress >= segEnd) {
+                    cx += seg.dx;
+                    cy += seg.dy;
+                    ctx.lineTo(cx, cy);
+                } else {
+                    const frac = (this.progress - drawn) / seg.length;
+                    cx += seg.dx * frac;
+                    cy += seg.dy * frac;
+                    ctx.lineTo(cx, cy);
+                }
+                drawn = segEnd;
+            }
+
+            const a = this.alpha * this.fadeAlpha;
+            ctx.strokeStyle = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, ${a})`;
+            ctx.stroke();
+
+            if (!this.fadeOut && this.progress < this.totalLength) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, ${a * 2})`;
+                ctx.shadowColor = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, 0.8)`;
+                ctx.shadowBlur = 8;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            if (this.nodes.length) {
+                let nx = 0, ny = 0, nd = 0;
+                for (let i = 0; i < this.segments.length; i++) {
+                    nx += this.segments[i].dx;
+                    ny += this.segments[i].dy;
+                    nd += this.segments[i].length;
+                    if (nd > this.progress) break;
+
+                    if (this.nodes.includes(i + 1)) {
+                        ctx.beginPath();
+                        ctx.arc(nx, ny, 2, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, ${a * 0.7})`;
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(nx, ny, 4, 0, Math.PI * 2);
+                        ctx.strokeStyle = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, ${a * 0.3})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            ctx.restore();
+        }
+    }
+
+    for (let i = 0; i < MAX_TRACES; i++) {
+        const t = new Trace();
+        t.y = -Math.random() * H;
+        t.progress = Math.random() * t.totalLength * 0.5;
+        traces.push(t);
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, W, H);
+        for (const t of traces) { t.update(); t.draw(); }
+        requestAnimationFrame(animate);
+    }
+    animate();
 }

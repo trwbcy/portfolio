@@ -31,6 +31,16 @@ body {
     position: relative;
 }
 
+/* PCB RAIN */
+#pcbRain {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+}
+
 /* MATTE PAPER GRAIN TEXTURE */
 body::after {
     content: "";
