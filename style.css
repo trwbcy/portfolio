@@ -1,18 +1,18 @@
 :root {
-    --black:   #141414; 
-    --black2:  #1b1b1b; 
+    --black:   #000000; 
+    --black2:  #0a0a0a; 
     --purple:  #9d00ff;
     --purple-g: rgba(157,0,255,.3);
     --purple-s: rgba(157,0,255,.07);
     --red:     #ff2244;
     --red-g:   rgba(255,34,68,.3);
     --cyan:    #00e5ff;
-    --white:   #f0ece4; 
-    --dim:     #6b6560; 
-    --border:  rgba(255,255,255,.05);
-    --mono:    'IBM Plex Mono', monospace;
-    --display: 'Barlow Condensed', sans-serif;
-    --body:    'Barlow', sans-serif;
+    --white:   #ffffff; 
+    --dim:     #8a8a8a; 
+    --border:  rgba(255,255,255,.07);
+    --mono:    'JetBrains Mono', monospace;
+    --display: 'Bebas Neue', sans-serif;
+    --body:    'Outfit', sans-serif;
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -95,7 +95,7 @@ body::after {
     width:6px; height:6px; border-radius:50%;
     background:var(--purple); box-shadow:0 0 8px var(--purple);
 }
-.loader-pct { font:900 3.5rem/1 var(--display); letter-spacing:-.02em; color:var(--white); }
+.loader-pct { font:400 3.5rem/1 var(--display); letter-spacing:-.02em; color:var(--white); }
 .loader-sub { font:.58rem/1 var(--mono); letter-spacing:.14em; color:var(--dim); text-align:center; min-height:1em; }
 
 /* CURSOR */
@@ -116,7 +116,7 @@ body::after {
 .nav {
     position:fixed; top:0; left:0; right:0; height:52px;
     display:flex; align-items:center; padding:0 40px;
-    background:rgba(20,20,20,.92);
+    background:rgba(0,0,0,.92);
     backdrop-filter:blur(8px); 
     border-bottom:1px solid rgba(157,0,255,.12);
     font:.7rem/1 var(--mono); letter-spacing:.08em;
@@ -162,8 +162,8 @@ body::after {
 .hero-name { flex:1; display:flex; flex-direction:column; justify-content:center; padding:24px 0; }
 
 .name-line {
-    font:900 clamp(5rem,12vw,13rem)/.87 var(--display);
-    letter-spacing:-.02em; text-transform:uppercase; color:var(--white);
+    font:400 clamp(5rem,12vw,13rem)/.87 var(--display);
+    letter-spacing:.02em; text-transform:uppercase; color:var(--white);
     animation: slideIn .9s cubic-bezier(.16,1,.3,1) both;
     display:block;
 }
@@ -208,7 +208,7 @@ body::after {
     max-width:1400px; margin:0 auto;
 }
 .manifesto-body {
-    font:900 clamp(2.8rem,6vw,6.5rem)/1.05 var(--display);
+    font:400 clamp(2.8rem,6vw,6.5rem)/1.05 var(--display);
     letter-spacing:-.01em; text-transform:uppercase;
     color:var(--dim);
 }
@@ -238,8 +238,8 @@ body::after {
 }
 
 .big-heading {
-    font:900 clamp(3.5rem,7vw,7.5rem)/.88 var(--display);
-    letter-spacing:-.01em; text-transform:uppercase;
+    font:400 clamp(3.5rem,7vw,7.5rem)/.88 var(--display);
+    letter-spacing:.02em; text-transform:uppercase;
     color:var(--white); margin-bottom:40px; display:block;
 }
 .big-heading .accent { color:var(--purple); }
@@ -274,7 +274,7 @@ body::after {
 }
 .stat-row:hover { padding-left:8px; }
 .stat-key { font:.65rem/1 var(--mono); letter-spacing:.1em; color:var(--purple); }
-.stat-val { font:900 2rem/1 var(--display); color:var(--white); }
+.stat-val { font:400 2rem/1 var(--display); color:var(--white); }
 .stat-val em { font:.65rem/1 var(--mono); font-style:normal; color:var(--dim); margin-left:4px; }
 
 /* CAREER */
@@ -296,7 +296,7 @@ body::after {
 .badge-muted  { color:var(--dim); }
 .career-date  { font:.65rem/1 var(--mono); color:var(--dim); }
 
-.career-role  { font:700 2rem/1 var(--display); letter-spacing:-.01em; color:var(--white); margin-bottom:4px; }
+.career-role  { font:400 2rem/1 var(--display); letter-spacing:-.01em; color:var(--white); margin-bottom:4px; }
 .career-current .career-role { color:var(--purple); }
 .career-red .career-role     { color:var(--red); }
 .career-company { font:.72rem/1 var(--mono); color:var(--dim); margin-bottom:14px; }
@@ -355,7 +355,7 @@ body::after {
 .proj-item.red .proj-badge  { color:var(--red); }
 .proj-item.blue .proj-badge { color:var(--cyan); }
 
-.proj-title { font:700 1.7rem/1.1 var(--display); color:var(--white); margin-bottom:8px; transition:color .2s; }
+.proj-title { font:400 1.7rem/1.1 var(--display); color:var(--white); margin-bottom:8px; transition:color .2s; }
 .proj-item.red:hover  .proj-title { color:var(--red); }
 .proj-item.blue:hover .proj-title { color:var(--cyan); }
 
@@ -379,7 +379,7 @@ body::after {
 }
 .cert-item:hover { background:var(--purple-s); }
 .cert-status { font:.58rem/1 var(--mono); letter-spacing:.12em; color:var(--purple); }
-.cert-name { font:700 1.05rem/1.2 var(--display); color:var(--white); transition:color .2s; }
+.cert-name { font:400 1.05rem/1.2 var(--display); color:var(--white); transition:color .2s; }
 .cert-item:hover .cert-name { color:var(--purple); }
 .cert-meta { font:.65rem/1 var(--mono); color:var(--dim); }
 
@@ -541,7 +541,7 @@ body::after {
 .ctf-total-num {
     font-family: var(--font-display);
     font-size: clamp(5rem, 10vw, 9rem);
-    font-weight: 900;
+    font-weight: 400;
     line-height: 1;
     color: var(--purple);
     opacity: 0.6;

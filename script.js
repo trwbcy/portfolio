@@ -489,10 +489,10 @@ function renderCTF(data) {
     const grid = document.getElementById('ctfGrid');
     if (!grid) return;
     grid.innerHTML = data.map(c => `
-        <a href="${c.url}" target="_blank" class="ctf-item ${c.type}">
+        <div class="ctf-item ${c.type}">
             <div><h3>${c.title}</h3><p>${c.desc}</p></div>
             <div class="ctf-badge ${c.type}">${c.type === 'red' ? 'ROOTED' : 'ANALYZED'}</div>
-        </a>
+        </div>
     `).join('');
 }
 
