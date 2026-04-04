@@ -82,25 +82,87 @@ const ctfData = [
     { title: "Charon", type: "blue", desc: "Memory & Disk Forensics", url: "https://drive.google.com/file/d/1om6jsQ3yypLkiA9K8eSZYzWfOcJT-yqe/view?usp=sharing"},
 ];
 
+let _projST = null;
+let isAppLoaded = false; // FLAG PENTING: Jangan set GSAP sebelum loading kelar!
+
 // ── INIT ──────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    initLoader();          
-    initLenis();           
-    initCursor();          
+    initLoader();
+    initLenis();
+    initCursor();
     initMobileMenu();
     initTyping();
     initHeroNoise();
-    initPCBRain();
-    renderProjects('all');
+    initManifestoBg();
+    
+    // Render HTML aja, animasinya ditunda sampai loading kelar
+    renderProjects('all'); 
+    
     renderCerts();
     renderCTF(ctfData);
     initFilterTabs();
-    
+    initSpotlight();
+    initGlitch();
+    initCountUp();
+
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', searchCTF);
     }
 });
+
+// ── MOUSE SPOTLIGHT ───────────────────────────────────
+function initSpotlight() {
+    const el = document.getElementById('spotlight');
+    if (!el) return;
+    window.addEventListener('mousemove', e => {
+        el.style.setProperty('--mx', e.clientX + 'px');
+        el.style.setProperty('--my', e.clientY + 'px');
+    });
+}
+
+// ── GLITCH on hero name ───────────────────────────────
+function initGlitch() {
+    const wraps = document.querySelectorAll('.glitch-wrap');
+    if (!wraps.length) return;
+    function triggerGlitch() {
+        wraps.forEach(w => {
+            w.classList.add('glitching');
+            setTimeout(() => w.classList.remove('glitching'), 320);
+        });
+        setTimeout(triggerGlitch, 3000 + Math.random() * 6000);
+    }
+    setTimeout(triggerGlitch, 2000 + Math.random() * 3000);
+}
+
+// ── STAT COUNT-UP ─────────────────────────────────────
+function initCountUp() {
+    const els = document.querySelectorAll('.count-up');
+    if (!els.length) return;
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            obs.unobserve(entry.target);
+            const el     = entry.target;
+            const target = +el.dataset.target;
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            const dur    = 1200;
+            const steps  = 40;
+            let step     = 0;
+            const timer  = setInterval(() => {
+                step++;
+                const val = Math.round(target * (step / steps));
+                el.textContent = prefix + val + suffix;
+                if (step >= steps) {
+                    el.textContent = prefix + target + suffix;
+                    clearInterval(timer);
+                }
+            }, dur / steps);
+        });
+    }, { threshold: 0.5 });
+    els.forEach(el => obs.observe(el));
+}
 
 function initGSAP() {
     if (typeof gsap === 'undefined') return;
@@ -110,6 +172,12 @@ function initGSAP() {
     initManifestoScroll();
     initShuffleHover();    
     initSmoothScroll();
+    
+    // Sekarang aman untuk menghitung ukuran & bikin pin
+    isAppLoaded = true; 
+    setupProjectsScroll();
+
+    setTimeout(() => ScrollTrigger.refresh(), 100);
 }
 
 // ── 1. LENIS — Smooth Scroll ─────────────
@@ -271,7 +339,7 @@ function initParallaxTypography() {
     });
 }
 
-// ── 5. SCROLL REVEAL (BLUR/LOADED EFFECT FADE IN BAWAH) ─────────────────────────
+// ── 5. SCROLL REVEAL ─────────────────────────
 function initScrollReveal() {
     const elements = gsap.utils.toArray('.section-tag, .career-item, .stat-row, .skill-row, .proj-item, .cert-item, .ctf-item, .body-text');
     
@@ -293,31 +361,31 @@ function initScrollReveal() {
 
 // ── 6. MANIFESTO ─────────────────
 function initManifestoScroll() {
-    const words = [...document.querySelectorAll('.mw')];
-    if (!words.length) return;
+    const section = document.querySelector('.manifesto');
+    const words   = [...document.querySelectorAll('.mw')];
+    if (!section || !words.length) return;
 
-    function update() {
-        const vh  = window.innerHeight;
-        const top = vh * 0.22;
-        const bot = vh * 0.80;
+    words.forEach(w => { w.style.transition = 'none'; w.classList.remove('lit'); });
+    const scrollLength = words.length * 110;
 
-        words.forEach((w, i) => {
-            const rect = w.getBoundingClientRect();
-            const mid  = rect.top + rect.height / 2;
-            const inZone = mid > top && mid < bot;
-            const delay  = i * 55;
-            if (inZone) {
-                w.style.transition = `opacity .5s ease ${delay}ms, color .5s ease ${delay}ms`;
-                w.classList.add('lit');
-            } else {
-                w.style.transition = 'opacity .35s ease, color .35s ease';
-                w.classList.remove('lit');
-            }
-        });
-    }
-
-    window.addEventListener('scroll', update, { passive: true });
-    update();
+    ScrollTrigger.create({
+        trigger: section,
+        start:   'top top',
+        end:     `+=${scrollLength}`,
+        pin:     true,
+        scrub:   0.6,
+        onUpdate(self) {
+            const litCount = Math.round(self.progress * words.length);
+            words.forEach((w, i) => {
+                const should = i < litCount;
+                if (should === w.classList.contains('lit')) return;
+                w.style.transition = should
+                    ? 'opacity .35s ease, color .35s ease, text-shadow .35s ease'
+                    : 'opacity .25s ease, color .25s ease, text-shadow .25s ease';
+                w.classList.toggle('lit', should);
+            });
+        }
+    });
 }
 
 // ── SHUFFLE HOVER ──────────────────────────────────────
@@ -360,32 +428,29 @@ function initShuffleHover() {
     });
 }
 
-// ── 7. NAVBAR LINKS SMOOTH SCROLL (FIXED) ───────────────────────────────────────
+// ── 7. NAVBAR LINKS SMOOTH SCROLL ───────────────────────────────────────
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', e => {
             const targetId = a.getAttribute('href');
-            if (targetId === '#') return; // Lewati kalau href cuma '#'
+            if (targetId === '#') return;
 
             const targetElement = document.querySelector(targetId);
-            if (!targetElement) return; // Lewati kalau elemen gak ada
+            if (!targetElement) return;
 
-            e.preventDefault(); // Mencegah lompatan standar browser
+            e.preventDefault(); 
 
-            // Scroll mulus pake Lenis (Offset -80 biar gak ketutup navbar dan fade mask)
             if (window._lenis) {
                 window._lenis.scrollTo(targetElement, { offset: -80, duration: 1.2 });
             } else {
                 targetElement.scrollIntoView({ behavior: 'smooth' });
             }
 
-            // Tutup menu drawer di HP kalau lagi kebuka
             const drawer = document.getElementById('mobileDrawer');
             if (drawer) drawer.classList.remove('open');
         });
     });
 
-    // Logo Balik Ke Atas
     document.getElementById('navSite')?.addEventListener('click', () => {
         window._lenis ? window._lenis.scrollTo(0, { duration: 1.2 })
                       : window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -445,30 +510,82 @@ function initFilterTabs() {
     });
 }
 
-// ── RENDER PROJECTS ────────────────────────────────────────────────────
+// ── RENDER PROJECTS (THE FIXED ROBUST VERSION) ──────────────────────────────────
+
 function renderProjects(filter) {
-    const grid = document.getElementById('projectsGrid');
-    if (!grid) return;
-    const data = filter === 'all' ? projectsData : projectsData.filter(p => p.type === filter);
-    grid.innerHTML = data.map(p => `
+    const track = document.getElementById('projectsGrid');
+    if (!track) return;
+
+    const _projData = filter === 'all' ? projectsData : projectsData.filter(p => p.type === filter);
+
+    // Inject HTML
+    track.innerHTML = _projData.map(p => `
         <a href="${p.url}" target="_blank" class="proj-item ${p.type}">
-            <div>
-                <span class="proj-badge">${p.type === 'red' ? '// OFFENSIVE' : '// DEFENSIVE'}</span>
-                <div class="proj-title">${p.title}</div>
-                <p class="proj-desc">${p.desc}</p>
-                <div class="proj-tags">${p.tags.map(t => `<span class="ptag">${t}</span>`).join('')}</div>
-            </div>
+            <span class="proj-badge">${p.type === 'red' ? '// OFFENSIVE' : '// DEFENSIVE'}</span>
+            <div class="proj-title">${p.title}</div>
+            <p class="proj-desc">${p.desc}</p>
+            <div class="proj-tags">${p.tags.map(t => `<span class="ptag">${t}</span>`).join('')}</div>
             <div class="proj-arrow">→</div>
         </a>
     `).join('');
-    
-    if (typeof gsap !== 'undefined') {
-        gsap.fromTo('.proj-item', 
-            { opacity: 0, y: 20 }, 
-            { opacity: 1, y: 0, stagger: 0.05, duration: 0.5, ease: 'power2.out' }
-        );
+
+    const totalEl = document.getElementById('projTotal');
+    if (totalEl) totalEl.textContent = String(_projData.length).padStart(2, '0');
+
+    // Mencegah GSAP dipanggil waktu layar masih loading!
+    if (isAppLoaded) {
+        setupProjectsScroll();
     }
-    if (window.ScrollTrigger) ScrollTrigger.refresh();
+}
+
+function setupProjectsScroll() {
+    if (typeof gsap === 'undefined' || !window.ScrollTrigger) return;
+    
+    const track = document.getElementById('projectsGrid');
+    const section = document.getElementById('projects');
+    const outer = document.querySelector('.proj-track-outer');
+    const fill = document.getElementById('projProgressFill');
+    const current = document.getElementById('projCurrent');
+
+    if (!section || !outer || !track) return;
+
+    // Bersihkan trigger lama kalau user klik tab filter
+    if (_projST) {
+        if (_projST.scrollTrigger) _projST.scrollTrigger.kill();
+        _projST.kill();
+        _projST = null;
+    }
+
+    gsap.set(track, { x: 0 });
+
+    // Kasih delay tipis biar DOM beres gambar ulang
+    setTimeout(() => {
+        const dist = track.scrollWidth - outer.offsetWidth;
+        
+        if (dist > 0) {
+            _projST = gsap.to(track, {
+                x: -dist,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top top',
+                    end: () => "+=" + dist,
+                    pin: true,
+                    scrub: 1,
+                    invalidateOnRefresh: true,
+                    onUpdate: (self) => {
+                        if (fill) fill.style.width = (self.progress * 100) + '%';
+                        if (current) {
+                            const cardCount = track.children.length;
+                            const idx = Math.min(Math.ceil(self.progress * cardCount) || 1, cardCount);
+                            current.textContent = String(idx).padStart(2, '0');
+                        }
+                    }
+                }
+            });
+        }
+        ScrollTrigger.refresh();
+    }, 50);
 }
 
 // ── RENDER CERTS ───────────────────────────────────────────────────────
@@ -503,154 +620,35 @@ function searchCTF() {
     ));
 }
 
-// ── PCB RAIN EFFECT ───────────────────────────────────────────────────
-function initPCBRain() {
-    const canvas = document.getElementById('pcbRain');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+// ── MANIFESTO BG WORDS ────────────────────────────────
+function initManifestoBg() {
+    const container = document.querySelector('.manifesto-bg-text');
+    if (!container) return;
 
-    let W, H;
-    const traces = [];
-    const MAX_TRACES = 120;
-    const PURPLE = { r: 157, g: 0, b: 255 };
+    const words = [
+        'THREAT','HUNT','DETECT','RESPOND','MITIGATE','ANALYZE',
+        'BREACH','EXPLOIT','PATCH','MONITOR','ALERT','TRIAGE',
+        'FORENSICS','PAYLOAD','ARTIFACT','PIVOT','LATERAL',
+        'PRIVILEGE','ESCALATE','PERSIST','EVADE','INJECT',
+        'ENUMERATE','RECON','EXFIL','C2','SIEM','SOAR','XDR',
+        'EDR','NDR','SOC','RED','BLUE','PURPLE','PENTEST',
+        'OSINT','OPSEC','MALWARE','RANSOMWARE','ROOTKIT',
+        'ZERO-DAY','CVE','CVSS','ATT&CK','KILL CHAIN',
+        'IOC','IOA','TTP','SIGMA','YARA','SURICATA',
+        'BLOODHOUND','MIMIKATZ','IMPACKET','SLIVER','COBALT',
+        'BYPASS','LOLBin','FILELESS','ETW','AMSI','DEFENDER',
+        'QRADAR','WAZUH','SPLUNK','CORTEX','THEHIVE',
+        'CORRELATION','BASELINE','ANOMALY','FALSE POSITIVE',
+        'INCIDENT','CONTAINMENT','ERADICATION','RECOVERY',
+        'HARDENING','POSTURE','COMPLIANCE','AUDIT','LOG',
+    ];
 
-    function resize() {
-        W = canvas.width = window.innerWidth;
-        H = canvas.height = window.innerHeight;
+    const count = 200;
+    let html = '';
+    for (let i = 0; i < count; i++) {
+        const w = words[Math.floor(Math.random() * words.length)];
+        const op = (0.025 + Math.random() * 0.045).toFixed(3);
+        html += `<span class="mbg" style="opacity:${op}">${w}</span>`;
     }
-    window.addEventListener('resize', resize);
-    resize();
-
-    class Trace {
-        constructor() { this.reset(); }
-
-        reset() {
-            const gridSize = 30 + Math.random() * 40;
-            this.x = Math.floor(Math.random() * W / gridSize) * gridSize;
-            this.y = -Math.random() * H * 0.5;
-            this.speed = 0.4 + Math.random() * 1.2;
-            this.lineWidth = 0.5 + Math.random() * 1;
-            this.alpha = 0.3 + Math.random() * 0.55;
-
-            this.segments = [];
-            this.totalLength = 0;
-            const numSegments = 3 + Math.floor(Math.random() * 5);
-
-            for (let i = 0; i < numSegments; i++) {
-                const isVertical = i % 2 === 0;
-                let len;
-                if (isVertical) {
-                    len = 40 + Math.random() * 120;
-                    this.segments.push({ dx: 0, dy: len, length: len });
-                } else {
-                    len = 15 + Math.random() * 50;
-                    const dir = Math.random() > 0.5 ? 1 : -1;
-                    this.segments.push({ dx: dir * len, dy: 0, length: len });
-                }
-                this.totalLength += len;
-            }
-
-            this.nodes = [];
-            if (Math.random() > 0.4) {
-                const nodeCount = 1 + Math.floor(Math.random() * 2);
-                for (let n = 0; n < nodeCount; n++) {
-                    this.nodes.push(Math.floor(Math.random() * (numSegments - 1)) + 1);
-                }
-            }
-
-            this.progress = 0;
-            this.fadeOut = false;
-            this.fadeAlpha = 1;
-        }
-
-        update() {
-            this.progress += this.speed * 2;
-            if (this.progress > this.totalLength) {
-                this.fadeOut = true;
-                this.fadeAlpha -= 0.008;
-            }
-            if (this.fadeAlpha <= 0) this.reset();
-        }
-
-        draw() {
-            ctx.save();
-            ctx.translate(this.x, this.y);
-            ctx.lineWidth = this.lineWidth;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            let cx = 0, cy = 0, drawn = 0;
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-
-            for (let i = 0; i < this.segments.length; i++) {
-                const seg = this.segments[i];
-                const segEnd = drawn + seg.length;
-                if (drawn >= this.progress) break;
-
-                if (this.progress >= segEnd) {
-                    cx += seg.dx;
-                    cy += seg.dy;
-                    ctx.lineTo(cx, cy);
-                } else {
-                    const frac = (this.progress - drawn) / seg.length;
-                    cx += seg.dx * frac;
-                    cy += seg.dy * frac;
-                    ctx.lineTo(cx, cy);
-                }
-                drawn = segEnd;
-            }
-
-            const a = this.alpha * this.fadeAlpha;
-            ctx.strokeStyle = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, ${a})`;
-            ctx.stroke();
-
-            if (!this.fadeOut && this.progress < this.totalLength) {
-                ctx.beginPath();
-                ctx.arc(cx, cy, 1.5, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, ${a * 2})`;
-                ctx.shadowColor = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, 0.8)`;
-                ctx.shadowBlur = 8;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-            }
-
-            if (this.nodes.length) {
-                let nx = 0, ny = 0, nd = 0;
-                for (let i = 0; i < this.segments.length; i++) {
-                    nx += this.segments[i].dx;
-                    ny += this.segments[i].dy;
-                    nd += this.segments[i].length;
-                    if (nd > this.progress) break;
-
-                    if (this.nodes.includes(i + 1)) {
-                        ctx.beginPath();
-                        ctx.arc(nx, ny, 2, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, ${a * 0.7})`;
-                        ctx.fill();
-                        ctx.beginPath();
-                        ctx.arc(nx, ny, 4, 0, Math.PI * 2);
-                        ctx.strokeStyle = `rgba(${PURPLE.r}, ${PURPLE.g}, ${PURPLE.b}, ${a * 0.3})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
-            ctx.restore();
-        }
-    }
-
-    for (let i = 0; i < MAX_TRACES; i++) {
-        const t = new Trace();
-        t.y = -Math.random() * H;
-        t.progress = Math.random() * t.totalLength * 0.5;
-        traces.push(t);
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, W, H);
-        for (const t of traces) { t.update(); t.draw(); }
-        requestAnimationFrame(animate);
-    }
-    animate();
+    container.innerHTML = html;
 }

@@ -31,17 +31,47 @@ body {
     position: relative;
 }
 
-/* PCB RAIN */
-#pcbRain {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.7;
+/* ── MOUSE SPOTLIGHT ────────────────────────────────── */
+#spotlight {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    background: radial-gradient(circle 320px at var(--mx,50%) var(--my,50%),
+        rgba(157,0,255,.06) 0%, transparent 70%);
+    transition: background .05s;
 }
 
-/* MATTE PAPER GRAIN TEXTURE — removed */
+/* ── GLITCH ─────────────────────────────────────────── */
+@keyframes glitch-clip-1 {
+    0%,100% { clip-path: inset(0 0 95% 0); transform: translate(-4px, 0); }
+    20%     { clip-path: inset(20% 0 60% 0); transform: translate(4px, 0); }
+    40%     { clip-path: inset(60% 0 20% 0); transform: translate(-3px, 0); }
+    60%     { clip-path: inset(85% 0 5%  0); transform: translate(2px, 0); }
+    80%     { clip-path: inset(40% 0 40% 0); transform: translate(-2px, 0); }
+}
+@keyframes glitch-clip-2 {
+    0%,100% { clip-path: inset(80% 0 0 0); transform: translate(4px, 0); }
+    25%     { clip-path: inset(50% 0 30% 0); transform: translate(-4px, 0); }
+    50%     { clip-path: inset(10% 0 70% 0); transform: translate(3px, 0); }
+    75%     { clip-path: inset(70% 0 10% 0); transform: translate(-2px, 0); }
+}
+.glitch-wrap { position: relative; display: inline-block; }
+.glitch-wrap::before,
+.glitch-wrap::after {
+    content: attr(data-text);
+    position: absolute; inset: 0;
+    font: inherit; color: inherit;
+    opacity: 0;
+}
+.glitch-wrap.glitching::before {
+    opacity: 1; color: var(--cyan);
+    animation: glitch-clip-1 .3s steps(1) forwards;
+}
+.glitch-wrap.glitching::after {
+    opacity: 1; color: var(--red);
+    animation: glitch-clip-2 .3s steps(1) forwards;
+}
+
+/* ── STAT COUNTER ───────────────────────────────────── */
+.stat-val[data-target] { transition: none; }
 
 .nav, .hero, .manifesto, .section, .footer, .loader {
     position: relative;
@@ -51,10 +81,10 @@ body {
 /* ── FADE MASK (Agar Konten Pudar Sebelum Kena Navbar) ── */
 .nav-fade-mask {
     position: fixed;
-    top: 52px; /* Mulai tepat di bawah navbar */
-    left: 0; right: 0; height: 80px; /* Jarak area pudar */
+    top: 52px;
+    left: 0; right: 0; height: 80px;
     background: linear-gradient(to bottom, var(--black) 0%, transparent 100%);
-    z-index: 198; /* Di bawah navbar, di atas konten */
+    z-index: 198;
     pointer-events: none;
 }
 
@@ -190,22 +220,53 @@ body {
 
 /* MANIFESTO */
 .manifesto {
-    padding:80px 48px 100px;
-    border-top:1px solid var(--border);
-    max-width:1400px; margin:0 auto;
+    position: relative;
+    border-top: 1px solid var(--border);
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: var(--black);
 }
+
+.manifesto-bg-text {
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 0;
+    overflow: hidden;
+    display: flex; flex-wrap: wrap; align-content: flex-start;
+    padding: 24px;
+    gap: 0;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, black 80%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, black 80%);
+}
+
+.manifesto-content {
+    position: relative; z-index: 1;
+    padding: 80px 48px 100px;
+    max-width: 1400px; margin: 0 auto; width: 100%;
+}
+
 .manifesto-body {
-    font:400 clamp(2.8rem,6vw,6.5rem)/1.05 var(--display);
-    letter-spacing:-.01em; text-transform:uppercase;
-    color:var(--dim);
+    font: 400 clamp(2.8rem,6.5vw,7rem)/1.05 var(--display);
+    letter-spacing: -.01em; text-transform: uppercase;
 }
-.m-line { display:block; overflow:visible; padding-bottom:.06em; }
+.m-line { display: block; overflow: visible; padding-bottom: .06em; }
 .mw {
-    display:inline-block; margin-right:.22em;
-    opacity: 0.15; color: var(--dim);
-    transition: opacity .5s ease, color .5s ease;
+    display: inline-block; margin-right: .22em;
+    opacity: 0.08; color: var(--white);
+    transition: opacity .4s ease, color .4s ease, text-shadow .4s ease;
 }
-.mw.lit { opacity: 1; color: var(--white); }
+.mw.lit {
+    opacity: 1; color: var(--white);
+    text-shadow: 0 0 60px rgba(255,255,255,.15);
+}
+
+.mbg {
+    font: 400 clamp(.65rem, 1.1vw, 1rem)/1.8 var(--mono);
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--white); opacity: 0.04;
+    white-space: nowrap; padding: 0 .6em; user-select: none;
+}
 
 /* SECTION & REVEAL */
 .section {
@@ -273,7 +334,7 @@ body {
     transition:background .2s;
     align-items:start;
 }
-.career-item:last-child { border-bottom:1px solid var(--border); }
+.career-item:last-child { border-bottom: none; }
 .career-item:hover { background:var(--purple-s); }
 
 .career-meta { display:flex; flex-direction:column; gap:8px; padding-top:4px; }
@@ -318,42 +379,144 @@ body {
 .sk { font:.62rem/1 var(--mono); letter-spacing:.1em; color:var(--purple); flex-shrink:0; min-width:72px; }
 .sv { font:.75rem/1 var(--mono); color:var(--white); text-align:right; }
 
-/* PROJECTS */
-.filter-row { display:flex; gap:10px; margin-bottom:40px; }
+/* ── PROJECTS — HORIZONTAL SCROLL FIXED (NO MORE TRANSPARENCY BUG) ── */
+.proj-section {
+    border-top: 1px solid var(--border);
+    height: 100vh;
+    display: flex;
+    background-color: var(--black) !important; /* WAJIB BLACK biar nutupin layer belakangnya */
+    position: relative;
+    z-index: 10;
+    width: 100%;
+}
+
+.proj-inner {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: var(--black);
+}
+
+.proj-left {
+    flex-shrink: 0;
+    width: 36vw;
+    min-width: 300px;
+    background-color: var(--black);
+    z-index: 12;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 48px;
+}
+
+.proj-track-outer {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center; 
+    background-color: var(--black); /* Ini yang bikin sebelah kanan transparan kemaren */
+}
+
+.proj-hscroll-track {
+    display: flex;
+    gap: 20px;
+    align-items: stretch; /* KUNCI 1: Memaksa tinggi semua card sama rata mengikuti card tertinggi */
+    padding: 40px 48px 40px 32px; /* Tambahan ruang nafas atas-bawah */
+    will-change: transform;
+    flex-shrink: 0;
+}
+
+.filter-row { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
 .ftab {
-    font:.65rem/1 var(--mono); letter-spacing:.1em; padding:8px 18px;
-    background:transparent; border:1px solid rgba(157,0,255,.2); color:var(--dim);
+    font:.6rem/1 var(--mono); letter-spacing:.1em; padding:7px 14px;
+    background:transparent; border:1px solid rgba(157,0,255,.2); color:var(--white);
     cursor:none; transition:all .2s;
 }
 .ftab:hover, .ftab.active { background:var(--purple); color:var(--black); border-color:var(--purple); }
 .ftab.active { box-shadow:0 0 14px var(--purple-g); }
 
-.proj-list { display:flex; flex-direction:column; }
+.proj-counter {
+    margin-top: 24px;
+    font: .6rem/1 var(--mono); letter-spacing: .14em; color: rgba(255,255,255,.3);
+}
+.proj-counter-cur { color: var(--purple); font-size: .85rem; }
+
+/* ── CARDS: Ukuran Seragam & Tema Elegan ── */
 .proj-item {
-    display:grid; grid-template-columns:1fr auto;
-    gap:24px; align-items:start; padding:28px 0;
-    border-top:1px solid var(--border); text-decoration:none;
-    transition:background .2s, padding-left .25s;
+    width: 340px; /* KUNCI 2: Lebar diseragamkan baku */
+    flex-shrink: 0;
+    /* height dihapus agar otomatis ngikutin tinggi pembungkus (stretch) */
+    padding: 24px 20px;
+    text-decoration: none;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+    border-radius: 4px; /* Sedikit lengkungan biar manis */
+    transition: border-color .25s, background .25s, transform .2s ease-out, box-shadow .2s ease-out;
 }
-.proj-item:last-child { border-bottom:1px solid var(--border); }
-.proj-item:hover { background:var(--purple-s); padding-left:16px; }
 
-.proj-badge { font:.6rem/1 var(--mono); letter-spacing:.12em; margin-bottom:8px; display:block; }
-.proj-item.red .proj-badge  { color:var(--red); }
-.proj-item.blue .proj-badge { color:var(--cyan); }
-
-.proj-title { font:400 1.7rem/1.1 var(--display); color:var(--white); margin-bottom:8px; transition:color .2s; }
-.proj-item.red:hover  .proj-title { color:var(--red); }
-.proj-item.blue:hover .proj-title { color:var(--cyan); }
-
-.proj-desc { font:.75rem/1.6 var(--mono); color:var(--white); max-width:580px; margin-bottom:12px; }
-.proj-tags { display:flex; gap:6px; flex-wrap:wrap; }
-.ptag {
-    font:.58rem/1 var(--mono); letter-spacing:.05em; padding:4px 9px;
-    background:rgba(157,0,255,.08); border:1px solid rgba(157,0,255,.18); color:var(--dim);
+/* TEMA OFFENSE (MERAH) */
+.proj-item.red {
+    background: linear-gradient(180deg, rgba(255,34,68,0.06) 0%, var(--black2) 100%);
+    border: 1px solid rgba(255,34,68,0.15);
 }
-.proj-arrow { font-size:1.1rem; color:var(--purple); opacity:0; transition:opacity .2s; align-self:center; }
-.proj-item:hover .proj-arrow { opacity:1; }
+.proj-item.red:hover { 
+    background: linear-gradient(180deg, rgba(255,34,68,0.12) 0%, var(--black2) 100%);
+    border-color: rgba(255,34,68,0.4); 
+    transform: translateY(-4px); /* Efek ngangkat saat di-hover */
+    box-shadow: 0 8px 24px rgba(255,34,68,0.08);
+}
+.proj-item.red .proj-badge { color: var(--red); }
+.proj-item.red .proj-title { color: var(--white); transition: color .2s; }
+.proj-item.red:hover .proj-title { color: var(--red); }
+.proj-item.red .ptag { border-color: rgba(255,34,68,.15); }
+.proj-item.red .proj-arrow { color: var(--red); }
+
+/* TEMA DEFENSE (BIRU / CYAN) */
+.proj-item.blue {
+    background: linear-gradient(180deg, rgba(0,229,255,0.05) 0%, var(--black2) 100%);
+    border: 1px solid rgba(0,229,255,0.15);
+}
+.proj-item.blue:hover { 
+    background: linear-gradient(180deg, rgba(0,229,255,0.1) 0%, var(--black2) 100%);
+    border-color: rgba(0,229,255,0.4); 
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,229,255,0.08);
+}
+.proj-item.blue .proj-badge { color: var(--cyan); }
+.proj-item.blue .proj-title { color: var(--white); transition: color .2s; }
+.proj-item.blue:hover .proj-title { color: var(--cyan); }
+.proj-item.blue .ptag { border-color: rgba(0,229,255,.15); }
+.proj-item.blue .proj-arrow { color: var(--cyan); }
+
+/* Elemen di dalam Card */
+.proj-badge { font:.55rem/1 var(--mono); letter-spacing:.14em; }
+.proj-desc { font:.67rem/1.55 var(--mono); color:rgba(255,255,255,.5); line-height: 1.6; }
+
+.proj-tags { 
+    display:flex; gap:5px; flex-wrap:wrap; 
+    margin-top: auto; /* KUNCI 3: Mendorong tag otomatis turun menempel ke dasar card */
+    padding-top: 16px; 
+}
+.ptag { font:.52rem/1 var(--mono); letter-spacing:.04em; padding:3px 8px; color:rgba(255,255,255,.5); }
+
+.proj-arrow {
+    position: absolute; top:20px; right:20px;
+    font-size:.9rem; opacity:0;
+    transition:opacity .2s, transform .2s;
+}
+.proj-item:hover .proj-arrow { opacity:1; transform:translate(3px,-3px); }
+.proj-item.red  .proj-arrow { color:var(--red); }
+.proj-item.blue .proj-arrow { color:var(--cyan); }
+.proj-item:hover .proj-arrow { opacity:1; transform:translate(3px,-3px); }
+
+/* progress bar at bottom of left panel */
+.proj-progress-bar {
+    margin-top: 20px;
+    height: 1px; background: rgba(255,255,255,.08);
+    position: relative;
+}
+.proj-progress-fill {
+    position: absolute; top:0; left:0; bottom:0;
+    width: 0%; background: var(--purple);
+}
 
 /* CERTS */
 .cert-grid {
@@ -423,12 +586,22 @@ body {
     .career-item { grid-template-columns:1fr; gap:10px; }
     html { cursor:auto; }
     .cursor-dot,.cursor-ring { display:none; }
+    
+    .proj-section { height: auto; }
+    .proj-inner { flex-direction: column; height: auto; overflow: visible; }
+    .proj-left { width: 100%; min-width: unset; border-right: none; border-bottom: 1px solid var(--border); padding: 48px 24px 32px; }
+    .proj-track-outer { overflow: visible; }
+    .proj-hscroll-track { flex-direction: column; padding: 24px; gap: 16px; align-items: stretch; }
+    .proj-item { width: 100%; height: auto; max-height: unset; }
+    .proj-progress-bar { display: none; }
+    .proj-counter { display: none; }
 }
 @media (max-width:600px) {
     .name-line { font-size:clamp(3.5rem,18vw,6rem); }
     .manifesto-body { font-size:clamp(2rem,8vw,3.5rem); }
     .cert-grid { grid-template-columns:1fr; }
 }
+
 /* ── HACKTRACE RANGES — TERMINAL DESIGN ─────────────── */
 .ht-wrap { margin-top: 3rem; }
 

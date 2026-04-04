@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <canvas id="pcbRain"></canvas>
+    <div id="spotlight"></div>
 
     <div class="loader" id="loader">
         <div class="loader-inner">
@@ -59,8 +59,8 @@
             <span class="hero-meta-right">↓ SCROLL TO BREACH IN</span>
         </div>
         <div class="hero-name">
-            <div class="name-line line-1 wave-target">TRI WIBOWO</div>
-            <div class="name-line line-2 name-purple wave-target">CAHYO<span class="dot-accent">.</span></div>
+            <div class="name-line line-1 wave-target"><span class="glitch-wrap" data-text="TRI WIBOWO">TRI WIBOWO</span></div>
+            <div class="name-line line-2 name-purple wave-target"><span class="glitch-wrap" data-text="CAHYO.">CAHYO<span class="dot-accent">.</span></span></div>
         </div>
         <div class="hero-bottom">
             <div class="hero-role">/ <span id="typedRole"></span><span class="blink-cursor">_</span></div>
@@ -73,10 +73,13 @@
     </section>
 
     <section class="manifesto" id="manifesto">
-        <div class="section-tag">/ MANIFESTO / P. 002</div>
-        <div class="manifesto-body" id="manifestoBody">
-            <div class="m-line"><span class="mw">BREAK</span> <span class="mw">IT.</span> <span class="mw">UNDERSTAND</span> <span class="mw">IT.</span> <span class="mw">DEFEND</span> <span class="mw">IT.</span></div>
-            <div class="m-line"><span class="mw">SECURITY</span> <span class="mw">IS</span> <span class="mw">NOT</span> <span class="mw">A</span> <span class="mw">PRODUCT.</span> <span class="mw">IT&#39;S</span> <span class="mw">A</span> <span class="mw">PRACTICE.</span></div>
+        <div class="manifesto-bg-text" aria-hidden="true"></div>
+        <div class="manifesto-content">
+            <div class="section-tag">/ MANIFESTO / P. 002</div>
+            <div class="manifesto-body" id="manifestoBody">
+                <div class="m-line"><span class="mw">BREAK</span> <span class="mw">IT.</span> <span class="mw">UNDERSTAND</span> <span class="mw">IT.</span> <span class="mw">DEFEND</span> <span class="mw">IT.</span></div>
+                <div class="m-line"><span class="mw">SECURITY</span> <span class="mw">IS</span> <span class="mw">NOT</span> <span class="mw">A</span> <span class="mw">PRODUCT.</span> <span class="mw">IT&#39;S</span> <span class="mw">A</span> <span class="mw">PRACTICE.</span></div>
+            </div>
         </div>
     </section>
 
@@ -90,15 +93,15 @@
             </div>
             <div class="split-right">
                 <div class="stats-stack">
-                    <div class="stat-row"><span class="stat-key">TRYHACKME_RANK</span><span class="stat-val">#4 <em>ID</em></span></div>
+                    <div class="stat-row"><span class="stat-key">TRYHACKME_RANK</span><span class="stat-val"><span class="count-up" data-prefix="#" data-target="4">4</span> <em>ID</em></span></div>
                     <div class="stat-divider"></div>
-                    <div class="stat-row"><span class="stat-key">HACKTRACE_DEFENSE</span><span class="stat-val">#5 <em>ID</em></span></div>
+                    <div class="stat-row"><span class="stat-key">HACKTRACE_DEFENSE</span><span class="stat-val"><span class="count-up" data-prefix="#" data-target="5">5</span> <em>ID</em></span></div>
                     <div class="stat-divider"></div>
-                    <div class="stat-row"><span class="stat-key">HACKTRACE_OFFENSIVE</span><span class="stat-val">#33 <em>ID</em></span></div>
+                    <div class="stat-row"><span class="stat-key">HACKTRACE_OFFENSIVE</span><span class="stat-val"><span class="count-up" data-prefix="#" data-target="33">33</span> <em>ID</em></span></div>
                     <div class="stat-divider"></div>
-                    <div class="stat-row"><span class="stat-key">SOC_EVENTS_DAILY</span><span class="stat-val">10K+ <em>ALERTS</em></span></div>
+                    <div class="stat-row"><span class="stat-key">SOC_EVENTS_DAILY</span><span class="stat-val"><span class="count-up" data-prefix="" data-suffix="K+" data-target="10">10</span> <em>ALERTS</em></span></div>
                     <div class="stat-divider"></div>
-                    <div class="stat-row"><span class="stat-key">WRITEUPS_PUBLISHED</span><span class="stat-val">50+ <em>DOCS</em></span></div>
+                    <div class="stat-row"><span class="stat-key">WRITEUPS_PUBLISHED</span><span class="stat-val"><span class="count-up" data-prefix="" data-suffix="+" data-target="50">50</span> <em>DOCS</em></span></div>
                 </div>
             </div>
         </div>
@@ -184,15 +187,27 @@
         </div>
     </section>
 
-    <section class="section" id="projects">
-        <div class="section-tag">/ PROJECT MODULES / P. 006</div>
-        <div class="big-heading wave-target">WHAT I<br><span class="accent">BUILT.</span></div>
-        <div class="filter-row">
-            <button class="ftab active" data-filter="all">ALL</button>
-            <button class="ftab" data-filter="red">OFFENSIVE</button>
-            <button class="ftab" data-filter="blue">DEFENSIVE</button>
+    <section class="proj-section" id="projects">
+        <div class="proj-inner" id="projInner">
+            <div class="proj-left">
+                <div class="section-tag">/ PROJECT MODULES / P. 006</div>
+                <div class="big-heading">WHAT I<br><span class="accent">BUILT.</span></div>
+                <div class="filter-row">
+                    <button class="ftab active" data-filter="all">ALL</button>
+                    <button class="ftab" data-filter="red">OFFENSIVE</button>
+                    <button class="ftab" data-filter="blue">DEFENSIVE</button>
+                </div>
+                <div class="proj-counter">
+                    <span class="proj-counter-cur" id="projCurrent">01</span>
+                    <span> / </span>
+                    <span id="projTotal">12</span>
+                </div>
+                <div class="proj-progress-bar"><div class="proj-progress-fill" id="projProgressFill"></div></div>
+            </div>
+            <div class="proj-track-outer">
+                <div class="proj-hscroll-track" id="projectsGrid"></div>
+            </div>
         </div>
-        <div class="proj-list" id="projectsGrid"></div>
     </section>
 
     <section class="section" id="certs">
