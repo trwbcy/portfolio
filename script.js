@@ -511,7 +511,7 @@ function initPCBRain() {
 
     let W, H;
     const traces = [];
-    const MAX_TRACES = 45;
+    const MAX_TRACES = 120;
     const PURPLE = { r: 157, g: 0, b: 255 };
 
     function resize() {
@@ -530,7 +530,7 @@ function initPCBRain() {
             this.y = -Math.random() * H * 0.5;
             this.speed = 0.4 + Math.random() * 1.2;
             this.lineWidth = 0.5 + Math.random() * 1;
-            this.alpha = 0.15 + Math.random() * 0.4;
+            this.alpha = 0.3 + Math.random() * 0.55;
 
             this.segments = [];
             this.totalLength = 0;
