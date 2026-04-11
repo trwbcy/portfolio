@@ -616,7 +616,7 @@ function renderProjects(filter) {
 
 function setupProjectsScroll() {
     if (typeof gsap === 'undefined' || !window.ScrollTrigger) return;
-    
+
     const track = document.getElementById('projectsGrid');
     const section = document.getElementById('projects');
     const outer = document.querySelector('.proj-track-outer');
@@ -625,14 +625,20 @@ function setupProjectsScroll() {
 
     if (!section || !outer || !track) return;
 
-    // Bersihkan trigger lama kalau user klik tab filter
+    // Bersihkan trigger lama
     if (_projST) {
         if (_projST.scrollTrigger) _projST.scrollTrigger.kill();
         _projST.kill();
         _projST = null;
     }
 
-    gsap.set(track, { x: 0 });
+    gsap.set(track, { x: 0, clearProps: 'transform' });
+
+    // Mobile: skip horizontal scroll, biarkan normal vertical flow
+    if (window.innerWidth <= 900) {
+        ScrollTrigger.refresh();
+        return;
+    }
 
     // Kasih delay tipis biar DOM beres gambar ulang
     setTimeout(() => {

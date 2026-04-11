@@ -621,11 +621,12 @@ body {
 
 /* RESPONSIVE */
 @media (max-width:900px) {
-    /* NAV */
-    .nav { padding:0 20px; gap:8px; }
+    /* NAV — site stays natural width, toggle+hamburger pushed to right */
+    .nav { padding:0 16px; }
+    .nav-site { flex-shrink:1; min-width:0; }
     .nav-links, .nav-vol { display:none; }
-    .nav-toggle { display:block; }
-    .theme-toggle { margin-left:auto; padding:4px 8px; }
+    .theme-toggle { margin-left:auto; padding:5px 8px; flex-shrink:0; }
+    .nav-toggle { display:block; margin-left:8px; flex-shrink:0; }
     #themeLabel { display:none; }
 
     /* HERO */
@@ -644,42 +645,60 @@ body {
     .skills-vdivider { display:none; }
     .skills-col { padding:0; }
     .career-item { grid-template-columns:1fr; gap:10px; }
+    .career-details p { white-space:normal; overflow-wrap:break-word; word-break:break-word; }
     html { cursor:auto; }
     .cursor-dot,.cursor-ring { display:none; }
 
-    /* PROJECTS */
-    .proj-section { height: auto; }
-    .proj-inner { flex-direction: column; height: auto; overflow: visible; }
-    .proj-left { width: 100%; min-width: unset; border-right: none; border-bottom: 1px solid var(--border); padding: 36px 24px 28px; }
-    .proj-track-outer { overflow: visible; }
-    .proj-hscroll-track { flex-direction: column; padding: 20px 16px; gap: 16px; align-items: stretch; }
-    .proj-item { width: 100%; height: auto; max-height: unset; border-radius: 6px; }
-    .proj-artwork { height: 180px; }
-    .proj-content { padding: 14px 16px 18px; }
-    .proj-progress-bar { display: none; }
-    .proj-counter { display: none; }
-    .ftab { cursor: auto; }
+    /* PROJECTS — vertical stack, no horizontal scroll */
+    .proj-section { height:auto !important; }
+    .proj-inner { flex-direction:column; height:auto !important; overflow:visible; }
+    .proj-left {
+        width:100%; min-width:unset;
+        border-right:none; border-bottom:1px solid var(--border);
+        padding:36px 24px 28px;
+        justify-content:flex-start; gap:12px;
+    }
+    .proj-track-outer { overflow:visible; flex:unset; width:100%; }
+    .proj-hscroll-track {
+        flex-direction:column !important;
+        width:100%; padding:20px 16px;
+        gap:16px; align-items:stretch;
+        transform:none !important;  /* override any GSAP leftover */
+    }
+    .proj-item {
+        width:100% !important; height:auto; max-height:unset;
+        flex-shrink:1; border-radius:6px;
+    }
+    .proj-artwork { height:160px; object-fit:cover; }
+    .proj-content { padding:14px 16px 18px; }
+    .proj-progress-bar, .proj-counter { display:none; }
+    .ftab { cursor:auto; }
+
+    /* CTF — single column, prevent text overflow */
+    .ctf-list { grid-template-columns:1fr; }
+    .ctf-item { flex-direction:column; align-items:flex-start; gap:8px; }
+    .ctf-item p { white-space:normal; overflow-wrap:break-word; }
+
+    /* HACKTRACE — single column */
+    .ht-ranks, .ht-machines { grid-template-columns:1fr; }
+    .ht-total { flex-direction:column; align-items:flex-start; gap:1rem; padding:1.5rem; }
+    .ht-total-tag { width:auto; }
+    .ht-rank-num { font-size:clamp(3.5rem,18vw,6rem); }
 }
 
 @media (max-width:600px) {
     /* HERO NAME */
-    .name-line { font-size: clamp(3.5rem, 18vw, 6rem); }
+    .name-line { font-size:clamp(3.5rem,18vw,6rem); }
 
     /* MANIFESTO — bigger & bolder on mobile */
     .manifesto-body {
-        font: 400 clamp(3.2rem, 13vw, 6rem)/1.05 var(--display);
-        letter-spacing: -.01em;
+        font:400 clamp(3.2rem,13vw,6rem)/1.05 var(--display);
+        letter-spacing:-.01em;
     }
-    .manifesto-content { padding: 60px 24px 80px; }
+    .manifesto-content { padding:60px 24px 80px; }
 
     /* CERTS */
     .cert-grid { grid-template-columns:1fr; }
-
-    /* HERO batik — portrait fit */
-    .hero {
-        background-size: 100% 100%, cover;
-        background-position: top center, top center;
-    }
 }
 
 /* ── HACKTRACE RANGES — TERMINAL DESIGN ─────────────── */
@@ -832,14 +851,8 @@ body {
 .ctf-footer-line { font: .7rem/1 var(--mono); letter-spacing: .1em; }
 .ctf-footer-text { font: .65rem/1 var(--mono); letter-spacing: .18em; white-space: nowrap; }
 
-@media (max-width: 900px) {
-    .ht-ranks, .ht-machines { grid-template-columns: 1fr; }
-    .ht-total { gap: 1.5rem; }
-}
 @media (max-width: 600px) {
-    .ht-rank-card, .ht-machine { padding: 2rem 1.5rem; }
-    .ht-total { flex-wrap: wrap; }
-    .ht-total-tag { width: 100%; }
+    .ht-rank-card, .ht-machine { padding: 1.5rem 1.25rem; }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -990,5 +1003,5 @@ body {
 .theme-toggle:hover { border-color: var(--purple); color: var(--purple); }
 .theme-toggle svg { width: 13px; height: 13px; flex-shrink: 0; }
 @media (max-width: 900px) {
-    .theme-toggle { cursor: auto; margin-left: 8px; }
+    .theme-toggle { cursor: auto; }
 }
