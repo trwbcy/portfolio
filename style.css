@@ -218,6 +218,16 @@ body {
 
 .hero-noise { display:none; }
 
+/* ── HERO BATIK PATTERN (hero only) ─── */
+.hero {
+    background-image:
+        linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.68) 50%, var(--black) 88%),
+        url("img/batik_horizontal_16_9.png");
+    background-size: 100% 100%, 100% 100%;
+    background-repeat: no-repeat, no-repeat;
+    background-position: top center, top center;
+}
+
 /* MANIFESTO */
 .manifesto {
     position: relative;
@@ -895,6 +905,11 @@ body {
 [data-theme="light"] .name-purple     { text-shadow: none; }
 [data-theme="light"] .nav-site        { text-shadow: none; }
 [data-theme="light"] .hero-meta       { text-shadow: none; }
+[data-theme="light"] .hero {
+    background-image:
+        linear-gradient(to bottom, rgba(240,238,234,0.72) 0%, rgba(240,238,234,0.65) 50%, var(--black) 88%),
+        url("img/batik_horizontal_16_9.png");
+}
 
 /* MANIFESTO — strip glow */
 [data-theme="light"] .mw.lit  { text-shadow: none; }
