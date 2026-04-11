@@ -441,27 +441,57 @@ body {
 
 /* ── CARDS: Ukuran Seragam & Tema Elegan ── */
 .proj-item {
-    width: 340px; /* KUNCI 2: Lebar diseragamkan baku */
+    width: 300px;
     flex-shrink: 0;
-    /* height dihapus agar otomatis ngikutin tinggi pembungkus (stretch) */
-    padding: 24px 20px;
+    padding: 0;
     text-decoration: none;
-    display: flex; flex-direction: column; gap: 10px;
+    display: flex; flex-direction: column; gap: 0;
     position: relative;
-    border-radius: 4px; /* Sedikit lengkungan biar manis */
+    border-radius: 6px;
+    overflow: hidden;
     transition: border-color .25s, background .25s, transform .2s ease-out, box-shadow .2s ease-out;
+}
+
+.proj-artwork {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.proj-artwork img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .4s ease;
+}
+
+.proj-item:hover .proj-artwork img {
+    transform: scale(1.05);
+}
+
+.proj-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 18px 20px;
+    flex: 1;
 }
 
 /* TEMA OFFENSE (MERAH) */
 .proj-item.red {
-    background: linear-gradient(180deg, rgba(255,34,68,0.06) 0%, var(--black2) 100%);
+    background: var(--black2);
     border: 1px solid rgba(255,34,68,0.15);
 }
-.proj-item.red:hover { 
-    background: linear-gradient(180deg, rgba(255,34,68,0.12) 0%, var(--black2) 100%);
-    border-color: rgba(255,34,68,0.4); 
-    transform: translateY(-4px); /* Efek ngangkat saat di-hover */
-    box-shadow: 0 8px 24px rgba(255,34,68,0.08);
+.proj-item.red .proj-content {
+    background: linear-gradient(180deg, rgba(255,34,68,0.06) 0%, var(--black2) 100%);
+}
+.proj-item.red:hover {
+    border-color: rgba(255,34,68,0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(255,34,68,0.12);
 }
 .proj-item.red .proj-badge { color: var(--red); }
 .proj-item.red .proj-title { color: var(--white); transition: color .2s; }
@@ -471,14 +501,16 @@ body {
 
 /* TEMA DEFENSE (BIRU / CYAN) */
 .proj-item.blue {
-    background: linear-gradient(180deg, rgba(0,229,255,0.05) 0%, var(--black2) 100%);
+    background: var(--black2);
     border: 1px solid rgba(0,229,255,0.15);
 }
-.proj-item.blue:hover { 
-    background: linear-gradient(180deg, rgba(0,229,255,0.1) 0%, var(--black2) 100%);
-    border-color: rgba(0,229,255,0.4); 
+.proj-item.blue .proj-content {
+    background: linear-gradient(180deg, rgba(0,229,255,0.05) 0%, var(--black2) 100%);
+}
+.proj-item.blue:hover {
+    border-color: rgba(0,229,255,0.4);
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,229,255,0.08);
+    box-shadow: 0 8px 24px rgba(0,229,255,0.10);
 }
 .proj-item.blue .proj-badge { color: var(--cyan); }
 .proj-item.blue .proj-title { color: var(--white); transition: color .2s; }
@@ -593,6 +625,7 @@ body {
     .proj-track-outer { overflow: visible; }
     .proj-hscroll-track { flex-direction: column; padding: 24px; gap: 16px; align-items: stretch; }
     .proj-item { width: 100%; height: auto; max-height: unset; }
+    .proj-artwork { height: 160px; }
     .proj-progress-bar { display: none; }
     .proj-counter { display: none; }
 }
