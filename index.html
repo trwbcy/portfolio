@@ -36,13 +36,10 @@
         <div class="nav-site" id="navSite">
             <img src="img/helmet.png" class="nav-helmet-icon" alt="">TRWBCY
         </div>
-        <div class="nav-links" id="navLinks">
-            <a href="#about">/ ABOUT</a>
-            <a href="#career">/ CAREER</a>
-            <a href="#projects">/ PROJECTS</a>
-            <a href="#certs">/ CERTS</a>
-        </div>
         <div class="nav-vol">VOL. 1 / 2026</div>
+        <a href="https://www.linkedin.com/in/tri-wibowo-cahyo/" target="_blank" rel="noopener" class="nav-linkedin" title="LinkedIn">
+            <img src="img/icon-linkedin.png" alt="LinkedIn">
+        </a>
         <button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode">
             <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="5"/>
@@ -63,10 +60,6 @@
     <div class="nav-fade-mask"></div>
 
     <div class="mobile-drawer" id="mobileDrawer">
-        <a href="#about">/ ABOUT</a>
-        <a href="#career">/ CAREER</a>
-        <a href="#projects">/ PROJECTS</a>
-        <a href="#certs">/ CERTS</a>
     </div>
 
     <section class="hero" id="home">
@@ -85,7 +78,6 @@
                 <a href="https://drive.google.com/file/d/1BshW219vILkUJiSZLRxfLZhq_xSkkrX4/" class="btn-ghost">DOWNLOAD CV ↗</a>
             </div>
         </div>
-        <div class="hero-noise" id="heroNoise" aria-hidden="true"></div>
     </section>
 
     <section class="manifesto" id="manifesto">
@@ -113,7 +105,7 @@
                     <div class="stat-divider"></div>
                     <div class="stat-row"><span class="stat-key">HACKTRACE_DEFENSE</span><span class="stat-val"><span class="count-up" data-prefix="#" data-target="5">5</span> <em>ID</em></span></div>
                     <div class="stat-divider"></div>
-                    <div class="stat-row"><span class="stat-key">HACKTRACE_OFFENSIVE</span><span class="stat-val"><span class="count-up" data-prefix="#" data-target="33">33</span> <em>ID</em></span></div>
+                    <div class="stat-row"><span class="stat-key">HACKTRACE_OFFENSIVE</span><span class="stat-val"><span class="count-up" data-prefix="#" data-target="32">32</span> <em>ID</em></span></div>
                     <div class="stat-divider"></div>
                     <div class="stat-row"><span class="stat-key">SOC_EVENTS_DAILY</span><span class="stat-val"><span class="count-up" data-prefix="" data-suffix="K+" data-target="10">10</span> <em>ALERTS</em></span></div>
                     <div class="stat-divider"></div>
@@ -244,18 +236,28 @@
 
             <div class="ht-ranks">
                 <div class="ht-rank-card ht-defense">
-                    <div class="ht-rank-head">DEFENSE_RANK.log</div>
-                    <div class="ht-rank-num">#5</div>
-                    <div class="ht-rank-region">INDONESIA</div>
-                    <div class="ht-bar"><div class="ht-bar-fill" style="--pct:96%"></div></div>
-                    <div class="ht-rank-sub">TOP 5 NATIONWIDE</div>
+                    <div class="ht-rank-info">
+                        <div class="ht-rank-head">DEFENSE_RANK.log</div>
+                        <div class="ht-rank-num">#5</div>
+                        <div class="ht-rank-region">INDONESIA</div>
+                        <div class="ht-bar"><div class="ht-bar-fill" style="--pct:96%"></div></div>
+                        <div class="ht-rank-sub">TOP 5 NATIONWIDE</div>
+                    </div>
+                    <div class="ht-rank-evidence">
+                        <img src="img/rank-blue.png" alt="Defense Rank" class="ht-rank-img">
+                    </div>
                 </div>
                 <div class="ht-rank-card ht-offense">
-                    <div class="ht-rank-head">OFFENSIVE_RANK.log</div>
-                    <div class="ht-rank-num">#33</div>
-                    <div class="ht-rank-region">INDONESIA</div>
-                    <div class="ht-bar"><div class="ht-bar-fill" style="--pct:72%"></div></div>
-                    <div class="ht-rank-sub">TOP 33 NATIONWIDE</div>
+                    <div class="ht-rank-info">
+                        <div class="ht-rank-head">OFFENSIVE_RANK.log</div>
+                        <div class="ht-rank-num">#32</div>
+                        <div class="ht-rank-region">INDONESIA</div>
+                        <div class="ht-bar"><div class="ht-bar-fill" style="--pct:74%"></div></div>
+                        <div class="ht-rank-sub">TOP 32 NATIONWIDE</div>
+                    </div>
+                    <div class="ht-rank-evidence">
+                        <img src="img/rank-red.png" alt="Offensive Rank" class="ht-rank-img">
+                    </div>
                 </div>
             </div>
 
@@ -290,7 +292,7 @@
 
         <div class="ctf-footer">
             <span class="ctf-footer-line">——</span>
-            <span class="ctf-footer-text">Writeups available upon request</span>
+            <span class="ctf-footer-text">Writeups removed per Hacktrace community rules — proof available upon request</span>
             <span class="ctf-footer-line">——</span>
         </div>
     </section>
@@ -298,7 +300,9 @@
     <footer class="footer">
         <span>TRWBCY</span>
         <span>Connection established. Still hunting.</span>
-        <span>© 2026</span>
+        <a href="https://www.linkedin.com/in/tri-wibowo-cahyo/" target="_blank" rel="noopener" class="footer-linkedin" title="LinkedIn">
+            <img src="img/icon-linkedin.png" alt="LinkedIn">
+        </a>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

@@ -152,15 +152,7 @@ body {
     flex-shrink: 0;
 }
 .nav-site:hover { opacity:.7; }
-.nav-links { display:flex; gap:24px; margin:0 auto; white-space:nowrap; }
-.nav-links a { color:var(--white); text-decoration:none; transition:color .2s; position:relative; }
-.nav-links a::after {
-    content:''; position:absolute; left:0; bottom:-2px;
-    width:0; height:1px; background:var(--purple); transition:width .25s ease;
-}
-.nav-links a:hover { color:var(--purple); }
-.nav-links a:hover::after { width:100%; }
-.nav-vol { color:var(--white); flex-shrink:0; }
+.nav-vol { color:var(--white); flex-shrink:0; margin-left:auto; }
 .nav-toggle { display:none; background:none; border:none; color:var(--white); font-size:1.1rem; cursor:none; }
 
 .mobile-drawer {
@@ -180,6 +172,12 @@ body {
     padding:72px 48px 48px;
     display:flex; flex-direction:column; justify-content:space-between;
     overflow:hidden;
+    background-image:
+        linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.68) 50%, var(--black) 88%),
+        url("img/batik_horizontal_16_9.png");
+    background-size: 100% 100%, 100% 100%;
+    background-repeat: no-repeat;
+    background-position: top center;
 }
 .hero-meta {
     display:flex; justify-content:space-between; align-items:center;
@@ -223,17 +221,7 @@ body {
 }
 .btn-ghost:hover { border-color:var(--white); background:rgba(255,255,255,.06); color:var(--white); }
 
-.hero-noise { display:none; }
-
-/* ── HERO BATIK PATTERN (hero only) ─── */
-.hero {
-    background-image:
-        linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.68) 50%, var(--black) 88%),
-        url("img/batik_horizontal_16_9.png");
-    background-size: 100% 100%, 100% 100%;
-    background-repeat: no-repeat, no-repeat;
-    background-position: top center, top center;
-}
+/* ── HERO BATIK PATTERN ─── */
 
 /* MANIFESTO */
 .manifesto {
@@ -552,9 +540,6 @@ body {
     transition:opacity .2s, transform .2s;
 }
 .proj-item:hover .proj-arrow { opacity:1; transform:translate(3px,-3px); }
-.proj-item.red  .proj-arrow { color:var(--red); }
-.proj-item.blue .proj-arrow { color:var(--cyan); }
-.proj-item:hover .proj-arrow { opacity:1; transform:translate(3px,-3px); }
 
 /* progress bar at bottom of left panel */
 .proj-progress-bar {
@@ -619,13 +604,35 @@ body {
     font:.65rem/1 var(--mono); letter-spacing:.08em; color:var(--white);
 }
 
+/* LINKEDIN */
+.nav-linkedin {
+    display: flex; align-items: center;
+    margin-left: 12px; opacity: .7;
+    transition: opacity .2s;
+}
+.nav-linkedin:hover { opacity: 1; }
+.nav-linkedin img {
+    width: 18px; height: 18px;
+    filter: brightness(0) saturate(100%) invert(22%) sepia(96%) saturate(5000%) hue-rotate(268deg) brightness(105%);
+}
+.footer-linkedin {
+    display: flex; align-items: center; opacity: .5;
+    transition: opacity .2s;
+}
+.footer-linkedin:hover { opacity: 1; }
+.footer-linkedin img {
+    width: 16px; height: 16px;
+    filter: brightness(0) saturate(100%) invert(22%) sepia(96%) saturate(5000%) hue-rotate(268deg) brightness(105%);
+}
+
 /* RESPONSIVE */
 @media (max-width:900px) {
     /* NAV — site stays natural width, toggle+hamburger pushed to right */
     .nav { padding:0 16px; }
     .nav-site { flex-shrink:1; min-width:0; }
-    .nav-links, .nav-vol { display:none; }
-    .theme-toggle { margin-left:auto; padding:5px 8px; flex-shrink:0; }
+    .nav-vol { display:none; }
+    .nav-linkedin { margin-left:auto; }
+    .theme-toggle { margin-left:8px; padding:5px 8px; flex-shrink:0; }
     .nav-toggle { display:block; margin-left:8px; flex-shrink:0; }
     #themeLabel { display:none; }
 
@@ -681,9 +688,16 @@ body {
 
     /* HACKTRACE — single column */
     .ht-ranks, .ht-machines { grid-template-columns:1fr; }
-    .ht-total { flex-direction:column; align-items:flex-start; gap:1rem; padding:1.5rem; }
+    .ht-total { flex-direction:row; align-items:center; gap:1.25rem; padding:1.25rem 1.5rem; }
     .ht-total-tag { width:auto; }
+    .ht-total-num { font-size: clamp(2.5rem, 12vw, 4rem); }
     .ht-rank-num { font-size:clamp(3.5rem,18vw,6rem); }
+    /* Rank cards — single col on mobile, tighter */
+    .ht-rank-card { min-height: 180px; }
+    .ht-rank-info { padding: 1.5rem 1.25rem 1.25rem; }
+    .ht-rank-card::after {
+        background: linear-gradient(to right, var(--ht-bg) 20%, transparent 60%);
+    }
 }
 
 @media (max-width:600px) {
@@ -741,12 +755,53 @@ body {
     margin-bottom: 12px;
 }
 .ht-rank-card {
-    padding: 2.5rem 2.5rem 2rem;
+    position: relative; overflow: hidden;
     background: var(--ht-bg);
     border: 1px solid var(--ht-border);
+    min-height: 210px;
     transition: background .25s;
 }
 .ht-rank-card:hover { background: var(--ht-bg-h); }
+
+/* Card bg color fades left (solid) → right (transparent) to reveal image */
+.ht-rank-card::after {
+    content: '';
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(to right, var(--ht-bg) 28%, transparent 68%);
+}
+
+.ht-rank-info {
+    position: relative; z-index: 2;
+    padding: 2rem 2rem 1.75rem;
+}
+
+/* Image anchored to right, edges fade into card color */
+.ht-rank-evidence {
+    position: absolute; right: 0; top: 0; bottom: 0; z-index: 0;
+    background: var(--ht-bg);
+    display: flex; align-items: center;
+    padding-right: 1.25rem;
+    transition: background .25s;
+}
+.ht-rank-card:hover .ht-rank-evidence { background: var(--ht-bg-h); }
+.ht-rank-img {
+    height: 80%; width: auto;
+    display: block;
+    filter: saturate(.85) brightness(.88);
+    /* Fade all 4 edges so image dissolves into card color naturally */
+    -webkit-mask-image:
+        linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%),
+        linear-gradient(to right,  transparent 0%, black 4%, black 78%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%),
+        linear-gradient(to right,  transparent 0%, black 4%, black 78%, transparent 100%);
+    mask-composite: intersect;
+    transition: filter .4s;
+}
+.ht-rank-card:hover .ht-rank-img {
+    filter: saturate(1) brightness(1);
+}
 
 .ht-rank-head {
     font: .58rem/1 var(--mono); letter-spacing: .16em;
@@ -818,12 +873,6 @@ body {
     border-top: none;
     position: relative; overflow: hidden;
 }
-.ht-total::before {
-    content: '';
-    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-    background: var(--purple);
-    box-shadow: 0 0 20px rgba(157,0,255,1), 0 0 40px rgba(157,0,255,.5);
-}
 .ht-total-num {
     font: 400 clamp(4rem,8vw,7rem)/1 var(--display);
     color: var(--purple);
@@ -846,13 +895,14 @@ body {
 /* ctf-footer stays */
 .ctf-footer {
     display: flex; align-items: center; gap: 1rem;
-    margin-top: 2.5rem; opacity: .4;
+    margin-top: 2.5rem; opacity: .85;
 }
 .ctf-footer-line { font: .7rem/1 var(--mono); letter-spacing: .1em; }
-.ctf-footer-text { font: .65rem/1 var(--mono); letter-spacing: .18em; white-space: nowrap; }
+.ctf-footer-text { font: 1rem/1 var(--display); letter-spacing: .12em; white-space: nowrap; }
 
 @media (max-width: 600px) {
-    .ht-rank-card, .ht-machine { padding: 1.5rem 1.25rem; }
+    .ht-machine { padding: 1.5rem 1.25rem; }
+    .ht-rank-info { padding: 1.25rem 1rem 1rem; }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -945,6 +995,8 @@ body {
 }
 [data-theme="light"] .ht-bar { background: rgba(0,0,0,.1); }
 [data-theme="light"] .ht-total { background: rgba(114,0,204,.05); border-color: rgba(114,0,204,.2); }
+[data-theme="light"] .ht-rank-img { filter: saturate(.75) brightness(.85); }
+[data-theme="light"] .ht-rank-card:hover .ht-rank-img { filter: saturate(.9) brightness(.95); }
 
 /* CERTS & CTF */
 [data-theme="light"] .cert-item { background: var(--black); }
