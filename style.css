@@ -621,13 +621,24 @@ body {
 
 /* RESPONSIVE */
 @media (max-width:900px) {
-    .hero { padding:72px 24px 40px; }
+    /* NAV */
+    .nav { padding:0 20px; gap:8px; }
+    .nav-links, .nav-vol { display:none; }
+    .nav-toggle { display:block; }
+    .theme-toggle { margin-left:auto; padding:4px 8px; }
+    #themeLabel { display:none; }
+
+    /* HERO */
+    .hero {
+        padding: 72px 24px 40px;
+        background-size: 100% 100%, cover;
+        background-position: top center, center center;
+    }
+
+    /* SECTIONS */
     .manifesto { padding:60px 24px; }
     .section { padding:60px 24px; }
     .footer { padding:18px 24px; flex-direction:column; gap:8px; text-align:center; }
-    .nav-links,.nav-vol { display:none; }
-    .nav-toggle { display:block; }
-    .nav { padding:0 24px; }
     .split-layout { grid-template-columns:1fr; gap:40px; }
     .skills-split { grid-template-columns:1fr; }
     .skills-vdivider { display:none; }
@@ -635,21 +646,40 @@ body {
     .career-item { grid-template-columns:1fr; gap:10px; }
     html { cursor:auto; }
     .cursor-dot,.cursor-ring { display:none; }
-    
+
+    /* PROJECTS */
     .proj-section { height: auto; }
     .proj-inner { flex-direction: column; height: auto; overflow: visible; }
-    .proj-left { width: 100%; min-width: unset; border-right: none; border-bottom: 1px solid var(--border); padding: 48px 24px 32px; }
+    .proj-left { width: 100%; min-width: unset; border-right: none; border-bottom: 1px solid var(--border); padding: 36px 24px 28px; }
     .proj-track-outer { overflow: visible; }
-    .proj-hscroll-track { flex-direction: column; padding: 24px; gap: 16px; align-items: stretch; }
-    .proj-item { width: 100%; height: auto; max-height: unset; }
-    .proj-artwork { height: 160px; }
+    .proj-hscroll-track { flex-direction: column; padding: 20px 16px; gap: 16px; align-items: stretch; }
+    .proj-item { width: 100%; height: auto; max-height: unset; border-radius: 6px; }
+    .proj-artwork { height: 180px; }
+    .proj-content { padding: 14px 16px 18px; }
     .proj-progress-bar { display: none; }
     .proj-counter { display: none; }
+    .ftab { cursor: auto; }
 }
+
 @media (max-width:600px) {
-    .name-line { font-size:clamp(3.5rem,18vw,6rem); }
-    .manifesto-body { font-size:clamp(2rem,8vw,3.5rem); }
+    /* HERO NAME */
+    .name-line { font-size: clamp(3.5rem, 18vw, 6rem); }
+
+    /* MANIFESTO — bigger & bolder on mobile */
+    .manifesto-body {
+        font: 400 clamp(3.2rem, 13vw, 6rem)/1.05 var(--display);
+        letter-spacing: -.01em;
+    }
+    .manifesto-content { padding: 60px 24px 80px; }
+
+    /* CERTS */
     .cert-grid { grid-template-columns:1fr; }
+
+    /* HERO batik — portrait fit */
+    .hero {
+        background-size: 100% 100%, cover;
+        background-position: top center, top center;
+    }
 }
 
 /* ── HACKTRACE RANGES — TERMINAL DESIGN ─────────────── */
