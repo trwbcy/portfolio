@@ -143,7 +143,14 @@ body {
     font:.7rem/1 var(--mono); letter-spacing:.08em;
     z-index: 200;
 }
-.nav-site { font:1.4rem/1 var(--display); letter-spacing:.12em; color:var(--purple); cursor:none; flex-shrink:0; transition:opacity .2s; text-shadow: 0 0 12px rgba(157,0,255,.5); }
+.nav-site { font:1.4rem/1 var(--display); letter-spacing:.12em; color:var(--purple); cursor:none; flex-shrink:0; transition:opacity .2s; text-shadow: 0 0 12px rgba(157,0,255,.5); display:flex; align-items:center; gap:8px; }
+.nav-helmet-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(4000%) hue-rotate(265deg) brightness(120%);
+    flex-shrink: 0;
+}
 .nav-site:hover { opacity:.7; }
 .nav-links { display:flex; gap:24px; margin:0 auto; white-space:nowrap; }
 .nav-links a { color:var(--white); text-decoration:none; transition:color .2s; position:relative; }

@@ -111,7 +111,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initThemeToggle();
+    setPurpleFavicon();
 });
+
+// ── PURPLE FAVICON ────────────────────────────────────
+function setPurpleFavicon() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.onload = () => {
+        ctx.drawImage(img, 0, 0, 64, 64);
+        ctx.globalCompositeOperation = 'source-in';
+        ctx.fillStyle = '#9d00ff';
+        ctx.fillRect(0, 0, 64, 64);
+        const link = document.querySelector("link[rel='icon']");
+        if (link) link.href = canvas.toDataURL('image/png');
+    };
+    img.src = 'img/helmet.png';
+}
 
 // ── THEME TOGGLE ──────────────────────────────────────
 function initThemeToggle() {
