@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"from PIL import Image; img = Image.open\\('c:/Personal Projects/WebPorto/img/desain_naga_ungu_16_9.jpg'\\); print\\(img.size\\)\")"
+    ]
+  }
+}
