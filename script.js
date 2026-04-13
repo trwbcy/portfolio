@@ -483,11 +483,11 @@ function initTyping() {
         'Purple Team Practitioner',
         'Security Analyst @ MPM',
         'Relentless CTF Player',
-        'Earned Through Repetition',
-        'Purple on Purpose',
+        'Break It. Detect It. Write It Up.',
+        'Red by Curiosity, Blue by Duty',
         'Threat Hunter',
-        'Slow Burn Builder',
-        'Still Becoming',
+        '500+ Days. Still Grinding.',
+        'Built in the Lab, Proven in Prod',
     ];
     let i = 0, j = 0, del = false;
     const el = document.getElementById('typedRole');
