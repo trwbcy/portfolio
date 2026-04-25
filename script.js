@@ -27,7 +27,18 @@ const certsData = [
     { name: "IT Support Specialist", issuer: "Google", year: "2023", status: "", url: "https://drive.google.com/file/d/1RB5ehE_-DovC1sgoII2FhV55qoF9Zdgr/view" }
 ];
 
+// ── LEARNING ACTIVITY DATA ───────────────────────────────────────────
+const learningData = [
+    { date: '2026-04-25', title: 'SOC Fundamentals: Common Mistakes',   platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
+    { date: '2026-04-25', title: 'SOC Fundamentals: Threat Intel Feed', platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
+    { date: '2026-04-24', title: 'SOC Fundamentals: SOAR',              platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
+    { date: '2026-04-24', title: 'SOC Fundamentals: EDR',               platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
+    { date: '2026-04-23', title: 'SOC Fundamentals: Log Management',    platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
+];
+
 let _projST = null;
+let _laShowAll = false;
+const LA_PREVIEW = 5;
 let isAppLoaded = false; // FLAG PENTING: Jangan set GSAP sebelum loading kelar!
 
 // ── INIT ──────────────────────────────────────────────────────────────
@@ -38,11 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initTyping();
     initManifestoBg();
-    
+
     // Render HTML aja, animasinya ditunda sampai loading kelar
-    renderProjects('all'); 
-    
+    renderProjects('all');
+
     renderCerts();
+    initLearning();
     initFilterTabs();
     initSpotlight();
     initGlitch();
@@ -618,6 +630,242 @@ function renderCerts() {
             <div class="cert-meta">${c.issuer} · ${c.year}</div>
         </a>
     `).join('');
+}
+
+// ── LEARNING ACTIVITY ──────────────────────────────────────────────────
+function initLearning() {
+    buildLearningStats();
+    buildHeatmap();
+    initHeatmapTooltip();
+    renderLearningList('all');
+    document.querySelectorAll('.la-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.la-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            _laShowAll = false;
+            renderLearningList(tab.dataset.platform);
+        });
+    });
+    const btn = document.getElementById('laShowMore');
+    if (btn) {
+        btn.addEventListener('click', () => {
+            _laShowAll = !_laShowAll;
+            const active = document.querySelector('.la-tab.active');
+            renderLearningList(active ? active.dataset.platform : 'all');
+        });
+    }
+}
+
+function buildLearningStats() {
+    const total = learningData.length;
+    const days  = new Set(learningData.map(a => a.date)).size;
+
+    const dateSet = new Set(learningData.map(a => a.date));
+    let streak = 0;
+    const d = new Date(2026, 3, 25);
+    while (true) {
+        const s = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        if (!dateSet.has(s)) break;
+        streak++;
+        d.setDate(d.getDate() - 1);
+    }
+
+    const el1 = document.getElementById('laTotal');
+    const el2 = document.getElementById('laDays');
+    const el3 = document.getElementById('laStreak');
+    if (el1) el1.textContent = total;
+    if (el2) el2.textContent = days;
+    if (el3) el3.innerHTML = streak + '<span class="la-stat-unit"> days</span>';
+}
+
+// Heatmap data cache (built once, re-rendered on resize)
+let _hmWeeks = null, _hmMonthLabels = null, _hmNumWeeks = 0;
+
+function buildHeatmap() {
+    const YEAR  = 2026;
+    const today = new Date(2026, 3, 25);
+    const counts = {};
+    learningData.forEach(a => { counts[a.date] = (counts[a.date] || 0) + 1; });
+
+    const jan1   = new Date(YEAR, 0, 1);
+    const jan1dw = jan1.getDay();
+    const start  = new Date(jan1);
+    start.setDate(start.getDate() - (jan1dw === 0 ? 6 : jan1dw - 1));
+    const dec31  = new Date(YEAR, 11, 31);
+
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    _hmWeeks = []; _hmMonthLabels = [];
+    const cur = new Date(start);
+    let prevMonth = 11;
+
+    while (cur <= dec31) {
+        const weekIdx = _hmWeeks.length;
+        const days = [];
+        for (let d = 0; d < 7; d++) {
+            if (cur <= dec31) {
+                if (cur.getMonth() !== prevMonth) {
+                    _hmMonthLabels.push({ weekIdx, label: MONTHS[cur.getMonth()] });
+                    prevMonth = cur.getMonth();
+                }
+                const y  = cur.getFullYear();
+                const m  = String(cur.getMonth() + 1).padStart(2, '0');
+                const dy = String(cur.getDate()).padStart(2, '0');
+                const dateStr = `${y}-${m}-${dy}`;
+                days.push({ date: dateStr, count: counts[dateStr] || 0, future: cur > today });
+            } else {
+                days.push(null);
+            }
+            cur.setDate(cur.getDate() + 1);
+        }
+        _hmWeeks.push(days);
+    }
+    _hmNumWeeks = _hmWeeks.length;
+
+    renderHeatmap();
+
+    // Re-render on window resize so cell size stays balanced at any zoom level
+    if (!window._hmResize) {
+        window._hmResize = _debounce(renderHeatmap, 120);
+        window.addEventListener('resize', window._hmResize);
+    }
+}
+
+function renderHeatmap() {
+    if (!_hmWeeks) return;
+    const el = document.getElementById('laHeatmap');
+    if (!el) return;
+
+    const GAP    = 3;
+    const DL_W   = 22; // day-label col (17px) + gap (5px)
+    const availW = (el.offsetWidth || el.parentElement.offsetWidth) - DL_W;
+    const cell   = Math.max(9, Math.floor((availW - (_hmNumWeeks - 1) * GAP) / _hmNumWeeks));
+    const gridW  = _hmNumWeeks * (cell + GAP) - GAP;
+
+    el.style.setProperty('--cell', cell + 'px');
+
+    const DLABELS = ['M','T','W','T','F','S','S'];
+
+    const monthsHtml = _hmMonthLabels.map(ml =>
+        `<span class="la-hm-month" style="left:${ml.weekIdx * (cell + GAP)}px">${ml.label}</span>`
+    ).join('');
+
+    let cellsHtml = '';
+    _hmWeeks.forEach(week => {
+        week.forEach(day => {
+            if (!day) {
+                cellsHtml += `<div class="la-cell la-c0"></div>`;
+            } else if (day.future) {
+                cellsHtml += `<div class="la-cell la-c-fut" data-date="${day.date}" data-count="0"></div>`;
+            } else {
+                const lvl = day.count === 0 ? 0 : day.count === 1 ? 1 : day.count === 2 ? 2 : 3;
+                cellsHtml += `<div class="la-cell la-c${lvl}" data-date="${day.date}" data-count="${day.count}"></div>`;
+            }
+        });
+    });
+
+    el.innerHTML = `
+        <div class="la-hm-outer">
+            <div class="la-hm-inner">
+                <div class="la-hm-header">
+                    <div class="la-hm-day-spacer"></div>
+                    <div class="la-hm-months" style="width:${gridW}px">${monthsHtml}</div>
+                </div>
+                <div class="la-hm-body">
+                    <div class="la-hm-days">${DLABELS.map(l => `<div class="la-hm-dl">${l}</div>`).join('')}</div>
+                    <div class="la-hm-grid">${cellsHtml}</div>
+                </div>
+            </div>
+            <div class="la-legend">
+                <span class="la-legend-lbl">Less</span>
+                <div class="la-cell la-c0 la-legend-cell"></div>
+                <div class="la-cell la-c1 la-legend-cell"></div>
+                <div class="la-cell la-c2 la-legend-cell"></div>
+                <div class="la-cell la-c3 la-legend-cell"></div>
+                <span class="la-legend-lbl">More</span>
+            </div>
+        </div>`;
+}
+
+function initHeatmapTooltip() {
+    const tt  = document.getElementById('laTT');
+    const el  = document.getElementById('laHeatmap');
+    if (!tt || !el) return;
+
+    const MTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    el.addEventListener('mousemove', e => {
+        const cell = e.target.closest('.la-cell[data-date]');
+        if (!cell) { tt.style.display = 'none'; return; }
+
+        const [yr, mo, dy] = cell.dataset.date.split('-');
+        const count = parseInt(cell.dataset.count || '0');
+
+        document.getElementById('laTTDate').textContent =
+            `${dy} ${MTHS[parseInt(mo) - 1].toUpperCase()} ${yr}`;
+
+        const valEl = document.getElementById('laTTVal');
+        if (count > 0) {
+            valEl.textContent = `${count} ACTIVIT${count > 1 ? 'IES' : 'Y'}`;
+            valEl.className   = 'la-tt-val';
+        } else {
+            valEl.textContent = 'NO ACTIVITY';
+            valEl.className   = 'la-tt-val la-tt-none';
+        }
+
+        tt.style.display = 'block';
+        const rect = tt.getBoundingClientRect();
+        let x = e.clientX + 14;
+        let y = e.clientY - rect.height - 10;
+        if (x + rect.width  > window.innerWidth  - 8) x = e.clientX - rect.width  - 8;
+        if (y < 8)                                     y = e.clientY + 14;
+        tt.style.left = x + 'px';
+        tt.style.top  = y + 'px';
+    });
+
+    el.addEventListener('mouseleave', () => { tt.style.display = 'none'; });
+}
+
+function _debounce(fn, ms) {
+    let t;
+    return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+function renderLearningList(platform) {
+    const el = document.getElementById('laList');
+    if (!el) return;
+
+    const PCLASS = { LetsDefend: 'ld', TryHackMe: 'thm', Hacktrace: 'ht' };
+    const all    = platform === 'all' ? learningData : learningData.filter(a => a.platform === platform);
+    const sorted = [...all].sort((a, b) => b.date.localeCompare(a.date));
+    const shown  = _laShowAll ? sorted : sorted.slice(0, LA_PREVIEW);
+
+    el.innerHTML = shown.map(a => {
+        const [, mm, dd] = a.date.split('-');
+        const pClass  = PCLASS[a.platform] || '';
+        const isExternal = a.url && a.url !== '#';
+        const notesEl = `<a href="${a.url || '#'}" class="la-notes"${isExternal ? ' target="_blank" rel="noopener"' : ''}>open notes ↗</a>`;
+        return `<div class="la-item">
+            <div class="la-date">${mm}-${dd}</div>
+            <div class="la-item-body">
+                <div class="la-title">${a.title}</div>
+                <div class="la-item-meta">
+                    <span class="la-course">${a.course}</span>
+                    <span class="la-platform-badge ${pClass}">${a.platform}</span>
+                    ${notesEl}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    const btn = document.getElementById('laShowMore');
+    if (btn) {
+        if (sorted.length <= LA_PREVIEW) {
+            btn.style.display = 'none';
+        } else {
+            btn.style.display = '';
+            btn.textContent = _laShowAll ? 'Show less ↑' : 'Show all activities ↓';
+        }
+    }
 }
 
 // ── RENDER CTF ─────────────────────────────────────────────────────────

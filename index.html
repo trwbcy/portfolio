@@ -32,6 +32,11 @@
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
 
+    <div class="la-tt" id="laTT" aria-hidden="true">
+        <div class="la-tt-date" id="laTTDate"></div>
+        <div class="la-tt-val"  id="laTTVal"></div>
+    </div>
+
     <nav class="nav">
         <div class="nav-site" id="navSite">
             <img src="img/helmet.png" class="nav-helmet-icon" alt="">TRWBCY
@@ -224,8 +229,40 @@
         <div class="cert-grid" id="certsGrid"></div>
     </section>
 
+    <section class="section" id="learning">
+        <div class="section-tag">/ LEARNING ACTIVITY / P. 008</div>
+        <div class="big-heading wave-target">WHAT I<br><span class="accent">STUDY.</span></div>
+
+        <div class="la-wrap">
+            <div class="la-stats">
+                <div class="la-stat">
+                    <div class="la-stat-label">TOTAL ACTIVITIES</div>
+                    <div class="la-stat-num" id="laTotal">—</div>
+                </div>
+                <div class="la-stat">
+                    <div class="la-stat-label">ACTIVE DAYS</div>
+                    <div class="la-stat-num" id="laDays">—</div>
+                </div>
+                <div class="la-stat">
+                    <div class="la-stat-label">CURRENT STREAK</div>
+                    <div class="la-stat-num" id="laStreak">—</div>
+                </div>
+            </div>
+
+            <div id="laHeatmap"></div>
+
+            <div class="la-filter-row">
+                <button class="la-tab active" data-platform="all">All</button>
+                <button class="la-tab" data-platform="LetsDefend">LetsDefend</button>
+            </div>
+
+            <div class="la-list" id="laList"></div>
+            <button class="la-show-more" id="laShowMore">Show all activities ↓</button>
+        </div>
+    </section>
+
     <section class="section" id="ctf">
-        <div class="section-tag">/ HACKTRACE RANGES / P. 008</div>
+        <div class="section-tag">/ HACKTRACE RANGES / P. 009</div>
         <div class="big-heading wave-target">WHAT I<br><span class="accent">PWNED.</span></div>
 
         <div class="ht-wrap">
