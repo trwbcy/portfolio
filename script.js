@@ -32,8 +32,6 @@ const certsData = [
 let learningData = [];
 
 let _projST = null;
-let _laShowAll = false;
-const LA_PREVIEW = 5;
 let isAppLoaded = false; // FLAG PENTING: Jangan set GSAP sebelum loading kelar!
 
 // ── INIT ──────────────────────────────────────────────────────────────
@@ -310,25 +308,13 @@ function initParallaxTypography() {
 function initScrollReveal() {
     const elements = gsap.utils.toArray('.section-tag, .career-item, .stat-row, .skill-row, .proj-item, .cert-item, .ctf-item, .body-text');
     
-    const isLight = () => document.documentElement.getAttribute('data-theme') === 'light';
-
     elements.forEach((el, i) => {
-        const fromVars = isLight()
-            ? { opacity: 0, y: 30 }
-            : { opacity: 0, y: 50, filter: 'blur(8px)' };
-        const toVars = isLight()
-            ? { opacity: 1, y: 0 }
-            : { opacity: 1, y: 0, filter: 'blur(0px)' };
-
-        gsap.fromTo(el, fromVars, {
-            ...toVars,
-            duration: 0.85, ease: 'power3.out',
-            scrollTrigger: {
-                trigger: el,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse'
+        gsap.fromTo(el,
+            { opacity: 0, y: 50, filter: 'blur(8px)' },
+            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.85, ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' }
             }
-        });
+        );
     });
 }
 
@@ -597,14 +583,6 @@ function initLearning() {
             renderLearningList(tab.dataset.platform);
         });
     });
-    const btn = document.getElementById('laShowMore');
-    if (btn) {
-        btn.addEventListener('click', () => {
-            _laShowAll = !_laShowAll;
-            const active = document.querySelector('.la-tab.active');
-            renderLearningList(active ? active.dataset.platform : 'all');
-        });
-    }
 }
 
 function buildLearningStats() {
@@ -787,14 +765,13 @@ function renderLearningList(platform) {
 
     const PCLASS = { LetsDefend: 'ld', TryHackMe: 'thm', Hacktrace: 'ht' };
     const all    = platform === 'all' ? learningData : learningData.filter(a => a.platform === platform);
-    const sorted = [...all].sort((a, b) => b.date.localeCompare(a.date));
-    const shown  = _laShowAll ? sorted : sorted.slice(0, LA_PREVIEW);
+    const sorted = [...all].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 30);
 
-    el.innerHTML = shown.map(a => {
+    const itemsHtml = sorted.map(a => {
         const [, mm, dd] = a.date.split('-');
-        const pClass  = PCLASS[a.platform] || '';
+        const pClass     = PCLASS[a.platform] || '';
         const isExternal = a.url && a.url !== '#';
-        const notesEl = `<a href="${a.url || '#'}" class="la-notes"${isExternal ? ' target="_blank" rel="noopener"' : ''}>open notes ↗</a>`;
+        const notesEl    = `<a href="${a.url || '#'}" class="la-notes"${isExternal ? ' target="_blank" rel="noopener"' : ''}>open notes ↗</a>`;
         return `<div class="la-item">
             <div class="la-date">${mm}-${dd}</div>
             <div class="la-item-body">
@@ -808,15 +785,13 @@ function renderLearningList(platform) {
         </div>`;
     }).join('');
 
-    const btn = document.getElementById('laShowMore');
-    if (btn) {
-        if (sorted.length <= LA_PREVIEW) {
-            btn.style.display = 'none';
-        } else {
-            btn.style.display = '';
-            btn.textContent = _laShowAll ? 'Show less ↑' : 'Show all activities ↓';
-        }
-    }
+    const inner = document.createElement('div');
+    inner.className = 'la-list-inner';
+    inner.innerHTML = itemsHtml + itemsHtml;
+    inner.style.setProperty('--la-dur', Math.max(12, sorted.length * 2.5) + 's');
+
+    el.innerHTML = '';
+    el.appendChild(inner);
 }
 
 // ── RENDER CTF ─────────────────────────────────────────────────────────
