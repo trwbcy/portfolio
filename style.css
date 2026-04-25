@@ -1233,16 +1233,23 @@ body {
 [data-theme="light"] .la-notes:hover { text-decoration-color: rgba(114,0,204,1); }
 [data-theme="light"] .la-date        { color: var(--white); }
 
-/* HERO — strip all glow */
-[data-theme="light"] .hero-meta-right { text-shadow: none; color: var(--white); }
-[data-theme="light"] .name-purple     { text-shadow: none; }
-[data-theme="light"] .nav-site        { text-shadow: none; }
-[data-theme="light"] .hero-meta       { text-shadow: none; }
+/* HERO — light mode refinements */
 [data-theme="light"] .hero {
     background-image:
-        linear-gradient(to bottom, rgba(240,238,234,0.72) 0%, rgba(240,238,234,0.65) 50%, var(--black) 88%),
+        linear-gradient(to bottom, rgba(240,238,234,.6) 0%, rgba(240,238,234,.18) 38%, rgba(240,238,234,.55) 78%, var(--black) 100%),
+        linear-gradient(to right, var(--black) 0%, transparent 16%, transparent 84%, var(--black) 100%),
+        radial-gradient(ellipse 75% 85% at center, transparent 35%, rgba(240,238,234,.25) 80%),
         url("img/desain_naga_ungu_16_9.jpg");
 }
+/* Name: deep dark purple instead of stark black */
+[data-theme="light"] .name-line       { color: #160028; text-shadow: 0 2px 48px rgba(114,0,204,.08); }
+[data-theme="light"] .name-purple     { color: var(--purple); text-shadow: none; }
+/* Meta text: use light-mode purple, drop the neon glow */
+[data-theme="light"] .hero-meta       { color: rgba(114,0,204,.7); text-shadow: none; }
+[data-theme="light"] .hero-meta-right { color: rgba(22,0,40,.4);  text-shadow: none; }
+/* Typing role text */
+[data-theme="light"] .hero-role       { color: rgba(22,0,40,.5); }
+[data-theme="light"] .nav-site        { text-shadow: none; }
 
 /* MANIFESTO — strip glow */
 [data-theme="light"] .mw.lit  { text-shadow: none; }

@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initSpotlight();
     initGlitch();
     initCountUp();
-    initThemeToggle();
     setPurpleFavicon();
 });
 
@@ -77,52 +76,6 @@ function setPurpleFavicon() {
         if (link) link.href = canvas.toDataURL('image/png');
     };
     img.src = 'img/helmet.png';
-}
-
-// ── THEME TOGGLE ──────────────────────────────────────
-function initThemeToggle() {
-    const btn = document.getElementById('themeToggle');
-    const label = document.getElementById('themeLabel');
-    const icon = document.getElementById('themeIcon');
-    if (!btn) return;
-
-    const moonPath = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
-    const sunPaths = `
-        <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="1" x2="12" y2="3"/>
-        <line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/>
-        <line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
-
-    // Restore saved preference
-    const saved = localStorage.getItem('theme');
-    if (saved === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-        label.textContent = 'DARK';
-        icon.innerHTML = moonPath;
-    }
-
-    btn.addEventListener('click', () => {
-        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-        if (isLight) {
-            document.documentElement.removeAttribute('data-theme');
-            label.textContent = 'LIGHT';
-            icon.innerHTML = sunPaths;
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-            label.textContent = 'DARK';
-            icon.innerHTML = moonPath;
-            localStorage.setItem('theme', 'light');
-            // Strip any blur filter GSAP may have left on revealed elements
-            document.querySelectorAll('.section-tag, .career-item, .stat-row, .skill-row, .proj-item, .cert-item, .ctf-item, .body-text')
-                .forEach(el => el.style.filter = '');
-        }
-    });
 }
 
 // ── MOUSE SPOTLIGHT ───────────────────────────────────
