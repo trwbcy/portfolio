@@ -28,13 +28,8 @@ const certsData = [
 ];
 
 // ── LEARNING ACTIVITY DATA ───────────────────────────────────────────
-const learningData = [
-    { date: '2026-04-25', title: 'SOC Fundamentals: Common Mistakes',   platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
-    { date: '2026-04-25', title: 'SOC Fundamentals: Threat Intel Feed', platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
-    { date: '2026-04-24', title: 'SOC Fundamentals: SOAR',              platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
-    { date: '2026-04-24', title: 'SOC Fundamentals: EDR',               platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
-    { date: '2026-04-23', title: 'SOC Fundamentals: Log Management',    platform: 'LetsDefend', course: 'SOC Analyst LP', url: '#' },
-];
+// Edit learning-data.json to add new entries — no JS changes needed.
+let learningData = [];
 
 let _projST = null;
 let _laShowAll = false;
@@ -54,7 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProjects('all');
 
     renderCerts();
-    initLearning();
+    fetch('learning-data.json')
+        .then(r => r.json())
+        .then(data => { learningData = data; initLearning(); })
+        .catch(() => initLearning());
     initFilterTabs();
     initSpotlight();
     initGlitch();
@@ -849,7 +847,7 @@ function renderLearningList(platform) {
             <div class="la-item-body">
                 <div class="la-title">${a.title}</div>
                 <div class="la-item-meta">
-                    <span class="la-course">${a.course}</span>
+                    <span class="la-course">${a.path}</span>
                     <span class="la-platform-badge ${pClass}">${a.platform}</span>
                     ${notesEl}
                 </div>
