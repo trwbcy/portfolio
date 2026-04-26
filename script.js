@@ -591,7 +591,7 @@ function buildLearningStats() {
 
     const dateSet = new Set(learningData.map(a => a.date));
     let streak = 0;
-    const d = new Date(2026, 3, 25);
+    const d = new Date();
     while (true) {
         const s = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
         if (!dateSet.has(s)) break;
@@ -612,7 +612,7 @@ let _hmWeeks = null, _hmMonthLabels = null, _hmNumWeeks = 0;
 
 function buildHeatmap() {
     const YEAR  = 2026;
-    const today = new Date(2026, 3, 25);
+    const today = new Date();
     const counts = {};
     learningData.forEach(a => { counts[a.date] = (counts[a.date] || 0) + 1; });
 
