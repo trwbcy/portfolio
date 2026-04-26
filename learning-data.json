@@ -75,5 +75,12 @@
     "platform": "TryHackMe",
     "path": "CTF Challenge",
     "url": "https://drive.google.com/file/d/1KAIHTcnEns8GHIAPhE-1mQ-cDTJNNXNu/view?usp=drive_link"
+  },
+  {
+    "date": "2026-04-26",
+    "title": "Recruit - Web Exploitation (SSRF/LFI, SQLi, Source Code Review)",
+    "platform": "TryHackMe",
+    "path": "CTF Challenge",
+    "url": "https://drive.google.com/file/d/1Sxjg6C8e8u_HE5qXXDmEW2nua_2gCrOe/view?usp=drive_link"
   }
 ]
