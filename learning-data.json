@@ -68,5 +68,12 @@
     "platform": "LetsDefend",
     "path": "SOC Analyst Learning Path",
     "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "date": "2026-04-26",
+    "title": "IronShade - Linux Server Compromise Assessment",
+    "platform": "TryHackMe",
+    "path": "CTF Challenge",
+    "url": "https://drive.google.com/file/d/1KAIHTcnEns8GHIAPhE-1mQ-cDTJNNXNu/view?usp=drive_link"
   }
 ]
