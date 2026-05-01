@@ -82,5 +82,12 @@
     "platform": "TryHackMe",
     "path": "CTF Challenge",
     "url": "https://drive.google.com/file/d/1Sxjg6C8e8u_HE5qXXDmEW2nua_2gCrOe/view?usp=drive_link"
+  },
+  {
+    "date": "2026-05-01",
+    "title": "Breakme - WordPress PrivEsc (CVE-2023-1874) + Dirty Pipe (CVE-2022-0847)",
+    "platform": "TryHackMe",
+    "path": "CTF Challenge",
+    "url": "https://drive.google.com/file/d/1EXr7xdiIazy8QhoweVwCN2X2Kc4mS_hm/view?usp=sharing"
   }
 ]
