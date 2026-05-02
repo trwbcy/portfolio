@@ -91,10 +91,10 @@
       "url": "https://drive.google.com/file/d/1EXr7xdiIazy8QhoweVwCN2X2Kc4mS_hm/view?usp=sharing"
     },
     {
-    "date": "2026-05-02",
-    "title": "Masquerade - DFIR (PowerShell Analysis, RC4/AES Decryption, .NET RE, TrevorC2 C2 Traffic)",
-    "platform": "TryHackMe",
-    "path": "CTF Challenge",
-    "url": "https://drive.google.com/file/d/19PdgOzOFkCvMPHtSlneUB4oVgtQQCumQ/view?usp=sharing"
-  }
+      "date": "2026-05-02",
+      "title": "Masquerade - DFIR (PowerShell Analysis, RC4/AES Decryption, .NET RE, TrevorC2 C2 Traffic)",
+      "platform": "TryHackMe",
+      "path": "CTF Challenge",
+      "url": "https://drive.google.com/file/d/19PdgOzOFkCvMPHtSlneUB4oVgtQQCumQ/view?usp=sharing"
+    }
 ]
