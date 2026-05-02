@@ -96,5 +96,12 @@
       "platform": "TryHackMe",
       "path": "CTF Challenge",
       "url": "https://drive.google.com/file/d/19PdgOzOFkCvMPHtSlneUB4oVgtQQCumQ/view?usp=sharing"
+    },
+    {
+      "date": "2026-05-02",
+      "title": "Operation: NetForge - PR 1: OSI Model & TCP/IP (Packet Tracer Lab)",
+      "platform": "Self-Study",
+      "path": "Networking Fundamentals",
+      "url": "https://nickel-bedbug-8cc.notion.site/Operation-NetForge-From-Zero-to-Network-Architect-344416e03a1381788281e32b01e1e088?source=copy_link"
     }
 ]
