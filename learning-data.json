@@ -103,5 +103,12 @@
       "platform": "Self-Study",
       "path": "Networking Fundamentals",
       "url": "https://nickel-bedbug-8cc.notion.site/Operation-NetForge-From-Zero-to-Network-Architect-344416e03a1381788281e32b01e1e088?source=copy_link"
+    },
+    {
+      "date": "2026-05-03",
+      "title": "Disrupt - Q1: MBR Boot Signature Corruption Analysis (Disk Forensics)",
+      "platform": "TryHackMe",
+      "path": "CTF Challenge",
+      "url": ""
     }
 ]
