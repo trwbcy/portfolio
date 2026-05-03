@@ -1,18 +1,18 @@
 :root {
-    --black:   #141414;
-    --black2:  #1b1b1b;
+    --black:   #000000;
+    --black2:  #0a0a0a;
     --purple:  #9d00ff;
     --purple-g: rgba(157,0,255,.3);
     --purple-s: rgba(157,0,255,.07);
     --red:     #ff2244;
     --red-g:   rgba(255,34,68,.3);
     --cyan:    #00e5ff;
-    --white:   #f0ece4;
-    --dim:     #6b6560;
-    --border:  rgba(255,255,255,.05);
-    --mono:    'IBM Plex Mono', monospace;
-    --display: 'Barlow Condensed', sans-serif;
-    --body:    'Barlow', sans-serif;
+    --white:   #ffffff;
+    --dim:     #8a8a8a;
+    --border:  rgba(255,255,255,.07);
+    --mono:    'JetBrains Mono', monospace;
+    --display: 'Bebas Neue', sans-serif;
+    --body:    'Outfit', sans-serif;
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -32,15 +32,12 @@ body {
     position: relative;
 }
 
-/* MATTE PAPER GRAIN */
-body::after {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.04;
-    background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+/* ── MOUSE SPOTLIGHT ────────────────────────────────── */
+#spotlight {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    background: radial-gradient(circle 320px at var(--mx,50%) var(--my,50%),
+        rgba(157,0,255,.06) 0%, transparent 70%);
+    transition: background .05s;
 }
 
 /* ── CURSOR ──────────────────────────────────────────── */
@@ -61,7 +58,7 @@ body::after {
 .nav {
     position:fixed; top:0; left:0; right:0; height:52px;
     display:flex; align-items:center; padding:0 40px;
-    background:rgba(20,20,20,.92);
+    background:rgba(0,0,0,.92);
     backdrop-filter:blur(8px);
     border-bottom:1px solid rgba(157,0,255,.12);
     font:.7rem/1 var(--mono); letter-spacing:.08em;

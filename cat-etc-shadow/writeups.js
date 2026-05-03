@@ -149,6 +149,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Spotlight
+    const spotlight = document.getElementById('spotlight');
+    if (spotlight) {
+        document.addEventListener('mousemove', e => {
+            spotlight.style.setProperty('--mx', e.clientX + 'px');
+            spotlight.style.setProperty('--my', e.clientY + 'px');
+        });
+    }
+
     // Custom cursor
     initCursor();
 
