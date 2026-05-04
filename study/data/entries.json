@@ -1,0 +1,615 @@
+[
+  {
+    "id": "soc-fundamentals-intro",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: Introduction to SOC",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "fundamentals",
+      "introduction"
+    ],
+    "concepts": [
+      "Security Operations Center overview",
+      "SOC mission and objectives",
+      "Tier-based SOC structure"
+    ],
+    "terms": [
+      "SOC",
+      "incident response",
+      "security operations",
+      "monitoring"
+    ],
+    "commands": [],
+    "problems": [
+      "Memahami peran dan fungsi SOC dalam organisasi",
+      "Membedakan SOC dengan tim security lainnya"
+    ],
+    "summary": "Pengenalan dasar Security Operations Center, mission, struktur tier, dan posisinya dalam ekosistem cybersecurity organisasi.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "soc-fundamentals-types-roles",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: SOC Types and Roles",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "fundamentals",
+      "career",
+      "roles"
+    ],
+    "concepts": [
+      "In-house vs Managed SOC vs Hybrid SOC",
+      "L1, L2, L3 analyst tiering",
+      "SOC Manager, Threat Hunter, Incident Responder roles"
+    ],
+    "terms": [
+      "MSSP",
+      "in-house SOC",
+      "L1",
+      "L2",
+      "L3",
+      "SOC Manager",
+      "Threat Hunter",
+      "Incident Responder"
+    ],
+    "commands": [],
+    "problems": [
+      "Memilih jalur karir di SOC",
+      "Memahami eskalasi dari L1 ke L2 ke L3"
+    ],
+    "summary": "Tipe-tipe SOC (in-house, MSSP, hybrid) dan role hierarchy dari L1 sampai L3 plus specialized roles seperti threat hunter dan incident responder.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "soc-fundamentals-analyst-responsibilities",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: SOC Analyst and Their Responsibilities",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "analyst",
+      "responsibilities",
+      "workflow"
+    ],
+    "concepts": [
+      "Daily SOC analyst responsibilities",
+      "Alert triage workflow",
+      "Documentation and reporting standards",
+      "Escalation procedures"
+    ],
+    "terms": [
+      "alert triage",
+      "false positive",
+      "true positive",
+      "escalation",
+      "documentation",
+      "ticketing"
+    ],
+    "commands": [],
+    "problems": [
+      "Bagaimana melakukan triage alert yang banyak",
+      "Kapan harus eskalasi ke tier yang lebih tinggi",
+      "Cara mendokumentasikan investigation dengan baik"
+    ],
+    "summary": "Tanggung jawab harian SOC analyst: alert triage, investigation, documentation, dan kapan harus eskalasi. Workflow analyst dari shift mulai sampai handover.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "soc-fundamentals-siem",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: SIEM and Analyst Relationship",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "siem",
+      "log-analysis",
+      "correlation"
+    ],
+    "concepts": [
+      "SIEM core functions",
+      "Log aggregation dan correlation",
+      "Use cases dan correlation rules",
+      "SIEM tuning"
+    ],
+    "terms": [
+      "SIEM",
+      "Splunk",
+      "QRadar",
+      "Elastic",
+      "correlation rule",
+      "use case",
+      "log source",
+      "parser"
+    ],
+    "commands": [],
+    "problems": [
+      "Cara kerja SIEM dalam mendeteksi threat",
+      "Bagaimana correlation rule mengubah raw log jadi alert",
+      "Hubungan analyst dengan SIEM dalam workflow harian"
+    ],
+    "summary": "Fungsi SIEM dalam SOC: log aggregation, correlation, dan rule-based detection. Hubungan kerja antara analyst dan SIEM platform dari sisi workflow.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "soc-fundamentals-log-management",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: Log Management",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "logging",
+      "log-management",
+      "retention"
+    ],
+    "concepts": [
+      "Log lifecycle: collection, storage, analysis, retention",
+      "Log normalization dan parsing",
+      "Compliance dan retention policy",
+      "Log source prioritization"
+    ],
+    "terms": [
+      "log collection",
+      "log retention",
+      "log rotation",
+      "syslog",
+      "Windows Event Log",
+      "compliance",
+      "GDPR",
+      "PCI-DSS"
+    ],
+    "commands": [],
+    "problems": [
+      "Berapa lama harus simpan log untuk compliance",
+      "Log source mana yang paling penting di-collect",
+      "Cara handle high-volume log tanpa kehilangan signal"
+    ],
+    "summary": "Log management lifecycle lengkap dari collection sampai retention. Compliance considerations (GDPR, PCI-DSS) dan strategi prioritasi log source di SOC.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "soc-fundamentals-edr",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: EDR - Endpoint Detection and Response",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "edr",
+      "endpoint",
+      "detection-response"
+    ],
+    "concepts": [
+      "EDR core capabilities",
+      "Behavior-based detection vs signature-based",
+      "Endpoint telemetry collection",
+      "Response actions: isolate, kill, contain"
+    ],
+    "terms": [
+      "EDR",
+      "Cortex XDR",
+      "CrowdStrike",
+      "SentinelOne",
+      "Defender for Endpoint",
+      "behavioral detection",
+      "endpoint telemetry",
+      "process tree"
+    ],
+    "commands": [],
+    "problems": [
+      "Beda EDR dengan antivirus tradisional",
+      "Cara EDR detect fileless attack",
+      "Action apa yang bisa diambil dari console EDR"
+    ],
+    "summary": "EDR sebagai evolusi dari antivirus: behavior-based detection, endpoint telemetry, dan response capabilities (isolate, kill process, quarantine). Vendor comparison.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "soc-fundamentals-soar",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: SOAR",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "soar",
+      "automation",
+      "playbook"
+    ],
+    "concepts": [
+      "Security Orchestration, Automation, and Response",
+      "Playbook design dan execution",
+      "Use cases SOAR untuk repetitive tasks",
+      "Integration antara tools (SIEM + EDR + TI)"
+    ],
+    "terms": [
+      "SOAR",
+      "playbook",
+      "automation",
+      "orchestration",
+      "Cortex XSOAR",
+      "Splunk Phantom",
+      "workflow"
+    ],
+    "commands": [],
+    "problems": [
+      "Mana yang harus diautomasi vs tetep manual",
+      "Cara design playbook yang aman",
+      "Hubungan SOAR dengan SIEM dan EDR"
+    ],
+    "summary": "SOAR untuk automasi response actions di SOC. Playbook design, use case selection, dan integrasi dengan SIEM/EDR untuk reduce analyst workload.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "soc-fundamentals-threat-intel",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: Threat Intelligence Feed",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "threat-intelligence",
+      "ioc",
+      "ti-feed"
+    ],
+    "concepts": [
+      "Threat intelligence levels: strategic, tactical, operational, technical",
+      "IOC types: IP, domain, hash, URL",
+      "TI feed integration ke SIEM/EDR",
+      "Quality dan freshness dari TI feed"
+    ],
+    "terms": [
+      "threat intelligence",
+      "IOC",
+      "indicator of compromise",
+      "STIX",
+      "TAXII",
+      "MISP",
+      "AlienVault OTX",
+      "VirusTotal"
+    ],
+    "commands": [],
+    "problems": [
+      "TI feed gratis vs berbayar, mana yang worth",
+      "Cara konsumsi TI feed di SOC workflow",
+      "Bagaimana validasi quality dari TI feed"
+    ],
+    "summary": "Threat intelligence feed dalam SOC: tipe-tipe IOC, format standar (STIX/TAXII), platform sharing (MISP), dan integrasi ke detection layer.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "soc-fundamentals-common-mistakes",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: Common Mistakes made by SOC Analysts",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "best-practices",
+      "mistakes",
+      "pitfalls"
+    ],
+    "concepts": [
+      "Common analyst mistakes dan cara menghindarinya",
+      "Cognitive bias dalam alert triage",
+      "Documentation pitfalls",
+      "Burnout dan alert fatigue"
+    ],
+    "terms": [
+      "alert fatigue",
+      "tunnel vision",
+      "confirmation bias",
+      "false negative",
+      "documentation gap"
+    ],
+    "commands": [],
+    "problems": [
+      "Cara menghindari alert fatigue",
+      "Kenapa close ticket cepet bisa berbahaya",
+      "Bias kognitif yang sering muncul saat triage"
+    ],
+    "summary": "Kesalahan umum SOC analyst: alert fatigue, premature closure, documentation gap, cognitive bias. Praktik terbaik untuk menghindarinya.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "soc-fundamentals-quiz",
+    "date": "2026-04-25",
+    "title": "SOC Fundamentals: Quiz (51 Points)",
+    "platform": "LetsDefend",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "soc",
+      "quiz",
+      "assessment",
+      "review"
+    ],
+    "concepts": [
+      "Comprehensive review SOC Fundamentals module",
+      "Self-assessment knowledge"
+    ],
+    "terms": [
+      "quiz",
+      "assessment",
+      "SOC Fundamentals"
+    ],
+    "commands": [],
+    "problems": [
+      "Validasi pemahaman setelah modul SOC Fundamentals"
+    ],
+    "summary": "Final quiz untuk modul SOC Fundamentals di LetsDefend, total 51 poin. Comprehensive review semua materi dari intro sampai common mistakes.",
+    "url": "https://nickel-bedbug-8cc.notion.site/LetsDefend-SOC-Analyst-Learning-Path-34d416e03a1381c5a9a8c674d0008dcd"
+  },
+  {
+    "id": "thm-ironshade",
+    "date": "2026-04-26",
+    "title": "IronShade - Linux Server Compromise Assessment",
+    "platform": "TryHackMe",
+    "category": "DFIR",
+    "tags": [
+      "linux",
+      "forensics",
+      "compromise-assessment",
+      "incident-response"
+    ],
+    "concepts": [
+      "Linux compromise assessment methodology",
+      "Persistence mechanism analysis",
+      "Log analysis (auth.log, syslog, history)",
+      "Indicator of compromise hunting di Linux"
+    ],
+    "terms": [
+      "Linux forensics",
+      "auth.log",
+      "bash history",
+      "cron",
+      "systemd",
+      "rootkit",
+      "/etc/passwd",
+      "ssh authorized_keys"
+    ],
+    "commands": [
+      "grep -r 'pattern' /var/log/",
+      "find / -newer -mtime",
+      "last, lastlog, lastb",
+      "ps auxf, netstat -tulnp"
+    ],
+    "problems": [
+      "Cara assess apakah Linux server kompromised",
+      "Identifikasi persistence mechanism attacker",
+      "Tracing aktivitas attacker dari log"
+    ],
+    "summary": "Compromise assessment Linux server: analisis log autentikasi, bash history, cron jobs, dan SSH keys untuk identifikasi persistence dan tracing aktivitas attacker.",
+    "url": "https://drive.google.com/file/d/1KAIHTcnEns8GHIAPhE-1mQ-cDTJNNXNu/view?usp=drive_link"
+  },
+  {
+    "id": "thm-recruit",
+    "date": "2026-04-26",
+    "title": "Recruit - Web Exploitation (SSRF/LFI, SQLi, Source Code Review)",
+    "platform": "TryHackMe",
+    "category": "Web Exploitation",
+    "tags": [
+      "web",
+      "ssrf",
+      "lfi",
+      "sqli",
+      "source-code-review"
+    ],
+    "concepts": [
+      "Server-Side Request Forgery exploitation",
+      "Local File Inclusion attack chain",
+      "SQL Injection identification dan exploitation",
+      "Source code review untuk vulnerability discovery"
+    ],
+    "terms": [
+      "SSRF",
+      "LFI",
+      "SQL injection",
+      "SQLi",
+      "source code review",
+      "PHP",
+      "URL bypass",
+      "filter evasion"
+    ],
+    "commands": [
+      "curl -d 'url=http://internal'",
+      "sqlmap -u 'target' --dbs",
+      "?file=../../etc/passwd"
+    ],
+    "problems": [
+      "Bagaimana SSRF bisa di-chain ke LFI",
+      "Cara bypass URL filter di SSRF",
+      "Identifikasi SQL injection dari source code"
+    ],
+    "summary": "Web exploitation challenge: SSRF chained ke LFI, SQL injection exploitation, dan source code review untuk identify vulnerability dari sisi developer.",
+    "url": "https://drive.google.com/file/d/1Sxjg6C8e8u_HE5qXXDmEW2nua_2gCrOe/view?usp=drive_link"
+  },
+  {
+    "id": "thm-breakme",
+    "date": "2026-05-01",
+    "title": "Breakme - WordPress PrivEsc (CVE-2023-1874) + Dirty Pipe (CVE-2022-0847)",
+    "platform": "TryHackMe",
+    "category": "Privilege Escalation",
+    "tags": [
+      "wordpress",
+      "cve",
+      "privesc",
+      "dirty-pipe",
+      "linux-kernel"
+    ],
+    "concepts": [
+      "WordPress vulnerability exploitation",
+      "Dirty Pipe Linux kernel exploit",
+      "Privilege escalation chain dari web ke root",
+      "CVE-based exploitation"
+    ],
+    "terms": [
+      "WordPress",
+      "CVE-2023-1874",
+      "CVE-2022-0847",
+      "Dirty Pipe",
+      "Linux kernel",
+      "privilege escalation",
+      "PrivEsc",
+      "splice"
+    ],
+    "commands": [
+      "wp-content/plugins exploitation",
+      "./dirty-pipe-exploit /etc/passwd",
+      "find / -perm -4000"
+    ],
+    "problems": [
+      "Bagaimana exploit CVE-2023-1874 di WordPress",
+      "Cara kerja Dirty Pipe untuk privilege escalation",
+      "Chaining web exploit ke kernel exploit"
+    ],
+    "summary": "Privilege escalation chain: exploit WordPress CVE-2023-1874 untuk initial access, lalu Dirty Pipe (CVE-2022-0847) untuk root via Linux kernel page cache vulnerability.",
+    "url": "https://drive.google.com/file/d/1EXr7xdiIazy8QhoweVwCN2X2Kc4mS_hm/view?usp=sharing"
+  },
+  {
+    "id": "thm-masquerade",
+    "date": "2026-05-02",
+    "title": "Masquerade - DFIR (PowerShell Analysis, RC4/AES Decryption, .NET RE, TrevorC2 C2 Traffic)",
+    "platform": "TryHackMe",
+    "category": "DFIR",
+    "tags": [
+      "dfir",
+      "powershell",
+      "malware-analysis",
+      "reverse-engineering",
+      "c2-traffic"
+    ],
+    "concepts": [
+      "PowerShell malicious script deobfuscation",
+      "RC4 dan AES decryption dalam analisis malware",
+      ".NET binary reverse engineering",
+      "TrevorC2 C2 framework traffic analysis"
+    ],
+    "terms": [
+      "PowerShell deobfuscation",
+      "RC4",
+      "AES",
+      ".NET",
+      "dnSpy",
+      "TrevorC2",
+      "C2 traffic",
+      "malware analysis",
+      "ILSpy"
+    ],
+    "commands": [
+      "[Convert]::FromBase64String",
+      "dnSpy untuk .NET RE",
+      "wireshark filter http.host"
+    ],
+    "problems": [
+      "Cara deobfuscate PowerShell yang ter-encode multi-layer",
+      "Decrypt RC4/AES ciphertext dari malware sample",
+      "Reverse engineer .NET binary",
+      "Identifikasi TrevorC2 traffic pattern"
+    ],
+    "summary": "DFIR challenge full chain: PowerShell deobfuscation, RC4/AES decryption keys recovery, .NET binary reverse engineering pakai dnSpy, dan analisis TrevorC2 C2 traffic dari pcap.",
+    "url": "https://drive.google.com/file/d/19PdgOzOFkCvMPHtSlneUB4oVgtQQCumQ/view?usp=sharing"
+  },
+  {
+    "id": "netforge-pr1-osi-tcp",
+    "date": "2026-05-02",
+    "title": "Operation: NetForge - PR 1: OSI Model & TCP/IP (Packet Tracer Lab)",
+    "platform": "Self-Study",
+    "category": "Networking",
+    "tags": [
+      "networking",
+      "osi-model",
+      "tcp-ip",
+      "packet-tracer",
+      "fundamentals"
+    ],
+    "concepts": [
+      "OSI 7-layer model breakdown",
+      "TCP/IP 4-layer model dan mapping ke OSI",
+      "Encapsulation dan decapsulation process",
+      "Packet flow analysis di Packet Tracer"
+    ],
+    "terms": [
+      "OSI model",
+      "TCP/IP",
+      "Layer 1",
+      "Layer 2",
+      "Layer 3",
+      "Layer 4",
+      "Layer 7",
+      "encapsulation",
+      "PDU",
+      "Cisco Packet Tracer"
+    ],
+    "commands": [
+      "ping, tracert/traceroute",
+      "Packet Tracer simulation mode",
+      "ipconfig, ifconfig"
+    ],
+    "problems": [
+      "Memahami flow data dari aplikasi sampai physical layer",
+      "Cara debug network issue dengan OSI model",
+      "Hands-on encapsulation pakai Packet Tracer"
+    ],
+    "summary": "Foundation networking: OSI 7-layer dan TCP/IP 4-layer model dengan hands-on lab di Cisco Packet Tracer untuk visualisasi encapsulation dan packet flow antar layer.",
+    "url": "https://nickel-bedbug-8cc.notion.site/Operation-NetForge-From-Zero-to-Network-Architect-344416e03a1381788281e32b01e1e088?source=copy_link"
+  },
+  {
+    "id": "thm-disrupt-q1",
+    "date": "2026-05-03",
+    "title": "Disrupt - Q1: MBR Boot Signature Corruption Analysis (Disk Forensics)",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": [
+      "forensics",
+      "disk-forensics",
+      "mbr",
+      "hex-analysis",
+      "ftk-imager",
+      "partition-table"
+    ],
+    "concepts": [
+      "Master Boot Record (MBR) structure",
+      "Boot signature 0x55AA dan fungsinya",
+      "Partition table layout di MBR",
+      "Hex offset navigation di forensic tools",
+      "Identifikasi corrupted bytes dari hex view"
+    ],
+    "terms": [
+      "MBR",
+      "Master Boot Record",
+      "boot sector",
+      "boot signature",
+      "0x55AA",
+      "0x1FE",
+      "partition table",
+      "FTK Imager",
+      "hex view",
+      "unrecognized file system",
+      "bootstrap code",
+      "disk image",
+      "disk analysis",
+      "forensic imaging"
+    ],
+    "commands": [
+      "Get-FileHash -Algorithm MD5",
+      "Get-FileHash -Algorithm SHA1",
+      "FTK Imager: File > Add Evidence Item",
+      "xfreerdp /v: /u: /p: /cert:ignore",
+      "sudo apt install freerdp2-x11"
+    ],
+    "problems": [
+      "Disk image gak kebaca, FTK Imager munculin Unrecognized file system",
+      "Cara identify bytes yang corrupt di MBR",
+      "Cara bedain bootstrap code intact vs partition table rusak",
+      "Navigasi ke offset spesifik di hex view"
+    ],
+    "summary": "Identifikasi 2 byte corrupted di boot signature MBR (offset 0x1FE-0x1FF) bernilai AC BD yang seharusnya 55 AA. Pembelajaran fundamental disk analysis dan navigasi hex view di FTK Imager. Memahami kenapa boot signature wajib 0x55AA agar partition table dianggap valid oleh sistem.",
+    "url": ""
+  }
+]

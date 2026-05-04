@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRWBCY — Study Library</title>
+    <meta name="description" content="Tri Wibowo Cahyo — searchable knowledge index for cybersecurity learning. Search by concept, command, term, or problem.">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2L4 7v9c0 7 5.4 13.5 12 15 6.6-1.5 12-8 12-15V7L16 2z' fill='%239d00ff'/%3E%3Cpath d='M11 16l3.5 3.5L21 12' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="study.css">
+</head>
+<body>
+
+    <div id="spotlight"></div>
+
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <nav class="nav">
+        <a class="nav-site" href="https://trwbcy.github.io/portfolio">TRWBCY</a>
+        <div class="nav-links">
+            <a href="https://trwbcy.github.io/portfolio">/ PORTFOLIO</a>
+            <a href="https://trwbcy.github.io/portfolio/cat-etc-shadow">/ WRITEUPS</a>
+        </div>
+        <div class="nav-vol">STUDY LIBRARY / 2026</div>
+        <button class="nav-toggle" id="navToggle">☰</button>
+    </nav>
+
+    <div class="nav-fade-mask"></div>
+
+    <div class="mobile-drawer" id="mobileDrawer">
+        <a href="https://trwbcy.github.io/portfolio">/ PORTFOLIO</a>
+        <a href="https://trwbcy.github.io/portfolio/cat-etc-shadow">/ WRITEUPS</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero-meta">
+            <span>/ STUDY LIBRARY / KNOWLEDGE INDEX</span>
+            <span class="hero-meta-right">↓ SEARCH COLLECTION</span>
+        </div>
+        <div class="hero-title">WHAT I<br><span class="accent">LEARNED.</span></div>
+        <p class="hero-sub">Searchable knowledge index from cybersecurity training — <strong>TryHackMe, LetsDefend, HackTheBox</strong>, and self-study. Search by concept, command, term, CVE, or problem.</p>
+        <a href="https://trwbcy.github.io/portfolio" class="hero-back">← BACK TO PORTFOLIO</a>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat-cell">
+            <div class="stat-label">TOTAL ENTRIES</div>
+            <div class="stat-num" id="total-entries">—</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-label">PLATFORMS</div>
+            <div class="stat-num" id="total-platforms">—</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-label">UNIQUE TAGS</div>
+            <div class="stat-num" id="total-tags">—</div>
+        </div>
+    </div>
+
+    <div class="search-section">
+        <span class="section-tag">/ SEARCH DATABASE</span>
+
+        <div class="search-box">
+            <div class="search-top-row">
+                <span class="search-prompt">&gt;&gt;</span>
+                <input type="text" id="search-input"
+                    placeholder="concept, command, CVE, term, problem..."
+                    autocomplete="off" spellcheck="false">
+                <span class="search-hint">/ to focus</span>
+            </div>
+
+            <div class="search-bottom-row">
+                <div class="suggestions">
+                    <span class="sugg-label">TRY:</span>
+                    <button class="sugg-pill" data-query="mbr">mbr</button>
+                    <button class="sugg-pill" data-query="ssrf">ssrf</button>
+                    <button class="sugg-pill" data-query="powershell">powershell</button>
+                    <button class="sugg-pill" data-query="hex">hex</button>
+                    <button class="sugg-pill" data-query="ftk imager">ftk imager</button>
+                    <button class="sugg-pill" data-query="dirty pipe">dirty pipe</button>
+                    <button class="sugg-pill" data-query="soc">soc</button>
+                </div>
+
+                <div class="filter-row">
+                    <select id="filter-platform">
+                        <option value="">ALL PLATFORMS</option>
+                    </select>
+                    <select id="filter-category">
+                        <option value="">ALL CATEGORIES</option>
+                    </select>
+                    <select id="sort-order">
+                        <option value="relevance">SORT: RELEVANCE</option>
+                        <option value="date-desc">SORT: NEWEST</option>
+                        <option value="date-asc">SORT: OLDEST</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-count" id="results-meta"></div>
+    </div>
+
+    <section class="entries-section">
+        <div class="entries-list" id="results-list"></div>
+        <div class="empty-state" id="empty-state" style="display:none;">
+            <div class="empty-icon">∅</div>
+            <div class="empty-title">NO MATCHES FOUND.</div>
+            <div class="empty-hint">Try a broader term, or check the suggestions above.</div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <span>TRWBCY</span>
+        <span>Knowledge is the only thing they can't take.</span>
+        <span>© 2026</span>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+    <script src="search.js"></script>
+    <script>
+        // Spotlight
+        const spotlight = document.getElementById('spotlight');
+        document.addEventListener('mousemove', e => {
+            spotlight.style.setProperty('--mx', e.clientX + 'px');
+            spotlight.style.setProperty('--my', e.clientY + 'px');
+        });
+
+        // Custom cursor
+        (function() {
+            if (window.matchMedia('(max-width:900px)').matches) return;
+            const dot = document.getElementById('cursorDot');
+            const ring = document.getElementById('cursorRing');
+            let mx = -100, my = -100, rx = -100, ry = -100;
+            document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+            (function loop() {
+                rx += (mx - rx) * .15;
+                ry += (my - ry) * .15;
+                dot.style.transform = `translate3d(${mx - 2.5}px, ${my - 2.5}px, 0)`;
+                ring.style.transform = `translate3d(${rx - 15}px, ${ry - 15}px, 0)`;
+                requestAnimationFrame(loop);
+            })();
+            document.querySelectorAll('a, button, select, input').forEach(el => {
+                el.addEventListener('mouseenter', () => { ring.style.width = '44px'; ring.style.height = '44px'; ring.style.borderColor = 'rgba(157,0,255,.7)'; });
+                el.addEventListener('mouseleave', () => { ring.style.width = '30px'; ring.style.height = '30px'; ring.style.borderColor = 'rgba(157,0,255,.45)'; });
+            });
+        })();
+
+        // Mobile nav
+        const toggle = document.getElementById('navToggle');
+        const drawer = document.getElementById('mobileDrawer');
+        if (toggle && drawer) {
+            toggle.addEventListener('click', () => drawer.classList.toggle('open'));
+            drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => drawer.classList.remove('open')));
+        }
+    </script>
+</body>
+</html>
