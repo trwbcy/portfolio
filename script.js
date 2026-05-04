@@ -696,6 +696,7 @@ function renderHeatmap() {
     el.innerHTML = `
         <div class="la-hm-outer">
             <div class="la-hm-inner">
+                <span class="la-hm-year">${_hmYear}</span>
                 <div class="la-hm-header">
                     <div class="la-hm-day-spacer"></div>
                     <div class="la-hm-months" style="width:${gridW}px">${monthsHtml}</div>
@@ -706,15 +707,12 @@ function renderHeatmap() {
                 </div>
             </div>
             <div class="la-legend">
-                <span class="la-hm-year">${_hmYear}</span>
-                <div class="la-legend-right">
-                    <span class="la-legend-lbl">Less</span>
-                    <div class="la-cell la-c0 la-legend-cell"></div>
-                    <div class="la-cell la-c1 la-legend-cell"></div>
-                    <div class="la-cell la-c2 la-legend-cell"></div>
-                    <div class="la-cell la-c3 la-legend-cell"></div>
-                    <span class="la-legend-lbl">More</span>
-                </div>
+                <span class="la-legend-lbl">Less</span>
+                <div class="la-cell la-c0 la-legend-cell"></div>
+                <div class="la-cell la-c1 la-legend-cell"></div>
+                <div class="la-cell la-c2 la-legend-cell"></div>
+                <div class="la-cell la-c3 la-legend-cell"></div>
+                <span class="la-legend-lbl">More</span>
             </div>
         </div>`;
 }
