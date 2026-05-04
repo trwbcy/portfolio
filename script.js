@@ -693,10 +693,11 @@ function renderHeatmap() {
         });
     });
 
+    el.style.position = 'relative';
     el.innerHTML = `
+        <span class="la-hm-year">${_hmYear}</span>
         <div class="la-hm-outer">
             <div class="la-hm-inner">
-                <span class="la-hm-year">${_hmYear}</span>
                 <div class="la-hm-header">
                     <div class="la-hm-day-spacer"></div>
                     <div class="la-hm-months" style="width:${gridW}px">${monthsHtml}</div>
