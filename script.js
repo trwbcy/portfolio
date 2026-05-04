@@ -585,18 +585,35 @@ function initLearning() {
     });
 }
 
+function dateToStr(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
 function buildLearningStats() {
     const total = learningData.length;
     const days  = new Set(learningData.map(a => a.date)).size;
 
     const dateSet = new Set(learningData.map(a => a.date));
     let streak = 0;
-    const d = new Date();
-    while (true) {
-        const s = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-        if (!dateSet.has(s)) break;
-        streak++;
-        d.setDate(d.getDate() - 1);
+
+    const today = new Date();
+    const todayStr = dateToStr(today);
+    const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
+    const yesterdayStr = dateToStr(yesterday);
+
+    // Lenient: streak is active if last activity was today OR yesterday
+    if (dateSet.has(todayStr)) {
+        const d = new Date(today);
+        while (dateSet.has(dateToStr(d))) {
+            streak++;
+            d.setDate(d.getDate() - 1);
+        }
+    } else if (dateSet.has(yesterdayStr)) {
+        const d = new Date(yesterday);
+        while (dateSet.has(dateToStr(d))) {
+            streak++;
+            d.setDate(d.getDate() - 1);
+        }
     }
 
     const el1 = document.getElementById('laTotal');
