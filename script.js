@@ -608,10 +608,11 @@ function buildLearningStats() {
 }
 
 // Heatmap data cache (built once, re-rendered on resize)
-let _hmWeeks = null, _hmMonthLabels = null, _hmNumWeeks = 0;
+let _hmWeeks = null, _hmMonthLabels = null, _hmNumWeeks = 0, _hmYear = 0;
 
 function buildHeatmap() {
     const YEAR  = 2026;
+    _hmYear = YEAR;
     const today = new Date();
     const counts = {};
     learningData.forEach(a => { counts[a.date] = (counts[a.date] || 0) + 1; });
@@ -705,12 +706,15 @@ function renderHeatmap() {
                 </div>
             </div>
             <div class="la-legend">
-                <span class="la-legend-lbl">Less</span>
-                <div class="la-cell la-c0 la-legend-cell"></div>
-                <div class="la-cell la-c1 la-legend-cell"></div>
-                <div class="la-cell la-c2 la-legend-cell"></div>
-                <div class="la-cell la-c3 la-legend-cell"></div>
-                <span class="la-legend-lbl">More</span>
+                <span class="la-hm-year">${_hmYear}</span>
+                <div class="la-legend-right">
+                    <span class="la-legend-lbl">Less</span>
+                    <div class="la-cell la-c0 la-legend-cell"></div>
+                    <div class="la-cell la-c1 la-legend-cell"></div>
+                    <div class="la-cell la-c2 la-legend-cell"></div>
+                    <div class="la-cell la-c3 la-legend-cell"></div>
+                    <span class="la-legend-lbl">More</span>
+                </div>
             </div>
         </div>`;
 }
