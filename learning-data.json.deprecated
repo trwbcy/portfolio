@@ -1,3 +1,7 @@
+// DEPRECATED — Migrated to study/data/entries.json on 2026-05-04.
+// Safe to delete after verifying heatmap still works correctly.
+// All 16 entries confirmed present in entries.json (verified by date+title match).
+// schema change: field "path" → "category" in new schema.
 [
     {
       "date": "2026-04-25",
