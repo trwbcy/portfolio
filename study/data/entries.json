@@ -611,5 +611,58 @@
     ],
     "summary": "Identifikasi 2 byte corrupted di boot signature MBR (offset 0x1FE-0x1FF) bernilai AC BD yang seharusnya 55 AA. Pembelajaran fundamental disk analysis dan navigasi hex view di FTK Imager. Memahami kenapa boot signature wajib 0x55AA agar partition table dianggap valid oleh sistem.",
     "url": ""
+  },
+  {
+    "id": "thm-disrupt-q2",
+    "date": "2026-05-05",
+    "title": "Disrupt - Q2: Partition Entry Parsing & Little Endian Conversion",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "disk-forensics", "mbr", "partition-table", "little-endian", "hex-analysis", "ftk-imager"],
+    "concepts": [
+      "Struktur partition entry 16 byte",
+      "Field layout partition entry (boot indicator, CHS, partition type, LBA start, total sectors)",
+      "Konsep Little Endian dalam penyimpanan multi-byte integer",
+      "Konversi Little Endian ke Big Endian (membalik urutan byte)",
+      "Navigasi offset spesifik di hex view dengan Go to offset",
+      "Methodology disk forensics: Observation, Narrow Down, Hypothesize, Verify"
+    ],
+    "terms": [
+      "partition entry",
+      "Little Endian",
+      "Big Endian",
+      "endianness",
+      "total sectors",
+      "LBA start",
+      "boot indicator",
+      "partition type",
+      "CHS",
+      "0x1CE",
+      "0x1DD",
+      "Partition Entry 2",
+      "FTK Imager",
+      "Go to offset",
+      "Ctrl+G",
+      "x86 architecture",
+      "multi-byte integer",
+      "byte order",
+      "FAT32",
+      "0x0C"
+    ],
+    "commands": [
+      "FTK Imager: Ctrl+G untuk Go to offset",
+      "FTK Imager: shift+click untuk select range bytes",
+      "FTK Imager: status bar 'Sel start = X, len = Y' untuk verify selection"
+    ],
+    "problems": [
+      "Cara menemukan total sector dari partition entry tertentu",
+      "Cara membaca multi-byte value dari hex view",
+      "Kenapa byte yang dibaca harus dibalik urutannya untuk dapat nilai aktual",
+      "Format submission Little Endian: raw bytes vs converted value",
+      "Cara navigasi cepat ke offset spesifik tanpa hitung manual",
+      "Cara mapping struktur logis 16 byte ke layout visual hex view yang spans 2 baris"
+    ],
+    "summary": "Identifikasi 4 byte total sectors dari Partition Entry 2 di MBR (offset 0x1DA-0x1DD) bernilai 00 78 38 01 dalam Little Endian, yang setelah dibalik menjadi 0x01387800 (20,477,952 sektor). Pembelajaran tentang struktur 16 byte partition entry, konsep Little Endian sebagai cara penyimpanan multi-byte integer di arsitektur x86/x64, dan methodology disk forensics empat tahap (Observation, Narrow Down, Hypothesize, Verify).",
+    "url": ""
   }
 ]
