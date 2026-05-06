@@ -560,9 +560,9 @@
     "url": "https://nickel-bedbug-8cc.notion.site/Operation-NetForge-From-Zero-to-Network-Architect-344416e03a1381788281e32b01e1e088?source=copy_link"
   },
   {
-    "id": "thm-disrupt-q1",
+    "id": "thm-diskrupt-q1",
     "date": "2026-05-03",
-    "title": "Disrupt - Q1: MBR Boot Signature Corruption Analysis (Disk Forensics)",
+    "title": "Diskrupt - Q1: MBR Boot Signature Corruption Analysis (Disk Forensics)",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
     "tags": [
@@ -613,9 +613,9 @@
     "url": ""
   },
   {
-    "id": "thm-disrupt-q2",
+    "id": "thm-diskrupt-q2",
     "date": "2026-05-05",
-    "title": "Disrupt - Q2: Partition Entry Parsing & Little Endian Conversion",
+    "title": "Diskrupt - Q2: Partition Entry Parsing & Little Endian Conversion",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
     "tags": ["forensics", "disk-forensics", "mbr", "partition-table", "little-endian", "hex-analysis", "ftk-imager"],
@@ -663,6 +663,89 @@
       "Cara mapping struktur logis 16 byte ke layout visual hex view yang spans 2 baris"
     ],
     "summary": "Identifikasi 4 byte total sectors dari Partition Entry 2 di MBR (offset 0x1DA-0x1DD) bernilai 00 78 38 01 dalam Little Endian, yang setelah dibalik menjadi 0x01387800 (20,477,952 sektor). Pembelajaran tentang struktur 16 byte partition entry, konsep Little Endian sebagai cara penyimpanan multi-byte integer di arsitektur x86/x64, dan methodology disk forensics empat tahap (Observation, Narrow Down, Hypothesize, Verify).",
+    "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q3",
+    "date": "2026-05-06",
+    "title": "Diskrupt - Q3: Calculate Partition Size in GB (Sector to Byte Conversion)",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "disk-forensics", "mbr", "partition-table", "sector-calculation", "cyberchef", "hex-analysis"],
+    "concepts": [
+      "Konversi sektor ke byte menggunakan sector size",
+      "Konversi byte ke Gigabyte definisi binary (1024^3) vs decimal (1000^3)",
+      "Konvensi disk forensics menggunakan binary GiB",
+      "Multi-step calculation workflow di CyberChef",
+      "Identifikasi recipe yang tepat: From Base vs From Hex+To Decimal",
+      "Verifikasi sector size dari metadata acquisition"
+    ],
+    "terms": [
+      "sector size",
+      "bytes per sector",
+      "Gigabyte",
+      "GiB",
+      "binary GB",
+      "decimal GB",
+      "1024^3",
+      "1073741824",
+      "Partition Entry 1",
+      "0x1BE",
+      "0x1CD",
+      "0x1CA-0x1CD",
+      "CyberChef From Base",
+      "Radix 16",
+      "0x03C77000",
+      "63401984"
+    ],
+    "commands": [
+      "CyberChef recipe: From Base (Radix: 16) untuk hex to decimal",
+      "Calculator Programmer mode untuk konversi hex/decimal",
+      "Formula: (sectors * 512) / 1073741824 = GB"
+    ],
+    "problems": [
+      "Cara menghitung ukuran partisi dari sector count",
+      "Perbedaan definisi GB binary vs decimal dan mana yang dipakai forensics",
+      "Bug CyberChef From Hex+To Decimal yang convert per byte, bukan utuh",
+      "Cara verifikasi sector size disk image dari metadata file"
+    ],
+    "summary": "Kalkulasi ukuran Partition 1 di disk Diskrupt = 30.23 GB. Menggunakan total sectors dari Partition Entry 1 (0x03C77000 = 63,401,984 sektor), dikalikan 512 byte per sector, dibagi 1024^3 untuk konversi binary GiB. Pembelajaran tentang multi-step calculation workflow dan perbedaan definisi GB binary vs decimal di disk forensics.",
+    "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q4",
+    "date": "2026-05-06",
+    "title": "Diskrupt - Q4: Second Partition Size + Sanity Check Validation",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "disk-forensics", "mbr", "partition-table", "sanity-check", "validation", "milestone"],
+    "concepts": [
+      "Reusing data dari pertanyaan sebelumnya untuk efisiensi",
+      "Sanity check sebagai langkah verifikasi hasil analisis",
+      "Cross-validation total partisi dengan total disk size",
+      "Pattern recognition di room CTF: pertanyaan beruntun yang leverage skill yang sama"
+    ],
+    "terms": [
+      "Partition Entry 2",
+      "0x1CE",
+      "0x01387800",
+      "20477952",
+      "9.76 GB",
+      "sanity check",
+      "cross-validation",
+      "MBR analysis milestone"
+    ],
+    "commands": [
+      "Reuse data Little Endian dari Q2: 0x01387800",
+      "CyberChef From Base 16 untuk decimal conversion",
+      "Sanity check: sum all partition sizes vs disk image total size"
+    ],
+    "problems": [
+      "Cara verifikasi hasil analisis dengan informasi reference",
+      "Cara identify data reusable dari pertanyaan sebelumnya untuk efisiensi",
+      "Selisih kecil antara sum partitions dan disk total (untuk MBR overhead, gap, unallocated area)"
+    ],
+    "summary": "Kalkulasi ukuran Partition 2 di disk Diskrupt = 9.76 GB. Reuse data dari Q2 (0x01387800 = 20,477,952 sektor), aplikasi formula yang sama dengan Q3. Total partition 1+2 = 39.99 GB, mendekati 40 GB disk total dari metadata, sanity check passed. Menyelesaikan section MBR analysis (Q1 sampai Q4).",
     "url": ""
   }
 ]
