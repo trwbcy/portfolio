@@ -747,5 +747,230 @@
     ],
     "summary": "Kalkulasi ukuran Partition 2 di disk Diskrupt = 9.76 GB. Reuse data dari Q2 (0x01387800 = 20,477,952 sektor), aplikasi formula yang sama dengan Q3. Total partition 1+2 = 39.99 GB, mendekati 40 GB disk total dari metadata, sanity check passed. Menyelesaikan section MBR analysis (Q1 sampai Q4).",
     "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q5",
+    "date": "2026-05-06",
+    "title": "Diskrupt - Q5: MFT Parsing & NTFS Filesystem Analysis with MFTECmd",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "ntfs", "mft", "mftecmd", "timeline-explorer", "eztools", "filesystem-analysis"],
+    "concepts": [
+      "Master File Table (MFT) sebagai database file metadata di NTFS",
+      "Workflow industry-standard: extract -> parse -> analyze",
+      "MFT vs manual file browsing: scalability dan completeness",
+      "NTFS MACE/MACB timestamps (Modified, Accessed, Changed, Born/Created)",
+      "Disabled accessed timestamp di Windows 7+ untuk performance",
+      "Pivot dari manual approach ke automated tooling"
+    ],
+    "terms": [
+      "$MFT",
+      "MFTECmd",
+      "Eric Zimmerman tools",
+      "EZTools",
+      "Timeline Explorer",
+      "MACE timestamps",
+      "MACB",
+      "$STANDARD_INFORMATION",
+      "$FILE_NAME",
+      "FILE record",
+      "free record",
+      "passwords.txt",
+      "Chrome Password Manager",
+      "AppData\\Local\\Google\\Chrome",
+      "NTFS metadata"
+    ],
+    "commands": [
+      "MFTECmd.exe -f ..\\Evidence\\$MFT --csv ..\\Evidence\\ --csvf MFT.csv",
+      "FTK Imager: right-click $MFT -> Export Files",
+      "Timeline Explorer: search box untuk filter cepat"
+    ],
+    "problems": [
+      "Cara handle 30+ ribu file di NTFS partition tanpa manual browsing",
+      "Extract $MFT yang merupakan hidden file sistem dari NTFS",
+      "Parse 492,201 file records dalam waktu wajar (124 detik)",
+      "Identify file yang related ke password tanpa scan satu-satu folder"
+    ],
+    "summary": "Identifikasi creation timestamp passwords.txt di NTFS partition Diskrupt = 2025-03-19 22:01:57. Pendekatan industry-standard: extract $MFT dari FTK Imager, parse dengan MFTECmd jadi CSV (492,201 records dalam 124 detik), analyze di Timeline Explorer dengan keyword search. File ditemukan di Administrator\\AppData\\Local\\Google\\Chrome - kemungkinan export dari Chrome Password Manager.",
+    "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q6",
+    "date": "2026-05-06",
+    "title": "Diskrupt - Q6: Cross-Partition Forensics + FAT32 Deleted File Artifacts",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "fat32", "deleted-files", "ftk-imager", "cross-partition", "exfiltration"],
+    "concepts": [
+      "Cross-filesystem investigation (NTFS + FAT32 di disk yang sama)",
+      "FAT32 deleted file marker: byte 0xE5 di awal directory entry",
+      "Pattern recognition naming convention (secret_, importantDocs, sensitive)",
+      "Multiple entries dengan nama sama = file di-delete dan recreate berulang",
+      "USB drive sebagai exfiltration vector (FAT32 standar untuk removable media)",
+      "$MFT eksklusif NTFS, FAT32 pakai struktur File Allocation Table"
+    ],
+    "terms": [
+      "FAT32 directory entry",
+      "0xE5 deletion marker",
+      "8.3 short filename",
+      "!UANTU~1.PDF",
+      "FileSlack",
+      "deleted file recovery",
+      "Quantum-Resistant Cryptographic Algorithms.pdf",
+      "exfiltration scenario",
+      "USB drive forensics",
+      "secret_plan.zip",
+      "importantDocs"
+    ],
+    "commands": [
+      "FTK Imager: navigate Partition 2 -> NEW VOLUME [FAT32] -> [root]",
+      "Identify deleted files: tanda silang merah pada icon",
+      "Identify deletion marker: 8.3 short filename starts with '!' (0xE5)"
+    ],
+    "problems": [
+      "Cara explore partisi sekunder yang gak ke-cover MFT analysis",
+      "Identify deleted files di FAT32 vs active files",
+      "Pattern recognition untuk file sensitive di dalam noise file biasa",
+      "Distinguish single-delete vs delete-recreate-delete pattern"
+    ],
+    "summary": "Identifikasi sensitive PDF document di disk Diskrupt: Quantum-Resistant Cryptographic Algorithms.pdf, ditemukan di FAT32 partition root dalam status deleted. 8.3 short filename !UANTU~1.PDF mengkonfirmasi deletion (byte pertama 0xE5). Lokasi di FAT32 + nama sensitive + status deleted = strong indicator USB-based exfiltration scenario.",
+    "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q7",
+    "date": "2026-05-06",
+    "title": "Diskrupt - Q7: LNK Files & First-Found Timestamp Reconstruction",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "lnk-files", "windows-recent", "timestamp-analysis", "preserve-attribute", "ntfs"],
+    "concepts": [
+      "LNK shortcut files di Windows\\Recent folder sebagai user activity tracker",
+      "LNK file persistence: tetap ada walaupun file aslinya dihapus",
+      "First found vs Created timestamp: bukan selalu sama",
+      "Copy with preserve attribute behavior (Modified < Created)",
+      "Cross-reference timestamp dari multiple sources untuk timeline reconstruction",
+      "Failed submission sebagai pembelajaran untuk pahami nuansa keyword"
+    ],
+    "terms": [
+      "LNK file",
+      "Windows Shortcut",
+      "Windows\\Recent folder",
+      "AppData\\Roaming\\Microsoft\\Windows\\Recent",
+      ".lnk extension",
+      "first found",
+      "preserve attribute",
+      "Created timestamp",
+      "Modified timestamp",
+      "exfiltration timeline",
+      "temporal correlation"
+    ],
+    "commands": [
+      "Timeline Explorer: search 'Quantum-Resistant Cryptographic Algorithms' di MFT.csv",
+      "Filter Extension column = .lnk untuk find shortcut artifacts",
+      "Cross-reference timestamps from FAT32 Properties + NTFS LNK"
+    ],
+    "problems": [
+      "Mengapa Properties FAT32 Created date ditolak sebagai jawaban",
+      "Modified time yang lebih awal dari Created time (anomali apa?)",
+      "Find timestamp yang represent 'first appearance on disk' dengan akurat",
+      "Reconstruct full exfiltration timeline dari multiple artifacts"
+    ],
+    "summary": "Identifikasi first-found timestamp PDF Diskrupt = 2025-03-20 00:44:37, didapat dari LNK file di NTFS Windows\\Recent folder (bukan dari FAT32 Created date yang awalnya gue submit dan ditolak). Pembelajaran: LNK files adalah forensics goldmine untuk track user file access. Anomali Modified < Created di FAT32 PDF mengkonfirmasi exfiltration scenario via copy with preserve attribute.",
+    "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q8",
+    "date": "2026-05-06",
+    "title": "Diskrupt - Q8: USN Journal Analysis for Exfiltration Directory Discovery",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "ntfs", "usn-journal", "exfiltration", "mftecmd", "timeline-reconstruction"],
+    "concepts": [
+      "USN Journal sebagai history log NTFS filesystem (vs MFT yang state)",
+      "Update Sequence Number sebagai unique identifier per event",
+      "Capturing deleted events bahkan setelah MFT entry recycled",
+      "Timeline reconstruction dengan cross-reference USN + MFT + LNK",
+      "Pattern recognition: search keyword explicit (exfil) untuk amateur attacker",
+      "Temporal correlation 38 detik antara folder creation dan file exfil",
+      "Entry Number = MFT Reference Number"
+    ],
+    "terms": [
+      "USN Journal",
+      "Update Sequence Number",
+      "$Extend\\$UsnJrnl",
+      "$J alternate data stream",
+      "Reason field",
+      "FILE_CREATE",
+      "FILE_DELETE",
+      "Entry Number",
+      "MFT Reference Number",
+      "Exfil folder",
+      "exfil_ folder",
+      "163896",
+      "486260",
+      "rotational log"
+    ],
+    "commands": [
+      "MFTECmd.exe -f ..\\Evidence\\$J --csv ..\\Evidence\\ --csvf USN.csv",
+      "FTK Imager: navigate $Extend -> $UsnJrnl -> export $J",
+      "Timeline Explorer: search 'exfil' untuk filter cepat",
+      "Filter 35 lines dari 351,028 total USN Journal lines"
+    ],
+    "problems": [
+      "Cara catch event create-then-delete folder yang udah hilang dari MFT",
+      "Distinguish Exfil (capital) vs exfil_ (lowercase): mana yang ditanya",
+      "Correlate USN Journal timestamp dengan Q5 passwords.txt creation",
+      "Build narrative attacker dari pattern temporal yang ditemukan"
+    ],
+    "summary": "Identifikasi entry number directory exfiltration di Diskrupt = 163896 (folder Exfil capital di NTFS). Workflow: export $J dari NTFS, parse dengan MFTECmd jadi USN.csv (351,028 lines), search keyword 'exfil' di Timeline Explorer untuk filter ke 35 relevant lines. Folder dibuat 2025-03-19 22:01:19, tepat 38 detik sebelum passwords.txt creation di Q5 - smoking gun temporal correlation untuk exfiltration scenario.",
+    "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q9",
+    "date": "2026-05-06",
+    "title": "Diskrupt - Q9: File Carving with Magic Bytes (ZIP Header)",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "file-carving", "magic-bytes", "zip-format", "hex-analysis", "unallocated-space"],
+    "concepts": [
+      "File carving sebagai recovery technique tanpa filesystem metadata",
+      "Magic bytes signature sebagai identifier file format",
+      "ZIP file format structure: local file header, central directory, EOCD",
+      "Whole disk view vs partition view untuk navigate offset besar",
+      "Search query specificity: 4-byte vs 3-byte magic bytes",
+      "Discovery beyond requirements: PNG di unallocated space"
+    ],
+    "terms": [
+      "file carving",
+      "magic bytes",
+      "ZIP signature 50 4B 03 04",
+      "PK header",
+      "Phil Katz",
+      "local file header",
+      "central directory",
+      "End of Central Directory (EOCD)",
+      "50 4B 05 06",
+      "0x4E7B00000",
+      "0x4E7B0E000",
+      "unallocated space",
+      "AWSSDK.WrkMailMessageFlow.pdb",
+      "PNG signature 89 50 4E 47",
+      "IHDR chunk",
+      "IDAT chunk"
+    ],
+    "commands": [
+      "FTK Imager Ctrl+G: navigate to offset 4E7B00000",
+      "FTK Imager Ctrl+F: search hex 50 4B 03 04 forward",
+      "Whole disk view: klik root challenge.001 di Evidence Tree (bukan partition)",
+      "Status bar verification: Cursor pos = 21066940416 (decimal of 0x4E7B00000)"
+    ],
+    "problems": [
+      "Search dengan 3 byte (50 4B 03) menghasilkan banyak false positive",
+      "Search dimulai dari awal disk vs dari posisi cursor specific",
+      "Distinguish first match (0x4E7B0E000) vs later match (0x4EA9797C9)",
+      "Navigate offset 21 GB di disk image 40 GB tanpa partition context"
+    ],
+    "summary": "File carving ZIP file di unallocated space Diskrupt = offset 0x4E7B0E000 (start of first ZIP after 0x4E7B00000). Magic bytes 50 4B 03 04 ditemukan via Ctrl+F search forward. Pembelajaran: gunakan magic bytes 4-byte penuh (bukan 3-byte) untuk specificity. Side discovery: PNG file di 0x4E7B00000 (kemungkinan related ke pertanyaan flag), dan filename pertama dalam ZIP adalah AWSSDK.WrkMailMessageFlow.pdb.",
+    "url": ""
   }
 ]
