@@ -972,5 +972,130 @@
     ],
     "summary": "File carving ZIP file di unallocated space Diskrupt = offset 0x4E7B0E000 (start of first ZIP after 0x4E7B00000). Magic bytes 50 4B 03 04 ditemukan via Ctrl+F search forward. Pembelajaran: gunakan magic bytes 4-byte penuh (bukan 3-byte) untuk specificity. Side discovery: PNG file di 0x4E7B00000 (kemungkinan related ke pertanyaan flag), dan filename pertama dalam ZIP adalah AWSSDK.WrkMailMessageFlow.pdb.",
     "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q10",
+    "date": "2026-05-07",
+    "title": "Diskrupt - Q10: ZIP Ending Offset & EOCD Record Analysis",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "file-carving", "zip-format", "eocd", "hex-analysis", "hxd"],
+    "concepts": [
+      "ZIP file structure lengkap (local header, central directory, EOCD)",
+      "End of Central Directory (EOCD) sebagai marker akhir ZIP file",
+      "EOCD record breakdown (22 byte minimum + optional comment)",
+      "Multiple interpretasi 'ending offset': start EOCD vs last byte vs first byte after",
+      "Submission strategy untuk pertanyaan dengan phrasing ambigu",
+      "Tool selection: HxD optimal untuk hex search (vs FTK Imager yang lambat)"
+    ],
+    "terms": [
+      "EOCD",
+      "End of Central Directory",
+      "50 4B 05 06",
+      "PK signature variants",
+      "0x4E7B0E428",
+      "0x4E7B0E43D",
+      "ZIP record structure",
+      "central directory size",
+      "comment length field",
+      "1086 bytes ZIP size"
+    ],
+    "commands": [
+      "HxD Ctrl+G: navigate to offset 4E7B0E000 (start of ZIP)",
+      "HxD Ctrl+F: search hex 50 4B 05 06 forward",
+      "Calculation: last_byte = start_EOCD + 21 (22 bytes total)",
+      "Submission strategy: try all offset interpretations sequentially"
+    ],
+    "problems": [
+      "Phrasing 'ending offset' yang ambigu (3 interpretasi possible)",
+      "Initial submission start of EOCD (4E7B0E428) ditolak",
+      "Identify EOCD record terminator (no comment, 22 byte total)",
+      "Calculate total ZIP size dari start dan end offset"
+    ],
+    "summary": "Identifikasi ending offset ZIP file Diskrupt = 0x4E7B0E43D (last byte of EOCD record). Search 50 4B 05 06 di HxD setelah Q9 starting offset, found EOCD di 0x4E7B0E428. Last byte ZIP = start EOCD + 21 = 0x4E7B0E43D. Total ZIP size = 1086 bytes (kecil, indicate single small file content). Pembelajaran: try multiple submission formats untuk pertanyaan ambigu.",
+    "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q11",
+    "date": "2026-05-07",
+    "title": "Diskrupt - Q11: ZIP Extraction & Storyline Reveal (Attacker Memo)",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "file-carving", "file-extraction", "zip", "narrative-analysis", "exfiltration"],
+    "concepts": [
+      "File extraction via HxD block selection",
+      "Save selection as separate file workflow",
+      "ZIP extraction dengan Windows Explorer atau PowerShell Expand-Archive",
+      "Cross-validation investigation findings dengan attacker narrative",
+      "Story telling dalam DFIR report sebagai presentation skill",
+      "Multi-pass investigation: clue dari Q11 connect ke Q12"
+    ],
+    "terms": [
+      "block selection",
+      "HxD save selection",
+      "extracted.zip",
+      "secret_plan.txt",
+      "FLAG:{RECOVERED_SECRET_THM}",
+      "stolen.zip (referenced)",
+      "Confidential_Research.docx (referenced)",
+      "internal memo",
+      "anti-forensics narrative",
+      "FAT table overwrite",
+      "prefetch cache cleared"
+    ],
+    "commands": [
+      "HxD Ctrl+E: Select block dengan start-offset 4E7B0E000, end-offset 4E7B0E43D",
+      "HxD File > Save selection as: extracted.zip",
+      "Windows: Right-click > Extract All atau PowerShell Expand-Archive",
+      "Read content dengan Notepad untuk text-based files"
+    ],
+    "problems": [
+      "Cara extract specific byte range jadi standalone file",
+      "Validate extracted file integrity (apakah ZIP valid setelah carve)",
+      "Cross-reference attacker claims dengan technical evidence",
+      "Identify hint untuk pertanyaan berikutnya dari narrative"
+    ],
+    "summary": "Extract ZIP file dari disk image Diskrupt range 0x4E7B0E000-0x4E7B0E43D pakai HxD block selection. Content: secret_plan.txt (internal memo attacker dengan FLAG:{RECOVERED_SECRET_THM}). Memo reveal narrative lengkap exfiltration: extract data, create stolen.zip, store on USB, delete entries, clear prefetch, overwrite FAT table. Setiap claim attacker match dengan investigation findings dari Q1-Q10. Hint 'last known document' dan 'FAT table overwrite' jadi clue untuk Q12.",
+    "url": ""
+  },
+  {
+    "id": "thm-diskrupt-q12",
+    "date": "2026-05-07",
+    "title": "Diskrupt - Q12: Disk Wiping Tool Detection (Anti-Forensics Artifact) + ROOM COMPLETION",
+    "platform": "TryHackMe",
+    "category": "Disk Forensics",
+    "tags": ["forensics", "anti-forensics", "disk-wipe", "fat32", "deleted-files", "room-completion", "milestone"],
+    "concepts": [
+      "Microsoft Installer (MSI) artifacts sebagai installation evidence",
+      "Multi-pass investigation: Q12 clue sudah terlihat sejak Q6",
+      "Anti-forensics tool detection di filesystem level",
+      "Pattern install-then-delete sebagai professional anti-forensics behavior",
+      "DiskWipe tool functionality untuk overwrite FAT table",
+      "Connection narrative attacker memo dengan technical evidence"
+    ],
+    "terms": [
+      "DiskWipe.exe",
+      "MSI*.tmp files",
+      "Microsoft Installer artifacts",
+      "FAT table overwrite",
+      "anti-forensics tools",
+      "install-then-delete pattern",
+      "professional attacker behavior",
+      "disk wiping software",
+      "file deletion markers (FAT32 0xE5)"
+    ],
+    "commands": [
+      "FTK Imager: re-explore Partition 2 [FAT32] / [root]",
+      "Look for: .exe files dengan tanda silang merah (deleted)",
+      "Cross-reference: MSI*.tmp files sebagai install indicator"
+    ],
+    "problems": [
+      "Identify tool name dari banyak deleted file di FAT32",
+      "Connect Q12 clue dengan claim attacker di secret_plan.txt (Q11)",
+      "Distinguish anti-forensics tool vs regular software",
+      "Multi-pass review: re-examine evidence dari pertanyaan sebelumnya dengan context baru"
+    ],
+    "summary": "Identifikasi disk wiping tool di Diskrupt = DiskWipe.exe (di FAT32 partition root, status deleted). Tool ini attacker gunakan untuk overwrite FAT table sebagai anti-forensics setelah complete exfiltration (sesuai claim di secret_plan.txt). Pattern install-then-delete dengan dua MSI*.tmp entries dan deleted .exe entries adalah signature professional anti-forensics behavior. ROOM DISKRUPT COMPLETED 12/12!",
+    "url": ""
   }
 ]
