@@ -1013,7 +1013,7 @@
       "Calculate total ZIP size dari start dan end offset"
     ],
     "summary": "Identifikasi ending offset ZIP file Diskrupt = 0x4E7B0E43D (last byte of EOCD record). Search 50 4B 05 06 di HxD setelah Q9 starting offset, found EOCD di 0x4E7B0E428. Last byte ZIP = start EOCD + 21 = 0x4E7B0E43D. Total ZIP size = 1086 bytes (kecil, indicate single small file content). Pembelajaran: try multiple submission formats untuk pertanyaan ambigu.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1vUpzpy5d8GYPMef1xo8l9mqNOTnuFSjH/view?usp=sharing"
   },
   {
     "id": "thm-diskrupt-q11",
@@ -1056,7 +1056,7 @@
       "Identify hint untuk pertanyaan berikutnya dari narrative"
     ],
     "summary": "Extract ZIP file dari disk image Diskrupt range 0x4E7B0E000-0x4E7B0E43D pakai HxD block selection. Content: secret_plan.txt (internal memo attacker dengan FLAG:{RECOVERED_SECRET_THM}). Memo reveal narrative lengkap exfiltration: extract data, create stolen.zip, store on USB, delete entries, clear prefetch, overwrite FAT table. Setiap claim attacker match dengan investigation findings dari Q1-Q10. Hint 'last known document' dan 'FAT table overwrite' jadi clue untuk Q12.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1vUpzpy5d8GYPMef1xo8l9mqNOTnuFSjH/view?usp=sharing"
   },
   {
     "id": "thm-diskrupt-q12",
@@ -1096,6 +1096,6 @@
       "Multi-pass review: re-examine evidence dari pertanyaan sebelumnya dengan context baru"
     ],
     "summary": "Identifikasi disk wiping tool di Diskrupt = DiskWipe.exe (di FAT32 partition root, status deleted). Tool ini attacker gunakan untuk overwrite FAT table sebagai anti-forensics setelah complete exfiltration (sesuai claim di secret_plan.txt). Pattern install-then-delete dengan dua MSI*.tmp entries dan deleted .exe entries adalah signature professional anti-forensics behavior. ROOM DISKRUPT COMPLETED 12/12!",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1vUpzpy5d8GYPMef1xo8l9mqNOTnuFSjH/view?usp=sharing"
   }
 ]
