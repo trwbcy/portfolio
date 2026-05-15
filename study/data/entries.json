@@ -1170,6 +1170,6 @@
       "Q7 (exfil.ps1 body): script tidak bisa di-recover dari artefak yang tersedia — UNSOLVED"
     ],
     "summary": "Joedway adalah CTF DFIR challenge di Hacktrace Ranges (Moderate, 20pts) dengan skenario Windows compromise via NPM supply chain attack + ClickFix. Solved 11/12 pertanyaan. Chain: attacker deliver malicious NPM package dengan postinstall hook → ClickFix trick user jalankan encoded PowerShell → drop encrypted payload (JOEDWAY! magic header, xsalsa20poly1305) → eksfiltrasi. Tools utama: 7z (WIM), tshark (PCAP), sqlite3 (browser history), LnkParse3 (LNK), pynacl (decrypt). Q7 (exfil.ps1 content) unsolved karena script body tidak bisa di-recover dari artefak yang ada di image.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1pF5XAoDPYrfmxcYmFmKFSDiWDECePE9G/view?usp=sharing"
   }
 ]

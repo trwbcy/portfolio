@@ -53,7 +53,7 @@ const writeups = [
     { title: "Volatify", type: "blue", desc: "Memory Forensics", url: "https://docs.google.com/document/d/1a0vIHmZ3PQi-7ZOk16lcNCtavdavIwR-/edit?usp=sharing&ouid=112970802675533255155&rtpof=true&sd=true" },
     { title: "Subvert", type: "blue", desc: ".NET Malware Analysis & MSSQL Injection", url: "https://drive.google.com/file/d/1d60zUDWBP3id0whogPcUE-_QtQ7vF1FM/view?usp=sharing" },
     { title: "Charon", type: "blue", desc: "Memory & Disk Forensics", url: "https://drive.google.com/file/d/1om6jsQ3yypLkiA9K8eSZYzWfOcJT-yqe/view?usp=sharing" },
-    { title: "Joedway", type: "blue", desc: "NPM Supply Chain + ClickFix DFIR", url: "" },
+    { title: "Joedway", type: "blue", desc: "NPM Supply Chain + ClickFix DFIR", url: "https://drive.google.com/file/d/1pF5XAoDPYrfmxcYmFmKFSDiWDECePE9G/view?usp=sharing" },
 ];
 
 // === STATE ===
