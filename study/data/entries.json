@@ -1097,5 +1097,79 @@
     ],
     "summary": "Identifikasi disk wiping tool di Diskrupt = DiskWipe.exe (di FAT32 partition root, status deleted). Tool ini attacker gunakan untuk overwrite FAT table sebagai anti-forensics setelah complete exfiltration (sesuai claim di secret_plan.txt). Pattern install-then-delete dengan dua MSI*.tmp entries dan deleted .exe entries adalah signature professional anti-forensics behavior. ROOM DISKRUPT COMPLETED 12/12!",
     "url": "https://drive.google.com/file/d/1vUpzpy5d8GYPMef1xo8l9mqNOTnuFSjH/view?usp=sharing"
+  },
+  {
+    "id": "hacktrace-joedway",
+    "date": "2026-05-15",
+    "title": "Joedway - Hacktrace Ranges CTF: DFIR + NPM Supply Chain Attack (11/12, Moderate, 20pts)",
+    "platform": "Hacktrace Ranges",
+    "category": "Digital Forensics",
+    "tags": [
+      "ctf",
+      "forensics",
+      "dfir",
+      "malware-analysis",
+      "reverse-engineering",
+      "network-forensics",
+      "npm-attack",
+      "supply-chain",
+      "clickfix",
+      "xsalsa20",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "WIM image analysis: ekstraksi artefak Windows dari .wim menggunakan 7z",
+      "Browser history forensics: query Vivaldi/Chromium SQLite (History DB) untuk rekonstruksi aktivitas web",
+      "PCAP analysis + ClickFix decoding: decode PowerShell payload dari HTTP stream dengan tshark",
+      "Triple base64 + hex deobfuscation: multi-layer encoding pada malicious script",
+      "LNK file forensics: parse shortcut metadata dengan LnkParse3 untuk temukan original path",
+      "XOR + xsalsa20poly1305 cryptanalysis: decrypt payload menggunakan hardcoded key dari binary",
+      "Custom magic header reverse engineering: identifikasi format JOEDWAY! sebagai encryption container",
+      "Git artifact analysis: rekonstruksi commit history dan staging area dari .git folder",
+      "Registry artifact analysis: Regshot diff untuk deteksi persistence key dan program install",
+      "NPM postinstall hook abuse: analisis package.json scripts sebagai supply chain attack vector"
+    ],
+    "terms": [
+      "WIM (Windows Imaging Format)",
+      "ClickFix attack",
+      "xsalsa20poly1305",
+      "NaCl/libsodium secretbox",
+      "LNK file (Windows Shortcut)",
+      "LnkParse3",
+      "NPM postinstall hook",
+      "supply chain attack",
+      "Regshot diff",
+      "SQLite History database",
+      "triple base64 encoding",
+      "custom magic header",
+      "JOEDWAY! magic bytes",
+      "pynacl",
+      "pycryptodome",
+      "tshark stream reconstruction"
+    ],
+    "commands": [
+      "7z x image.wim -o./extracted",
+      "tshark -r capture.pcap -Y 'http' -T fields -e http.file_data",
+      "sqlite3 History 'SELECT url, title, last_visit_time FROM urls ORDER BY last_visit_time DESC'",
+      "python3 -c \"import base64; print(base64.b64decode(base64.b64decode(base64.b64decode(data))))\"",
+      "python3 -c \"from Crypto.Util.strxor import strxor; ...\"",
+      "python3 -c \"import nacl.secret; box = nacl.secret.SecretBox(key); box.decrypt(ciphertext)\"",
+      "lnkparse3 shortcut.lnk",
+      "git log --all --oneline",
+      "git show HEAD:path/to/file"
+    ],
+    "problems": [
+      "Ekstraksi dan navigasi WIM image untuk temukan artefak relevan",
+      "Rekonstruksi aktivitas web attacker dari browser SQLite history",
+      "Decode multi-layer obfuscated ClickFix PowerShell payload (triple base64 + hex)",
+      "Parse LNK file metadata untuk jawab pertanyaan forensik tentang shortcut",
+      "Identifikasi dan decrypt file dengan custom JOEDWAY! magic header (xsalsa20poly1305)",
+      "Analisis .git folder untuk rekonstruksi aktivitas repository attacker",
+      "Korelasi Regshot diff dengan NPM supply chain attack untuk trace full infection chain",
+      "Q7 (exfil.ps1 body): script tidak bisa di-recover dari artefak yang tersedia — UNSOLVED"
+    ],
+    "summary": "Joedway adalah CTF DFIR challenge di Hacktrace Ranges (Moderate, 20pts) dengan skenario Windows compromise via NPM supply chain attack + ClickFix. Solved 11/12 pertanyaan. Chain: attacker deliver malicious NPM package dengan postinstall hook → ClickFix trick user jalankan encoded PowerShell → drop encrypted payload (JOEDWAY! magic header, xsalsa20poly1305) → eksfiltrasi. Tools utama: 7z (WIM), tshark (PCAP), sqlite3 (browser history), LnkParse3 (LNK), pynacl (decrypt). Q7 (exfil.ps1 content) unsolved karena script body tidak bisa di-recover dari artefak yang ada di image.",
+    "url": ""
   }
 ]
