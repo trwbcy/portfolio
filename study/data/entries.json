@@ -1171,5 +1171,218 @@
     ],
     "summary": "Joedway adalah CTF DFIR challenge di Hacktrace Ranges (Moderate, 20pts) dengan skenario Windows compromise via NPM supply chain attack + ClickFix. Solved 11/12 pertanyaan. Chain: attacker deliver malicious NPM package dengan postinstall hook → ClickFix trick user jalankan encoded PowerShell → drop encrypted payload (JOEDWAY! magic header, xsalsa20poly1305) → eksfiltrasi. Tools utama: 7z (WIM), tshark (PCAP), sqlite3 (browser history), LnkParse3 (LNK), pynacl (decrypt). Q7 (exfil.ps1 content) unsolved karena script body tidak bisa di-recover dari artefak yang ada di image.",
     "url": "https://drive.google.com/file/d/1pF5XAoDPYrfmxcYmFmKFSDiWDECePE9G/view?usp=sharing"
+  },
+  {
+    "id": "kali-vm-terminal-hang-rca",
+    "date": "2026-05-16",
+    "title": "Multi-Layer Diagnostic: Kali VM Terminal Hang Root Cause Analysis",
+    "platform": "Personal Lab",
+    "category": "System Administration",
+    "tags": [
+      "troubleshooting",
+      "linux",
+      "sysadmin",
+      "kali",
+      "vmware",
+      "root-cause-analysis",
+      "journalctl"
+    ],
+    "concepts": [
+      "Enabler vs trigger distinction: disk full (enabler) + xfce4-screensaver PAM bug (trigger) + RAM pressure (aggravator) — 3-layer cascade model",
+      "systemd journal forensics: filter by time + priority to isolate repeating error patterns",
+      "VM-context-aware diagnosis: open-vm-tools status, vmware kernel modules, kernel mismatch — suspects unique to guest OS",
+      "Pre-fix evidence gathering as discipline: snapshot system state (uname, free, df, lsmod) before any remediation action",
+      "Suspect categorization: power management, compositor/screensaver, mount issues, resource exhaustion — structured instead of random trial",
+      "PAM auth failure loop in xfce4-screensaver-dialog as terminal hang trigger on tight-disk systems"
+    ],
+    "terms": [
+      "PAM (Pluggable Authentication Modules)",
+      "xfce4-screensaver-dialog",
+      "pam_unix conversation failed",
+      "journalctl --priority=err",
+      "open-vm-tools",
+      "vmware kernel modules",
+      "screensaver lock loop",
+      "enabler vs trigger (root cause model)",
+      "IR playbook",
+      "systemd journal"
+    ],
+    "commands": [
+      "journalctl --since yesterday --priority=err",
+      "journalctl -u xfce4-screensaver --since '30 min ago'",
+      "systemctl status open-vm-tools",
+      "lsmod | grep vmw",
+      "uname -a",
+      "free -h",
+      "df -h",
+      "lsof | grep deleted | awk '{print $7}' | sort -rn | head -10",
+      "xset s off",
+      "xfconf-query -c xfce4-screensaver -p /lock/enabled -s false",
+      "gsettings set org.gnome.desktop.screensaver lock-enabled false"
+    ],
+    "problems": [
+      "Diagnose intermittent terminal hang setelah 5+ menit idle di Kali VMware guest",
+      "Isolasi root cause dari 3 kandidat simultan: screensaver, disk full, RAM pressure",
+      "Baca journalctl untuk temukan pam_unix conversation failed sebagai repeating pattern",
+      "Distinguish VMware-specific suspects (open-vm-tools, kernel mismatch) dari general Linux suspects",
+      "Verifikasi fix dengan controlled idle test (25+ menit tanpa hang)"
+    ],
+    "summary": "Diagnosed Kali VM terminal hang via 3-layer cascade model: disk 95% full (enabler) → xfce4-screensaver PAM auth bug (trigger) → RAM 3.8GB tight (aggravator). Key method: journalctl --priority=err revealed repeating pam_unix: conversation failed pattern. Saved as personal IR playbook — enabler/trigger distinction langsung applicable ke DFIR case analysis di SOC.",
+    "url": ""
+  },
+  {
+    "id": "kali-disk-pressure-remediation",
+    "date": "2026-05-16",
+    "title": "Disk Pressure Remediation: Kali Linux Filesystem Cleanup (95% → 47%)",
+    "platform": "Personal Lab",
+    "category": "System Administration",
+    "tags": [
+      "linux",
+      "sysadmin",
+      "disk-management",
+      "kali",
+      "bash-scripting",
+      "troubleshooting"
+    ],
+    "concepts": [
+      "ext4 filesystem degradation at >90% usage: I/O blocks cascade to unrelated subsystems (journald, /tmp, swap all need free blocks)",
+      "Hierarchical space scan with du --max-depth to identify consumption hotspots before taking action",
+      "Risk-tiered cleanup: cache (zero risk) → apt artifacts → old kernels → confirmed obsolete data → user-review required",
+      "Forensic artifact storage discipline: .E01/.vmem/.mem files accumulate silently — periodic audit required",
+      "Safety-first bash script design: dry-run mode + per-step confirmation + audit log + double-confirmation for destructive ops",
+      "find patterns for forensic artifact detection vs large generic files"
+    ],
+    "terms": [
+      "ext4 filesystem",
+      "disk pressure",
+      "journald vacuum",
+      "apt autoremove",
+      "apt clean",
+      "du --max-depth",
+      "dry-run mode",
+      "forensic artifact",
+      "I/O block",
+      "disk cascading failure"
+    ],
+    "commands": [
+      "df -h",
+      "du -h --max-depth=2 ~ | sort -rh | head -15",
+      "find ~ -type f -size +500M",
+      "find ~ -type f \\( -name '*.E01' -o -name '*.vmem' -o -name '*.mem' \\)",
+      "sudo apt clean && sudo apt autoremove",
+      "sudo journalctl --vacuum-size=200M",
+      "dpkg --list | grep linux-image | awk '{print $2}'",
+      "sudo apt remove --purge <old-kernel-package>"
+    ],
+    "problems": [
+      "Identify largest space consumers dari home directory secara sistematis tanpa blindly rm -rf",
+      "Reclaim disk space dari forensic artifacts (Hacktrace/Defensive 22GB, firefox-vuln source 27GB)",
+      "Build reusable cleanup script dengan dry-run mode supaya aman dipakai ulang",
+      "Apply risk-tiering: bedakan data yang zero-risk untuk delete vs yang perlu human review"
+    ],
+    "summary": "Reclaimed 32GB di Kali dari 95% → 47% penggunaan disk. Root pattern: forensic artifact accumulation (22GB) + abandoned source trees (27GB) + uncleaned apt cache. Built kali-cleanup.sh dengan dry-run mode, per-step confirmation, dan audit log — safety-first design applicable ke production environment. Disk >90% adalah silent system stability risk, bukan sekadar storage issue.",
+    "url": ""
+  },
+  {
+    "id": "vmware-snapshot-lifecycle-management",
+    "date": "2026-05-16",
+    "title": "VMware Snapshot Lifecycle Management: Cleanup & Merge",
+    "platform": "Personal Lab",
+    "category": "Virtualization",
+    "tags": [
+      "virtualization",
+      "vmware",
+      "sysadmin",
+      "snapshot-management",
+      "disk-management"
+    ],
+    "concepts": [
+      "Snapshot ≠ backup: snapshot adalah short-term safety net (24-72h max), bukan long-term archive — misconception yang umum",
+      "Long-lived snapshot anti-pattern: multi-layer disk traversal degrades I/O performance, delta chain grows unbounded, corruption risk increases",
+      "Delta file naming convention: *-000001-s001.vmdk (snapshot delta) vs -s001.vmdk (base disk) — identifiable by pattern",
+      ".vmsd metadata file sebagai snapshot tree source of truth: UID, parent reference, description, creation timestamp",
+      "Merge safety requirement: VM harus power off sebelum snapshot delete — faster merge + avoids in-flight write corruption",
+      "Snapshot Manager (GUI) vs manual vmdk deletion: manual deletion corrupts VM, always use Snapshot Manager"
+    ],
+    "terms": [
+      "VMware snapshot",
+      "delta file",
+      "snapshot chain",
+      ".vmsd metadata",
+      "vmrun",
+      "Snapshot Manager",
+      "snapshot merge",
+      "disk traversal",
+      "delta chain corruption",
+      "base disk"
+    ],
+    "commands": [
+      "vmrun listSnapshots <path-to.vmx>",
+      "vmrun deleteSnapshot <path-to.vmx> <snapshot-name>",
+      "Get-ChildItem -Path <vmdir> -Filter '*-000001*'",
+      "Get-ChildItem -Path <vmdir> -Filter '*.vmsd' | Select-String 'snapshot'"
+    ],
+    "problems": [
+      "Identify dan classify snapshot files vs base disk files dari naming pattern",
+      "Parse .vmsd untuk audit snapshot purpose, usia, dan apakah masih relevan",
+      "Safely merge 6-month-old stale snapshot tanpa corrupt VM",
+      "Reclaim 4.71GB disk space dari delta files setelah merge selesai",
+      "Establish snapshot hygiene practice: purpose-driven naming + 1-2 minggu TTL"
+    ],
+    "summary": "Cleaned up stale VMware snapshot yang berumur 6 bulan (before-hw-upgrade), reclaim 4.71GB. Key lesson: snapshot adalah safety net bukan backup — long-lived delta chains degrade performance dan increase corruption risk. .vmsd parsing untuk audit, power-off sebelum merge, dan Snapshot Manager (bukan manual vmdk delete) adalah SOP yang benar. Adopted snapshot hygiene policy: named purpose + max 2-week TTL.",
+    "url": ""
+  },
+  {
+    "id": "dfir-grade-backup-chain-of-custody",
+    "date": "2026-05-16",
+    "title": "Personal Data Backup with DFIR-Grade Chain of Custody",
+    "platform": "Personal Lab",
+    "category": "Data Management",
+    "tags": [
+      "forensics",
+      "data-management",
+      "security",
+      "backup",
+      "chain-of-custody",
+      "linux",
+      "sysadmin"
+    ],
+    "concepts": [
+      "DFIR chain of custody applied to personal backup: hash-at-source → secure transfer → hash-at-destination → match verification",
+      "Functional verification as second layer: extract test (tar -t, extract to /tmp) catches edge cases where hash matches but archive is logically corrupted",
+      "tar -C flag for clean archive paths: avoids embedding absolute paths, ensures portability across systems",
+      ".sha256 sidecar files with relative paths: portable hash record that works regardless of destination directory",
+      "Structural vs functional verification distinction: hash = structural integrity, extract test = functional usability",
+      "Archive-then-delete SOP: hash verify + extract success + size match + structure intact = safe to proceed with deletion"
+    ],
+    "terms": [
+      "chain of custody",
+      "sha256sum",
+      "sidecar hash file",
+      "tar -C flag",
+      "functional verification",
+      "structural verification",
+      "scp",
+      "archive-then-delete",
+      "evidence integrity",
+      "C2 lab VM"
+    ],
+    "commands": [
+      "sudo tar -czvf backup.tar.gz -C /var/www html",
+      "sha256sum backup.tar.gz | tee backup.tar.gz.sha256",
+      "scp user@source:/path/backup.tar.gz .",
+      "sha256sum -c backup.tar.gz.sha256",
+      "tar -tzvf backup.tar.gz | wc -l",
+      "tar -xzvf backup.tar.gz -C /tmp/test/",
+      "diff <(sha256sum backup.tar.gz) backup.tar.gz.sha256"
+    ],
+    "problems": [
+      "Extract dan preserve experimental artifacts dari stale C2 lab VM sebelum VM deletion",
+      "Apply hash verification workflow tanpa tooling khusus (native Linux tools only)",
+      "Distinguish structural integrity (hash match) vs functional integrity (extract success) — keduanya required",
+      "Recover 76GB dengan retire C2 lab VM sambil preserve semua data yang masih relevan"
+    ],
+    "summary": "Applied DFIR chain-of-custody discipline ke personal VM backup workflow: tar dengan -C flag → sha256sum sidecar → scp transfer → hash verify → functional extract test → delete only after all checks pass. Reclaimed 76GB dari C2 lab VM retirement. Workflow ini langsung transferable ke forensic evidence handling di MPM SOC — sama prinsipnya dengan preserve-before-analyze.",
+    "url": ""
   }
 ]
