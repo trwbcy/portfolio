@@ -1443,6 +1443,6 @@
       "Eksekusi DirtyFrag chain (CVE-2026-43284 + CVE-2026-43500) untuk privilege escalation ke root"
     ],
     "summary": "Pwn box Obscura dari Hacktrace Ranges (Easy, Linux, OS Maker: 0punK) dalam ~1 jam 15 menit, user + root (2/2). Attack chain: Next.js dev mode aktif → __NEXT_DATA__ enumerate internal structure → webpack source map base64 extraction dari /_next/static/chunks/ untuk recover source code → stack trace leak (ENOTDIR) membocorkan username + app path → hidden credential di /files/README.md untuk user flag → privilege escalation via DirtyFrag (chain CVE-2026-43284 xfrm-ESP + CVE-2026-43500 RxRPC Page-Cache Write) untuk root. Key learning: Next.js dev mode misconfiguration adalah attack surface yang underrated; DirtyFrag adalah exploit class baru turunan DirtyPipe dengan deterministic logic bug.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/13Fgjl2crKrnHtLXhh50mlVKYQ6ql_kJV/view?usp=sharing"
   }
 ]
