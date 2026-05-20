@@ -1444,5 +1444,183 @@
     ],
     "summary": "Pwn box Obscura dari Hacktrace Ranges (Easy, Linux, OS Maker: 0punK) dalam ~1 jam 15 menit, user + root (2/2). Attack chain: Next.js dev mode aktif → __NEXT_DATA__ enumerate internal structure → webpack source map base64 extraction dari /_next/static/chunks/ untuk recover source code → stack trace leak (ENOTDIR) membocorkan username + app path → hidden credential di /files/README.md untuk user flag → privilege escalation via DirtyFrag (chain CVE-2026-43284 xfrm-ESP + CVE-2026-43500 RxRPC Page-Cache Write) untuk root. Key learning: Next.js dev mode misconfiguration adalah attack surface yang underrated; DirtyFrag adalah exploit class baru turunan DirtyPipe dengan deterministic logic bug.",
     "url": "https://drive.google.com/file/d/13Fgjl2crKrnHtLXhh50mlVKYQ6ql_kJV/view?usp=sharing"
+  },
+  {
+    "id": "revenge-phase1-nim-malware-re",
+    "date": "2026-05-20",
+    "title": "Hacktrace Revenge — Phase 1: Multi-Stage Nim Malware Reverse Engineering",
+    "platform": "Hacktrace Ranges",
+    "category": "Malware Analysis",
+    "tags": [
+      "nim",
+      "malware-analysis",
+      "reverse-engineering",
+      "pe32plus",
+      "hta",
+      "behavioral-analysis",
+      "wine",
+      "tcpdump",
+      "windows-malware",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Nim malware chain structure: HTA dropper → downloader stage → implant stage (PE32+ x86-64 MinGW-W64)",
+      "Static analysis via strings extraction untuk identify C2 indicators, hardcoded keys, dan endpoint paths",
+      "Wine sandbox execution untuk trigger malware behavior di Linux tanpa risiko infeksi",
+      "tcpdump traffic capture (-i lo) untuk intercept C2 beacon dari wine sandbox",
+      "PE32+ binary analysis: identify compiler artifacts MinGW-W64 sebagai indicator Nim-compiled binary",
+      "Multi-stage malware architecture: setiap stage bertanggung jawab satu fase (drop, download, implant)"
+    ],
+    "terms": [
+      "Nim",
+      "PE32+ x86-64",
+      "MinGW-W64",
+      "HTA (HTML Application)",
+      "dropper",
+      "downloader stage",
+      "implant stage",
+      "strings extraction",
+      "Wine sandbox",
+      "tcpdump",
+      "C2 beacon",
+      "behavioral analysis",
+      "static analysis"
+    ],
+    "commands": [
+      "strings -n 8 malware.exe | grep -Ei 'http|key|pass|cmd|exec'",
+      "file malware.exe",
+      "wine malware.exe",
+      "sudo tcpdump -i lo -w c2_capture.pcap",
+      "objdump -x malware.exe | grep -i 'nim\\|mingw'"
+    ],
+    "problems": [
+      "Identify compiler dan bahasa dari PE binary tanpa source code",
+      "Trigger C2 beacon dari Nim implant di Wine sandbox tanpa expose host network",
+      "Map multi-stage chain: mana dropper, mana downloader, mana implant",
+      "Extract hardcoded indicators (endpoint paths, encryption keys) dari binary via strings"
+    ],
+    "summary": "Phase 1 investigasi Hacktrace Revenge: reverse engineered multi-stage Nim malware chain (HTA dropper → downloader → PE32+ implant, MinGW-W64). Static analysis via strings extraction reveal C2 endpoint paths dan encryption key material. Wine sandbox + tcpdump digunakan untuk capture live C2 beacon traffic tanpa risiko infeksi. Identifikasi MinGW-W64 compiler artifacts sebagai fingerprint Nim-compiled binary.",
+    "url": ""
+  },
+  {
+    "id": "revenge-phase2-crypto-c2-replication",
+    "date": "2026-05-20",
+    "title": "Hacktrace Revenge — Phase 2: XOR Cryptanalysis & C2 Protocol Replication",
+    "platform": "Hacktrace Ranges",
+    "category": "Malware Analysis",
+    "tags": [
+      "cryptanalysis",
+      "xor",
+      "known-plaintext-attack",
+      "c2-protocol",
+      "protocol-re",
+      "http-c2",
+      "python",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "XOR repeating-key cipher: known-plaintext attack untuk recover key dari (plaintext XOR ciphertext)",
+      "Junk IV prefix pada custom crypto: identify dan strip non-key bytes sebelum XOR operation",
+      "Known-plaintext attack workflow: gunakan expected HTTP response header sebagai crib",
+      "HTTP-based C2 protocol reconstruction dari tiga obfuscated endpoints via pcap + traffic analysis",
+      "Python exploit scripting: replicate authentication, encryption, dan request format C2 dari scratch",
+      "Protocol reverse engineering dari packet capture: extract request/response pattern untuk understand state machine"
+    ],
+    "terms": [
+      "XOR repeating-key cipher",
+      "known-plaintext attack",
+      "crib dragging",
+      "junk IV prefix",
+      "key: SYSTEM Has Been Deleted",
+      "C2 protocol",
+      "HTTP C2",
+      "protocol reverse engineering",
+      "pcap analysis",
+      "c2_capture.pcap",
+      "obfuscated endpoint",
+      "crypto oracle"
+    ],
+    "commands": [
+      "python3 -c \"ct=bytes.fromhex(cipher); pt=b'HTTP/1.1 200'; key=bytes(a^b for a,b in zip(ct[iv_len:], pt)); print(key)\"",
+      "tshark -r c2_capture.pcap -Y 'http' -T json > c2_traffic.json",
+      "python3 c2_client.py --endpoint /api/check --encrypt --key 'SYSTEM Has Been Deleted'",
+      "python3 xor_decrypt.py --ciphertext beacon.bin --key 'SYSTEM Has Been Deleted'"
+    ],
+    "problems": [
+      "Crack custom XOR encryption tanpa key dengan known-plaintext attack (HTTP response header sebagai crib)",
+      "Strip dan identify junk IV prefix yang digunakan untuk obfuscate keystream offset",
+      "Reconstruct full C2 state machine dari tiga endpoint berbeda (auth, task, exfil)",
+      "Replicate encrypted C2 request format dalam Python untuk interact langsung dengan server"
+    ],
+    "summary": "Phase 2 Hacktrace Revenge: cracked custom XOR repeating-key encryption via known-plaintext attack menggunakan HTTP response header sebagai crib. Key ditemukan: 'SYSTEM Has Been Deleted'. Identified dan stripped junk IV prefix yang digunakan untuk obfuscate keystream. Fully replicated C2 protocol dari tiga obfuscated endpoints berdasarkan pcap analysis — ~18 Python exploit scripts diproduksi untuk automate authentication, encryption, dan request formatting.",
+    "url": ""
+  },
+  {
+    "id": "revenge-phase3-sqli-mysql-exploitation",
+    "date": "2026-05-20",
+    "title": "Hacktrace Revenge — Phase 3: SQLi via Crypto Oracle & MySQL Exploitation Attempts",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "sqli",
+      "union-based-sqli",
+      "mysql",
+      "information-schema",
+      "file-privilege",
+      "load-file",
+      "into-outfile",
+      "udf",
+      "apparmor",
+      "privilege-escalation",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "SQL injection discovery via encrypted oracle channel: inject SQL payload melalui C2 crypto layer",
+      "UNION-based SQLi untuk MySQL information_schema enumeration (databases, tables, columns, users)",
+      "MySQL FILE privilege: LOAD_FILE untuk read, INTO OUTFILE / INTO DUMPFILE untuk write ke filesystem",
+      "UDF (User-Defined Function) deployment: compile lib_mysqludf_sys.so untuk achieve OS command execution via MySQL",
+      "AppArmor confinement analysis: mysql Unix user (UID 110) diblokir dari write ke arbitrary path termasuk plugin directory",
+      "UNION-based SQLi keterbatasan: tidak bisa execute non-SELECT statements — stacked queries butuh driver support",
+      "Filesystem privilege boundary analysis: map lokasi writable vs non-writable dari perspektif mysql user"
+    ],
+    "terms": [
+      "UNION-based SQLi",
+      "crypto oracle",
+      "information_schema",
+      "MySQL FILE privilege",
+      "LOAD_FILE",
+      "INTO OUTFILE",
+      "INTO DUMPFILE",
+      "UDF",
+      "lib_mysqludf_sys.so",
+      "sys_exec()",
+      "AppArmor",
+      "mysql user UID 110",
+      "stacked queries",
+      "plugin directory",
+      "secure_file_priv"
+    ],
+    "commands": [
+      "' UNION SELECT 1,table_name,3 FROM information_schema.tables WHERE table_schema=database()-- -",
+      "' UNION SELECT 1,user(),version()-- -",
+      "' UNION SELECT 1,LOAD_FILE('/etc/passwd'),3-- -",
+      "' UNION SELECT 1,'<?php system($_GET[cmd]);?>',3 INTO OUTFILE '/var/www/html/shell.php'-- -",
+      "' UNION SELECT 1,load_file('/usr/lib/mysql/plugin/lib_mysqludf_sys.so'),3-- -",
+      "gcc -shared -fPIC -o lib_mysqludf_sys.so lib_mysqludf_sys.c",
+      "aa-status | grep mysql"
+    ],
+    "problems": [
+      "Inject SQL payload melalui encrypted C2 channel (plaintext tidak dikirim langsung ke server)",
+      "Enumerate full database schema via UNION-based SQLi untuk identify interesting tables",
+      "Bypass AppArmor confinement untuk write webshell via INTO OUTFILE sebagai mysql user",
+      "Deploy MySQL UDF untuk escalate dari SQLi ke OS command execution — blocked by AppArmor",
+      "Identify mengapa LOAD_FILE return NULL meskipun FILE privilege granted (AppArmor + secure_file_priv)",
+      "Recognize unintended path: 20+ jam stuck, awaiting community nudge untuk intended initial access vector"
+    ],
+    "summary": "Phase 3 Hacktrace Revenge: discovered UNION-based SQL injection via encrypted C2 oracle channel dan completed full MySQL database enumeration (information_schema). Exploitation escalation via FILE privilege (INTO OUTFILE webshell, UDF deployment) blocked by AppArmor confinement pada mysql user (UID 110) — write ke arbitrary path dan plugin directory tidak diizinkan. Artifacts: compiled lib_mysqludf_sys.so, SSH keypair (unused), complete database dump notes. Status: stuck di initial access setelah 20+ jam — UNION SQLi bukan intended path, awaiting Discord community nudge. Key lessons: AppArmor confines mysql user secara ketat, UNION SQLi tidak bisa execute non-SELECT, dan recognize kapan harus minta nudge adalah skill tersendiri.",
+    "url": ""
   }
 ]
