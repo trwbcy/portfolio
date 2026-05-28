@@ -134,11 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
         render();
     });
 
-    // Keyboard shortcut Ctrl+K / Cmd+K
+    // Keyboard shortcut Ctrl+K / Cmd+K and Ctrl+F / Cmd+F
     document.addEventListener('keydown', (e) => {
-        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'f')) {
             e.preventDefault();
-            document.getElementById('searchInput').focus();
+            const input = document.getElementById('searchInput');
+            input.focus();
+            input.select();
         }
     });
 
