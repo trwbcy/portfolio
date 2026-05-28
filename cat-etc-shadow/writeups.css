@@ -231,12 +231,12 @@ body {
 .writeup-type.blue { color: var(--cyan); border-color: rgba(0,229,255,.3); }
 
 .writeup-title {
-    font: 700 1.15rem/1.2 var(--display); color: var(--white); transition: color .2s;
+    font: 700 .95rem/1.25 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--white); transition: color .2s;
 }
 .writeup-card.red:hover .writeup-title { color: var(--red); }
 .writeup-card.blue:hover .writeup-title { color: var(--cyan); }
 
-.writeup-desc { font: .7rem/1.5 var(--mono); color: var(--dim); }
+.writeup-desc { font: .75rem/1.55 var(--mono); color: var(--dim); }
 
 .writeup-arrow {
     font: .85rem/1 var(--mono); color: var(--purple); opacity: 0;
