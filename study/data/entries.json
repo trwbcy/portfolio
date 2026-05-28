@@ -2179,6 +2179,6 @@
       "Exploit LXD group membership untuk escape container privilege boundary dan achieve host root"
     ],
     "summary": "Full chain compromise Echo dari Hacktrace Ranges (Easy): prompt injection pada HR Bot untuk exfil credential → credential reuse ke n8n workflow platform → broken access control Public API bypass → RCE via n8n Code node → LXD privilege escalation ke host root. First Blood untuk user flag dan root flag. Chain ini mencakup LLM security (prompt injection), workflow automation platform abuse (n8n), dan Linux container escape via LXD group privilege.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1bIKRAGsg4sunBeWIiWem-lXaBvF0EaK3/view?usp=sharing"
   }
 ]
