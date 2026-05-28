@@ -2180,5 +2180,188 @@
     ],
     "summary": "Full chain compromise Echo dari Hacktrace Ranges (Easy): prompt injection pada HR Bot untuk exfil credential → credential reuse ke n8n workflow platform → broken access control Public API bypass → RCE via n8n Code node → LXD privilege escalation ke host root. First Blood untuk user flag dan root flag. Chain ini mencakup LLM security (prompt injection), workflow automation platform abuse (n8n), dan Linux container escape via LXD group privilege.",
     "url": "https://drive.google.com/file/d/1vF4EWq2qUEsZ0yusnkeFgarhfivIiYws/view?usp=sharing"
+  },
+  {
+    "id": "hacktrace-altlayer-web-enum",
+    "date": "2026-05-28",
+    "title": "Altlayer — Web Enumeration: Express.js Logic Flaws, Header Spoofing & Full Port Scan",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "web",
+      "enumeration",
+      "expressjs",
+      "header-bypass",
+      "access-control",
+      "robots-txt",
+      "full-port-scan",
+      "javascript",
+      "ctf",
+      "hacktrace",
+      "easy",
+      "linux"
+    ],
+    "concepts": [
+      "Express.js error semantics: 'Cannot GET /path' (route tidak terdaftar) vs 'Not Found' dari handler (route ada tapi request ditolak) — bedain ini kunci untuk map attack surface",
+      "robots.txt sebagai passive recon source: path tersembunyi yang disengaja di-disallow sering justru jadi entry point",
+      "Header-based access control yang lemah: gate endpoint dengan Referer dan custom header (X-Epoch-Version, X-Audit-Signature) yang trivial dipalsuin via curl",
+      "Endpoint discovery via JavaScript source reading: nested API route hanya visible di client-side JS, tidak tertangkap gobuster/ffuf karena dynamic routing",
+      "Full port scan wajib (-p-): port 8545 (Ethereum JSON-RPC) hanya muncul di full scan, luput dari default top-1000 port scan"
+    ],
+    "terms": [
+      "Express.js",
+      "robots.txt",
+      "Referer header",
+      "X-Epoch-Version",
+      "X-Audit-Signature",
+      "header spoofing",
+      "nested API route",
+      "dynamic routing",
+      "full port scan",
+      "-p-",
+      "port 8545",
+      "access control bypass"
+    ],
+    "commands": [
+      "nmap -sV -p- <target>",
+      "curl -s http://target/robots.txt",
+      "curl -H 'Referer: http://target/internal' -H 'X-Epoch-Version: <val>' http://target/api/endpoint",
+      "curl http://target/api/nonexistent  # test 'Cannot GET' vs 'Not Found'",
+      "view-source: atau DevTools > Sources untuk baca nested route dari JS"
+    ],
+    "problems": [
+      "Bedakan route yang tidak ada vs route yang ada tapi diblokir handler dari Express.js error message",
+      "Discover nested API endpoint yang tidak tertangkap wordlist-based directory brute force",
+      "Bypass header-based access control dengan spoof Referer dan custom header dari informasi di JS source",
+      "Identify port non-standard (8545) yang jadi kunci attack chain via full port scan"
+    ],
+    "summary": "Phase web enumeration Altlayer (Hacktrace Ranges, Easy, Linux): pelajari Express.js error semantics untuk map routes, gunakan robots.txt sebagai passive recon, bypass header-based access control (Referer + custom header spoofing), discover nested API endpoint dari JavaScript source code, dan temukan port 8545 Ethereum JSON-RPC via full port scan (-p-) yang luput dari default scan."
+    ,
+    "url": ""
+  },
+  {
+    "id": "hacktrace-altlayer-web3",
+    "date": "2026-05-28",
+    "title": "Altlayer — Web3: Ethereum JSON-RPC Exposure, Function Selectors & On-chain State Reading",
+    "platform": "Hacktrace Ranges",
+    "category": "Web3 Security",
+    "tags": [
+      "web3",
+      "smart-contract",
+      "ethereum",
+      "json-rpc",
+      "function-selector",
+      "eth-call",
+      "event-log",
+      "keccak256",
+      "blockchain",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Ethereum function selector: 4 byte pertama Keccak-256 dari function signature (e.g., keccak256('getSessionToken()')[0:4]) untuk construct raw call data",
+      "Interaksi langsung dengan exposed Ethereum node via JSON-RPC: eth_blockNumber, eth_chainId, eth_accounts, eth_getLogs, eth_call tanpa library",
+      "Decode event log on-chain: hitung event signature hash (keccak256 full event signature) untuk identify event type (AdminHashGenerated, AuditLog, EpochInitialized)",
+      "Ambil contract state via eth_call ke view function (getSessionToken) lebih reliable daripada parse data event log — event log data bisa bukan nilai yang valid/current",
+      "Perbedaan event log data vs contract state: event adalah snapshot historis, view function mengembalikan state terkini yang benar"
+    ],
+    "terms": [
+      "Ethereum",
+      "JSON-RPC",
+      "port 8545",
+      "function selector",
+      "Keccak-256",
+      "eth_call",
+      "eth_getLogs",
+      "eth_blockNumber",
+      "eth_chainId",
+      "eth_accounts",
+      "event log",
+      "event signature hash",
+      "AdminHashGenerated",
+      "AuditLog",
+      "EpochInitialized",
+      "getSessionToken",
+      "view function",
+      "contract state",
+      "ABI encoding"
+    ],
+    "commands": [
+      "curl -X POST http://target:8545 -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}'",
+      "curl -X POST http://target:8545 -d '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"0x0\",\"toBlock\":\"latest\"}],\"id\":1}'",
+      "python3 -c \"from eth_hash.auto import keccak; print(keccak(b'getSessionToken()').hex()[:8])\"",
+      "curl -X POST http://target:8545 -d '{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\":\"<contract>\",\"data\":\"0x<selector>\"},\"latest\"],\"id\":1}'"
+    ],
+    "problems": [
+      "Construct function selector dari function signature tanpa ABI file — hitung manual via Keccak-256",
+      "Identify event type dari raw log data dengan decode topic[0] sebagai event signature hash",
+      "Bedakan kapan pakai eth_getLogs (history) vs eth_call (current state) — event log data ternyata bukan integrity hash yang valid",
+      "Interact dengan Ethereum node via raw JSON-RPC tanpa web3.js/ethers.js library"
+    ],
+    "summary": "Phase Web3 Altlayer: exposed Ethereum JSON-RPC node di port 8545 diinteraksi langsung via curl tanpa library. Pelajari construct function selector (Keccak-256 4 byte), decode event log topic untuk identify AdminHashGenerated/AuditLog/EpochInitialized events, dan perbedaan kritis antara event log data (snapshot historis) vs eth_call ke view function (getSessionToken) untuk ambil contract state yang valid dan current.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-altlayer-privesc",
+    "date": "2026-05-28",
+    "title": "Altlayer — Trading Simulator Logic Analysis & SUID Shared Library Injection PrivEsc",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "privesc",
+      "suid",
+      "shared-library",
+      "so-injection",
+      "dlopen",
+      "gcc",
+      "game-logic",
+      "trading-simulator",
+      "linux",
+      "ctf",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Trading simulator exploit vector elimination: leverage ekstrem, size negatif, inject balance, race condition paralel semua ditolak karena server-side validation ketat dan serial execution",
+      "Mindset anti-over-engineering: kalau semua exploit input mentah mentok dan harga random walk, solusi sederhana (profit kecil konsisten, tidak serakah) menang",
+      "SUID binary + world-writable (.so) library directory = arbitrary code execution as root: program SUID root tidak boleh dlopen file yang bisa ditulis user biasa",
+      "Shared library injection: buat .so jahat dengan symbol yang dicari binary (_trigger_init_v2), compile gcc -shared -fPIC, timpa library di path writable (777), trigger via env var",
+      "Intended path discovery: systematic enum (sudo -l, find / -perm -4000, ps aux, baca source .c) lebih deterministik dari langsung loncat ke kernel exploit (DirtyFrag)"
+    ],
+    "terms": [
+      "SUID binary",
+      "SGID",
+      "shared library injection",
+      "dlopen",
+      ".so file",
+      "world-writable directory",
+      "777 permissions",
+      "_trigger_init_v2",
+      "gcc -shared -fPIC",
+      "env var trigger",
+      "LD_PRELOAD adjacent",
+      "intended path",
+      "DirtyFrag (non-intended)",
+      "sudo -l",
+      "find -perm -4000",
+      "random walk"
+    ],
+    "commands": [
+      "find / -perm -4000 -type f 2>/dev/null",
+      "find / -perm -2 -type d 2>/dev/null",
+      "ls -la /path/to/lib/",
+      "gcc -shared -fPIC -o _trigger_init_v2.so exploit.c",
+      "cp _trigger_init_v2.so /writable/lib/path/",
+      "TRIGGER_ENV=1 /path/to/suid-binary"
+    ],
+    "problems": [
+      "Eliminate semua trading simulator exploit vector (leverage abuse, size negatif, balance inject, race condition) secara sistematis",
+      "Recognize kapan solusi sederhana (profit kecil konsisten) lebih tepat dari exploit kompleks pada random walk price",
+      "Identify SUID binary yang dlopen library dari world-writable directory sebagai privesc vector",
+      "Compile dan inject malicious .so dengan symbol yang tepat (_trigger_init_v2) untuk execute code sebagai root",
+      "Refleksi: bedakan intended path (library injection) dari non-intended nuklir path (DirtyFrag kernel exploit)"
+    ],
+    "summary": "Phase game logic dan privesc Altlayer: semua trading simulator exploit vector (leverage, size negatif, balance inject, race condition) dieliminasi — server validasi ketat dan serial. Kemenangan lewat profit kecil konsisten. Untuk privesc: SUID binary yang dlopen library dari directory world-writable (777) = arbitrary .so injection sebagai root. Compile malicious .so dengan symbol _trigger_init_v2 via gcc -shared -fPIC, timpa library di path writable, trigger lewat env var. Lesson penting: systematic enum (sudo -l, find SUID, baca source .c) temukan intended path yang deterministik — lebih bersih dari langsung loncat ke kernel exploit.",
+    "url": ""
   }
 ]
