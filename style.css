@@ -819,16 +819,6 @@ body {
     color: var(--white); opacity: .4;
     margin-bottom: 1.5rem;
 }
-.ht-bar {
-    height: 2px; background: rgba(255,255,255,.1);
-    position: relative; overflow: hidden; margin-bottom: .75rem;
-}
-.ht-bar-fill {
-    position: absolute; left: 0; top: 0; bottom: 0;
-    width: var(--pct);
-    background: linear-gradient(to right, var(--ht-bar1), var(--ht-c));
-    box-shadow: 0 0 8px var(--ht-shadow);
-}
 .ht-rank-sub {
     font: .55rem/1 var(--mono); letter-spacing: .15em;
     color: var(--white); opacity: .3;
@@ -863,7 +853,7 @@ body {
     color: var(--white); opacity: .35;
     margin-bottom: .75rem;
 }
-.ht-machine .ht-bar { margin-bottom: 0; }
+
 
 /* TOTAL BAR */
 .ht-total {
