@@ -262,11 +262,10 @@
             <div class="ht-ranks">
                 <div class="ht-rank-card ht-defense">
                     <div class="ht-rank-info">
-                        <div class="ht-rank-head">DEFENSE_RANK.log</div>
+                        <div class="ht-rank-head">DEFENSIVE <span class="ht-maxlp">MAX LP</span></div>
                         <div class="ht-rank-num">#5</div>
-                        <div class="ht-rank-region">INDONESIA</div>
-                        <div class="ht-bar"><div class="ht-bar-fill" style="--pct:96%"></div></div>
-                        <div class="ht-rank-sub">TOP 5 NATIONWIDE</div>
+                        <div class="ht-rank-region">INDONESIA 🇮🇩</div>
+                        <div class="ht-rank-sub">TOP 5 DEFENSIVE</div>
                     </div>
                     <div class="ht-rank-evidence">
                         <img src="img/rank-blue.png" alt="Defense Rank" class="ht-rank-img">
@@ -274,11 +273,10 @@
                 </div>
                 <div class="ht-rank-card ht-offense">
                     <div class="ht-rank-info">
-                        <div class="ht-rank-head">OFFENSIVE_RANK.log</div>
+                        <div class="ht-rank-head">OFFENSIVE <span class="ht-maxlp">MAX LP</span></div>
                         <div class="ht-rank-num">#32</div>
-                        <div class="ht-rank-region">INDONESIA</div>
-                        <div class="ht-bar"><div class="ht-bar-fill" style="--pct:74%"></div></div>
-                        <div class="ht-rank-sub">TOP 32 NATIONWIDE</div>
+                        <div class="ht-rank-region">INDONESIA 🇮🇩</div>
+                        <div class="ht-rank-sub">TOP 32 OFFENSIVE</div>
                     </div>
                     <div class="ht-rank-evidence">
                         <img src="img/rank-red.png" alt="Offensive Rank" class="ht-rank-img">
@@ -288,28 +286,66 @@
 
             <div class="ht-machines">
                 <div class="ht-machine ht-defense">
-                    <div class="ht-machine-top">
-                        <div class="ht-machine-label">DEFENSIVE</div>
-                        <div class="ht-machine-num">29</div>
+                    <div class="ht-machine-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                            <circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="2.2" fill="currentColor" stroke="none"/>
+                            <line x1="10" y1="1" x2="10" y2="4.5"/><line x1="10" y1="15.5" x2="10" y2="19"/>
+                            <line x1="1" y1="10" x2="4.5" y2="10"/><line x1="15.5" y1="10" x2="19" y2="10"/>
+                        </svg>
                     </div>
-                    <div class="ht-machine-tag">MACHINES ANALYZED</div>
+                    <div class="ht-machine-center">
+                        <div class="ht-machine-label">MATCHES ANALYZED</div>
+                        <svg class="ht-wave" viewBox="0 0 160 24" preserveAspectRatio="none">
+                            <polyline points="0,12 18,12 21,8 24,16 27,8 30,12 48,12 51,8 54,16 57,8 60,12 78,12 81,8 84,16 87,8 90,12 108,12 111,8 114,16 117,8 120,12 138,12 141,8 144,16 147,8 150,12 160,12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="ht-machine-num">29</div>
                 </div>
                 <div class="ht-machine ht-offense">
-                    <div class="ht-machine-top">
-                        <div class="ht-machine-label">OFFENSIVE</div>
-                        <div class="ht-machine-num">28</div>
+                    <div class="ht-machine-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 1.5L1.5 5v5.5c0 4.6 3.6 8.9 8.5 10.1C14.9 19.4 18.5 15.1 18.5 10.5V5L10 1.5z"/>
+                            <path d="M6.5 10l2.5 2.5 5-5"/>
+                        </svg>
                     </div>
-                    <div class="ht-machine-tag">MACHINES ROOTED</div>
+                    <div class="ht-machine-center">
+                        <div class="ht-machine-label">MATCHES ROOTED</div>
+                        <svg class="ht-wave" viewBox="0 0 160 24" preserveAspectRatio="none">
+                            <polyline points="0,12 18,12 21,8 24,16 27,8 30,12 48,12 51,8 54,16 57,8 60,12 78,12 81,8 84,16 87,8 90,12 108,12 111,8 114,16 117,8 120,12 138,12 141,8 144,16 147,8 150,12 160,12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="ht-machine-num">28</div>
                 </div>
             </div>
 
             <div class="ht-total">
                 <div class="ht-total-num">57</div>
-                <div class="ht-total-right">
+                <div class="ht-total-center">
                     <div class="ht-total-label">MACHINES</div>
                     <div class="ht-total-sub">COMPLETED</div>
                 </div>
-                <div class="ht-total-tag">ACCESS_GRANTED</div>
+                <div class="ht-total-bars">
+                    <div class="ht-bar-col" style="--h:28%"></div>
+                    <div class="ht-bar-col" style="--h:45%"></div>
+                    <div class="ht-bar-col" style="--h:35%"></div>
+                    <div class="ht-bar-col" style="--h:60%"></div>
+                    <div class="ht-bar-col" style="--h:48%"></div>
+                    <div class="ht-bar-col" style="--h:72%"></div>
+                    <div class="ht-bar-col" style="--h:55%"></div>
+                    <div class="ht-bar-col" style="--h:85%"></div>
+                    <div class="ht-bar-col" style="--h:65%"></div>
+                    <div class="ht-bar-col" style="--h:52%"></div>
+                    <div class="ht-bar-col" style="--h:78%"></div>
+                    <div class="ht-bar-col" style="--h:68%"></div>
+                </div>
+                <div class="ht-total-access">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                        <rect x="2.5" y="7" width="11" height="8" rx="1.5"/><path d="M5 7V4.5a3 3 0 0 1 6 0V7"/>
+                        <circle cx="8" cy="11.5" r="1.2" fill="currentColor" stroke="none"/>
+                    </svg>
+                    <span>ACCESS</span>
+                    <span>GRANTED</span>
+                </div>
             </div>
         </div>
 
