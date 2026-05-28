@@ -64,8 +64,12 @@ body {
     font:.7rem/1 var(--mono); letter-spacing:.08em;
     z-index: 200;
 }
-.nav-site { color:var(--purple); flex-shrink:0; transition:opacity .2s; text-decoration:none; }
+.nav-site { color:var(--purple); flex-shrink:0; transition:opacity .2s; text-decoration:none; display:flex; align-items:center; gap:8px; }
 .nav-site:hover { opacity:.7; }
+.nav-helmet-icon {
+    width: 22px; height: 22px; object-fit: contain; flex-shrink: 0;
+    filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(4000%) hue-rotate(265deg) brightness(120%);
+}
 .nav-links { display:flex; gap:24px; margin:0 auto; white-space:nowrap; }
 .nav-links a { color:var(--dim); text-decoration:none; transition:color .2s; position:relative; }
 .nav-links a::after {
