@@ -313,7 +313,7 @@ body {
 /* SPLIT LAYOUT */
 .split-layout {
     display:grid; grid-template-columns:1fr 1fr;
-    gap:80px; align-items:start;
+    gap:80px; align-items:center;
 }
 .body-text {
     font:.95rem/1.7 var(--body); color:var(--white);
