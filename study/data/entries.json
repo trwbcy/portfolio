@@ -2407,7 +2407,7 @@
       "Memahami bagaimana parameter yang tidak disanitasi diinterpolasi ke shell command chain untuk menghasilkan RCE"
     ],
     "summary": "Phase initial access Cannonbolt (Hacktrace Ranges, Moderate, Offensive): eksploitasi CVE-2025-52665 pada UniFi OS — unauthenticated RCE via backup restore API yang menerima parameter tanpa sanitasi, memungkinkan command injection langsung ke shell command chain. Recon via full port scan Nmap dan manual endpoint probing dengan curl.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1PwNndRjLnMBUFGTBvlOM3lE34_EXQIrR/view?usp=sharing"
   },
   {
     "id": "hacktrace-cannonbolt-shell-privesc",
@@ -2458,7 +2458,7 @@
       "Eksekusi arbitrary script sebagai root via BASH_ENV yang diarahkan ke file milik user"
     ],
     "summary": "Phase post-exploitation Cannonbolt: delivery reverse shell dari RCE payload, stabilisasi session menggunakan pwncat-cs. Privesc via sudo env_keep BASH_ENV — NOPASSWD bash script yang dapat dipanggil sudo tidak sanitasi environment variable, sehingga BASH_ENV diarahkan ke arbitrary script yang dieksekusi sebagai root.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1PwNndRjLnMBUFGTBvlOM3lE34_EXQIrR/view?usp=sharing"
   },
   {
     "id": "hacktrace-cannonbolt-ctf-methodology",
@@ -2497,6 +2497,6 @@
       "Membaca maker-provided clue sebagai bagian dari recon yang terstruktur, bukan sebagai hints yang dihindari"
     ],
     "summary": "Lesson metodologi CTF dari Cannonbolt: brute-force yang berlarut-larut merupakan sinyal bahwa approach salah — maker sudah menyediakan clue direktif yang perlu dibaca lebih awal. Recon yang efektif mencakup kemampuan mengenali kapan harus berhenti dari enumeration brute-force dan beralih ke analisis manual terhadap petunjuk yang tersedia.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1PwNndRjLnMBUFGTBvlOM3lE34_EXQIrR/view?usp=sharing"
   }
 ]

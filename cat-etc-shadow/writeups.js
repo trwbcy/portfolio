@@ -28,6 +28,7 @@ const writeups = [
     { title: "Obscura", type: "red", desc: "Next.js Source Map Disclosure + DirtyFrag LPE", url: "https://drive.google.com/file/d/13Fgjl2crKrnHtLXhh50mlVKYQ6ql_kJV/view?usp=sharing" },
     { title: "Echo", type: "red", desc: "Prompt Injection + n8n RCE + LXD PrivEsc (First Blood)", url: "https://drive.google.com/file/d/1vF4EWq2qUEsZ0yusnkeFgarhfivIiYws/view?usp=sharing" },
     { title: "Altlayer", type: "red", desc: "Smart Contract JSON-RPC + SUID Library Hijack", url: "https://drive.google.com/file/d/1TVYSoF1tOB7Njf5fsqolRDeqmY6ojHmy/view?usp=sharing" },
+    { title: "Cannonbolt", type: "red", desc: "CVE-2025-52665 UniFi RCE + sudo BASH_ENV PrivEsc", url: "https://drive.google.com/file/d/1PwNndRjLnMBUFGTBvlOM3lE34_EXQIrR/view?usp=sharing" },
     { title: "Deviasi", type: "blue", desc: "Deep Log Analysis & IOCs", url: "https://nickel-bedbug-8cc.notion.site/Deviasi-Hacktrace-Ranges-2a0416e03a1380babf06e961fa506f1a" },
     { title: "Undercover", type: "blue", desc: "Binary Investigation APT", url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543" },
     { title: "BluuShell", type: "blue", desc: "Malicious DOCX Forensics", url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0" },
