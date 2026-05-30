@@ -2363,5 +2363,140 @@
     ],
     "summary": "Phase game logic dan privesc Altlayer: semua trading simulator exploit vector (leverage, size negatif, balance inject, race condition) dieliminasi — server validasi ketat dan serial. Kemenangan lewat profit kecil konsisten. Untuk privesc: SUID binary yang dlopen library dari directory world-writable (777) = arbitrary .so injection sebagai root. Compile malicious .so dengan symbol _trigger_init_v2 via gcc -shared -fPIC, timpa library di path writable, trigger lewat env var. Lesson penting: systematic enum (sudo -l, find SUID, baca source .c) temukan intended path yang deterministik — lebih bersih dari langsung loncat ke kernel exploit.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-cannonbolt-cve-rce",
+    "date": "2026-05-30",
+    "title": "Hacktrace Cannonbolt — CVE-2025-52665 UniFi OS Unauthenticated RCE via Backup API",
+    "platform": "Hacktrace Ranges",
+    "category": "CVE Exploitation",
+    "tags": [
+      "cve",
+      "cve-2025-52665",
+      "unifi",
+      "unifi-os",
+      "rce",
+      "backup-api",
+      "unauthenticated",
+      "command-injection",
+      "offensive",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "CVE-2025-52665 — UniFi OS backup restore endpoint accessible tanpa autentikasi, menerima parameter yang diinterpolasi langsung ke shell command chain",
+      "Command injection via unsanitized parameter: input user masuk ke shell command chain tanpa escaping, memungkinkan arbitrary command execution",
+      "Identifikasi unauthenticated endpoint pada embedded network device firmware melalui full port scan dan manual endpoint probing"
+    ],
+    "terms": [
+      "CVE-2025-52665",
+      "UniFi OS",
+      "backup restore API",
+      "command injection",
+      "RCE",
+      "unauthenticated endpoint",
+      "shell command chain",
+      "parameter interpolation"
+    ],
+    "commands": [
+      "nmap -sVC --min-rate 1000 -p- -Pn -T4 cannonbolt.htr",
+      "curl -s -i -X POST http://cannonbolt.htr:9780/api/ucore/backup/export -H 'Content-Type: application/json' -d '{\"dir\":\"/tmp\"}'"
+    ],
+    "problems": [
+      "Identifikasi backup restore endpoint yang accessible tanpa autentikasi pada port non-standard",
+      "Memahami bagaimana parameter yang tidak disanitasi diinterpolasi ke shell command chain untuk menghasilkan RCE"
+    ],
+    "summary": "Phase initial access Cannonbolt (Hacktrace Ranges, Moderate, Offensive): eksploitasi CVE-2025-52665 pada UniFi OS — unauthenticated RCE via backup restore API yang menerima parameter tanpa sanitasi, memungkinkan command injection langsung ke shell command chain. Recon via full port scan Nmap dan manual endpoint probing dengan curl.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-cannonbolt-shell-privesc",
+    "date": "2026-05-30",
+    "title": "Hacktrace Cannonbolt — Reverse Shell Delivery, pwncat Session, sudo BASH_ENV Privesc",
+    "platform": "Hacktrace Ranges",
+    "category": "Post-Exploitation",
+    "tags": [
+      "reverse-shell",
+      "pwncat",
+      "privesc",
+      "sudo",
+      "bash_env",
+      "env_keep",
+      "nopasswd",
+      "linux",
+      "offensive",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Reverse shell delivery via injected RCE payload untuk mendapatkan interactive shell dari target",
+      "pwncat-cs sebagai handler untuk stable, fully interactive session management dari reverse shell",
+      "sudo env_keep BASH_ENV abuse: ketika sudoers mempertahankan BASH_ENV via env_keep, user dapat arahkan variabel ke arbitrary script yang dieksekusi bash sebagai root saat invokasi",
+      "NOPASSWD bash script exploitation: script yang bisa dipanggil sudo tanpa password menjadi privesc vector bila tidak mengontrol environment"
+    ],
+    "terms": [
+      "pwncat-cs",
+      "env_keep",
+      "BASH_ENV",
+      "NOPASSWD",
+      "sudo",
+      "reverse shell",
+      "sudoers",
+      "bash startup file",
+      "privilege escalation"
+    ],
+    "commands": [
+      "pwncat 9394",
+      "sudo -l",
+      "file /usr/bin/systeminfo",
+      "sudo BASH_ENV=/tmp/magic.sh /usr/bin/systeminfo",
+      "cat ./-"
+    ],
+    "problems": [
+      "Stabilisasi shell dari RCE payload menjadi fully interactive session menggunakan pwncat",
+      "Identifikasi sudo env_keep BASH_ENV sebagai privesc vector dari output sudo -l",
+      "Eksekusi arbitrary script sebagai root via BASH_ENV yang diarahkan ke file milik user"
+    ],
+    "summary": "Phase post-exploitation Cannonbolt: delivery reverse shell dari RCE payload, stabilisasi session menggunakan pwncat-cs. Privesc via sudo env_keep BASH_ENV — NOPASSWD bash script yang dapat dipanggil sudo tidak sanitasi environment variable, sehingga BASH_ENV diarahkan ke arbitrary script yang dieksekusi sebagai root.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-cannonbolt-ctf-methodology",
+    "date": "2026-05-30",
+    "title": "Hacktrace Cannonbolt — CTF Recon Methodology: Mengenali Kapan Harus Pivot dari Brute-Force",
+    "platform": "Hacktrace Ranges",
+    "category": "CTF Methodology",
+    "tags": [
+      "ctf",
+      "recon",
+      "methodology",
+      "enumeration",
+      "boot2root",
+      "offensive",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Brute-force berlarut-larut sebagai sinyal approach salah: jika enumeration tidak menghasilkan progress setelah periode wajar, itu indikasi untuk pivot — bukan intensifikasi",
+      "Maker-provided clue sebagai bagian dari intended recon path: petunjuk direktif yang tersedia harus dibaca sebelum eskalasi ke brute-force berat",
+      "Efisiensi recon: keseimbangan antara automated enumeration dan analisis manual terhadap petunjuk yang tersedia"
+    ],
+    "terms": [
+      "CTF methodology",
+      "recon",
+      "enumeration",
+      "brute-force",
+      "maker clue",
+      "intended path",
+      "boot2root",
+      "pivot"
+    ],
+    "commands": [],
+    "problems": [
+      "Mengenali bahwa brute-force yang tidak menghasilkan hasil setelah periode wajar adalah sinyal untuk berhenti dan re-evaluate approach",
+      "Membaca maker-provided clue sebagai bagian dari recon yang terstruktur, bukan sebagai hints yang dihindari"
+    ],
+    "summary": "Lesson metodologi CTF dari Cannonbolt: brute-force yang berlarut-larut merupakan sinyal bahwa approach salah — maker sudah menyediakan clue direktif yang perlu dibaca lebih awal. Recon yang efektif mencakup kemampuan mengenali kapan harus berhenti dari enumeration brute-force dan beralih ke analisis manual terhadap petunjuk yang tersedia.",
+    "url": ""
   }
 ]
