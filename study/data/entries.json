@@ -2870,5 +2870,207 @@
     ],
     "summary": "Privilege escalation dari barbarian_king ke root di ClashOrCrash via DirtyFrag exploit terhadap SUID sudo binary non-standard di /opt/sudo-1.9.13p3/bin/sudo. SUID enumeration (find / -perm -4000) mengungkap sudo versi lama yang vulnerable di path non-default. DirtyFrag dicompile dengan GCC menggunakan TMPDIR=/dev/shm sebagai workaround karena /tmp tidak writable. Key learning: SUID enumeration harus mencakup seluruh filesystem, bukan hanya /usr/bin/ — custom/legacy binaries di /opt/ sering jadi overlooked attack surface.",
     "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+  },
+  {
+    "id": "hacktrace-overthinking-ftp-enum",
+    "date": "2026-06-02",
+    "title": "Overthinking — vsftpd Anonymous FTP: Home Directory Exposure & Dotfile Discovery via ls -la",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "ftp",
+      "vsftpd",
+      "anonymous-ftp",
+      "enumeration",
+      "dotfiles",
+      "hidden-files",
+      "reconnaissance",
+      "hacktrace",
+      "easy",
+      "postponed"
+    ],
+    "concepts": [
+      "Anonymous FTP dapat expose home directory user — FTP root di-map ke home directory uid 1001, sehingga semua file di home directory accessible ke anonymous",
+      "ls -la vs dir di FTP: perintah dir (FTP default) sering hide dotfiles; gunakan ls -la untuk reveal hidden files seperti .bash_history, .cache, .bashrc",
+      "Dotfiles sebagai reconnaissance target: .bash_history berisi command history user, .cache bisa berisi session data — keduanya high-value meski tidak selalu readable",
+      "Permission 600 on FTP: anonymous bisa melihat metadata file (ls -la), tapi read access tetap dibatasi oleh Unix permission — visible ≠ readable"
+    ],
+    "terms": [
+      "vsftpd",
+      "anonymous FTP",
+      "FTP home directory exposure",
+      "dotfiles",
+      ".bash_history",
+      ".cache",
+      ".bashrc",
+      ".profile",
+      ".bash_logout",
+      "ls -la",
+      "dir command",
+      "uid 1001",
+      "permission 600",
+      "permission 700"
+    ],
+    "commands": [
+      "nmap -sVC --min-rate 1000 -p- -Pn -T4 TARGET",
+      "ftp TARGET (anonymous login: user anonymous, password blank)",
+      "dir (FTP default listing — hides dotfiles)",
+      "ls -la (reveal hidden files di FTP session)",
+      "get .bash_history (attempt — failed, permission 600)"
+    ],
+    "problems": [
+      "dir di FTP hanya tampilkan file visible — butuh ls -la untuk reveal .bash_history dan dotfiles lain",
+      ".bash_history teridentifikasi (188 bytes) tapi tidak readable karena permission 600 — anonymous user tidak punya read access meski file visible di listing",
+      ".cache/ directory accessible listing tapi permission 700 block traversal"
+    ],
+    "summary": "Enumerasi FTP anonymous di Overthinking (Hacktrace Ranges, Easy, postponed) mengungkap home directory exposure via vsftpd: FTP root di-map ke home directory uid 1001. ls -la reveal dotfiles yang disembunyikan dir, termasuk .bash_history (188 bytes, permission 600) dan .cache/ (permission 700). Key learning: selalu gunakan ls -la bukan dir di FTP untuk reveal hidden files; permission Unix tetap berlaku — file visible di listing belum tentu readable.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-ftp-530",
+    "date": "2026-06-02",
+    "title": "Overthinking — vsftpd Response Code: 530 Username-Level Block vs 331 Password Prompt Distinction",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "ftp",
+      "vsftpd",
+      "ftp-response-codes",
+      "userlist",
+      "enumeration",
+      "brute-force",
+      "reconnaissance",
+      "hacktrace",
+      "easy",
+      "postponed"
+    ],
+    "concepts": [
+      "FTP response 530 sebelum password prompt = username itself diblokir (userlist_deny/userlist_enable di vsftpd config) — bukan wrong password",
+      "FTP response 331 = username diterima, server meminta password — serangan bisa dilanjutkan ke password brute force",
+      "vsftpd userlist mechanism: /etc/vsftpd.userlist atau /etc/ftpusers mengontrol username mana yang boleh/dilarang login — anonymous sering diizinkan secara eksplisit",
+      "530 sebelum password: brute force password pada user yang di-530 sia-sia — username ditolak di level yang lebih awal, bukan authentication layer"
+    ],
+    "terms": [
+      "FTP 530 Login incorrect",
+      "FTP 331 Password required",
+      "vsftpd userlist_deny",
+      "vsftpd userlist_enable",
+      "/etc/vsftpd.userlist",
+      "/etc/ftpusers",
+      "username-level block",
+      "password-level failure",
+      "FTP response codes",
+      "anonymous login"
+    ],
+    "commands": [
+      "ftp TARGET (login sebagai named user untuk observe 530 vs 331 response)",
+      "hydra -L users.txt -P pass.txt ftp://TARGET (brute force — terbukti tidak efektif untuk user yang di-530)",
+      "cat /etc/vsftpd.userlist (post-access, untuk verify userlist config)"
+    ],
+    "problems": [
+      "Named users (Rafi, Azki, Bryan, Amel, Filipus) semua return 530 sebelum password prompt — brute force SSH tetap valid karena SSH tidak memiliki restriction ini",
+      "Distinguish apakah 530 karena wrong password atau karena username diblokir — timing dan response message berbeda"
+    ],
+    "summary": "Analisis FTP response code di Overthinking: vsftpd return 530 sebelum password prompt untuk semua named users (Rafi, Azki, dll), mengindikasikan username diblokir di level userlist (userlist_deny/userlist_enable config) bukan di authentication layer. Berbeda dari 331 yang artinya username diterima dan server menunggu password. Key learning: 530 pre-password = brute force FTP password sia-sia untuk user tersebut; fokus ke protocol lain (SSH) yang tidak memiliki restriction yang sama.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-cred-analysis",
+    "date": "2026-06-02",
+    "title": "Overthinking — Credential Format Ambiguity: @% Delimiter Parsing & Exhaustive Combo Methodology",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "credentials",
+      "password-analysis",
+      "brute-force",
+      "hydra",
+      "credential-format",
+      "hex-dump",
+      "ctf",
+      "hacktrace",
+      "easy",
+      "postponed"
+    ],
+    "concepts": [
+      "Credential format ambiguity: format `user : left@%right` memiliki multiple parsing interpretasi — @% bisa delimiter, literal chars, atau encoding artifact",
+      "Hex dump verification (xxd/cat -A): validasi bahwa credential file tidak mengandung hidden characters, encoding anomaly, atau non-printable bytes yang tidak visible di text view",
+      "Exhaustive combo methodology: ketika format ambigu, generate semua kombinasi parsing yang reasonable (full string, split-left, split-right, concat, prefix/suffix variations) sebelum menyimpulkan brute force gagal",
+      "Kombinasi yang harus dicoba pada format ambigu: full string, kiri @%, kanan @%, tanpa delimiter, suffix saja, prefix saja, username-as-password, base64/hash dari komponen"
+    ],
+    "terms": [
+      "credential format",
+      "@% delimiter",
+      "xxd hex dump",
+      "cat -A",
+      "hidden characters",
+      "non-printable bytes",
+      "password combination",
+      "brute force wordlist",
+      "hydra",
+      "SSH brute force",
+      "parsing interpretation"
+    ],
+    "commands": [
+      "cat creds.txt",
+      "xxd creds.txt (verify clean ASCII, no hidden chars)",
+      "cat -A creds.txt (show non-printable characters explicitly)",
+      "hydra -L users.txt -P passwords.txt ssh://TARGET -t 4",
+      "hydra -l Filipus -P pass.txt ssh://TARGET (targeted single user)"
+    ],
+    "problems": [
+      "Format `Rafi : password@%pass123` ambigu: apakah password = full string, atau hanya bagian kiri @%, atau kanan @%, atau kombinasi lain",
+      "15 usernames × 177 kombinasi password (2,655 attempts via Hydra) → 0 valid — kemungkinan parsing yang benar belum ditemukan atau machine perlu revert",
+      "Filipus memiliki password berbeda (Nj82@1Waqk90$@%pass123) — mungkin intended sebagai rabbit hole atau correct credential dengan parsing yang belum tepat"
+    ],
+    "summary": "Analisis credential format ambiguous dari creds.txt Overthinking: format `user : left@%right` dengan @%pass123 suffix konsisten di semua user kecuali Filipus. Hex dump (xxd) mengkonfirmasi clean ASCII tanpa hidden characters. Exhaustive combo testing (full string, split-left, split-right, concat, machine name, story keywords) via Hydra 2,655 attempts → 0 valid. Key learning: credential format ambiguity membutuhkan systematic combo generation; null result tidak berarti salah jalur — bisa machine state issue (perlu revert) atau parsing interpretation yang belum dicoba.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-meta-hints",
+    "date": "2026-06-02",
+    "title": "Overthinking — CTF Meta-Hints: Background Story & Machine Name sebagai Reconnaissance Signal",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "ctf",
+      "meta-hints",
+      "background-story",
+      "machine-name",
+      "bash-history",
+      "ctf-methodology",
+      "reconnaissance",
+      "hacktrace",
+      "easy",
+      "postponed"
+    ],
+    "concepts": [
+      "Background story sebagai hint teknikal: kalimat 'Sometimes behaviour is a crucial information for attacker' mengacu ke .bash_history (user behaviour = command history) — story memberikan arah investigasi",
+      "Machine name sebagai meta-hint metodologi: nama 'Overthinking' menyarankan solusi lebih sederhana dari yang dianalisis — ketika stuck, pertimbangkan apakah sudah over-complicate approach",
+      "CTF story-to-technique mapping: setiap kata dalam background story bisa jadi keyword teknikal (behaviour → .bash_history, crucial → critical file, attacker → attack vector)",
+      "Revert/reset consideration: ketika exhaustive testing tidak menghasilkan hasil, machine state mungkin corrupt — revert restore intended state dan bisa unlock attack path yang harusnya work"
+    ],
+    "terms": [
+      "background story hint",
+      "machine name meta-hint",
+      ".bash_history",
+      "user behaviour",
+      "command history",
+      "CTF methodology",
+      "machine revert",
+      "machine reset",
+      "over-engineering",
+      "Occam's Razor"
+    ],
+    "commands": [
+      "(machine revert via Hacktrace platform UI)",
+      "cat .bash_history (target post-foothold atau jika permission berubah setelah revert)"
+    ],
+    "problems": [
+      ".bash_history teridentifikasi sebagai key artifact dari background story hint, tapi permission 600 block anonymous read — butuh foothold dulu untuk access",
+      "Machine name 'Overthinking' sebagai reminder: jika approach terlalu complex, step back dan pertimbangkan vector yang lebih simple yang mungkin terlewat"
+    ],
+    "summary": "Analisis CTF meta-hints dari Overthinking (Hacktrace Ranges, Easy, postponed): background story 'Sometimes behaviour is a crucial information for attacker' secara langsung mengarah ke .bash_history (behaviour = command history) sebagai key artifact — ditemukan via ls -la tapi blocked oleh permission 600. Machine name 'Overthinking' adalah meta-hint bahwa solusi seharusnya straightforward; jika stuck karena complexity, pertimbangkan apakah approach sudah over-engineered. Key learning: CTF background story dan machine name adalah bagian dari puzzle, bukan flavor text — selalu map keywords story ke teknik/artifact konkret.",
+    "url": ""
   }
 ]
