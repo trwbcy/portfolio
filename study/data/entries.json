@@ -2700,6 +2700,6 @@
       "GCC compilation gagal karena /tmp tidak writable — workaround dengan TMPDIR=/dev/shm sebelum jalankan DirtyFrag"
     ],
     "summary": "Pwn box ClashOrCrash dari Hacktrace Ranges (Easy, Offensive). Attack chain: cookie forgery (admin_login=true) bypass 403 admin panel → stored command injection via backtick substitution di playertag POST parameter, triggered oleh export.php yang bash_eval/shell_exec stored data → initial shell sebagai www-data → lateral movement ke barbarian_king via Zile GTFOBins (sudo -u barbarian_king /usr/bin/zile, shell via M-x shell-command) → privilege escalation ke root via DirtyFrag exploit terhadap SUID sudo binary non-standard (/opt/sudo-1.9.13p3/bin/sudo), dengan TMPDIR=/dev/shm workaround karena /tmp tidak writable. Key learning: stored injection pattern berbeda dari reflected — injection point dan execution point adalah endpoint yang berbeda.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
   }
 ]
