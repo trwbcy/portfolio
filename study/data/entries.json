@@ -618,7 +618,15 @@
     "title": "Diskrupt - Q2: Partition Entry Parsing & Little Endian Conversion",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "disk-forensics", "mbr", "partition-table", "little-endian", "hex-analysis", "ftk-imager"],
+    "tags": [
+      "forensics",
+      "disk-forensics",
+      "mbr",
+      "partition-table",
+      "little-endian",
+      "hex-analysis",
+      "ftk-imager"
+    ],
     "concepts": [
       "Struktur partition entry 16 byte",
       "Field layout partition entry (boot indicator, CHS, partition type, LBA start, total sectors)",
@@ -671,7 +679,15 @@
     "title": "Diskrupt - Q3: Calculate Partition Size in GB (Sector to Byte Conversion)",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "disk-forensics", "mbr", "partition-table", "sector-calculation", "cyberchef", "hex-analysis"],
+    "tags": [
+      "forensics",
+      "disk-forensics",
+      "mbr",
+      "partition-table",
+      "sector-calculation",
+      "cyberchef",
+      "hex-analysis"
+    ],
     "concepts": [
       "Konversi sektor ke byte menggunakan sector size",
       "Konversi byte ke Gigabyte definisi binary (1024^3) vs decimal (1000^3)",
@@ -718,7 +734,15 @@
     "title": "Diskrupt - Q4: Second Partition Size + Sanity Check Validation",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "disk-forensics", "mbr", "partition-table", "sanity-check", "validation", "milestone"],
+    "tags": [
+      "forensics",
+      "disk-forensics",
+      "mbr",
+      "partition-table",
+      "sanity-check",
+      "validation",
+      "milestone"
+    ],
     "concepts": [
       "Reusing data dari pertanyaan sebelumnya untuk efisiensi",
       "Sanity check sebagai langkah verifikasi hasil analisis",
@@ -754,7 +778,15 @@
     "title": "Diskrupt - Q5: MFT Parsing & NTFS Filesystem Analysis with MFTECmd",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "ntfs", "mft", "mftecmd", "timeline-explorer", "eztools", "filesystem-analysis"],
+    "tags": [
+      "forensics",
+      "ntfs",
+      "mft",
+      "mftecmd",
+      "timeline-explorer",
+      "eztools",
+      "filesystem-analysis"
+    ],
     "concepts": [
       "Master File Table (MFT) sebagai database file metadata di NTFS",
       "Workflow industry-standard: extract -> parse -> analyze",
@@ -800,7 +832,14 @@
     "title": "Diskrupt - Q6: Cross-Partition Forensics + FAT32 Deleted File Artifacts",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "fat32", "deleted-files", "ftk-imager", "cross-partition", "exfiltration"],
+    "tags": [
+      "forensics",
+      "fat32",
+      "deleted-files",
+      "ftk-imager",
+      "cross-partition",
+      "exfiltration"
+    ],
     "concepts": [
       "Cross-filesystem investigation (NTFS + FAT32 di disk yang sama)",
       "FAT32 deleted file marker: byte 0xE5 di awal directory entry",
@@ -842,7 +881,14 @@
     "title": "Diskrupt - Q7: LNK Files & First-Found Timestamp Reconstruction",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "lnk-files", "windows-recent", "timestamp-analysis", "preserve-attribute", "ntfs"],
+    "tags": [
+      "forensics",
+      "lnk-files",
+      "windows-recent",
+      "timestamp-analysis",
+      "preserve-attribute",
+      "ntfs"
+    ],
     "concepts": [
       "LNK shortcut files di Windows\\Recent folder sebagai user activity tracker",
       "LNK file persistence: tetap ada walaupun file aslinya dihapus",
@@ -884,7 +930,14 @@
     "title": "Diskrupt - Q8: USN Journal Analysis for Exfiltration Directory Discovery",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "ntfs", "usn-journal", "exfiltration", "mftecmd", "timeline-reconstruction"],
+    "tags": [
+      "forensics",
+      "ntfs",
+      "usn-journal",
+      "exfiltration",
+      "mftecmd",
+      "timeline-reconstruction"
+    ],
     "concepts": [
       "USN Journal sebagai history log NTFS filesystem (vs MFT yang state)",
       "Update Sequence Number sebagai unique identifier per event",
@@ -931,7 +984,14 @@
     "title": "Diskrupt - Q9: File Carving with Magic Bytes (ZIP Header)",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "file-carving", "magic-bytes", "zip-format", "hex-analysis", "unallocated-space"],
+    "tags": [
+      "forensics",
+      "file-carving",
+      "magic-bytes",
+      "zip-format",
+      "hex-analysis",
+      "unallocated-space"
+    ],
     "concepts": [
       "File carving sebagai recovery technique tanpa filesystem metadata",
       "Magic bytes signature sebagai identifier file format",
@@ -979,7 +1039,14 @@
     "title": "Diskrupt - Q10: ZIP Ending Offset & EOCD Record Analysis",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "file-carving", "zip-format", "eocd", "hex-analysis", "hxd"],
+    "tags": [
+      "forensics",
+      "file-carving",
+      "zip-format",
+      "eocd",
+      "hex-analysis",
+      "hxd"
+    ],
     "concepts": [
       "ZIP file structure lengkap (local header, central directory, EOCD)",
       "End of Central Directory (EOCD) sebagai marker akhir ZIP file",
@@ -1021,7 +1088,14 @@
     "title": "Diskrupt - Q11: ZIP Extraction & Storyline Reveal (Attacker Memo)",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "file-carving", "file-extraction", "zip", "narrative-analysis", "exfiltration"],
+    "tags": [
+      "forensics",
+      "file-carving",
+      "file-extraction",
+      "zip",
+      "narrative-analysis",
+      "exfiltration"
+    ],
     "concepts": [
       "File extraction via HxD block selection",
       "Save selection as separate file workflow",
@@ -1064,7 +1138,15 @@
     "title": "Diskrupt - Q12: Disk Wiping Tool Detection (Anti-Forensics Artifact) + ROOM COMPLETION",
     "platform": "TryHackMe",
     "category": "Disk Forensics",
-    "tags": ["forensics", "anti-forensics", "disk-wipe", "fat32", "deleted-files", "room-completion", "milestone"],
+    "tags": [
+      "forensics",
+      "anti-forensics",
+      "disk-wipe",
+      "fat32",
+      "deleted-files",
+      "room-completion",
+      "milestone"
+    ],
     "concepts": [
       "Microsoft Installer (MSI) artifacts sebagai installation evidence",
       "Multi-pass investigation: Q12 clue sudah terlihat sejak Q6",
@@ -2235,8 +2317,7 @@
       "Bypass header-based access control dengan spoof Referer dan custom header dari informasi di JS source",
       "Identify port non-standard (8545) yang jadi kunci attack chain via full port scan"
     ],
-    "summary": "Phase web enumeration Altlayer (Hacktrace Ranges, Easy, Linux): pelajari Express.js error semantics untuk map routes, gunakan robots.txt sebagai passive recon, bypass header-based access control (Referer + custom header spoofing), discover nested API endpoint dari JavaScript source code, dan temukan port 8545 Ethereum JSON-RPC via full port scan (-p-) yang luput dari default scan."
-    ,
+    "summary": "Phase web enumeration Altlayer (Hacktrace Ranges, Easy, Linux): pelajari Express.js error semantics untuk map routes, gunakan robots.txt sebagai passive recon, bypass header-based access control (Referer + custom header spoofing), discover nested API endpoint dari JavaScript source code, dan temukan port 8545 Ethereum JSON-RPC via full port scan (-p-) yang luput dari default scan.",
     "url": ""
   },
   {
@@ -2924,7 +3005,7 @@
       ".cache/ directory accessible listing tapi permission 700 block traversal"
     ],
     "summary": "Enumerasi FTP anonymous di Overthinking (Hacktrace Ranges, Easy, postponed) mengungkap home directory exposure via vsftpd: FTP root di-map ke home directory uid 1001. ls -la reveal dotfiles yang disembunyikan dir, termasuk .bash_history (188 bytes, permission 600) dan .cache/ (permission 700). Key learning: selalu gunakan ls -la bukan dir di FTP untuk reveal hidden files; permission Unix tetap berlaku — file visible di listing belum tentu readable.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-ftp-530",
@@ -2972,7 +3053,7 @@
       "Distinguish apakah 530 karena wrong password atau karena username diblokir — timing dan response message berbeda"
     ],
     "summary": "Analisis FTP response code di Overthinking: vsftpd return 530 sebelum password prompt untuk semua named users (Rafi, Azki, dll), mengindikasikan username diblokir di level userlist (userlist_deny/userlist_enable config) bukan di authentication layer. Berbeda dari 331 yang artinya username diterima dan server menunggu password. Key learning: 530 pre-password = brute force FTP password sia-sia untuk user tersebut; fokus ke protocol lain (SSH) yang tidak memiliki restriction yang sama.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-cred-analysis",
@@ -3024,7 +3105,7 @@
       "Filipus memiliki password berbeda (Nj82@1Waqk90$@%pass123) — mungkin intended sebagai rabbit hole atau correct credential dengan parsing yang belum tepat"
     ],
     "summary": "Analisis credential format ambiguous dari creds.txt Overthinking: format `user : left@%right` dengan @%pass123 suffix konsisten di semua user kecuali Filipus. Hex dump (xxd) mengkonfirmasi clean ASCII tanpa hidden characters. Exhaustive combo testing (full string, split-left, split-right, concat, machine name, story keywords) via Hydra 2,655 attempts → 0 valid. Key learning: credential format ambiguity membutuhkan systematic combo generation; null result tidak berarti salah jalur — bisa machine state issue (perlu revert) atau parsing interpretation yang belum dicoba.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-meta-hints",
@@ -3071,7 +3152,7 @@
       "Machine name 'Overthinking' sebagai reminder: jika approach terlalu complex, step back dan pertimbangkan vector yang lebih simple yang mungkin terlewat"
     ],
     "summary": "Analisis CTF meta-hints dari Overthinking (Hacktrace Ranges, Easy, postponed): background story 'Sometimes behaviour is a crucial information for attacker' secara langsung mengarah ke .bash_history (behaviour = command history) sebagai key artifact — ditemukan via ls -la tapi blocked oleh permission 600. Machine name 'Overthinking' adalah meta-hint bahwa solusi seharusnya straightforward; jika stuck karena complexity, pertimbangkan apakah approach sudah over-engineered. Key learning: CTF background story dan machine name adalah bagian dari puzzle, bukan flavor text — selalu map keywords story ke teknik/artifact konkret.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-nmap-recon",
@@ -3115,7 +3196,7 @@
     ],
     "problems": [],
     "summary": "Full port scan terhadap target overthinking.htr menghasilkan 2 port terbuka: 21/FTP (vsftpd 3.0.5, anonymous login allowed) dan 22/SSH (OpenSSH 8.2p1). Tidak ada web server atau service lain yang exposed. Anonymous FTP menjadi entry point utama untuk enumerasi lanjutan.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-ftp-loot",
@@ -3160,7 +3241,7 @@
       "Named users (Rafi, Azki, dll) di-reject oleh FTP di level username (530), bukan password level"
     ],
     "summary": "Anonymous FTP access mengungkap folder Data/ berisi creds.txt (5 pasang credential: Rafi, Azki, Bryan, Amel, Filipus) dan hai.txt. Semua password memiliki suffix @%pass123 yang konsisten. Pola ini menjadi kunci strategi brute force yang terarah — suffix adalah bagian dari password format, bukan credential literal.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-wordlist-mutation",
@@ -3204,7 +3285,7 @@
       "Over-complicated approach (parsing @% berbagai cara, SecLists filtering, manual combo) sebelum menyadari solusi sederhana: append suffix ke standard wordlist"
     ],
     "summary": "Breakthrough setelah stuck: suffix @%pass123 bukan delimiter untuk diparsing, melainkan bagian yang harus di-append ke setiap kata di rockyou.txt. sed 's/$/@%pass123/' menghasilkan mutated wordlist 14.3 juta entry. Key learning: pattern recognition dari credential dump lebih valuable dari brute force complexity — satu insight sederhana (suffix = password component) unlock seluruh attack path.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-hydra-ssh",
@@ -3247,7 +3328,7 @@
       "Password ditemukan dalam ~13 menit karena 'gatito' muncul relatif awal di rockyou — estimasi worst-case tidak berarti runtime aktual"
     ],
     "summary": "Hydra berhasil menemukan kredensial SSH azki:gatito@%pass123 dalam ~13 menit meski rate brute force hanya 53-63 tries/min. Posisi 'gatito' yang relatif awal di rockyou.txt membuat proses jauh lebih cepat dari estimasi worst-case. Initial access ke target berhasil via SSH sebagai azki.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-post-exploitation",
@@ -3291,7 +3372,7 @@
     ],
     "problems": [],
     "summary": "Post-exploitation enumeration sebagai azki: sudo -l denied, tapi .bash_history mengungkap user sebelumnya pernah gunakan tar untuk baca /etc/shadow. File shadow.tar dan folder etc/ di home directory mengkonfirmasi aktivitas tersebut. getcap menunjukkan /bin/tar memiliki cap_dac_read_search+ep — ini adalah privesc vector yang dimaksud.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-cap-dac-tar",
@@ -3336,7 +3417,7 @@
       "Awalnya sempat memulai cracking root password hash dari /etc/shadow — tidak perlu, tar capability sudah cukup untuk baca root flag secara langsung"
     ],
     "summary": "/bin/tar memiliki cap_dac_read_search+ep — capability yang bypass seluruh DAC read permission. Tar digunakan untuk archive /root/ directory langsung, kemudian diekstrak untuk baca root flag tanpa perlu jadi root secara literal. Key learning: getcap adalah mandatory step di post-exploitation; misconfigured capability pada binary umum seperti tar = full read access setara root.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   },
   {
     "id": "hacktrace-overthinking-writeup-doc",
@@ -3369,6 +3450,6 @@
     "commands": [],
     "problems": [],
     "summary": "Membuat writeup formal Overthinking dalam format DOCX dengan tema merah (offensive), meliputi attack flow diagram SVG, screenshot placeholders, tabel informasi mesin, dan section lessons learned. Writeup mencakup seluruh fase recon sampai privilege escalation, ditulis dalam perspektif monolog formal Bahasa Indonesia. Dokumentasi stuck points (3-4 hari wordlist tanpa mutasi) menjadi bagian paling valuable dari writeup.",
-    "url": ""
+    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
   }
 ]
