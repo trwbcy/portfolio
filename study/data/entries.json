@@ -3072,5 +3072,303 @@
     ],
     "summary": "Analisis CTF meta-hints dari Overthinking (Hacktrace Ranges, Easy, postponed): background story 'Sometimes behaviour is a crucial information for attacker' secara langsung mengarah ke .bash_history (behaviour = command history) sebagai key artifact — ditemukan via ls -la tapi blocked oleh permission 600. Machine name 'Overthinking' adalah meta-hint bahwa solusi seharusnya straightforward; jika stuck karena complexity, pertimbangkan apakah approach sudah over-engineered. Key learning: CTF background story dan machine name adalah bagian dari puzzle, bukan flavor text — selalu map keywords story ke teknik/artifact konkret.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-nmap-recon",
+    "date": "2026-06-02",
+    "title": "Hacktrace Overthinking — Nmap Recon & Service Identification",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "nmap",
+      "reconnaissance",
+      "service-enumeration",
+      "port-scanning",
+      "vsftpd",
+      "openssh",
+      "ctf",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Full TCP port scan methodology: -sVC (version + script), --min-rate 1000, -p- (all ports), -Pn (skip ping), -T4 (aggressive timing)",
+      "Service version fingerprinting dan OS detection via Nmap NSE scripts",
+      "Identifying anonymous FTP access dari Nmap script output (ftp-anon NSE script)",
+      "Attack surface mapping dari minimal port exposure: 2 port = focused, predictable attack vector"
+    ],
+    "terms": [
+      "nmap",
+      "vsftpd 3.0.5",
+      "OpenSSH 8.2p1",
+      "service fingerprint",
+      "anonymous FTP",
+      "attack surface",
+      "ftp-anon",
+      "NSE script",
+      "-sVC",
+      "-p-",
+      "-Pn",
+      "-T4"
+    ],
+    "commands": [
+      "nmap -sVC --min-rate 1000 -p- -Pn -T4 -oN nmap-overthinking.log overthinking.htr"
+    ],
+    "problems": [],
+    "summary": "Full port scan terhadap target overthinking.htr menghasilkan 2 port terbuka: 21/FTP (vsftpd 3.0.5, anonymous login allowed) dan 22/SSH (OpenSSH 8.2p1). Tidak ada web server atau service lain yang exposed. Anonymous FTP menjadi entry point utama untuk enumerasi lanjutan.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-ftp-loot",
+    "date": "2026-06-02",
+    "title": "Hacktrace Overthinking — FTP Anonymous Loot & Password Pattern Analysis",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "ftp",
+      "anonymous-access",
+      "credential-analysis",
+      "pattern-recognition",
+      "enumeration",
+      "ctf",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "FTP anonymous login dan navigasi directory structure untuk identifikasi file yang accessible",
+      "ls -la untuk mendeteksi hidden dotfiles di FTP — default dir command sering hide dotfiles",
+      "Analisis pola password dari credential dump: consistent suffix (@%pass123) sebagai indicator format, bukan password literal",
+      "FTP user restriction testing: 530 Permission denied sebelum password prompt = username-level block (vsftpd userlist), bukan authentication failure"
+    ],
+    "terms": [
+      "anonymous FTP",
+      "creds.txt",
+      "password pattern",
+      "suffix mutation",
+      "vsftpd user restriction",
+      "530 Permission denied",
+      "@%pass123",
+      "mget"
+    ],
+    "commands": [
+      "ftp overthinking.htr",
+      "ls -la",
+      "mget *",
+      "xxd creds.txt"
+    ],
+    "problems": [
+      "Credential di creds.txt tidak bisa langsung digunakan untuk SSH login — perlu interpretasi format yang benar",
+      "Named users (Rafi, Azki, dll) di-reject oleh FTP di level username (530), bukan password level"
+    ],
+    "summary": "Anonymous FTP access mengungkap folder Data/ berisi creds.txt (5 pasang credential: Rafi, Azki, Bryan, Amel, Filipus) dan hai.txt. Semua password memiliki suffix @%pass123 yang konsisten. Pola ini menjadi kunci strategi brute force yang terarah — suffix adalah bagian dari password format, bukan credential literal.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-wordlist-mutation",
+    "date": "2026-06-03",
+    "title": "Hacktrace Overthinking — Wordlist Mutation Strategy (sed Suffix Append)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "wordlist-generation",
+      "password-mutation",
+      "sed",
+      "rockyou",
+      "brute-force-preparation",
+      "password-cracking",
+      "ctf",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Password mutation strategy berdasarkan pattern yang ditemukan di credential dump — bukan random wordlist, tapi targeted mutation",
+      "sed 's/$/@%pass123/' untuk mass-append suffix ke setiap baris wordlist secara efisien",
+      "Credential sample sebagai format hint, bukan password literal: suffix konsisten = semua password di target mengikuti pola yang sama",
+      "Ukuran wordlist mutated (14.3 juta entry dari rockyou) dan implikasi terhadap estimasi waktu brute force"
+    ],
+    "terms": [
+      "sed",
+      "wordlist mutation",
+      "suffix append",
+      "rockyou.txt",
+      "password pattern",
+      "credential hint",
+      "pattern recognition",
+      "14.3 million entries"
+    ],
+    "commands": [
+      "cp /usr/share/wordlists/rockyou.txt ~/rockyou_backup.txt",
+      "sed 's/$/@%pass123/' /usr/share/wordlists/rockyou.txt > ~/rockyou_mutated.txt"
+    ],
+    "problems": [
+      "Stuck 3-4 hari karena mencoba brute force dengan wordlist mentah tanpa mutasi — 2,655 attempts tanpa hasil",
+      "Over-complicated approach (parsing @% berbagai cara, SecLists filtering, manual combo) sebelum menyadari solusi sederhana: append suffix ke standard wordlist"
+    ],
+    "summary": "Breakthrough setelah stuck: suffix @%pass123 bukan delimiter untuk diparsing, melainkan bagian yang harus di-append ke setiap kata di rockyou.txt. sed 's/$/@%pass123/' menghasilkan mutated wordlist 14.3 juta entry. Key learning: pattern recognition dari credential dump lebih valuable dari brute force complexity — satu insight sederhana (suffix = password component) unlock seluruh attack path.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-hydra-ssh",
+    "date": "2026-06-05",
+    "title": "Hacktrace Overthinking — Hydra SSH Brute Force & Initial Access",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "hydra",
+      "ssh-brute-force",
+      "initial-access",
+      "credential-stuffing",
+      "password-attack",
+      "ctf",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Hydra SSH brute force: -l single user, -P wordlist, -t thread count, -w timeout per attempt",
+      "Thread tuning untuk SSH brute force: SSH memiliki rate limiting bawaan — threads terlalu tinggi menyebabkan false failures, keep low (-t 4)",
+      "Estimasi waktu brute force berdasarkan rate (tries/min) dan ukuran wordlist — estimasi ribuan jam tidak selalu akurat jika password muncul awal di wordlist",
+      "Targeted brute force dengan username dari recon (creds.txt): lebih efisien dari username spray"
+    ],
+    "terms": [
+      "hydra",
+      "SSH brute force",
+      "thread tuning",
+      "rate limiting",
+      "-t flag",
+      "-w flag",
+      "tries per minute",
+      "gatito",
+      "azki"
+    ],
+    "commands": [
+      "hydra -l azki -P ~/rockyou_mutated.txt ssh://overthinking.htr -t 4 -w 10"
+    ],
+    "problems": [
+      "Rate SSH brute force sangat lambat (~53-63 tries/min) karena SSH rate limiting — estimasi awal menunjukkan ribuan jam",
+      "Password ditemukan dalam ~13 menit karena 'gatito' muncul relatif awal di rockyou — estimasi worst-case tidak berarti runtime aktual"
+    ],
+    "summary": "Hydra berhasil menemukan kredensial SSH azki:gatito@%pass123 dalam ~13 menit meski rate brute force hanya 53-63 tries/min. Posisi 'gatito' yang relatif awal di rockyou.txt membuat proses jauh lebih cepat dari estimasi worst-case. Initial access ke target berhasil via SSH sebagai azki.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-post-exploitation",
+    "date": "2026-06-05",
+    "title": "Hacktrace Overthinking — Post-Exploitation Enum & .bash_history as Intel Source",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "post-exploitation",
+      "enumeration",
+      "bash-history",
+      "intelligence-gathering",
+      "linux-privesc-enum",
+      "getcap",
+      "ctf",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Standard post-exploitation enumeration checklist: sudo -l, id, uname -a, ls -la, .bash_history, getcap",
+      ".bash_history sebagai intelijen privesc: command history user mengungkap vektor yang sudah pernah dicoba atau digunakan sebelumnya",
+      "Identifikasi command historis yang mengindikasikan vektor eskalasi: tar terhadap /etc/shadow = capability abuse hint",
+      "getcap -r / 2>/dev/null untuk menemukan binary dengan Linux capability yang di-set — sering overlooked dalam privesc checklist"
+    ],
+    "terms": [
+      "sudo -l",
+      ".bash_history",
+      "post-exploitation",
+      "privilege escalation enumeration",
+      "getcap",
+      "Linux capabilities",
+      "cap_dac_read_search",
+      "shadow.tar"
+    ],
+    "commands": [
+      "sudo -l",
+      "uname -a; id",
+      "ls -la",
+      "cat .bash_history",
+      "getcap -r / 2>/dev/null"
+    ],
+    "problems": [],
+    "summary": "Post-exploitation enumeration sebagai azki: sudo -l denied, tapi .bash_history mengungkap user sebelumnya pernah gunakan tar untuk baca /etc/shadow. File shadow.tar dan folder etc/ di home directory mengkonfirmasi aktivitas tersebut. getcap menunjukkan /bin/tar memiliki cap_dac_read_search+ep — ini adalah privesc vector yang dimaksud.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-cap-dac-tar",
+    "date": "2026-06-05",
+    "title": "Hacktrace Overthinking — PrivEsc via tar cap_dac_read_search Capability Abuse",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "privilege-escalation",
+      "linux-capabilities",
+      "cap_dac_read_search",
+      "tar-abuse",
+      "gtfobins",
+      "misconfiguration",
+      "ctf",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "cap_dac_read_search: Linux capability yang memungkinkan binary bypass semua DAC (Discretionary Access Control) read permission checks — bisa baca file apapun termasuk milik root",
+      "tar capability abuse: dengan cap_dac_read_search, tar bisa archive /root/ atau /etc/shadow tanpa menjadi root — tidak perlu SUID",
+      "Capabilities vs SUID/SGID: capabilities lebih granular, tidak memberi full root tapi bisa sama berbahayanya untuk read-based attack",
+      "getcap -r / adalah mandatory item di post-exploitation checklist: sering yield high-impact finding yang tidak tercover oleh sudo/SUID enumeration"
+    ],
+    "terms": [
+      "cap_dac_read_search",
+      "Linux capabilities",
+      "DAC (Discretionary Access Control)",
+      "getcap",
+      "tar capability abuse",
+      "privilege escalation",
+      "cap_dac_read_search+ep",
+      "/bin/tar"
+    ],
+    "commands": [
+      "getcap -r / 2>/dev/null",
+      "tar cvf /tmp/root.tar /root/",
+      "cd /tmp && tar -xvf root.tar",
+      "cat root/root.txt"
+    ],
+    "problems": [
+      "Awalnya sempat memulai cracking root password hash dari /etc/shadow — tidak perlu, tar capability sudah cukup untuk baca root flag secara langsung"
+    ],
+    "summary": "/bin/tar memiliki cap_dac_read_search+ep — capability yang bypass seluruh DAC read permission. Tar digunakan untuk archive /root/ directory langsung, kemudian diekstrak untuk baca root flag tanpa perlu jadi root secara literal. Key learning: getcap adalah mandatory step di post-exploitation; misconfigured capability pada binary umum seperti tar = full read access setara root.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-overthinking-writeup-doc",
+    "date": "2026-06-05",
+    "title": "Hacktrace Overthinking — Formal Writeup & Attack Flow Diagram",
+    "platform": "Hacktrace Ranges",
+    "category": "Documentation",
+    "tags": [
+      "writeup",
+      "documentation",
+      "attack-flow",
+      "ctf-writeup",
+      "svg-diagram",
+      "reporting"
+    ],
+    "concepts": [
+      "Dokumentasi CTF dalam format formal (DOCX) dengan perspektif monolog — bukan hanya 'apa yang dilakukan' tapi 'kenapa dan bagaimana proses berpikirnya'",
+      "Attack flow diagram (SVG) untuk visualisasi kill chain: Recon → FTP Enum → Cred Analysis → Wordlist Mutation → SSH Brute Force → Post-Exploitation → PrivEsc → Root",
+      "Lessons learned sebagai reflective practice: dokumentasi stuck points dan breakthrough sama pentingnya dengan dokumentasi teknik yang berhasil"
+    ],
+    "terms": [
+      "attack flow",
+      "kill chain visualization",
+      "CTF writeup",
+      "formal documentation",
+      "SVG diagram",
+      "monolog POV",
+      "lessons learned"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Membuat writeup formal Overthinking dalam format DOCX dengan tema merah (offensive), meliputi attack flow diagram SVG, screenshot placeholders, tabel informasi mesin, dan section lessons learned. Writeup mencakup seluruh fase recon sampai privilege escalation, ditulis dalam perspektif monolog formal Bahasa Indonesia. Dokumentasi stuck points (3-4 hari wordlist tanpa mutasi) menjadi bagian paling valuable dari writeup.",
+    "url": ""
   }
 ]
