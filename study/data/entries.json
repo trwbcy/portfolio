@@ -4154,5 +4154,14 @@
     ],
     "summary": "Recon multi-port Oblivion mengidentifikasi 4 port: 22 (SSH), 5000 (Flask API), 5466 (Wing FTP admin), 8080 (HTTP). Port 5466 tidak teridentifikasi dari luar — diidentifikasi sebagai Wing FTP admin panel via internal enumeration (ss + ps aux) setelah foothold. Key learning: external Nmap scan tidak selalu sufficient; internal enumeration dari foothold mengungkap service yang tersembunyi dari luar.",
     "url": ""
+  },
+  {
+    "date": "2026-06-10",
+    "title": "VsCodeExtLure",
+    "category": "project",
+    "tags": ["vscode", "reverse-shell", "initial-access", "nodejs", "red-team", "poc"],
+    "description": "Proof of Concept: malicious VSCode extension as initial access vector. Built automated toolchain (Python + Node.js) to scaffold, inject payload (reverse shell via net.Socket + child_process), and package .vsix. Delivered to Windows 10 victim VM, shell callback confirmed on port 9098. Published to VS Marketplace. MITRE: T1566.001, T1204.002, T1059.007, T1571.",
+    "difficulty": "medium",
+    "status": "completed"
   }
 ]
