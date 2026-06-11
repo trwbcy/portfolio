@@ -4163,5 +4163,69 @@
     "description": "Proof of Concept: malicious VSCode extension as initial access vector. Built automated toolchain (Python + Node.js) to scaffold, inject payload (reverse shell via net.Socket + child_process), and package .vsix. Delivered to Windows 10 victim VM, shell callback confirmed on port 9098. Published to VS Marketplace. MITRE: T1566.001, T1204.002, T1059.007, T1571.",
     "difficulty": "medium",
     "status": "completed"
+  },
+  {
+    "id": "hacktrace-nightforge",
+    "date": "2026-06-11",
+    "title": "NightForge — SMB Guest Credential Leak + PrintNightmare (CVE-2021-1675) ke Admin (Easy, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "windows",
+      "smb",
+      "printnightmare",
+      "cve-2021-1675",
+      "privilege-escalation",
+      "credential-discovery",
+      "ctf",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "SMB Enumeration & Guest Access: enumerasi share menggunakan smbclient dan crackmapexec, identifikasi share PUBLIC yang bisa diakses tanpa autentikasi via guest session",
+      "Credential Discovery in Config Files: menemukan kredensial Base64-encoded di file YAML (printer_maintenance.yaml), decode base64 untuk mendapatkan format username:password",
+      "PrintNightmare (CVE-2021-1675): eksploitasi kerentanan kritis pada Windows Print Spooler service menggunakan PowerShell PoC (Invoke-Nightmare) dari Caleb Stewart, memungkinkan pembuatan akun Administrator baru dari user biasa tanpa SeImpersonatePrivilege",
+      "Windows Privilege Escalation Methodology: enumerasi privilege (whoami /all), identifikasi service yang running (Get-Service Spooler), pengenalan folder non-standar sebagai hint (C:\\printshare dengan file qc berisi 'spooler')",
+      "Windows Post-Exploitation Basics: navigasi filesystem Windows via SSH (dir, type, cd), enumerasi user (net user), cek scheduled tasks dan installed programs"
+    ],
+    "terms": [
+      "SMB",
+      "smbclient",
+      "crackmapexec",
+      "guest session",
+      "PUBLIC share",
+      "Base64",
+      "printer_maintenance.yaml",
+      "PrintNightmare",
+      "CVE-2021-1675",
+      "Print Spooler",
+      "Invoke-Nightmare",
+      "Windows Server 2019",
+      "SeImpersonatePrivilege",
+      "printshare",
+      "whoami /all",
+      "Get-Service Spooler",
+      "net user"
+    ],
+    "commands": [
+      "smbclient -L //TARGET -N",
+      "crackmapexec smb TARGET --shares -u '' -p ''",
+      "smbclient //TARGET/PUBLIC -N",
+      "echo 'base64string' | base64 -d",
+      "ssh paranoia@TARGET",
+      "whoami /all",
+      "Get-Service Spooler",
+      "Invoke-Nightmare -NewUser 'hacker' -NewPassword 'Password123!'",
+      "net user",
+      "dir C:\\printshare"
+    ],
+    "problems": [
+      "Identifikasi share yang accessible tanpa autentikasi dari multiple SMB shares",
+      "Decode Base64 credentials di YAML config file untuk mendapatkan valid credentials",
+      "Identifikasi PrintNightmare sebagai exploit path dari hint C:\\printshare folder dan running Spooler service",
+      "Eksekusi Invoke-Nightmare PoC untuk create akun Administrator baru tanpa SeImpersonatePrivilege"
+    ],
+    "summary": "Windows Server 2019 box NightForge dari Hacktrace (Easy). Attack chain: SMB guest access → PUBLIC share enumerate → printer_maintenance.yaml mengandung Base64-encoded credentials → SSH sebagai user paranoia untuk user flag → privilege escalation via PrintNightmare (CVE-2021-1675) menggunakan Invoke-Nightmare PowerShell PoC → create akun Administrator baru untuk root flag. Key hints: folder C:\\printshare non-standar dan file qc berisi 'spooler' langsung point ke Print Spooler exploitation path.",
+    "url": "https://drive.google.com/file/d/1hS_sq4ej0_fj04NseNsC7ii4ESyrwq5t/view?usp=drive_link"
   }
 ]

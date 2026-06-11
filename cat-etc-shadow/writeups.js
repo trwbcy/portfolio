@@ -33,6 +33,7 @@ const writeups = [
     { title: "Overthinking", type: "red", desc: "Anonymous FTP Loot + Wordlist Mutation + tar cap_dac_read_search", url: "https://drive.google.com/file/d/1xhdAEbNpCrBC128ipg33TvBnQY3eSv6L/view?usp=sharing" },
     { title: "LoL", type: "red", desc: "Rogue IMAP + CVE-2017-16651 File Disclosure + PwnKit (CVE-2021-4034)", url: "https://drive.google.com/file/d/1D0wi8h_2bKjN-VGlLeAr_QJXZT3l34UE/view?usp=sharing" },
     { title: "Oblivion", type: "red", desc: "APK RE + AES SQLi + Wing FTP Lua Injection → Root", url: "https://drive.google.com/file/d/15DUQiZKhWZXaMsfrd4imKxKzkvIdIvsZ/view?usp=sharing" },
+    { title: "NightForge", type: "red", desc: "SMB Guest Credential Leak + PrintNightmare (CVE-2021-1675) PrivEsc", url: "https://drive.google.com/file/d/1hS_sq4ej0_fj04NseNsC7ii4ESyrwq5t/view?usp=drive_link" },
     { title: "Deviasi", type: "blue", desc: "Deep Log Analysis & IOCs", url: "https://nickel-bedbug-8cc.notion.site/Deviasi-Hacktrace-Ranges-2a0416e03a1380babf06e961fa506f1a" },
     { title: "Undercover", type: "blue", desc: "Binary Investigation APT", url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543" },
     { title: "BluuShell", type: "blue", desc: "Malicious DOCX Forensics", url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0" },
