@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSpotlight();
     initGlitch();
     initCountUp();
+    initEvidenceWall();
     setPurpleFavicon();
 });
 
@@ -128,6 +129,35 @@ function initCountUp() {
         });
     }, { threshold: 0.5 });
     els.forEach(el => obs.observe(el));
+}
+
+// ── EVIDENCE WALL — scroll-in sequence + stamp count-up ──
+function initEvidenceWall() {
+    const section = document.querySelector('.evidence-wall');
+    if (!section) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    section.classList.add('ew-anim');
+
+    const num    = section.querySelector('.ew-stamp-num');
+    const target = num ? +num.dataset.target : 0;
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            obs.unobserve(entry.target);
+            section.classList.add('ew-in');
+            if (!num) return;
+            const dur   = 1200;
+            const start = performance.now() + 700; // sync with stamp fade-in delay
+            num.textContent = '0';
+            const tick = now => {
+                const t = Math.min(Math.max((now - start) / dur, 0), 1);
+                num.textContent = Math.round(target * (1 - Math.pow(1 - t, 3)));
+                if (t < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        });
+    }, { threshold: 0.2 });
+    obs.observe(section);
 }
 
 function initGSAP() {
