@@ -4226,6 +4226,6 @@
       "Eksekusi Invoke-Nightmare PoC untuk create akun Administrator baru tanpa SeImpersonatePrivilege"
     ],
     "summary": "Windows Server 2019 box NightForge dari Hacktrace (Easy). Attack chain: SMB guest access → PUBLIC share enumerate → printer_maintenance.yaml mengandung Base64-encoded credentials → SSH sebagai user paranoia untuk user flag → privilege escalation via PrintNightmare (CVE-2021-1675) menggunakan Invoke-Nightmare PowerShell PoC → create akun Administrator baru untuk root flag. Key hints: folder C:\\printshare non-standar dan file qc berisi 'spooler' langsung point ke Print Spooler exploitation path.",
-    "url": "https://drive.google.com/file/d/1hS_sq4ej0_fj04NseNsC7ii4ESyrwq5t/view?usp=drive_link"
+    "url": ""
   }
 ]
