@@ -323,7 +323,7 @@ function initParallaxTypography() {
 
 // ── 5. SCROLL REVEAL ─────────────────────────
 function initScrollReveal() {
-    const elements = gsap.utils.toArray('.section-tag, .career-item, .stat-row, .skill-row, .proj-item, .cert-item, .ctf-item, .body-text');
+    const elements = gsap.utils.toArray('.section-tag, .proj-item, .ctf-item');
     
     elements.forEach((el, i) => {
         gsap.fromTo(el,

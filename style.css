@@ -310,7 +310,7 @@ body {
     margin-bottom:48px; display:block;
 }
 
-.reveal, .section-tag, .skill-row, .proj-item, .ctf-item {
+.reveal, .section-tag, .proj-item, .ctf-item {
     opacity: 1; 
     transform: none; 
     filter: none;
@@ -555,31 +555,66 @@ body {
     .op-body { grid-column: 2; }
 }
 
-/* SKILLS */
-.skills-split {
-    display:grid; grid-template-columns:1fr 1px 1fr;
-    gap:0; align-items:start;
+/* ── TECH STACK — DEFENSE / OFFENSE SPLIT ────────────── */
+.stack {
+    --ts-display: 'Anton', sans-serif;
+    --ts-body:    'Space Grotesk', sans-serif;
+    --ts-kicker:      oklch(0.6 0.10 300);
+    --ts-cyan:        oklch(0.82 0.15 200);
+    --ts-cyan-label:  oklch(0.62 0.10 200);
+    --ts-cyan-tools:  oklch(0.90 0.02 200);
+    --ts-cyan-hover:  oklch(0.14 0.025 200 / 0.5);
+    --ts-red:         oklch(0.62 0.22 25);
+    --ts-red-label:   oklch(0.68 0.14 25);
+    --ts-red-tools:   oklch(0.90 0.02 25);
+    --ts-red-hover:   oklch(0.16 0.03 25 / 0.5);
+
+    position: relative; z-index: 2; overflow: hidden;
+    font-family: var(--ts-body); color: oklch(0.9 0.008 300);
+    background: oklch(0.08 0.012 300);
+    padding: 80px 6% 88px;
 }
-.skills-col { padding:0 48px; }
-.skills-col:first-child { padding-left:0; }
-.skills-col:last-child  { padding-right:0; }
-.skills-vdivider { background:rgba(255,255,255,.06); align-self:stretch; }
-.skill-col-label { font:.65rem/1 var(--mono); letter-spacing:.14em; margin-bottom:16px; display:block; }
-.badge-cyan { color:var(--cyan); }
-.badge-red { color:var(--red); }
-.heading-cyan { color:var(--cyan); text-shadow:0 0 30px rgba(0,229,255,.2); }
-.heading-red  { color:var(--red);  text-shadow:0 0 30px rgba(255,34,68,.2); }
-.sk-cyan { color:var(--cyan) !important; }
-.sk-red  { color:var(--red)  !important; }
-.skill-table { border-top:1px solid var(--border); }
-.skill-row {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:12px 0; border-bottom:1px solid rgba(255,255,255,.03);
-    gap:12px; transition:padding-left .2s;
+.ts-inner { max-width: 1320px; margin: 0 auto; }
+.ts-kicker { font-size: 11px; letter-spacing: .22em; color: var(--ts-kicker); }
+
+.ts-grid { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0 56px; margin-top: 40px; }
+.ts-seam { background: linear-gradient(180deg, oklch(0.7 0.15 200), oklch(0.5 0.1 300), oklch(0.62 0.2 25)); }
+
+.ts-eyebrow { font-size: 12px; letter-spacing: .2em; }
+.ts-title { font: 400 clamp(48px, 5.6vw, 100px)/0.86 var(--ts-display); margin-top: 12px; }
+.ts-title span { display: block; }
+.ts-title .ts-accent { margin-top: 0.14em; }
+
+.ts-rows { margin-top: 48px; display: flex; flex-direction: column; gap: 4px; }
+.ts-row { display: grid; gap: 24px; align-items: baseline; border-radius: 7px; transition: background .16s ease; }
+.ts-cat { font-size: 12px; letter-spacing: .14em; }
+.ts-tools { font-size: 16px; }
+
+/* defense (left, cyan) */
+.ts-side-def .ts-eyebrow { color: var(--ts-cyan-label); }
+.ts-side-def .ts-accent { color: var(--ts-cyan); text-shadow: 0 0 55px oklch(0.7 0.16 200 / 0.45); }
+.ts-side-def .ts-row { grid-template-columns: auto 1fr; padding: 14px 12px 14px 4px; }
+.ts-side-def .ts-row:hover { background: var(--ts-cyan-hover); }
+.ts-side-def .ts-cat { color: var(--ts-cyan-label); }
+.ts-side-def .ts-tools { color: var(--ts-cyan-tools); text-align: right; }
+
+/* offense (right, red — mirrored) */
+.ts-side-off { text-align: right; }
+.ts-side-off .ts-eyebrow { color: var(--ts-red-label); }
+.ts-side-off .ts-accent { color: var(--ts-red); text-shadow: 0 0 55px oklch(0.6 0.2 25 / 0.45); }
+.ts-side-off .ts-row { grid-template-columns: 1fr auto; padding: 14px 4px 14px 12px; text-align: left; }
+.ts-side-off .ts-row:hover { background: var(--ts-red-hover); }
+.ts-side-off .ts-tools { color: var(--ts-red-tools); }
+.ts-side-off .ts-cat { color: var(--ts-red-label); text-align: right; }
+
+@media (max-width: 820px) {
+    .ts-grid { grid-template-columns: 1fr; gap: 56px; }
+    .ts-seam { display: none; }
+    .ts-side-off, .ts-side-off .ts-row, .ts-side-off .ts-cat, .ts-side-off .ts-title { text-align: left; }
+    .ts-side-off .ts-eyebrow { text-align: left; }
+    .ts-side-off .ts-row { grid-template-columns: auto 1fr; padding: 14px 12px 14px 4px; }
+    .ts-side-off .ts-tools { text-align: right; }
 }
-.skill-row:hover { padding-left:6px; }
-.sk { font:.62rem/1 var(--mono); letter-spacing:.1em; color:var(--purple); flex-shrink:0; min-width:72px; }
-.sv { font:.75rem/1 var(--mono); color:var(--white); text-align:right; }
 
 /* ── PROJECTS — HORIZONTAL SCROLL FIXED (NO MORE TRANSPARENCY BUG) ── */
 .proj-section {
@@ -940,9 +975,6 @@ body {
     /* SECTIONS */
     .section { padding:60px 24px; }
     .footer { padding:18px 24px; }
-    .skills-split { grid-template-columns:1fr; }
-    .skills-vdivider { display:none; }
-    .skills-col { padding:0; }
     html { cursor:auto; }
     .cursor-dot,.cursor-ring { display:none; }
 
