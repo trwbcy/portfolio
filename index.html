@@ -54,19 +54,27 @@
     </div>
 
     <section class="hero" id="home">
-        <div class="hero-meta">
-            <span>/ SECURITY ANALYST / P. 001</span>
-            <span class="hero-meta-right">↓ SCROLL TO BREACH IN</span>
-        </div>
-        <div class="hero-name">
-            <div class="name-line line-1 wave-target">TRI WIBOWO</div>
-            <div class="name-line line-2 name-purple wave-target">CAHYO<span class="dot-accent">.</span></div>
-        </div>
-        <div class="hero-bottom">
-            <div class="hero-role">/ <span id="typedRole"></span><span class="blink-cursor">_</span></div>
-            <div class="hero-actions">
-                <a href="#projects" class="btn-primary">EXECUTE PROJECTS →</a>
-                <a href="https://drive.google.com/file/d/1WwIby4UYkgL1t6pvJlRX1ZLFfmvRlkA5/view?usp=sharing" class="btn-ghost">DOWNLOAD CV ↗</a>
+        <img class="hero-art" src="img/hero-portrait.png" alt="" aria-hidden="true">
+        <div class="hero-wash-l" aria-hidden="true"></div>
+        <div class="hero-wash-b" aria-hidden="true"></div>
+        <div class="hero-scan" aria-hidden="true"></div>
+
+        <div class="hero-content">
+            <div class="hero-bar">
+                <span>/ SECURITY ANALYST / P. 001</span>
+                <span class="hero-scroll">↓ SCROLL TO BREACH IN</span>
+            </div>
+
+            <div class="hero-center">
+                <h1 class="hero-name"><span class="l1">TRI WIBOWO</span><span class="l2">CAHYO.</span></h1>
+            </div>
+
+            <div class="hero-foot">
+                <div class="hero-tagline">/ <b id="typedRole"></b><span class="hero-caret">▋</span></div>
+                <div class="hero-cta">
+                    <a class="hero-btn hero-btn-primary" href="#projects">EXECUTE PROJECTS →</a>
+                    <a class="hero-btn hero-btn-ghost" href="https://drive.google.com/file/d/1WwIby4UYkgL1t6pvJlRX1ZLFfmvRlkA5/view?usp=sharing" target="_blank" rel="noopener">DOWNLOAD CV ↗</a>
+                </div>
             </div>
         </div>
     </section>
@@ -412,33 +420,39 @@
         </div>
     </section>
 
-    <section class="section" id="learning">
-        <div class="section-tag">/ LEARNING ACTIVITY / P. 008</div>
-        <div class="big-heading wave-target">WHAT I<br><span class="accent">STUDY.</span></div>
+    <section class="study" id="learning">
+        <div class="st-inner">
 
-        <div class="la-wrap">
-            <div class="la-stats">
-                <div class="la-stat">
-                    <div class="la-stat-label">TOTAL ACTIVITIES</div>
-                    <div class="la-stat-num" id="laTotal">—</div>
+            <div class="st-head">
+                <div>
+                    <div class="st-kicker">/ LEARNING ACTIVITY / P. 008</div>
+                    <h2 class="st-title">WHAT I <em>STUDY.</em></h2>
                 </div>
-                <div class="la-stat">
-                    <div class="la-stat-label">ACTIVE DAYS</div>
-                    <div class="la-stat-num" id="laDays">—</div>
+                <span class="st-year">2026</span>
+            </div>
+
+            <div class="st-heatmap">
+                <div class="st-months">
+                    <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+                    <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
                 </div>
-                <div class="la-stat">
-                    <div class="la-stat-label">CURRENT STREAK</div>
-                    <div class="la-stat-num" id="laStreak">—</div>
+                <div class="st-grid" id="stGrid" aria-label="2026 learning activity heatmap"></div>
+                <div class="st-legend">
+                    <span>Less</span>
+                    <i style="background:var(--st-h0)"></i><i style="background:var(--st-h1)"></i><i style="background:var(--st-h2)"></i><i style="background:var(--st-h3)"></i><i style="background:var(--st-h4)"></i>
+                    <span>More</span>
                 </div>
             </div>
 
-            <div id="laHeatmap"></div>
-
-            <div class="la-filter-row">
-                <button class="la-tab active" data-platform="all">All</button>
+            <div class="st-stats">
+                <div class="st-stat"><span class="st-num" id="stTotal">—</span><span class="st-label">TOTAL ACTIVITIES</span></div>
+                <div class="st-stat"><span class="st-num" id="stDays">—</span><span class="st-label">ACTIVE DAYS</span></div>
+                <div class="st-stat"><span class="st-num" id="stStreak">—</span><span class="st-label">CURRENT STREAK</span></div>
             </div>
 
-            <div class="la-list" id="laList"></div>
+            <div class="st-feed">
+                <div class="st-feed-track" id="stFeed"></div>
+            </div>
         </div>
     </section>
 

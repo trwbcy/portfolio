@@ -579,15 +579,7 @@ function initLearning() {
     buildLearningStats();
     buildHeatmap();
     initHeatmapTooltip();
-    renderLearningList('all');
-    document.querySelectorAll('.la-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.la-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            _laShowAll = false;
-            renderLearningList(tab.dataset.platform);
-        });
-    });
+    renderFeed();
 }
 
 function dateToStr(d) {
@@ -621,12 +613,15 @@ function buildLearningStats() {
         }
     }
 
-    const el1 = document.getElementById('laTotal');
-    const el2 = document.getElementById('laDays');
-    const el3 = document.getElementById('laStreak');
+    const el1 = document.getElementById('stTotal');
+    const el2 = document.getElementById('stDays');
+    const el3 = document.getElementById('stStreak');
     if (el1) el1.textContent = total;
     if (el2) el2.textContent = days;
-    if (el3) el3.innerHTML = streak + '<span class="la-stat-unit"> days</span>';
+    if (el3) {
+        el3.innerHTML = streak + '<small>days</small>';
+        el3.classList.toggle('st-num-zero', streak === 0);
+    }
 }
 
 // Heatmap data cache (built once, re-rendered on resize)
@@ -673,82 +668,36 @@ function buildHeatmap() {
     }
     _hmNumWeeks = _hmWeeks.length;
 
-    renderHeatmap();
-
-    // Re-render on window resize so cell size stays balanced at any zoom level
-    if (!window._hmResize) {
-        window._hmResize = _debounce(renderHeatmap, 120);
-        window.addEventListener('resize', window._hmResize);
-    }
-}
-
-function renderHeatmap() {
-    if (!_hmWeeks) return;
-    const el = document.getElementById('laHeatmap');
-    if (!el) return;
-
-    const GAP    = 3;
-    const DL_W   = 22; // day-label col (17px) + gap (5px)
-    const availW = (el.offsetWidth || el.parentElement.offsetWidth) - DL_W;
-    const cell   = Math.max(9, Math.floor((availW - (_hmNumWeeks - 1) * GAP) / _hmNumWeeks));
-    const gridW  = _hmNumWeeks * (cell + GAP) - GAP;
-
-    el.style.setProperty('--cell', cell + 'px');
-
-    const DLABELS = ['M','T','W','T','F','S','S'];
-
-    const monthsHtml = _hmMonthLabels.map(ml =>
-        `<span class="la-hm-month" style="left:${ml.weekIdx * (cell + GAP)}px">${ml.label}</span>`
-    ).join('');
-
-    let cellsHtml = '';
+    // Emit a column-major 7-row grid of cells; CSS (grid-auto-flow: column) lays
+    // out one week per column. Real daily counts map to intensity buckets 0–4.
+    const grid = document.getElementById('stGrid');
+    if (!grid) return;
+    let html = '';
     _hmWeeks.forEach(week => {
         week.forEach(day => {
-            if (!day) {
-                cellsHtml += `<div class="la-cell la-c0"></div>`;
-            } else if (day.future) {
-                cellsHtml += `<div class="la-cell la-c-fut" data-date="${day.date}" data-count="0"></div>`;
-            } else {
-                const lvl = day.count === 0 ? 0 : day.count === 1 ? 1 : day.count === 2 ? 2 : 3;
-                cellsHtml += `<div class="la-cell la-c${lvl}" data-date="${day.date}" data-count="${day.count}"></div>`;
-            }
+            if (!day) { html += '<div class="st-cell"></div>'; return; }
+            const lvl = day.future ? 0
+                : day.count === 0 ? 0
+                : day.count === 1 ? 1
+                : day.count <= 3 ? 2
+                : day.count <= 5 ? 3 : 4;
+            const lAttr = lvl > 0 ? ` data-l="${lvl}"` : '';
+            const dAttr = day.future ? '' : ` data-date="${day.date}" data-count="${day.count}"`;
+            html += `<div class="st-cell"${lAttr}${dAttr}></div>`;
         });
     });
-
-    el.style.position = 'relative';
-    el.innerHTML = `
-        <span class="la-hm-year">${_hmYear}</span>
-        <div class="la-hm-outer">
-            <div class="la-hm-inner">
-                <div class="la-hm-header">
-                    <div class="la-hm-day-spacer"></div>
-                    <div class="la-hm-months" style="width:${gridW}px">${monthsHtml}</div>
-                </div>
-                <div class="la-hm-body">
-                    <div class="la-hm-days">${DLABELS.map(l => `<div class="la-hm-dl">${l}</div>`).join('')}</div>
-                    <div class="la-hm-grid">${cellsHtml}</div>
-                </div>
-            </div>
-            <div class="la-legend">
-                <span class="la-legend-lbl">Less</span>
-                <div class="la-cell la-c0 la-legend-cell"></div>
-                <div class="la-cell la-c1 la-legend-cell"></div>
-                <div class="la-cell la-c2 la-legend-cell"></div>
-                <div class="la-cell la-c3 la-legend-cell"></div>
-                <span class="la-legend-lbl">More</span>
-            </div>
-        </div>`;
+    grid.innerHTML = html;
 }
 
 function initHeatmapTooltip() {
     const tt  = document.getElementById('laTT');
-    const el  = document.getElementById('laHeatmap');
+    const el  = document.getElementById('stGrid');
     if (!tt || !el) return;
 
     const MTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
     el.addEventListener('mousemove', e => {
-        const cell = e.target.closest('.la-cell[data-date]');
+        const cell = e.target.closest('.st-cell[data-date]');
         if (!cell) { tt.style.display = 'none'; return; }
 
         const [yr, mo, dy] = cell.dataset.date.split('-');
@@ -784,39 +733,40 @@ function _debounce(fn, ms) {
     return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
 }
 
-function renderLearningList(platform) {
-    const el = document.getElementById('laList');
+// Reconnaissance + Web Exploitation get the reference's explicit blue/red;
+// every other category uses the site's purple accent.
+function catColorClass(cat) {
+    if (cat === 'Reconnaissance') return 'recon';
+    if (cat === 'Web Exploitation') return 'web';
+    return 'neutral';
+}
+
+function escapeHtml(s) {
+    return String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+}
+
+// 30 most recent, rendered twice so the CSS marquee (-50%) loops seamlessly.
+function renderFeed() {
+    const el = document.getElementById('stFeed');
     if (!el) return;
 
-    const PCLASS = { LetsDefend: 'ld', TryHackMe: 'thm', Hacktrace: 'ht' };
-    const all    = platform === 'all' ? learningData : learningData.filter(a => a.platform === platform);
-    const sorted = [...all].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 30);
+    const sorted = [...learningData].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 30);
 
-    const itemsHtml = sorted.map(a => {
+    const rows = sorted.map(a => {
         const [, mm, dd] = a.date.split('-');
-        const pClass     = PCLASS[a.platform] || '';
+        const category   = a.category || 'Uncategorized';
         const isExternal = a.url && a.url !== '#';
-        const notesEl    = `<a href="${a.url || '#'}" class="la-notes"${isExternal ? ' target="_blank" rel="noopener"' : ''}>open notes ↗</a>`;
-        return `<div class="la-item">
-            <div class="la-date">${mm}-${dd}</div>
-            <div class="la-item-body">
-                <div class="la-title">${a.title}</div>
-                <div class="la-item-meta">
-                    <span class="la-course">${a.category || 'Uncategorized'}</span>
-                    <span class="la-platform-badge ${pClass}">${a.platform}</span>
-                    ${notesEl}
-                </div>
-            </div>
-        </div>`;
+        const attrs      = isExternal ? ' target="_blank" rel="noopener"' : '';
+        return `<a class="st-entry" href="${a.url || '#'}"${attrs}>
+            <span class="st-date">${mm}-${dd}</span>
+            <span class="st-etitle">${escapeHtml(a.title)}</span>
+            <span class="st-cat st-cat-${catColorClass(category)}"><i></i>${escapeHtml(category)}</span>
+            <span class="st-link">open notes ↗</span>
+        </a>`;
     }).join('');
 
-    const inner = document.createElement('div');
-    inner.className = 'la-list-inner';
-    inner.innerHTML = itemsHtml + itemsHtml;
-    inner.style.setProperty('--la-dur', Math.max(12, sorted.length * 2.5) + 's');
-
-    el.innerHTML = '';
-    el.appendChild(inner);
+    el.innerHTML = rows + rows;
+    el.style.setProperty('--st-dur', Math.max(24, sorted.length * 2.2) + 's');
 }
 
 // ── RENDER CTF ─────────────────────────────────────────────────────────
