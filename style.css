@@ -304,7 +304,7 @@ body {
     margin-bottom:48px; display:block;
 }
 
-.reveal, .section-tag, .career-item, .skill-row, .proj-item, .ctf-item {
+.reveal, .section-tag, .skill-row, .proj-item, .ctf-item {
     opacity: 1; 
     transform: none; 
     filter: none;
@@ -444,34 +444,110 @@ body {
     .hunt-statusbar { flex-direction: column; gap: 8px; align-items: flex-start; }
 }
 
-/* CAREER */
-.career-list { display:flex; flex-direction:column; }
-.career-item {
-    display:grid; grid-template-columns:140px 1fr;
-    gap:40px; padding:36px 0;
-    border-top:1px solid var(--border);
-    transition:background .2s;
-    align-items:start;
-}
-.career-item:last-child { border-bottom: none; }
-.career-item:hover { background:var(--purple-s); }
+/* ── WHAT I OPERATE — OPS TIMELINE ───────────────────── */
+.operate {
+    --op-display: 'Anton', sans-serif;
+    --op-body:    'Space Grotesk', sans-serif;
+    --op-text:      oklch(0.90 0.008 300);
+    --op-text-mut:  oklch(0.50 0.01 300);
+    --op-purple:        oklch(0.65 0.16 300);
+    --op-purple-title:  oklch(0.78 0.15 300);
+    --op-purple-bright: oklch(0.72 0.17 300);
+    --op-purple-soft:   oklch(0.84 0.10 300);
+    --op-red:        oklch(0.70 0.16 25);
+    --op-red-title:  oklch(0.72 0.16 25);
+    --op-red-soft:   oklch(0.82 0.12 25);
+    --op-neutral:    oklch(0.50 0.02 300);
+    --op-foundation: oklch(0.86 0.008 300);
+    --op-spine:      oklch(0.30 0.03 300);
 
-.career-meta { display:flex; flex-direction:column; gap:8px; padding-top:4px; }
-.career-badge { font:.6rem/1 var(--mono); letter-spacing:.14em; }
-.badge-purple { color:var(--purple); }
-.badge-red    { color:var(--red); }
-.badge-muted  { color:var(--dim); }
-.career-date  { font:.65rem/1 var(--mono); color:var(--dim); }
-
-.career-role  { font:400 2rem/1 var(--display); letter-spacing:-.01em; color:var(--white); margin-bottom:4px; }
-.career-current .career-role { color:var(--purple); }
-.career-red .career-role     { color:var(--red); }
-.career-company { font:.72rem/1 var(--mono); color:var(--dim); margin-bottom:14px; }
-.career-details p {
-    font:.76rem/1.65 var(--mono); color:var(--white); margin-bottom:8px;
-    white-space: nowrap;
+    position: relative; z-index: 2;
+    overflow: hidden;
+    font-family: var(--op-body);
+    color: var(--op-text);
+    background: oklch(0.09 0.01 300);
+    padding: 80px 6% 88px;
 }
-.career-details strong { color:var(--purple); }
+.op-inner { max-width: 1320px; margin: 0 auto; }
+.op-kicker { font-size: 11px; letter-spacing: .22em; color: var(--op-purple); }
+.op-title {
+    font: 400 clamp(52px, 6vw, 100px)/0.9 var(--op-display);
+    margin: 18px 0 0;
+}
+.op-title em { font-style: normal; color: var(--op-purple-bright); }
+.op-list { margin-top: 56px; }
+
+/* role row */
+.op-role { display: grid; grid-template-columns: 170px 46px 1fr; }
+.op-period { padding-top: 4px; display: flex; flex-direction: column; gap: 6px; }
+.op-phase { font-size: 11px; letter-spacing: .18em; }
+.op-dates { font-size: 12px; letter-spacing: .06em; color: var(--op-text-mut); }
+
+/* timeline spine + node */
+.op-spine { position: relative; display: flex; justify-content: center; }
+.op-spine .op-line { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--op-spine); }
+.op-spine .op-node {
+    position: absolute; top: 6px; width: 13px; height: 13px; border-radius: 999px;
+    border: 2px solid oklch(0.09 0.01 300);
+}
+/* last role: spine stops at the node instead of running full height */
+.op-role:last-child .op-spine .op-line { bottom: auto; height: 6px; }
+
+.op-body { padding: 0 0 48px; }
+.op-role:last-child .op-body { padding-bottom: 0; }
+.op-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.op-name { font: 400 clamp(26px, 2.6vw, 36px)/1.05 var(--op-display); }
+.op-tag  { font-size: 10px; letter-spacing: .16em; border: 1px solid currentColor; border-radius: 999px; padding: 4px 11px; }
+.op-org  { font-size: 13px; letter-spacing: .04em; margin-top: 8px; }
+
+.op-points { display: flex; flex-direction: column; gap: 11px; margin-top: 20px; font-size: 14px; line-height: 1.6; color: oklch(0.70 0.008 300); }
+.op-point { display: flex; gap: 12px; }
+.op-mark { flex-shrink: 0; }
+.op-point b { font-weight: 400; }
+
+.op-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+.op-chip { font-size: 11px; letter-spacing: .08em; border-radius: 6px; padding: 6px 11px; border: 1px solid; }
+
+/* DEFENSE (purple) */
+.op-role-defense .op-phase { color: var(--op-purple-bright); }
+.op-role-defense .op-spine .op-node { background: var(--op-purple-bright); box-shadow: 0 0 12px var(--op-purple-bright); }
+.op-role-defense .op-name { color: var(--op-purple-title); }
+.op-role-defense .op-tag  { color: var(--op-purple-bright); border-color: oklch(0.6 0.12 300 / 0.5); }
+.op-role-defense .op-org  { color: oklch(0.58 0.04 300); }
+.op-role-defense .op-mark { color: var(--op-purple-bright); }
+.op-role-defense .op-point b { color: var(--op-purple-soft); }
+.op-role-defense .op-chip { color: oklch(0.82 0.1 300); background: oklch(0.72 0.17 300 / 0.12); border-color: oklch(0.6 0.12 300 / 0.35); }
+
+/* OFFENSE (red) */
+.op-role-offense .op-phase { color: var(--op-red); }
+.op-role-offense .op-spine .op-node { background: var(--op-red); box-shadow: 0 0 12px var(--op-red); }
+.op-role-offense .op-name { color: var(--op-red-title); }
+.op-role-offense .op-tag  { color: var(--op-red); border-color: oklch(0.6 0.12 25 / 0.5); }
+.op-role-offense .op-org  { color: oklch(0.58 0.05 25); }
+.op-role-offense .op-mark { color: var(--op-red); }
+.op-role-offense .op-point b { color: var(--op-red-soft); }
+.op-role-offense .op-chip { color: oklch(0.82 0.11 25); background: oklch(0.7 0.16 25 / 0.12); border-color: oklch(0.6 0.12 25 / 0.35); }
+
+/* FOUNDATION (neutral) */
+.op-role-foundation .op-phase { color: oklch(0.62 0.01 300); }
+.op-role-foundation .op-spine .op-node { background: var(--op-neutral); }
+.op-role-foundation .op-name { color: var(--op-foundation); }
+.op-role-foundation .op-tag  { color: oklch(0.6 0.01 300); border-color: oklch(0.45 0.01 300 / 0.6); }
+.op-role-foundation .op-org  { color: var(--op-text-mut); }
+.op-role-foundation .op-mark { color: oklch(0.6 0.02 300); }
+.op-role-foundation .op-point b { color: var(--op-foundation); }
+.op-role-foundation .op-chip { color: oklch(0.72 0.008 300); background: oklch(0.5 0.01 300 / 0.12); border-color: oklch(0.4 0.01 300 / 0.5); }
+
+@media (max-width: 720px) {
+    .op-role { grid-template-columns: 26px 1fr; }
+    .op-period {
+        grid-column: 2; flex-direction: row; gap: 12px; align-items: baseline;
+        padding-top: 0; margin-bottom: 14px;
+    }
+    .op-spine { grid-row: 1 / 4; grid-column: 1; }
+    .op-head { grid-column: 2; }
+    .op-body { grid-column: 2; }
+}
 
 /* SKILLS */
 .skills-split {
@@ -484,6 +560,7 @@ body {
 .skills-vdivider { background:rgba(255,255,255,.06); align-self:stretch; }
 .skill-col-label { font:.65rem/1 var(--mono); letter-spacing:.14em; margin-bottom:16px; display:block; }
 .badge-cyan { color:var(--cyan); }
+.badge-red { color:var(--red); }
 .heading-cyan { color:var(--cyan); text-shadow:0 0 30px rgba(0,229,255,.2); }
 .heading-red  { color:var(--red);  text-shadow:0 0 30px rgba(255,34,68,.2); }
 .sk-cyan { color:var(--cyan) !important; }
@@ -867,8 +944,6 @@ body {
     .skills-split { grid-template-columns:1fr; }
     .skills-vdivider { display:none; }
     .skills-col { padding:0; }
-    .career-item { grid-template-columns:1fr; gap:10px; }
-    .career-details p { white-space:normal; overflow-wrap:break-word; word-break:break-word; }
     html { cursor:auto; }
     .cursor-dot,.cursor-ring { display:none; }
 
