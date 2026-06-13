@@ -56,7 +56,7 @@ function setPurpleFavicon() {
     img.onload = () => {
         ctx.drawImage(img, 0, 0, 64, 64);
         ctx.globalCompositeOperation = 'source-in';
-        ctx.fillStyle = '#9d00ff';
+        ctx.fillStyle = '#BD86F5';
         ctx.fillRect(0, 0, 64, 64);
         const link = document.querySelector("link[rel='icon']");
         if (link) link.href = canvas.toDataURL('image/png');
@@ -279,7 +279,7 @@ function initCursor() {
             isHovering = false;
             ring.style.width  = '30px';
             ring.style.height = '30px';
-            ring.style.borderColor = 'rgba(157,0,255,.45)';
+            ring.style.borderColor = 'oklch(0.72 0.17 300 / 0.45)';
         }
     });
 
@@ -454,7 +454,7 @@ function initTyping() {
         'Break It. Detect It. Write It Up.',
         'Red by Curiosity, Blue by Duty',
         'Threat Hunter',
-        '500+ Days. Still Grinding.',
+        'Logs Never Lie.',
         'Built in the Lab, Proven in Prod',
     ];
     let i = 0, j = 0, del = false;
