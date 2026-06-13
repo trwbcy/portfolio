@@ -16,18 +16,6 @@ const projectsData = [
     { title: "Building SIEM Lab with Splunk", desc: "First blue team project — building a functional SIEM environment using Splunk Free Edition from scratch.", tags: ["Splunk", "SIEM", "Blue Team"], type: "blue", url: "https://nickel-bedbug-8cc.notion.site/From-Zero-to-SOC-Hero-Building-My-First-SIEM-Lab-27d416e03a1380ba9aded15f489ca23b", image: "img/image (2).png" }
 ];
 
-const certsData = [
-    { name: "Certified Blue Team Practitioner", issuer: "The SecOps Group", year: "2026", status: "Merit Graduate", url: "https://drive.google.com/file/d/1-Bb-n_D1DiiYCAYBilZkvrQpXZ2LbmRT/view?usp=sharing" },
-    { name: "Certified Network Security Practitioner", issuer: "The SecOps Group", year: "2025", status: "Merit Graduate", url: "https://drive.google.com/file/d/1n3vkEEz4tGQjkw7M0-AJ-gqs6zbWM8jx/view" },
-    { name: "Certified API Security Practitioner", issuer: "APISEC University", year: "2025", status: "", url: "https://drive.google.com/file/d/1CRK94BK63ABk-ajIGjfTTr02uAQHlVX0/view" },
-    { name: "Red Team Internship Certification", issuer: "HackSecure", year: "2025", status: "", url: "https://drive.google.com/file/d/1niU5gbyWGn9RKDlraltHsQJB2qQcSuJt/view" },
-    { name: "Advent of Cyber", issuer: "TryHackMe", year: "2023, 2025", status: "", url: "https://drive.google.com/file/d/14oS0UMAs2i_Tpg1qxue56YKdQgNQV7ED/view" },
-    { name: "Practical Ethical Hacking", issuer: "TCM Security", year: "2024", status: "", url: "https://drive.google.com/file/d/1RlF6sWO6n0KrmY_BC-iOStDghOD3elSQ/view" },
-    { name: "Practical Web App Penetration Testing", issuer: "TCM Security", year: "2024", status: "", url: "https://drive.google.com/file/d/1jd3WiqBs_8ZlITE3XoE-h6NCZ5X1Ywks/view" },
-    { name: "Practical Web Hacking", issuer: "TCM Security", year: "2024", status: "", url: "https://drive.google.com/file/d/1mYYeCWeE8bAZDGc9m6f2L1qKh1MA40up/view" },
-    { name: "IT Support Specialist", issuer: "Google", year: "2023", status: "", url: "https://drive.google.com/file/d/1RB5ehE_-DovC1sgoII2FhV55qoF9Zdgr/view" }
-];
-
 // ── LEARNING ACTIVITY DATA ───────────────────────────────────────────
 // Single source of truth: study/data/entries.json — edit that file to add entries.
 let learningData = [];
@@ -42,12 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initCursor();
     initMobileMenu();
     initTyping();
-    initManifestoBg();
 
     // Render HTML aja, animasinya ditunda sampai loading kelar
     renderProjects('all');
 
-    renderCerts();
     fetch('study/data/entries.json')
         .then(r => r.json())
         .then(data => { learningData = data; initLearning(); })
@@ -349,31 +335,32 @@ function initScrollReveal() {
     });
 }
 
-// ── 6. MANIFESTO ─────────────────
+// ── 6. MANIFESTO — FREEDOM (scroll-lit) ─────────────────
 function initManifestoScroll() {
     const section = document.querySelector('.manifesto');
-    const words   = [...document.querySelectorAll('.mw')];
+    const words   = [...document.querySelectorAll('#manifestoText .mw')];
+    const closer  = document.getElementById('manifestoCloser');
     if (!section || !words.length) return;
 
-    words.forEach(w => { w.style.transition = 'none'; w.classList.remove('lit'); });
-    const scrollLength = words.length * 110;
+    const WORDS_END = 0.88; // all words lit by 88% of the runway; closer pops after
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        words.forEach(w => w.classList.add('lit'));
+        if (closer) closer.classList.add('lit');
+        return;
+    }
 
     ScrollTrigger.create({
         trigger: section,
         start:   'top top',
-        end:     `+=${scrollLength}`,
+        // runway ≈ 320vh wrapper di reference (260vh mobile) minus viewport yang ke-pin
+        end:     () => `+=${window.innerHeight * ((window.innerWidth < 700 ? 2.6 : 3.2) - 1)}`,
         pin:     true,
-        scrub:   0.6,
+        invalidateOnRefresh: true,
         onUpdate(self) {
-            const litCount = Math.round(self.progress * words.length);
-            words.forEach((w, i) => {
-                const should = i < litCount;
-                if (should === w.classList.contains('lit')) return;
-                w.style.transition = should
-                    ? 'opacity .35s ease, color .35s ease, text-shadow .35s ease'
-                    : 'opacity .25s ease, color .25s ease, text-shadow .25s ease';
-                w.classList.toggle('lit', should);
-            });
+            const litCount = Math.floor(Math.min(1, self.progress / WORDS_END) * words.length);
+            words.forEach((w, i) => w.classList.toggle('lit', i < litCount));
+            if (closer) closer.classList.toggle('lit', self.progress > WORDS_END);
         }
     });
 }
@@ -585,19 +572,6 @@ function setupProjectsScroll() {
         }
         ScrollTrigger.refresh();
     }, 50);
-}
-
-// ── RENDER CERTS ───────────────────────────────────────────────────────
-function renderCerts() {
-    const grid = document.getElementById('certsGrid');
-    if (!grid) return;
-    grid.innerHTML = certsData.map(c => `
-        <a href="${c.url}" target="_blank" class="cert-item">
-            ${c.status ? `<div class="cert-status">${c.status}</div>` : ''}
-            <div class="cert-name">${c.name}</div>
-            <div class="cert-meta">${c.issuer} · ${c.year}</div>
-        </a>
-    `).join('');
 }
 
 // ── LEARNING ACTIVITY ──────────────────────────────────────────────────
@@ -864,35 +838,3 @@ function searchCTF() {
     ));
 }
 
-// ── MANIFESTO BG WORDS ────────────────────────────────
-function initManifestoBg() {
-    const container = document.querySelector('.manifesto-bg-text');
-    if (!container) return;
-
-    const words = [
-        'THREAT','HUNT','DETECT','RESPOND','MITIGATE','ANALYZE',
-        'BREACH','EXPLOIT','PATCH','MONITOR','ALERT','TRIAGE',
-        'FORENSICS','PAYLOAD','ARTIFACT','PIVOT','LATERAL',
-        'PRIVILEGE','ESCALATE','PERSIST','EVADE','INJECT',
-        'ENUMERATE','RECON','EXFIL','C2','SIEM','SOAR','XDR',
-        'EDR','NDR','SOC','RED','BLUE','PURPLE','PENTEST',
-        'OSINT','OPSEC','MALWARE','RANSOMWARE','ROOTKIT',
-        'ZERO-DAY','CVE','CVSS','ATT&CK','KILL CHAIN',
-        'IOC','IOA','TTP','SIGMA','YARA','SURICATA',
-        'BLOODHOUND','MIMIKATZ','IMPACKET','SLIVER','COBALT',
-        'BYPASS','LOLBin','FILELESS','ETW','AMSI','DEFENDER',
-        'QRADAR','WAZUH','SPLUNK','CORTEX','THEHIVE',
-        'CORRELATION','BASELINE','ANOMALY','FALSE POSITIVE',
-        'INCIDENT','CONTAINMENT','ERADICATION','RECOVERY',
-        'HARDENING','POSTURE','COMPLIANCE','AUDIT','LOG',
-    ];
-
-    const count = 200;
-    let html = '';
-    for (let i = 0; i < count; i++) {
-        const w = words[Math.floor(Math.random() * words.length)];
-        const op = (0.025 + Math.random() * 0.045).toFixed(3);
-        html += `<span class="mbg" style="opacity:${op}">${w}</span>`;
-    }
-    container.innerHTML = html;
-}
