@@ -4227,5 +4227,256 @@
     ],
     "summary": "Windows Server 2019 box NightForge dari Hacktrace (Easy). Attack chain: SMB guest access → PUBLIC share enumerate → printer_maintenance.yaml mengandung Base64-encoded credentials → SSH sebagai user paranoia untuk user flag → privilege escalation via PrintNightmare (CVE-2021-1675) menggunakan Invoke-Nightmare PowerShell PoC → create akun Administrator baru untuk root flag. Key hints: folder C:\\printshare non-standar dan file qc berisi 'spooler' langsung point ke Print Spooler exploitation path.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-redshock-jwt-crack-forge",
+    "date": "2026-06-14",
+    "title": "Redshock — JWT Cracking & Forging: HS256 Secret Crack via Binary Strings Wordlist & Role Escalation",
+    "platform": "Hacktrace Ranges",
+    "category": "Cryptography",
+    "tags": [
+      "jwt",
+      "hs256",
+      "john-the-ripper",
+      "token-forging",
+      "privilege-escalation"
+    ],
+    "concepts": [
+      "JWT HS256 Cracking: cracking signing secret JWT menggunakan John the Ripper dengan wordlist dari binary strings",
+      "JWT Forging: re-sign token di jwt.io untuk mengubah claim role dari staff ke admin setelah secret diketahui",
+      "JWT Security Model: JWT hanya seaman secret signing-nya; hardcoded secret di binary = game over"
+    ],
+    "terms": [
+      "JWT",
+      "HS256",
+      "John the Ripper",
+      "jwt.io",
+      "signing secret",
+      "role claim",
+      "staff",
+      "admin"
+    ],
+    "commands": [
+      "strings -6 library-app > wordlist.txt",
+      "echo 'eyJhbGciOiJIUzI1Ni... ' > jwt.txt",
+      "john jwt.txt --wordlist=wordlist.txt",
+      "john jwt.txt --show"
+    ],
+    "problems": [
+      "Identifikasi algoritma signing JWT (HS256) dan sumber wordlist untuk brute-force secret",
+      "Crack signing secret dari JWT menggunakan strings binary sebagai wordlist",
+      "Forge ulang token dengan role admin tanpa invalidasi signature"
+    ],
+    "summary": "Bagian dari box Redshock (Moderate, Linux, Hacktrace). Setelah binary backend bocor lewat FTP, JWT HS256 secret di-crack pakai John the Ripper dengan wordlist hasil 'strings -6' dari binary. Secret yang ketemu dipakai untuk forge ulang token di jwt.io, mengubah claim role dari staff jadi admin. Pelajaran: JWT cuma seaman secret signing-nya — hardcoded secret di binary bikin seluruh skema auth runtuh.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-redshock-go-binary-re",
+    "date": "2026-06-14",
+    "title": "Redshock — Go Binary Reverse Engineering: Locating JWT Signing Function & HS256 Confirmation in Ghidra",
+    "platform": "Hacktrace Ranges",
+    "category": "Reverse Engineering",
+    "tags": [
+      "ghidra",
+      "golang",
+      "reverse-engineering",
+      "elf",
+      "jwt",
+      "strings"
+    ],
+    "concepts": [
+      "Go Binary Analysis: analisis binary Go (ELF 64-bit) di Ghidra untuk menemukan fungsi JWT signing dan mengonfirmasi algoritma HS256",
+      "Strings as Wordlist: teknik 'strings -6' untuk extract readable strings dari binary, sekaligus dipakai sebagai wordlist brute-force secret",
+      "Static Analysis Workflow: navigasi fungsi di Ghidra, identifikasi hardcoded secret dan crypto routine pada binary terkompilasi"
+    ],
+    "terms": [
+      "Ghidra",
+      "Go",
+      "Golang",
+      "ELF 64-bit",
+      "strings",
+      "HS256",
+      "JWT signing",
+      "static analysis"
+    ],
+    "commands": [
+      "file library-app",
+      "strings -6 library-app",
+      "strings -6 library-app | grep -i secret"
+    ],
+    "problems": [
+      "Analisis binary Go terkompilasi (ELF 64-bit) untuk menemukan logika signing JWT",
+      "Konfirmasi algoritma HS256 dan lokasi hardcoded secret via static analysis di Ghidra"
+    ],
+    "summary": "Bagian dari box Redshock (Moderate, Linux, Hacktrace). Binary backend (library-app) yang didapat dari FTP dianalisis di Ghidra — binary Go ELF 64-bit. Fungsi signing JWT ditemukan dan algoritma dikonfirmasi HS256. Teknik 'strings -6' dipakai untuk extract readable strings dari binary, yang sekaligus jadi wordlist untuk brute-force signing secret. Pelajaran: binary terkompilasi tetap membocorkan rahasia lewat strings dan static analysis.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-redshock-suid-bof",
+    "date": "2026-06-14",
+    "title": "Redshock — Stack Buffer Overflow: SUID Binary strcpy Exploitation to Root via ROP Chaining",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "buffer-overflow",
+      "suid",
+      "pwntools",
+      "rop",
+      "gdb-gef",
+      "ropper",
+      "strcpy"
+    ],
+    "concepts": [
+      "Stack-Based Buffer Overflow: eksploitasi classic stack overflow pada SUID binary yang pakai strcpy tanpa bound checking",
+      "Offset Discovery: cari offset EIP control dengan GDB/GEF pattern create & pattern search (offset 264)",
+      "ROP Gadget Hunting: cari gadget dengan Ropper (add esp, 8; pop ebx; ret) untuk stack fix-up/chaining",
+      "Exploit Development: tulis exploit dengan pwntools (NOP sled + ret chaining + ROP gadget); binary memanggil setuid(0) sebelum overflow sehingga shell didapat sebagai root"
+    ],
+    "terms": [
+      "buffer overflow",
+      "SUID",
+      "strcpy",
+      "GDB",
+      "GEF",
+      "pattern create",
+      "pattern search",
+      "offset 264",
+      "Ropper",
+      "ROP gadget",
+      "pwntools",
+      "NOP sled",
+      "setuid(0)"
+    ],
+    "commands": [
+      "checksec library-helper",
+      "gdb-gef ./library-helper",
+      "pattern create 400",
+      "pattern search 0x6161616b",
+      "ropper --file library-helper --search 'add esp, 8'",
+      "python3 exploit.py"
+    ],
+    "problems": [
+      "Identifikasi vulnerable function (strcpy tanpa bound check) di Ghidra",
+      "Tentukan offset kontrol EIP dengan GDB/GEF pattern create/search (offset 264)",
+      "Cari ROP gadget yang sesuai dengan Ropper untuk stack alignment",
+      "Bangun exploit pwntools (NOP sled + ret + ROP gadget) untuk mendapatkan root shell via setuid(0)"
+    ],
+    "summary": "Bagian dari box Redshock (Moderate, Linux, Hacktrace). Privilege escalation ke root lewat classic stack-based buffer overflow pada SUID binary yang memakai strcpy tanpa bound checking. Proses: identifikasi vulnerable function di Ghidra → cari offset dengan GDB/GEF pattern create/search (offset 264) → cari ROP gadget dengan Ropper (add esp, 8; pop ebx; ret) → tulis exploit pwntools (NOP sled + ret chaining + ROP gadget). Karena binary memanggil setuid(0) sebelum overflow, shell yang didapat langsung sebagai root.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-redshock-auth-bypass-endpoint",
+    "date": "2026-06-14",
+    "title": "Redshock — Web Auth Bypass: Unprotected /register Endpoint & Token-Only Authorization",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "web",
+      "auth-bypass",
+      "rest-api",
+      "jwt",
+      "broken-access-control"
+    ],
+    "concepts": [
+      "Unprotected Endpoint Discovery: menemukan endpoint /register yang tidak di-protect di backend API (port 8080)",
+      "Token-Only Authorization Flaw: authorization hanya bergantung pada claim role di JWT tanpa validasi server-side",
+      "Privilege Escalation Chain: register user staff → dapat JWT token → escalate ke admin lewat JWT forging"
+    ],
+    "terms": [
+      "/register",
+      "REST API",
+      "port 8080",
+      "JWT",
+      "role claim",
+      "staff",
+      "admin",
+      "broken access control"
+    ],
+    "commands": [
+      "curl -X POST http://TARGET:8080/register -H 'Content-Type: application/json' -d '{\"username\":\"hacker\",\"password\":\"Password123\"}'",
+      "curl -X POST http://TARGET:8080/login -d '{\"username\":\"hacker\",\"password\":\"Password123\"}'",
+      "curl -H 'Authorization: Bearer FORGED_JWT' http://TARGET:8080/admin"
+    ],
+    "problems": [
+      "Identifikasi endpoint backend yang tidak di-protect (/register di port 8080)",
+      "Bypass autentikasi dengan register user baru lalu manfaatkan otorisasi berbasis token",
+      "Escalate dari role staff ke admin tanpa validasi server-side"
+    ],
+    "summary": "Bagian dari box Redshock (Moderate, Linux, Hacktrace). Backend API di port 8080 punya endpoint /register yang tidak di-protect — register user baru langsung dapat JWT token dengan role staff. Karena authorization cuma bergantung pada claim role di dalam token tanpa validasi server-side, role bisa di-escalate ke admin lewat JWT forging. Pelajaran: jangan pernah percaya claim di token sebagai satu-satunya sumber otorisasi.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-redshock-ftp-anon-leak",
+    "date": "2026-06-14",
+    "title": "Redshock — FTP Anonymous Enumeration: Backend Binary Leak as Attack Chain Entry Point",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "ftp",
+      "anonymous-login",
+      "enumeration",
+      "data-leak",
+      "initial-access"
+    ],
+    "concepts": [
+      "FTP Anonymous Login: eksploitasi anonymous login untuk download seluruh backup files termasuk binary backend (library-app)",
+      "Misconfiguration as Entry Point: satu misconfig FTP jadi awal dari full attack chain (binary leak → secret extraction → JWT forge → credential leak → SSH → root)"
+    ],
+    "terms": [
+      "FTP",
+      "anonymous login",
+      "library-app",
+      "backup files",
+      "binary leak",
+      "initial access"
+    ],
+    "commands": [
+      "nmap -sV -p21 TARGET",
+      "ftp TARGET",
+      "wget -r ftp://anonymous:anonymous@TARGET/"
+    ],
+    "problems": [
+      "Enumerasi service FTP dan deteksi anonymous login yang aktif",
+      "Download seluruh backup files & binary backend sebagai pijakan awal attack chain"
+    ],
+    "summary": "Bagian dari box Redshock (Moderate, Linux, Hacktrace). Initial access lewat FTP anonymous login yang masih aktif — seluruh backup files termasuk binary backend (library-app) bisa di-download. Satu misconfiguration FTP ini jadi awal dari full attack chain: binary leak → secret extraction → JWT forge → credential leak → SSH → root. Pelajaran: anonymous FTP yang membocorkan source/binary backend sering jadi titik awal kompromi total.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-redshock-kill-chain",
+    "date": "2026-06-14",
+    "title": "Redshock — Vulnerability Chaining: FTP Anon to Root Full Kill Chain (Moderate, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "kill-chain",
+      "vulnerability-chaining",
+      "privilege-escalation",
+      "methodology",
+      "linux"
+    ],
+    "concepts": [
+      "Vulnerability Chaining: merangkai multiple low-to-moderate vulnerabilities menjadi full system compromise",
+      "Full Kill Chain: FTP anonymous → Go binary RE → JWT secret crack → auth bypass → credential leak → SSH foothold → SUID buffer overflow → root",
+      "Severity Assessment: severity assessment harus mempertimbangkan chaining potential, bukan hanya individual risk"
+    ],
+    "terms": [
+      "kill chain",
+      "vulnerability chaining",
+      "FTP",
+      "JWT",
+      "SUID",
+      "buffer overflow",
+      "SSH",
+      "privilege escalation",
+      "Linux"
+    ],
+    "commands": [],
+    "problems": [
+      "Identifikasi keterhubungan antar-vulnerability untuk menyusun attack path end-to-end",
+      "Eskalasi dari low-severity FTP misconfig menjadi root compromise penuh"
+    ],
+    "summary": "Box Redshock (Moderate, Linux, 15pt, Hacktrace) — full kill chain. Merangkai beberapa kerentanan low-to-moderate menjadi kompromi sistem penuh: FTP anonymous → Go binary reverse engineering → JWT secret crack → web auth bypass → credential leak → SSH foothold → SUID stack buffer overflow → root. Pelajaran utama: penilaian severity harus mempertimbangkan potensi chaining antar-vuln, bukan cuma risiko masing-masing kerentanan secara terpisah.",
+    "url": ""
   }
 ]
