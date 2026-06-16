@@ -4536,5 +4536,59 @@
     "problems": [],
     "summary": "Prep work for next Friday's weekly presentation on OSINT. Placeholder entry to track the research/prep effort; will enrich concepts and terms as the deck develops.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-labyrinth",
+    "date": "2026-06-16",
+    "title": "Labyrinth",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "smb-enum",
+      "bruteforce",
+      "file-upload",
+      "phtml-bypass",
+      "credential-reuse",
+      "couchdb",
+      "cve-2023-2640",
+      "overlayfs",
+      "kernel-exploit"
+    ],
+    "concepts": [
+      "Recon: nmap full port scan (22, 80, 8080, 111, 139, 445)",
+      "SMB Enumeration: enumerasi SMB membocorkan username administr8",
+      "Initial Access: ffuf bruteforce login.php -> administr8:jellybean",
+      "RCE via File Upload: bypass filter ekstensi dengan .phtml via c0ntr01p4n31.php -> shell www-data",
+      "Lateral Movement: kredensial CouchDB di local.ini (sofa kuning) di-reuse untuk su ke azuki",
+      "Privilege Escalation: CVE-2023-2640 GameOver(lay) OverlayFS pada kernel 5.4.0-70 -> root"
+    ],
+    "terms": [
+      "SMB",
+      "ffuf",
+      "login.php",
+      "administr8",
+      ".phtml",
+      "c0ntr01p4n31.php",
+      "www-data",
+      "CouchDB",
+      "local.ini",
+      "azuki",
+      "CVE-2023-2640",
+      "GameOver(lay)",
+      "OverlayFS",
+      "kernel 5.4.0-70",
+      "T1595",
+      "T1087",
+      "T1110",
+      "T1505.003",
+      "T1059.004",
+      "T1552.001",
+      "T1078",
+      "T1068"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mesin Linux Hard. Enumerasi SMB membocorkan username administr8, dilanjutkan bruteforce login.php (ffuf) untuk password jellybean. Panel c0ntr01p4n31.php mengizinkan unggah berkas; bypass filter dengan ekstensi .phtml memberi RCE sebagai www-data. Kredensial CouchDB di local.ini (sofa kuning) dipakai ulang untuk su ke azuki. Privesc via CVE-2023-2640 GameOver(lay) pada kernel 5.4.0-70 untuk root.",
+    "url": ""
   }
 ]
