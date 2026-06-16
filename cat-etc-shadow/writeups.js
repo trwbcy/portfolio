@@ -35,6 +35,7 @@ const writeups = [
     { title: "Oblivion", type: "red", desc: "APK RE + AES SQLi + Wing FTP Lua Injection → Root", url: "https://drive.google.com/file/d/15DUQiZKhWZXaMsfrd4imKxKzkvIdIvsZ/view?usp=sharing" },
     { title: "NightForge", type: "red", desc: "SMB Guest Credential Leak + PrintNightmare (CVE-2021-1675) PrivEsc", url: "https://drive.google.com/file/d/1hS_sq4ej0_fj04NseNsC7ii4ESyrwq5t/view?usp=drive_link" },
     { title: "E-LEET", type: "red", desc: "wpDiscuz RCE (CVE-2020-24186) + Password Reuse → Root", url: "https://drive.google.com/file/d/1_jVqCQ-AAvr1zspGfVlTF0xt65RdW-15/view?usp=drive_link" },
+    { title: "Labyrinth", type: "red", desc: "SMB Enum + ffuf Login Bruteforce + .phtml Upload RCE + CVE-2023-2640 GameOver(lay) → Root", url: "https://drive.google.com/file/d/1Q-OTMlAo12EnVzO8DYZ0D15PgpmBXhws/view?usp=sharing" },
     { title: "Deviasi", type: "blue", desc: "Deep Log Analysis & IOCs", url: "https://nickel-bedbug-8cc.notion.site/Deviasi-Hacktrace-Ranges-2a0416e03a1380babf06e961fa506f1a" },
     { title: "Undercover", type: "blue", desc: "Binary Investigation APT", url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543" },
     { title: "BluuShell", type: "blue", desc: "Malicious DOCX Forensics", url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0" },
