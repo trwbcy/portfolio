@@ -4590,5 +4590,55 @@
     "problems": [],
     "summary": "Mesin Linux Hard. Enumerasi SMB membocorkan username administr8, dilanjutkan bruteforce login.php (ffuf) untuk password jellybean. Panel c0ntr01p4n31.php mengizinkan unggah berkas; bypass filter dengan ekstensi .phtml memberi RCE sebagai www-data. Kredensial CouchDB di local.ini (sofa kuning) dipakai ulang untuk su ke azuki. Privesc via CVE-2023-2640 GameOver(lay) pada kernel 5.4.0-70 untuk root.",
     "url": ""
+  },
+  {
+    "id": "build-studio-si",
+    "date": "2026-06-21",
+    "title": "Studio/SI — Membangun Workspace Kuliah UT (Full-Stack + Supabase)",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "web-dev",
+      "javascript",
+      "supabase",
+      "postgres",
+      "auth",
+      "rls",
+      "github-pages",
+      "frontend"
+    ],
+    "concepts": [
+      "Arsitektur frontend modular vanilla JS (store/ui/app dipisah by concern)",
+      "Integrasi Supabase: Postgres + Auth + Row Level Security",
+      "Desain data-layer sync-ready (adapter lokal & cloud satu antarmuka)",
+      "Row Level Security policy agar tiap user hanya akses datanya sendiri",
+      "Deploy situs statis ke GitHub Pages",
+      "Desain editorial Swiss/brutalist dengan CSS tokens",
+      "Animasi fade transisi + reveal on-scroll (IntersectionObserver)",
+      "SVG timeline generatif untuk alur registrasi & kalender akademik"
+    ],
+    "terms": [
+      "Supabase",
+      "Postgres",
+      "Row Level Security",
+      "RLS",
+      "anon key",
+      "service_role key",
+      "Auth",
+      "localStorage",
+      "GitHub Pages",
+      "IntersectionObserver",
+      "CSS tokens",
+      "SVG"
+    ],
+    "commands": [],
+    "problems": [
+      "Data dummy muncul terus: akar masalah urutan deploy vs clean DB vs cache localStorage",
+      "Debugging dua-lapis penyimpanan (localStorage vs Supabase) per-domain",
+      "GitHub Pages flatten struktur folder saat upload manual",
+      "Membedakan anon key (aman publik, dilindungi RLS) dari service_role key"
+    ],
+    "summary": "Membangun Studio/SI dari nol sampai live: workspace kuliah editorial untuk UT dengan CRUD multi-semester, riwayat lintas semester, kalkulator biaya, SVG timeline, dan mantra harian. Backend Supabase (Postgres + Auth + RLS) dengan arsitektur sync-ready. Deploy ke GitHub Pages. Banyak waktu dihabiskan debugging sistem dua-lapis penyimpanan dan memahami model keamanan anon key vs RLS — pelajaran penting: jangan menebak, lihat data langsung.",
+    "url": "https://trwbcy.github.io/university/"
   }
 ]
