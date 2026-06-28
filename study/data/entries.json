@@ -4695,5 +4695,60 @@
     ],
     "summary": "Mesin Windows Moderate. Apache Tomcat 9.0.17 CGI Servlet enableCmdLineArguments RCE (CVE-2019-0232) dieksploitasi manual via curl setelah modul Metasploit terbukti flaky. Stdout quirk pada cmd.exe/powershell.exe direct invocation di-workaround dengan PowerShell IEX download Nishang Invoke-PowerShellTcp untuk AV bypass. Eskalasi via SeImpersonatePrivilege menggunakan PrintSpoofer dengan cmd /c wrapper untuk fix nested quoting error CreateProcessAsUser. User dan root flag captured.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-river",
+    "date": "2026-06-27",
+    "title": "River: Gitea Default Credentials + CVE-2020-14144 Git Hooks RCE, Chisel Pivot to Webmin Command Shell Root (Easy, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "default-credentials",
+      "gitea",
+      "cve-2020-14144",
+      "git-hooks-rce",
+      "metasploit",
+      "pivoting",
+      "chisel",
+      "reverse-tunnel",
+      "webmin",
+      "command-shell-abuse",
+      "cve-2022-0824",
+      "linux",
+      "easy"
+    ],
+    "concepts": [
+      "Initial access via Gitea default credentials",
+      "Authenticated RCE on Gitea through Git Hooks (CVE-2020-14144) using Metasploit exploit/multi/http/gitea_git_hooks_rce",
+      "Pivoting into the internal network with a chisel reverse TCP tunnel to reach an internal Webmin instance",
+      "Privilege escalation to root through the Webmin Command Shell module",
+      "False positive analysis of public exploit 50809.py (CVE-2022-0824)"
+    ],
+    "terms": [
+      "Gitea",
+      "CVE-2020-14144",
+      "Git Hooks",
+      "exploit/multi/http/gitea_git_hooks_rce",
+      "chisel",
+      "reverse TCP tunnel",
+      "Webmin",
+      "Command Shell module",
+      "CVE-2022-0824",
+      "50809.py",
+      "download_remote_url",
+      "exec_revshell"
+    ],
+    "commands": [
+      "nmap -sVC --min-rate 1000 -p- -Pn -T4 -oN nmap-river.log river.htr",
+      "feroxbuster -u http://river.htr -x php,txt,git",
+      "msfconsole -q -x 'use exploit/multi/http/gitea_git_hooks_rce'",
+      "chisel server -p <port> --reverse   #   chisel client <attacker-ip>:<port> R:socks",
+      "Webmin > Others > Command Shell module (execute as root)"
+    ],
+    "problems": [
+      "Public exploit 50809.py for CVE-2022-0824 produced a false positive. download_remote_url does not validate the HTTP status code, and exec_revshell interprets a connection timeout as a success indicator. A stale CGI file left from a previous session on the target made the exploit appear to succeed when it did not."
+    ],
+    "summary": "Easy Linux box (Debian 12). Initial access via Gitea default credentials, then authenticated RCE through Git Hooks (CVE-2020-14144) using the Metasploit gitea_git_hooks_rce module. Pivoted into the internal network with a chisel reverse tunnel to reach an internal Webmin instance, then escalated to root through the Webmin Command Shell module. Includes false positive analysis of the public exploit 50809.py (CVE-2022-0824), where missing HTTP status validation and timeout-as-success logic produced a misleading result against a stale CGI file.",
+    "url": ""
   }
 ]
