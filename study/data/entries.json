@@ -5015,5 +5015,246 @@
     ],
     "summary": "Tool one-stop buat ACL abuse di AD, lebih reliable dari rpcclient/net rpc. Wajib di toolkit setelah dapet creds AD user.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-ragnarok",
+    "date": "2026-06-30",
+    "title": "Hacktrace Ragnarok",
+    "platform": "Hacktrace",
+    "category": "CTF / Boot2Root",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "active-directory",
+      "windows-server-2022",
+      "kerberos",
+      "asreproast",
+      "constrained-delegation",
+      "password-reuse"
+    ],
+    "concepts": [
+      "9 stage attack chain Windows Server 2022 DC dengan multiple dead end",
+      "Foothold via dizqueTV 1.5.3 RCE (CVE-2024-58286)",
+      "Cross-domain password reuse via ASREPRoast hash dari PCAP",
+      "Account.ps1 leak credential seragam untuk 15 user domain",
+      "Constrained Delegation w/ Protocol Transition (TrustedToAuthForDelegation)",
+      "S4U2Self + S4U2Proxy chain → ldap/DC01 → DCSync → PtH SYSTEM"
+    ],
+    "terms": [
+      "ragnarok.htr",
+      "jatayu.htr",
+      "ari.saputra",
+      "kartika.sari",
+      "omar.shihab",
+      "jokowaluyo",
+      "AS-REP",
+      "S4U"
+    ],
+    "commands": [
+      "impacket-findDelegation ragnarok.htr/omar.shihab:<pass> -dc-ip <ip>",
+      "impacket-getST -spn 'ldap/DC01.ragnarok.htr' -impersonate Administrator <dom>/<user>:<pass>",
+      "export KRB5CCNAME=Administrator@ldap_DC01.ragnarok.htr@RAGNAROK.HTR.ccache",
+      "impacket-secretsdump -k -no-pass -just-dc-user Administrator DC01.ragnarok.htr",
+      "impacket-psexec -hashes :349e7c4524d6b8635f5fadf39bf30f76 Administrator@<ip>"
+    ],
+    "problems": [
+      "Postpone lebih dari setahun (pertama coba Nov 2024)",
+      "PCAP awal saya kategorikan decoy karena domain JATAYU.HTR beda dari target",
+      "Clock skew terus muncul; perlu disable NTP otomatis + rdate manual",
+      "winPEAS false positive klaim 70+ GenericAll → wasted time eksperimen reset Admin",
+      "Kerberoast omar.shihab tidak crackable dengan wordlist umum"
+    ],
+    "summary": "Solve Ragnarok (Moderate, 5pt) setelah postpone lebih dari setahun. Chain 9 stage: dizqueTV RCE → ari.saputra → PCAP re-analysis → AS-REP crack (jokowaluyo@JATAYU.HTR) → password reuse → kartika.sari → Account.ps1 leak → omar.shihab → Constrained Delegation S4U → ldap/DC01 ticket → DCSync → Administrator NTLM hash → PtH SYSTEM. Key learning: jangan dismiss artefak data lintas domain — hash crackable offline + password reuse adalah pattern attack klasik.",
+    "url": ""
+  },
+  {
+    "id": "technique-asreproast-pcap",
+    "date": "2026-06-30",
+    "title": "ASREPRoast via Captured Network Traffic",
+    "platform": "Self-study",
+    "category": "Technique / Active Directory",
+    "tags": [
+      "active-directory",
+      "kerberos",
+      "asreproast",
+      "pcap",
+      "offline-crack",
+      "technique"
+    ],
+    "concepts": [
+      "AS-REP packet berisi enc-part dengan cipher RC4-HMAC yang dapat di-extract",
+      "Format hash krb5asrep: $krb5asrep$23$<user>@<DOMAIN>:<checksum>$<encrypted>",
+      "Checksum = 32 char hex pertama, sisanya encrypted timestamp",
+      "Crack offline dengan john --format=krb5asrep",
+      "Tidak terbatas pada KDC target — domain asal hash bisa berbeda"
+    ],
+    "terms": [
+      "krb5asrep",
+      "etype 23",
+      "RC4-HMAC",
+      "DONT_REQUIRE_PREAUTH",
+      "AS-REP"
+    ],
+    "commands": [
+      "wireshark <file>.pcapng (filter kerberos.msg_type == 11)",
+      "CIPHER=<hex>; CHECKSUM=${CIPHER:0:32}; ENC=${CIPHER:32}",
+      "echo \"$krb5asrep$23$<user>@<DOMAIN>:$CHECKSUM$$ENC\" > hash.txt",
+      "john --format=krb5asrep --wordlist=/usr/share/wordlists/rockyou.txt hash.txt"
+    ],
+    "problems": [
+      "Mudah ter-overlook karena domain asal hash bisa berbeda dari target",
+      "Cipher hex panjang (496 char untuk RC4) harus di-format manual"
+    ],
+    "summary": "Teknik ASREPRoast tidak terbatas pada interaksi langsung dengan KDC. Hash AS-REP yang terkapture dalam PCAP atau memory dump bisa diekstrak, diformat menjadi $krb5asrep$23$... yang kompatibel john, dan di-crack offline. Password hasil bisa di-reuse lintas domain jika pola reuse aktif.",
+    "url": ""
+  },
+  {
+    "id": "concept-cross-domain-password-reuse",
+    "date": "2026-06-30",
+    "title": "Cross-Domain Password Reuse Attack Pattern",
+    "platform": "Self-study",
+    "category": "Concept / Active Directory",
+    "tags": [
+      "active-directory",
+      "password-reuse",
+      "multi-tenant",
+      "lateral-movement",
+      "threat-model"
+    ],
+    "concepts": [
+      "Password reuse lintas domain umum pada organisasi multi-tenant/multi-forest",
+      "Hash crackable dari domain A bisa unlock account di domain B kalau password same",
+      "Pola attack relevan di lingkungan M&A (merger), MSP multi-client, lab multi-tenant",
+      "Spray password ke list user enabled domain target via NetExec"
+    ],
+    "terms": [
+      "password reuse",
+      "multi-tenant",
+      "AD forest",
+      "cross-domain"
+    ],
+    "commands": [
+      "nxc smb <ip> -u users.txt -p '<password>' --continue-on-success",
+      "nxc winrm <ip> -u <user> -p '<password>'",
+      "nxc ldap <ip> -u <user> -p '<password>'"
+    ],
+    "problems": [
+      "Mudah ter-miss karena hipotesis \"domain beda = isolated\"",
+      "Detection sulit kalau tidak ada UEBA cross-realm monitoring"
+    ],
+    "summary": "Pattern attack di mana attacker mengeksploitasi pola password reuse antar Active Directory domain/forest. Pada CTF dipakai pembuat mesin sebagai twist; pada produksi nyata pada lingkungan post-M&A atau MSP shared admin. Mitigation: rotasi password lintas direktori, password policy unik per realm, monitoring login dari user account satu realm via credential lain realm.",
+    "url": ""
+  },
+  {
+    "id": "technique-constrained-delegation-protocol-transition",
+    "date": "2026-06-30",
+    "title": "Constrained Delegation with Protocol Transition (S4U2Self + S4U2Proxy)",
+    "platform": "Self-study",
+    "category": "Technique / Active Directory",
+    "tags": [
+      "active-directory",
+      "kerberos",
+      "constrained-delegation",
+      "s4u",
+      "protocol-transition",
+      "technique"
+    ],
+    "concepts": [
+      "Constrained Delegation klasik butuh user real interact dulu (ticket asli)",
+      "Protocol Transition (TrustedToAuthForDelegation) menghilangkan persyaratan tersebut",
+      "S4U2Self generate forwardable ticket atas nama user lain tanpa ticket asli",
+      "S4U2Proxy meneruskan ticket impersonation ke layanan delegasi",
+      "Jika SPN delegasi mencakup ldap/DC → direct path ke DCSync"
+    ],
+    "terms": [
+      "TrustedToAuthForDelegation",
+      "msDS-AllowedToDelegateTo",
+      "S4U2Self",
+      "S4U2Proxy"
+    ],
+    "commands": [
+      "impacket-findDelegation <dom>/<user>:<pass> -dc-ip <ip>",
+      "impacket-getST -spn 'ldap/<DC>.<dom>' -impersonate Administrator <dom>/<user>:<pass>",
+      "export KRB5CCNAME=<ticket>.ccache",
+      "impacket-secretsdump -k -no-pass -just-dc-user Administrator <DC>.<dom>"
+    ],
+    "problems": [
+      "Clock skew Kerberos < 5 menit (KRB_AP_ERR_SKEW) — wajib sync waktu",
+      "SPN delegation harus tepat (case sensitive, FQDN matter)"
+    ],
+    "summary": "Constrained Delegation with Protocol Transition adalah konfigurasi sangat permisif yang setara dengan blanko impersonation token. Attacker yang dapat authenticate sebagai service account dengan flag ini, dapat melakukan impersonation user manapun ke layanan delegasi. Pada produksi: monitor user dengan TrustedToAuthForDelegation; minimize jumlah service account dengan flag ini; audit SPN target delegation.",
+    "url": ""
+  },
+  {
+    "id": "methodology-winpeas-bloodhound-cross-validation",
+    "date": "2026-06-30",
+    "title": "winPEAS vs BloodHound Cross-Validation Methodology",
+    "platform": "Self-study",
+    "category": "Methodology / Active Directory",
+    "tags": [
+      "enumeration",
+      "winpeas",
+      "bloodhound",
+      "false-positive",
+      "methodology",
+      "ad-enum"
+    ],
+    "concepts": [
+      "winPEAS menampilkan permission ACE yang diwariskan tanpa konteks AdminSDHolder",
+      "Klaim GenericAll pada akun protected (Admin, DA groups) sering false positive",
+      "SDProp background process reset DACL 60 menit ke template AdminSDHolder ketat",
+      "BloodHound + SharpHound cross-check via Outbound Object Control",
+      "Custom Cypher query untuk validasi target spesifik"
+    ],
+    "terms": [
+      "AdminSDHolder",
+      "SDProp",
+      "Outbound Object Control",
+      "GenericAll",
+      "ACE inheritance"
+    ],
+    "commands": [
+      "SharpHound.exe -c All --zipfilename collection.zip",
+      "Cypher: MATCH p=(u:User)-[r:GenericAll|GenericWrite|WriteDacl]->(t) RETURN p"
+    ],
+    "problems": [
+      "winPEAS over-report cost berjam-jam waktu eksperimen kalau langsung trust",
+      "AdminSDHolder protection tidak terlihat di output winPEAS"
+    ],
+    "summary": "Setiap klaim permission ekstensif dari winPEAS pada akun protected wajib divalidasi silang dengan BloodHound atau Get-ObjectAcl PowerView yang menampilkan inheritance source. Validasi 15 menit dengan BloodHound dapat menghemat berjam-jam waktu eksperimen pada teknik yang tidak akan berhasil.",
+    "url": ""
+  },
+  {
+    "id": "lesson-premature-decoy-judgment",
+    "date": "2026-06-30",
+    "title": "Pitfall — Premature Decoy Judgment on Cross-Domain Artifacts",
+    "platform": "Self-study",
+    "category": "Lesson Learned / Methodology",
+    "tags": [
+      "methodology",
+      "judgment-bias",
+      "ctf-mindset",
+      "threat-hunting",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "Hipotesis \"decoy\" mudah terbentuk dari satu test gagal (ASREPRoast langsung)",
+      "Artefak dari domain berbeda tetap bisa berisi material kriptografi exploitable",
+      "\"Material kriptografi\" ≠ \"user account di domain target\"",
+      "Reframing pertanyaan: bukan \"apa yang bisa dilakukan terhadap user X\" tapi \"material apa yang dapat saya ekstrak untuk crack offline\""
+    ],
+    "terms": [
+      "decoy",
+      "cognitive bias",
+      "threat hunting reframe",
+      "dead end revisit"
+    ],
+    "commands": [],
+    "problems": [
+      "Kecenderungan declare dead end terlalu cepat ketika capek/stuck",
+      "Cara berpikir terikat pada konteks awal artefak (domain origin)"
+    ],
+    "summary": "Pada Ragnarok, saya hampir kehilangan jalur eksploitasi karena mengategorikan PCAP sebagai decoy berdasarkan satu test (ASREPRoast username domain JATAYU.HTR ke KDC RAGNAROK gagal). Yang menyelamatkan saya adalah kebiasaan untuk kembali ke artefak yang sebelumnya ditinggalkan ketika seluruh jalur baru sudah dead end. Lesson: ketika menjudge artefak sebagai decoy, eksplisitkan apa yang sudah diuji dan apa yang belum. Jika hanya satu interpretasi yang diuji, jangan kategorikan total — beri tag \"perlu re-explore\" dan kembali ketika jalur lain mentok.",
+    "url": ""
   }
 ]
