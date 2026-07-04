@@ -5256,5 +5256,65 @@
     ],
     "summary": "Pada Ragnarok, saya hampir kehilangan jalur eksploitasi karena mengategorikan PCAP sebagai decoy berdasarkan satu test (ASREPRoast username domain JATAYU.HTR ke KDC RAGNAROK gagal). Yang menyelamatkan saya adalah kebiasaan untuk kembali ke artefak yang sebelumnya ditinggalkan ketika seluruh jalur baru sudah dead end. Lesson: ketika menjudge artefak sebagai decoy, eksplisitkan apa yang sudah diuji dan apa yang belum. Jika hanya satu interpretasi yang diuji, jangan kategorikan total — beri tag \"perlu re-explore\" dan kembali ketika jalur lain mentok.",
     "url": ""
+  },
+  {
+    "id": "soc-xql-cheatsheet-20260704",
+    "date": "2026-07-04",
+    "title": "Belajar XQL (Cortex XDR) - Bikin Query Library & Debug Field Schema",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "cortex-xdr",
+      "xql",
+      "query-language",
+      "soc",
+      "detection",
+      "endpoint",
+      "notion"
+    ],
+    "concepts": [
+      "Struktur XQL: dataset xdr_data, filter event_type/event_sub_type pakai ENUM, comp count() untuk agregasi",
+      "Prinsip pairing field: causality_actor (root cause) -> actor (parent) -> action (child)",
+      "Query per alert type: PowerShell encoded, IPS network, process tree, persistence, cross-host IOC, dropper chain",
+      "Host browsing history via network events (action_external_hostname, action_country)",
+      "Verifikasi field schema pakai 'fields *' + panel FIELDS di UI, bukan asumsi nama field"
+    ],
+    "problems": [
+      "Field pakai prefix dst_ (dst_action_external_hostname) ternyata invalid di tenant - yang benar tanpa dst_",
+      "event_sub_type = ENUM.DNS error 'Unable to find value' - sub_type DNS tidak valid di tenant ini",
+      "Menyadari XDR menangkap koneksi outbound (domain/IP) bukan full URL path seperti proxy log"
+    ],
+    "summary": "Membangun library query XQL untuk investigasi Cortex XDR, disimpan sebagai database 'XQL Query' di Notion SOC Confessions (mirror pola AQL Query). Total 11+ query dipetakan per alert type: PowerShell base64, IPS network, full process tree, persistence check, post-exploitation sweep, cross-host IOC correlation, dropper trace, dan host browsing history. Debug schema field secara live di tenant MPM: menemukan field tanpa prefix dst_ dan ENUM.DNS invalid, lalu memvalidasi lewat 'fields *'.",
+    "url": ""
+  },
+  {
+    "id": "soc-ipfs-trace-20260704",
+    "date": "2026-07-04",
+    "title": "Threat Hunting - Trace Payload IPFS via QRadar (30 Hari)",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "qradar",
+      "aql",
+      "threat-hunting",
+      "ipfs",
+      "log-analysis",
+      "soc",
+      "investigation"
+    ],
+    "concepts": [
+      "IPFS CIDv1 identification (prefix bafkrei = base32 raw codec)",
+      "AQL query construction: ILIKE pattern match pada URL Path, filter domainid, DATEFORMAT",
+      "Pivot query untuk scoping: volume per source IP, timeline per jam, sebaran lintas domain/log source",
+      "ASN attribution via VirusTotal (AS16509 Amazon/AWS sebagai IPFS gateway)",
+      "Penyusunan threat trace report yang faktual tanpa overclaim verdict"
+    ],
+    "problems": [
+      "Memetakan sebaran akses satu CID IPFS di seluruh log 30 hari",
+      "Membedakan trace/scoping vs klasifikasi verdict pada laporan investigasi",
+      "Mengukur IP sumber unik saat query utama pakai GROUP BY URL Path (row collapse)"
+    ],
+    "summary": "Trace payload IPFS (CID bafkreicyqcbhpicbos7ev4mrxofwqx6hvvge7pahpta6xuspr44crai5by) di QRadar selama 30 hari atas permintaan SPV. Temuan: akses berulang dari banyak IP sumber (China) menuju satu destinasi AWS (108.137.168.158, AS16509) yang berperan sebagai IPFS gateway. Menyusun DOCX threat trace report bertema netral dengan query pendukung dan rekomendasi tindak lanjut, framing faktual tanpa menetapkan verdict.",
+    "url": ""
   }
 ]
