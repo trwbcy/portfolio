@@ -5316,5 +5316,173 @@
     ],
     "summary": "Trace payload IPFS (CID bafkreicyqcbhpicbos7ev4mrxofwqx6hvvge7pahpta6xuspr44crai5by) di QRadar selama 30 hari atas permintaan SPV. Temuan: akses berulang dari banyak IP sumber (China) menuju satu destinasi AWS (108.137.168.158, AS16509) yang berperan sebagai IPFS gateway. Menyusun DOCX threat trace report bertema netral dengan query pendukung dan rekomendasi tindak lanjut, framing faktual tanpa menetapkan verdict.",
     "url": ""
+  },
+  {
+    "id": "deduce-concept-prototype",
+    "date": "2026-07-08",
+    "title": "DEDUCE — Konsep & Prototipe Game Investigasi SOC",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "web-dev",
+      "javascript",
+      "html",
+      "css",
+      "game",
+      "blue-team",
+      "soc",
+      "prototype"
+    ],
+    "concepts": [
+      "Reframing investigasi SOC sebagai quest detektif bergaya D&D abad pertengahan (peta petualangan, fog-of-war, monolog detektif)",
+      "Perancangan alur inti gameplay: alert -> query -> verdict -> closure",
+      "Rapid prototyping single-file (HTML/CSS/JS) untuk validasi ide sebelum commit ke arsitektur",
+      "Pemetaan skenario SOC nyata ke mekanik game: Log4Shell dengan query QRadar (AQL) dan Cortex XDR (XQL)"
+    ],
+    "terms": [
+      "fog-of-war",
+      "quest",
+      "alert triage",
+      "verdict",
+      "closure",
+      "AQL",
+      "XQL",
+      "Log4Shell"
+    ],
+    "commands": [],
+    "problems": [
+      "Menyeimbangkan akurasi teknis SOC dengan pengalaman bermain yang tetap menyenangkan",
+      "Menentukan lingkup minimum yang cukup untuk memvalidasi konsep lewat prototipe"
+    ],
+    "summary": "Merancang konsep DEDUCE: investigasi SOC dimainkan sebagai quest detektif bergaya D&D abad pertengahan, lengkap dengan peta petualangan, fog-of-war, monolog detektif, dan alur alert -> query -> verdict -> closure. Membangun beberapa iterasi prototipe single-file (HTML/CSS/JS) untuk memvalidasi ide, termasuk skenario Log4Shell nyata dengan query QRadar (AQL) dan Cortex XDR (XQL).",
+    "url": ""
+  },
+  {
+    "id": "deduce-modular-rewrite",
+    "date": "2026-07-09",
+    "title": "DEDUCE — Rewrite ke Arsitektur Modular (Vite + React + TypeScript + Supabase)",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "web-dev",
+      "react",
+      "typescript",
+      "vite",
+      "supabase",
+      "postgres",
+      "edge-functions",
+      "svg"
+    ],
+    "concepts": [
+      "Migrasi dari prototipe single-file ke proyek modular berbasis Vite + React + TypeScript",
+      "Game engine: pergerakan token, fog-of-war, pengumpulan bukti, monolog typewriter",
+      "Map engine berbasis SVG untuk render peta petualangan",
+      "Storage layer dengan Supabase Postgres + fallback localStorage (satu antarmuka, dua backend)",
+      "Supabase Edge Function sebagai proxy aman ke Anthropic untuk auto-generate kasus & query",
+      "Struktur komponen React by concern: Menu, Editor, Game, StopModal, EndScreen",
+      "Tema parchment/medieval dengan ikon game custom"
+    ],
+    "terms": [
+      "Vite",
+      "React",
+      "TypeScript",
+      "Supabase",
+      "Postgres",
+      "Edge Function",
+      "localStorage",
+      "SVG",
+      "typewriter effect",
+      "fog-of-war"
+    ],
+    "commands": [],
+    "problems": [
+      "Memisahkan game engine, map engine, dan storage layer agar tiap bagian bisa dikembangkan mandiri",
+      "Menjaga API key Anthropic tetap aman lewat Edge Function proxy alih-alih memanggil dari client",
+      "Merancang storage layer yang tetap jalan offline lewat fallback localStorage"
+    ],
+    "summary": "Migrasi dari prototipe single-file ke proyek modular: game engine (pergerakan token, fog-of-war, pengumpulan bukti, monolog typewriter), map engine SVG, storage layer dengan Supabase Postgres + fallback localStorage, dan Supabase Edge Function sebagai proxy aman ke Anthropic untuk auto-generate kasus & query. Komponen React (Menu, Editor, Game, StopModal, EndScreen), ikon game custom, tema parchment/medieval. Build terverifikasi lolos.",
+    "url": ""
+  },
+  {
+    "id": "deduce-soc-case-content",
+    "date": "2026-07-09",
+    "title": "DEDUCE — Penyusunan Konten Kasus SOC Realistis",
+    "platform": "Personal Project",
+    "category": "Threat Hunting",
+    "tags": [
+      "soc",
+      "detection",
+      "threat-hunting",
+      "log4shell",
+      "qradar",
+      "cortex-xdr",
+      "oauth",
+      "phishing"
+    ],
+    "concepts": [
+      "Penulisan kasus latihan yang akurat secara teknis sebagai materi in-game",
+      "Rantai eksploitasi Log4Shell (CVE-2021-44228) dari alert JNDI sampai verdict & closure",
+      "Korelasi lintas tool: QRadar (AQL) dan Cortex XDR (XQL) untuk satu insiden",
+      "Enrichment threat intel sebagai bagian alur investigasi",
+      "Kasus OAuth consent phishing: lookalike domain, grant Mail.Read, langkah containment"
+    ],
+    "terms": [
+      "Log4Shell",
+      "CVE-2021-44228",
+      "JNDI",
+      "QRadar",
+      "Cortex XDR",
+      "threat intel",
+      "OAuth consent phishing",
+      "Mail.Read",
+      "lookalike domain",
+      "containment"
+    ],
+    "commands": [],
+    "problems": [
+      "Menjaga kasus tetap akurat secara teknis tanpa mengorbankan alur cerita game",
+      "Merangkai bukti agar pemain bisa mencapai verdict yang benar lewat query yang masuk akal"
+    ],
+    "summary": "Menulis kasus bawaan yang akurat secara teknis sebagai materi latihan: rantai eksploitasi Log4Shell (CVE-2021-44228) dari alert JNDI, korelasi QRadar & Cortex XDR, enrichment threat intel, hingga verdict & closure; serta kasus OAuth consent phishing (lookalike domain, grant Mail.Read, langkah containment).",
+    "url": ""
+  },
+  {
+    "id": "deduce-ux-prompt-engineering",
+    "date": "2026-07-10",
+    "title": "DEDUCE — Iterasi UX & Prompt Engineering untuk Perbaikan",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "web-dev",
+      "ux",
+      "prompt-engineering",
+      "svg",
+      "github-pages",
+      "deploy"
+    ],
+    "concepts": [
+      "Review hasil playtest untuk mengidentifikasi perbaikan konkret",
+      "Perbaikan UX: layout peta full-screen, kualitas tekstur, penataan teks daftar kasus, copy",
+      "Prompt engineering terstruktur untuk agentic coding",
+      "Refactor posisi token & overlay berbasis SVG transform matrix agar presisi saat peta full-screen",
+      "Prompt image-gen untuk aset tekstur",
+      "Perencanaan deploy ke GitHub Pages"
+    ],
+    "terms": [
+      "playtest",
+      "prompt engineering",
+      "agentic coding",
+      "SVG transform matrix",
+      "image generation",
+      "GitHub Pages",
+      "full-screen layout"
+    ],
+    "commands": [],
+    "problems": [
+      "Posisi token & overlay meleset saat peta dibuat full-screen — diselesaikan lewat refactor berbasis SVG transform matrix",
+      "Menerjemahkan temuan playtest menjadi prompt agentic coding yang terstruktur dan bisa dieksekusi"
+    ],
+    "summary": "Review hasil playtest dan mengidentifikasi perbaikan (layout peta full-screen, kualitas tekstur, penataan teks daftar kasus, copy). Menyusun prompt engineering terstruktur untuk agentic coding — termasuk refactor posisi token & overlay berbasis SVG transform matrix agar presisi saat peta full-screen — dan prompt image-gen untuk aset tekstur. Perencanaan deploy ke GitHub Pages.",
+    "url": ""
   }
 ]
