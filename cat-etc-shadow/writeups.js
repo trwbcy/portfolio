@@ -86,14 +86,39 @@ function updateStats() {
     document.getElementById('statDef').innerHTML = `${def} <em>ANALYZED</em>`;
 }
 
+function cardHTML(w, i) {
+    return `
+        <a href="${w.url}" target="_blank" rel="noopener" class="writeup-card ${w.type}" style="animation: cardIn .4s ease ${i * 30}ms both;">
+            <span class="writeup-type ${w.type}">${w.type === 'red' ? 'ROOTED' : 'ANALYZED'}</span>
+            <div class="writeup-title">${w.title}</div>
+            <div class="writeup-desc">${w.desc}</div>
+            <span class="writeup-arrow">→</span>
+        </a>`;
+}
+
+function sectionHTML(type, cards) {
+    const isRed = type === 'red';
+    const label = isRed ? 'OFFENSIVE — ROOTED' : 'DEFENSIVE — ANALYZED';
+    const icon = isRed ? '⚔' : '🛡';
+    return `
+        <section class="writeup-group">
+            <div class="group-header ${type}">
+                <span class="group-icon">${icon}</span>
+                <span class="group-title">${label}</span>
+                <span class="group-count">[${cards.length}]</span>
+                <span class="group-rule"></span>
+            </div>
+            <div class="writeup-grid">
+                ${cards.map((w, i) => cardHTML(w, i)).join('')}
+            </div>
+        </section>`;
+}
+
 function render() {
     const grid = document.getElementById('writeupGrid');
     const countEl = document.getElementById('resultCount');
 
     let filtered = writeups;
-    if (currentFilter !== 'all') {
-        filtered = filtered.filter(w => w.type === currentFilter);
-    }
     if (searchTerm) {
         filtered = filtered.filter(w =>
             w.title.toLowerCase().includes(searchTerm) ||
@@ -101,12 +126,17 @@ function render() {
         );
     }
 
-    const offCount = filtered.filter(w => w.type === 'red').length;
-    const defCount = filtered.filter(w => w.type === 'blue').length;
+    const reds = filtered.filter(w => w.type === 'red');
+    const blues = filtered.filter(w => w.type === 'blue');
+    const total = reds.length + blues.length;
 
-    countEl.textContent = `${filtered.length} WRITEUP${filtered.length !== 1 ? 'S' : ''} FOUND — ${offCount} OFFENSIVE · ${defCount} DEFENSIVE`;
+    countEl.textContent = `${total} WRITEUP${total !== 1 ? 'S' : ''} FOUND — ${reds.length} OFFENSIVE · ${blues.length} DEFENSIVE`;
 
-    if (filtered.length === 0) {
+    const parts = [];
+    if (currentFilter !== 'blue' && reds.length) parts.push(sectionHTML('red', reds));
+    if (currentFilter !== 'red' && blues.length) parts.push(sectionHTML('blue', blues));
+
+    if (parts.length === 0) {
         grid.innerHTML = `
             <div class="empty-state">
                 <div class="empty-icon">∅</div>
@@ -116,14 +146,7 @@ function render() {
         return;
     }
 
-    grid.innerHTML = filtered.map((w, i) => `
-        <a href="${w.url}" target="_blank" rel="noopener" class="writeup-card ${w.type}" style="animation: cardIn .4s ease ${i * 30}ms both;">
-            <span class="writeup-type ${w.type}">${w.type === 'red' ? 'ROOTED' : 'ANALYZED'}</span>
-            <div class="writeup-title">${w.title}</div>
-            <div class="writeup-desc">${w.desc}</div>
-            <span class="writeup-arrow">→</span>
-        </a>
-    `).join('');
+    grid.innerHTML = parts.join('');
 }
 
 function setFilter(f) {
