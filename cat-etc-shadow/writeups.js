@@ -38,6 +38,7 @@ const writeups = [
     { title: "Labyrinth", type: "red", desc: "SMB Enum + ffuf Login Bruteforce + .phtml Upload RCE + CVE-2023-2640 GameOver(lay) → Root", url: "https://drive.google.com/file/d/1Q-OTMlAo12EnVzO8DYZ0D15PgpmBXhws/view?usp=sharing" },
     { title: "Fenrir", type: "red", desc: "Tomcat CGI RCE (CVE-2019-0232) + PrintSpoofer SeImpersonate → SYSTEM", url: "https://drive.google.com/file/d/1WLnzN54kPGfSCsiB9dRttk2BqXYLl1xW/view?usp=sharing" },
     { title: "River", type: "red", desc: "Gitea Default Creds + CVE-2020-14144 Git Hooks RCE + Chisel Pivot to Webmin Root", url: "https://drive.google.com/file/d/1sc2PuViZYIcW0b51QUBWBbQeFf2Vq7TY/view?usp=sharing" },
+    { title: "Resources", type: "red", desc: "AD ACL Chain Abuse + MSSQL xp_cmdshell Foothold + Kerberoast + RBCD → Domain Controller", url: "https://drive.google.com/file/d/1HBPzfxN1Pn_8N59-oplOEsC8HoK2UYvo/view?usp=sharing" },
     { title: "Deviasi", type: "blue", desc: "Deep Log Analysis & IOCs", url: "https://nickel-bedbug-8cc.notion.site/Deviasi-Hacktrace-Ranges-2a0416e03a1380babf06e961fa506f1a" },
     { title: "Undercover", type: "blue", desc: "Binary Investigation APT", url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543" },
     { title: "BluuShell", type: "blue", desc: "Malicious DOCX Forensics", url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0" },
