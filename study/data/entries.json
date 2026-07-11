@@ -5484,5 +5484,166 @@
     ],
     "summary": "Review hasil playtest dan mengidentifikasi perbaikan (layout peta full-screen, kualitas tekstur, penataan teks daftar kasus, copy). Menyusun prompt engineering terstruktur untuk agentic coding — termasuk refactor posisi token & overlay berbasis SVG transform matrix agar presisi saat peta full-screen — dan prompt image-gen untuk aset tekstur. Perencanaan deploy ke GitHub Pages.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-previest-recon",
+    "date": "2026-07-11",
+    "title": "Previest — Recon & Enumeration: Full Port Scan, Directory Brute Force & robots.txt Disclosure",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "nmap",
+      "feroxbuster",
+      "robots-txt",
+      "git-exposure",
+      "directory-listing",
+      "linux",
+      "ctf",
+      "hacktrace",
+      "easy"
+    ],
+    "concepts": [
+      "Full port scan dengan Nmap untuk memetakan seluruh service, bukan hanya top-ports default",
+      "Directory brute force dengan Feroxbuster untuk menemukan path tersembunyi di web root",
+      "robots.txt sebagai information disclosure: Disallow entry justru mengarahkan ke direktori /Image2Text/ yang seharusnya tidak diekspos",
+      "Exposed .git directory dengan directory listing aktif — misconfiguration yang membuka source history untuk di-dump"
+    ],
+    "terms": [
+      "Nmap full port scan",
+      "Feroxbuster",
+      "robots.txt",
+      "/Image2Text/",
+      ".git directory",
+      "directory listing"
+    ],
+    "commands": [
+      "sudo nmap -sVC --min-rate 1000 -p- -Pn -T4 -oN nmap-previest.log TARGET",
+      "feroxbuster -u http://TARGET -x php,txt,git -C 404,403",
+      "curl -s http://TARGET/robots.txt"
+    ],
+    "problems": [],
+    "summary": "Recon awal terhadap Previest (Hacktrace Ranges, Easy Linux). Nmap full port scan memetakan service yang berjalan, lalu Feroxbuster melakukan directory brute force di web root. robots.txt bocor sebagai information disclosure yang mengarah ke direktori /Image2Text/. Enumeration lanjutan menemukan exposed .git directory dengan directory listing aktif — dua temuan misconfiguration yang menjadi pintu masuk fase berikutnya.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-previest-initial-access",
+    "date": "2026-07-11",
+    "title": "Previest — Credential Exposure & Initial Access: .git Leak, PHP Source Disclosure & Web Shell Upload",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "git-dump",
+      "source-code-disclosure",
+      "bcrypt",
+      "tiny-file-manager",
+      "webshell",
+      "php",
+      "initial-access",
+      "www-data",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Dump exposed .git directory untuk merekonstruksi source dan menemukan kredensial demo di README.md",
+      "Membaca source code PHP yang exposed via directory listing — hardening yang bocor mengungkap logika aplikasi",
+      "Credential discovery dari komentar plaintext: password admin ditulis sebagai komentar di samping hash bcrypt di source (hash kuat, tapi plaintext-nya bocor di komentar)",
+      "Tiny File Manager sebagai upload vector: login dengan kredensial admin lalu upload PHP web shell untuk foothold sebagai www-data"
+    ],
+    "terms": [
+      ".git",
+      "git-dumper",
+      "README.md",
+      "bcrypt",
+      "plaintext comment",
+      "Tiny File Manager",
+      "PHP web shell",
+      "www-data"
+    ],
+    "commands": [
+      "git-dumper http://TARGET/.git/ ./previest-git",
+      "curl -s http://TARGET/<exposed>.php   # baca source via directory listing",
+      "# login Tiny File Manager dengan kredensial admin, upload shell.php",
+      "curl 'http://TARGET/shell.php?cmd=id'"
+    ],
+    "problems": [
+      "Hash password admin berupa bcrypt (tidak praktis di-crack) — bypass dengan menemukan plaintext-nya yang bocor sebagai komentar di source, bukan menyerang hash-nya"
+    ],
+    "summary": "Initial access Previest via rantai credential exposure. Exposed .git di-dump dan README.md-nya mengandung kredensial demo. Source code PHP yang exposed lewat directory listing dibaca dan mengungkap password admin yang ditulis sebagai komentar plaintext di samping hash bcrypt — hash-nya kuat, tapi plaintext-nya bocor. Kredensial admin dipakai login ke Tiny File Manager untuk upload PHP web shell, mendapatkan foothold sebagai www-data.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-previest-privesc",
+    "date": "2026-07-11",
+    "title": "Previest — Privilege Escalation: OMIGOD (CVE-2021-38647) via Root-Owned omiserver",
+    "platform": "Hacktrace Ranges",
+    "category": "Privilege Escalation",
+    "tags": [
+      "privilege-escalation",
+      "suid",
+      "process-enumeration",
+      "omi",
+      "omigod",
+      "cve-2021-38647",
+      "root",
+      "linux",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "SUID binary enumeration sebagai jalur privesc pertama — dead end, tidak ada binary yang exploitable",
+      "Process enumeration mengungkap omiserver berjalan sebagai root — pivot dari SUID ke running service",
+      "Identifikasi Microsoft OMI v1.1.0 sebagai komponen yang vulnerable",
+      "Eksploitasi CVE-2021-38647 (OMIGOD): unauthenticated RCE dengan menghapus header autentikasi pada request SOAP ke management endpoint — perintah dieksekusi sebagai root tanpa kredensial"
+    ],
+    "terms": [
+      "SUID",
+      "omiserver",
+      "Microsoft OMI 1.1.0",
+      "CVE-2021-38647",
+      "OMIGOD",
+      "unauthenticated RCE",
+      "process enumeration"
+    ],
+    "commands": [
+      "find / -perm -4000 -type f 2>/dev/null",
+      "ps aux | grep -i omi",
+      "curl -sk --header \"Content-Type: application/soap+xml;charset=UTF-8\" https://TARGET:5986/wsman -X POST --data-binary @omigod.xml"
+    ],
+    "problems": [
+      "SUID enumeration jadi dead end — tidak ada binary SUID yang bisa dieksploitasi, sehingga pivot ke process enumeration"
+    ],
+    "summary": "Privilege escalation Previest dari www-data ke root. SUID binary enumeration buntu, jadi pivot ke process enumeration yang menemukan omiserver berjalan sebagai root. Service diidentifikasi sebagai Microsoft OMI v1.1.0 yang rentan terhadap CVE-2021-38647 (OMIGOD). Eksploitasi dilakukan dengan menghapus header autentikasi pada request SOAP ke management endpoint, sehingga perintah dieksekusi sebagai root tanpa autentikasi. Root diperoleh.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-previest-writeup-doc",
+    "date": "2026-07-11",
+    "title": "Previest — Formal Writeup & MITRE ATT&CK Mapping",
+    "platform": "Hacktrace Ranges",
+    "category": "Documentation",
+    "tags": [
+      "writeup",
+      "documentation",
+      "ctf-writeup",
+      "mitre-attack",
+      "reporting",
+      "red-team"
+    ],
+    "concepts": [
+      "Menyusun writeup formal dalam format DOCX bertema merah (offensive) mengikuti format standar personal",
+      "Mapping teknik ke MITRE ATT&CK untuk menghubungkan tiap fase (recon, initial access, privesc) dengan tactic & technique ID yang relevan",
+      "Dokumentasi end-to-end attack chain sebagai referensi reproducible"
+    ],
+    "terms": [
+      "CTF writeup",
+      "DOCX",
+      "MITRE ATT&CK",
+      "formal documentation",
+      "attack chain"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyusun writeup formal Previest dalam format DOCX bertema merah (offensive) mengikuti format standar personal, mencakup seluruh attack chain dari recon, credential exposure & initial access, sampai privilege escalation via OMIGOD. Dilengkapi mapping MITRE ATT&CK untuk tiap fase agar teknik yang dipakai terhubung dengan tactic & technique yang relevan.",
+    "url": ""
   }
 ]
