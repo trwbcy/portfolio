@@ -5645,5 +5645,192 @@
     "problems": [],
     "summary": "Menyusun writeup formal Previest dalam format DOCX bertema merah (offensive) mengikuti format standar personal, mencakup seluruh attack chain dari recon, credential exposure & initial access, sampai privilege escalation via OMIGOD. Dilengkapi mapping MITRE ATT&CK untuk tiap fase agar teknik yang dipakai terhubung dengan tactic & technique yang relevan.",
     "url": ""
+  },
+  {
+    "id": "deduce-deployment",
+    "date": "2026-07-11",
+    "title": "DEDUCE — Deployment ke Produksi (GitHub Pages + Supabase)",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "web-dev",
+      "deploy",
+      "github-pages",
+      "github-actions",
+      "supabase",
+      "postgres",
+      "rls",
+      "ci-cd"
+    ],
+    "concepts": [
+      "Publikasi repo publik trwbcy/deduce dan push project Vite + React + TypeScript",
+      "Setup project Supabase (region Singapore): menjalankan schema SQL tabel cases & history dengan RLS policy, lalu mengambil URL + anon key",
+      "Verifikasi koneksi cloud history secara lokal — memastikan row benar-benar masuk ke tabel history",
+      "GitHub Actions workflow (.github/workflows/deploy.yml) untuk build + deploy otomatis ke GitHub Pages, dengan env var lewat GitHub Secrets"
+    ],
+    "terms": [
+      "GitHub Pages",
+      "GitHub Actions",
+      "deploy.yml",
+      "Supabase",
+      "Postgres",
+      "Row Level Security",
+      "anon key",
+      "GitHub Secrets",
+      "Singapore region"
+    ],
+    "commands": [],
+    "problems": [
+      "Workflow awalnya ditaruh di workflows/ di root, bukan .github/workflows/ — GitHub tidak mendeteksinya sampai path diperbaiki",
+      "File .env sempat tertukar dengan .env.example, sehingga Vite tidak membaca env var"
+    ],
+    "summary": "Membawa DEDUCE ke produksi: membuat repo publik trwbcy/deduce dan push project Vite + React + TypeScript, lalu setup project Supabase region Singapore dengan schema SQL (tabel cases & history plus RLS policy). Koneksi cloud history diverifikasi lokal sampai row benar-benar masuk ke tabel history. Deploy diotomatiskan lewat GitHub Actions (.github/workflows/deploy.yml) yang build + publish ke GitHub Pages dengan env var via GitHub Secrets. Aplikasi live di trwbcy.github.io/deduce. Dua hambatan utama: workflow salah lokasi (root workflows/ bukan .github/workflows/) sehingga tidak terdeteksi, dan .env yang tertukar dengan .env.example sehingga Vite gagal baca env var.",
+    "url": "https://trwbcy.github.io/deduce"
+  },
+  {
+    "id": "deduce-map-redesign",
+    "date": "2026-07-11",
+    "title": "DEDUCE — Redesign Peta: dari SVG Prosedural ke Ilustrasi Statis",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "web-dev",
+      "ux",
+      "image-generation",
+      "prompt-engineering",
+      "svg",
+      "coordinate-system"
+    ],
+    "concepts": [
+      "Mengganti peta SVG yang di-generate prosedural dengan ilustrasi painterly hasil AI image generation",
+      "Iterasi prompt image generation, termasuk regenerasi ke rasio 16:9 agar pas dengan layar desktop tanpa cropping",
+      "Merombak sistem koordinat: marker stop & token detektif diposisikan dengan persentase relatif terhadap ruang koordinat gambar (bukan container) supaya tetap terkunci di landmark saat viewport berubah"
+    ],
+    "terms": [
+      "AI image generation",
+      "aspect-ratio 16:9",
+      "object-fit",
+      "coordinate space",
+      "painterly illustration",
+      "viewport"
+    ],
+    "commands": [],
+    "problems": [
+      "Peta ter-crop di zoom 100% tapi pas di zoom 50% — akar masalahnya container tingginya dibatasi vh, bukan aspect-ratio gambar",
+      "Trade-off object-fit: cover (penuh tapi crop) vs contain (utuh tapi letterbox) — diselesaikan dengan meregenerasi gambar langsung di rasio 16:9"
+    ],
+    "summary": "Mengganti peta SVG generatif prosedural dengan ilustrasi painterly hasil AI image generation untuk look yang lebih matang. Prompt diiterasi berulang, termasuk regenerasi ulang ke rasio 16:9 agar pas layar desktop tanpa cropping. Sistem koordinat dirombak: marker stop dan token detektif kini diposisikan sebagai persentase relatif terhadap ruang koordinat gambar, bukan container, sehingga tetap terkunci di landmark saat viewport berubah. Akar masalah cropping teridentifikasi: tinggi container dibatasi vh alih-alih aspect-ratio gambar, dan trade-off object-fit cover vs contain diselesaikan dengan meregenerasi gambar langsung di rasio 16:9.",
+    "url": ""
+  },
+  {
+    "id": "deduce-dev-tooling",
+    "date": "2026-07-11",
+    "title": "DEDUCE — Dev Tooling Internal: Marker & Path Authoring",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "web-dev",
+      "tooling",
+      "react",
+      "drag-and-drop",
+      "coordinate-system",
+      "ux"
+    ],
+    "concepts": [
+      "Membuat dua dev-only tool yang di-gate lewat query param, terpisah dari gameplay normal",
+      "?editMarkers=1 — drag-and-drop untuk memindahkan marker stop, menampilkan koordinat live, dan tombol copy untuk mengambil semua koordinat final",
+      "?authorPath=1 — click-to-trace untuk merekam waypoint jalur; segment-aware (selector ruas, endpoint di-highlight, undo/clear per ruas, copy per ruas atau semua sekaligus)",
+      "Tujuan tooling: menentukan koordinat & jalur secara visual lewat klik, bukan mengetik angka manual"
+    ],
+    "terms": [
+      "query param",
+      "editMarkers",
+      "authorPath",
+      "waypoint",
+      "segment-aware",
+      "drag-and-drop",
+      "click-to-trace"
+    ],
+    "commands": [],
+    "problems": [
+      "Model 'satu jalur kontinu' untuk seluruh kasus menghasilkan jalur yang menyilang dirinya sendiri, karena urutan stop melompat-lompat di peta — diubah ke model per-ruas (satu array waypoint per hop antar stop)",
+      "Beberapa hasil trace awal mengandung waypoint yang berbalik arah, membuat token berjalan maju lalu mundur"
+    ],
+    "summary": "Membangun dua dev-only tool yang di-gate lewat query param dan terpisah dari gameplay normal. ?editMarkers=1 memberi drag-and-drop untuk memindahkan marker stop dengan koordinat live dan tombol copy semua koordinat final; ?authorPath=1 memberi click-to-trace untuk merekam waypoint jalur secara segment-aware (selector ruas, endpoint di-highlight, undo/clear per ruas, copy per ruas atau sekaligus). Tujuannya menentukan koordinat dan jalur secara visual lewat klik alih-alih mengetik angka manual. Pelajaran desain: model satu jalur kontinu menghasilkan jalur yang menyilang dirinya sendiri karena urutan stop melompat, sehingga diganti ke model per-ruas; trace awal juga sempat berisi waypoint berbalik arah yang membuat token maju lalu mundur.",
+    "url": ""
+  },
+  {
+    "id": "deduce-token-movement",
+    "date": "2026-07-12",
+    "title": "DEDUCE — Sistem Pergerakan Token & Penelusuran Jalur",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "web-dev",
+      "game",
+      "ux",
+      "animation",
+      "react",
+      "coordinate-system"
+    ],
+    "concepts": [
+      "Menelusuri 5 ruas jalur untuk kasus Log4Shell memakai authoring tool, sehingga token detektif berjalan mengikuti jalan setapak yang terlihat di ilustrasi peta (bukan garis lurus antar titik)",
+      "Mengunci posisi 6 marker stop (TheHive, QRadar, Cortex XDR, Threat Intel, Verdict, Closure) tepat di atas objek/bangunan di peta",
+      "Flow pergerakan final: klik marker membuka modal investigasi; setelah modal ditutup, token otomatis berjalan ke marker berikutnya dan berhenti di sana tanpa membuka modal, menunggu klik berikutnya (pergerakan otomatis, modal tetap click-gated)"
+    ],
+    "terms": [
+      "TheHive",
+      "QRadar",
+      "Cortex XDR",
+      "Threat Intel",
+      "Verdict",
+      "Closure",
+      "waypoint",
+      "click-gated modal"
+    ],
+    "commands": [],
+    "problems": [
+      "Sempat mencoba mode fully-automatic (token jalan sendiri dan modal auto-open) tapi di-rollback karena mengurangi kontrol pemain"
+    ],
+    "summary": "Membangun sistem pergerakan token yang mengikuti jalan setapak di peta, bukan garis lurus antar titik. Lima ruas jalur untuk kasus Log4Shell ditelusuri lewat authoring tool, dan enam marker stop (TheHive, QRadar, Cortex XDR, Threat Intel, Verdict, Closure) dikunci tepat di atas objek/bangunan di peta. Flow final dirancang: klik marker membuka modal investigasi, lalu setelah modal ditutup token otomatis berjalan ke marker berikutnya dan berhenti tanpa membuka modal — menunggu klik berikutnya. Pergerakan otomatis tapi modal tetap click-gated. Mode fully-automatic (token jalan sendiri + modal auto-open) sempat dicoba tapi di-rollback karena mengurangi kontrol pemain.",
+    "url": ""
+  },
+  {
+    "id": "deduce-ui-polish",
+    "date": "2026-07-12",
+    "title": "DEDUCE — Polish UI & Perbaikan Layout",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "web-dev",
+      "ux",
+      "css",
+      "flexbox",
+      "layout",
+      "typography"
+    ],
+    "concepts": [
+      "Mengembalikan monolog dalam bentuk subtitle di zona tetap (bukan speech bubble mengambang yang sebelumnya terpotong di tepi layar), dengan styling mengikuti tema game (font, warna, panel)",
+      "Subtitle otomatis berpindah ke atas peta saat token berada di area bawah, dengan hysteresis buffer supaya tidak berkedip di ambang batas",
+      "Merampingkan header in-game agar area peta lebih luas",
+      "Memperbaiki wordmark 'DE DUCE' menjadi 'DEDUCE' tanpa celah",
+      "Layout menu: mengecilkan wordmark dan mengunci tinggi panel dengan min-height: 0 pada flex child supaya daftar kasus yang scroll di dalam panel, bukan seluruh halaman"
+    ],
+    "terms": [
+      "subtitle",
+      "hysteresis buffer",
+      "wordmark",
+      "flexbox",
+      "min-height: 0",
+      "min-width: auto",
+      "overflow"
+    ],
+    "commands": [],
+    "problems": [
+      "Scrollbar horizontal muncul di dalam kartu kasus — penyebabnya flex item dengan min-width: auto default yang menolak menyusut",
+      "Menu masih memaksa scroll vertikal walau wordmark sudah dikecilkan, karena flex child tidak diberi min-height: 0"
+    ],
+    "summary": "Polish UI dan perbaikan layout DEDUCE. Monolog dikembalikan sebagai subtitle di zona tetap (menggantikan speech bubble mengambang yang terpotong di tepi layar) dengan styling mengikuti tema game, dan subtitle otomatis berpindah ke atas peta saat token di area bawah — pakai hysteresis buffer supaya tidak berkedip di ambang batas. Header in-game dirampingkan agar area peta lebih luas, dan wordmark diperbaiki dari 'DE DUCE' menjadi 'DEDUCE' tanpa celah. Layout menu dibenahi dengan mengecilkan wordmark dan mengunci tinggi panel via min-height: 0 pada flex child, sehingga daftar kasus yang scroll di dalam panel bukan seluruh halaman. Dua bug layout klasik terselesaikan: scrollbar horizontal di kartu kasus akibat flex item dengan min-width: auto default, dan menu yang tetap memaksa scroll vertikal karena flex child tanpa min-height: 0.",
+    "url": ""
   }
 ]
