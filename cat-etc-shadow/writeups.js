@@ -40,6 +40,7 @@ const writeups = [
     { title: "River", type: "red", desc: "Gitea Default Creds + CVE-2020-14144 Git Hooks RCE + Chisel Pivot to Webmin Root", url: "https://drive.google.com/file/d/1sc2PuViZYIcW0b51QUBWBbQeFf2Vq7TY/view?usp=sharing" },
     { title: "Resources", type: "red", desc: "AD ACL Chain Abuse + MSSQL xp_cmdshell Foothold + Kerberoast + RBCD → Domain Controller", url: "https://drive.google.com/file/d/1HBPzfxN1Pn_8N59-oplOEsC8HoK2UYvo/view?usp=sharing" },
     { title: "Previest", type: "red", desc: "Exposed .git Leak + PHP Source Cred Disclosure + Tiny File Manager Webshell + OMIGOD (CVE-2021-38647) → Root", url: "https://drive.google.com/file/d/1iMXDzXvjFwzQ0AdTb_W-uk9IouY9Qwgt/view?usp=sharing" },
+    { title: "DevilGod", type: "red", desc: "AES-ECB Signature Forgery + SQLi + BankApp RE + SEH Buffer Overflow + Watchdog Hijack ACL Bypass → Root", url: "https://drive.google.com/file/d/1cfSmKFWOyIhTPNXnuDFOqUKvMbQnvvc9/view?usp=sharing" },
     { title: "Deviasi", type: "blue", desc: "Deep Log Analysis & IOCs", url: "https://nickel-bedbug-8cc.notion.site/Deviasi-Hacktrace-Ranges-2a0416e03a1380babf06e961fa506f1a" },
     { title: "Undercover", type: "blue", desc: "Binary Investigation APT", url: "https://nickel-bedbug-8cc.notion.site/Undercover-Hacktrace-Ranges-2a1416e03a1380028d39e07d1298f543" },
     { title: "BluuShell", type: "blue", desc: "Malicious DOCX Forensics", url: "https://nickel-bedbug-8cc.notion.site/BluuShell-Hacktrace-Ranges-2a4416e03a13809e98c5f10d33af37e0" },
