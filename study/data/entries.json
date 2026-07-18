@@ -5832,5 +5832,247 @@
     ],
     "summary": "Polish UI dan perbaikan layout DEDUCE. Monolog dikembalikan sebagai subtitle di zona tetap (menggantikan speech bubble mengambang yang terpotong di tepi layar) dengan styling mengikuti tema game, dan subtitle otomatis berpindah ke atas peta saat token di area bawah — pakai hysteresis buffer supaya tidak berkedip di ambang batas. Header in-game dirampingkan agar area peta lebih luas, dan wordmark diperbaiki dari 'DE DUCE' menjadi 'DEDUCE' tanpa celah. Layout menu dibenahi dengan mengecilkan wordmark dan mengunci tinggi panel via min-height: 0 pada flex child, sehingga daftar kasus yang scroll di dalam panel bukan seluruh halaman. Dua bug layout klasik terselesaikan: scrollbar horizontal di kartu kasus akibat flex item dengan min-width: auto default, dan menu yang tetap memaksa scroll vertikal karena flex child tanpa min-height: 0.",
     "url": ""
+  },
+  {
+    "id": "devilgod-aes-ecb-signature-sqli",
+    "date": "2026-07-14",
+    "title": "DevilGod - AES-ECB Signature Forgery ke SQL Injection",
+    "platform": "Hacktrace",
+    "category": "Web Exploitation",
+    "tags": [
+      "devilgod",
+      "hacktrace",
+      "web",
+      "aes-ecb",
+      "signature-forgery",
+      "sql-injection",
+      "flask"
+    ],
+    "concepts": [
+      "Analisis skema otentikasi bertanda tangan AES-ECB",
+      "Forging signature yang harus konsisten di dua tempat (header Signature + parameter SQL query)",
+      "SQL Injection di balik gerbang signature",
+      "Dekode password dari cipher substitusi reversible"
+    ],
+    "terms": [
+      "AES-ECB",
+      "hardcoded key",
+      "signature forgery",
+      "SQL Injection",
+      "SQLite",
+      "substitution cipher",
+      "source code review"
+    ],
+    "commands": [
+      "Penyusunan script Python untuk forge signature per-payload + kirim ke /profile/getData"
+    ],
+    "problems": [
+      "Username muncul di signature check DAN di query SQL sekaligus, jadi payload harus valid di dua konteks",
+      "Password ternyata cuma di-encode geser bukan hash beneran"
+    ],
+    "summary": "Foothold lewat aplikasi Flask porta 8050. Bongkar kunci AES yang tertanam di source, tempa signature yang sah, eksploitasi SQLi buat dump tabel User, lalu dekode password devilgod jadi teks biasa.",
+    "url": ""
+  },
+  {
+    "id": "devilgod-winrm-foothold-user-flag",
+    "date": "2026-07-14",
+    "title": "DevilGod - WinRM Foothold dan User Flag",
+    "platform": "Hacktrace",
+    "category": "Windows Exploitation",
+    "tags": [
+      "devilgod",
+      "hacktrace",
+      "windows",
+      "winrm",
+      "evil-winrm",
+      "credential-reuse",
+      "initial-access"
+    ],
+    "concepts": [
+      "Penggunaan kredensial hasil dekode buat WinRM",
+      "Orientasi awal di host Windows",
+      "Pengumpulan kredensial layanan lain dari filesystem"
+    ],
+    "terms": [
+      "Evil-WinRM",
+      "WinRM 5985",
+      "credential reuse",
+      "creds.txt"
+    ],
+    "commands": [
+      "evil-winrm -i 10.1.2.138 -u devilgod -p '<pass>'"
+    ],
+    "problems": [],
+    "summary": "Login sebagai devilgod via Evil-WinRM, ambil user flag, dan temukan creds.txt yang memuat kredensial layanan Brankas (Deity/DeityHackTrace) untuk tahap berikutnya.",
+    "url": ""
+  },
+  {
+    "id": "devilgod-reverse-engineering-bankapp",
+    "date": "2026-07-14",
+    "title": "DevilGod - Reverse Engineering Layanan BankApp",
+    "platform": "Hacktrace",
+    "category": "Reverse Engineering",
+    "tags": [
+      "devilgod",
+      "hacktrace",
+      "reverse-engineering",
+      "pe32",
+      "objdump",
+      "vigenere",
+      "caesar-cipher"
+    ],
+    "concepts": [
+      "Analisis statis biner PE32 dengan simbol utuh",
+      "Pemetaan alur otentikasi dua tahap",
+      "Pembalikan rantai enkripsi kustom"
+    ],
+    "terms": [
+      "PE32",
+      "i386",
+      "objdump",
+      "Caesar shift",
+      "Vigenere cipher (key REVOLT)",
+      "base64",
+      "DEP disabled"
+    ],
+    "commands": [
+      "Pembongkaran BankApp.exe (59694 byte) dengan objdump, verifikasi kredensial via enkripsi maju"
+    ],
+    "problems": [
+      "Kredensial tahap satu disembunyikan di balik Caesar +5 lalu Vigenere key REVOLT atas target base64 Wm5pbW9Gd2xrTWh5eW4=; harus dibalik dan diverifikasi"
+    ],
+    "summary": "RE BankApp buat memetakan dua tahap login (Deity/DeityHackTrace lalu D3v1lG0dHacktrace/WFRCBL4DPSEU52) sampai ketemu prompt rentan `Input Your Code:` yang jadi titik masuk buffer overflow.",
+    "url": ""
+  },
+  {
+    "id": "devilgod-seh-buffer-overflow-dev",
+    "date": "2026-07-16",
+    "title": "DevilGod - Pengembangan Eksploitasi SEH Buffer Overflow",
+    "platform": "Hacktrace",
+    "category": "Windows Exploitation",
+    "tags": [
+      "devilgod",
+      "hacktrace",
+      "buffer-overflow",
+      "seh-overflow",
+      "exploit-dev",
+      "mona",
+      "immunity-debugger"
+    ],
+    "concepts": [
+      "Klasifikasi crash SEH vs EIP",
+      "Penguncian offset dengan marker",
+      "Pemilihan gadget POP-POP-RET dari modul tanpa SafeSEH",
+      "Penanganan layanan multithread lewat lompatan relatif",
+      "Backward-jump chain karena ruang setelah SEH sempit"
+    ],
+    "terms": [
+      "SEH overflow",
+      "nSEH",
+      "mona.py",
+      "findmsp",
+      "POP POP RET",
+      "SafeSEH",
+      "bad chars",
+      "shikata_ga_nai",
+      "near jump",
+      "Immunity Debugger"
+    ],
+    "commands": [
+      "!mona findmsp",
+      "!mona seh",
+      "Fuzzing prompt, validasi lokal payload windows/exec (calc.exe)"
+    ],
+    "problems": [
+      "Layanan multithread bikin base stack beda per koneksi (alamat absolut ga reliable)",
+      "Ruang setelah frame SEH cuma ~52 byte, harus lompat mundur ~116 byte ke shellcode yang nempel di nSEH"
+    ],
+    "summary": "Bangun eksploitasi SEH BOF dari nol (nSEH offset 1926, gadget 0x719028e9), pecahin masalah layout stack via rantai lompatan mundur, dan validasi penuh secara lokal sampai calc.exe muncul.",
+    "url": ""
+  },
+  {
+    "id": "devilgod-defender-deadend-watchdog-pivot",
+    "date": "2026-07-17",
+    "title": "DevilGod - Analisis Kegagalan Defender dan Titik Balik Watchdog",
+    "platform": "Hacktrace",
+    "category": "Privilege Escalation",
+    "tags": [
+      "devilgod",
+      "hacktrace",
+      "windows-defender",
+      "av-evasion",
+      "watchdog",
+      "int3",
+      "troubleshooting"
+    ],
+    "concepts": [
+      "Diagnosis mengapa eksploitasi valid gagal terhadap target",
+      "Penggunaan payload INT3 buat konfirmasi rantai mendarat",
+      "Pengamatan tingkatan blokir Defender",
+      "Penyadaran bahwa BOF cukup jadi pemicu crash bukan sarana pengiriman shellcode",
+      "Analisis skrip watchdog"
+    ],
+    "terms": [
+      "Windows Defender",
+      "Real Time Protection",
+      "INT3 breakpoint test",
+      "staged vs single-shot payload",
+      "watchdog loop",
+      "Start-Sleep"
+    ],
+    "commands": [
+      "Uji INT3 (\\xcc) buat konfirmasi landing",
+      "Pemeriksaan isi runthis.ps1 asli setelah revert"
+    ],
+    "problems": [
+      "Eksploitasi sempurna secara lokal tapi gagal diam-diam di target karena Defender",
+      "Nyaris kejebak nyempurnain shellcode padahal jawabannya di mekanisme watchdog",
+      "Edit runthis.ps1 ternyata dead-end karena loop ga baca ulang file dari disk"
+    ],
+    "summary": "Titik tersulit dan paling makan waktu. Diagnosis Defender via INT3, lalu pindah cara berpikir dari memaksa shellcode ke memahami bahwa runthis.ps1 menjalankan BankApp sebagai Astaroth tiap 300 detik.",
+    "url": ""
+  },
+  {
+    "id": "devilgod-watchdog-hijack-acl-bypass-root",
+    "date": "2026-07-17",
+    "title": "DevilGod - Pembajakan Watchdog dan Root via Copy-as-Astaroth",
+    "platform": "Hacktrace",
+    "category": "Privilege Escalation",
+    "tags": [
+      "devilgod",
+      "hacktrace",
+      "privilege-escalation",
+      "writable-binary-hijack",
+      "icacls",
+      "acl-bypass",
+      "mingw"
+    ],
+    "concepts": [
+      "Pembajakan berkas yang dieksekusi proses berprivilege",
+      "Pemanfaatan jendela penguncian berkas selama Start-Sleep",
+      "Payload benign custom-compiled buat menghindari deteksi tanda tangan",
+      "Bypass ACL DENY dengan membaca sebagai akun berprivilege"
+    ],
+    "terms": [
+      "writable binary hijack",
+      "icacls",
+      "ACL DENY ACE",
+      "file lock window",
+      "mingw",
+      "LOLBin",
+      "Integrity Level"
+    ],
+    "commands": [
+      "icacls (cek hak akses)",
+      "x86_64-w64-mingw32-gcc (kompilasi payload C)",
+      "Copy-Item ... -Force (selama jendela sleep)",
+      "type C:\\Users\\Public\\rf.txt"
+    ],
+    "problems": [
+      "BankApp.exe terkunci saat berjalan (harus crash dulu biar jendela sleep membuka file)",
+      "ACL DENY eksplisit pada root.txt bikin grant-read langsung ga efektif, dilewati dengan copy-as-Astaroth ke Public"
+    ],
+    "summary": "Timpa BankApp.exe dengan payload benign yang dijalankan watchdog sebagai Astaroth, lalu lewati jebakan ACL DENY dengan menyalin root.txt keluar sebagai Astaroth. Root flag diperoleh, box selesai.",
+    "url": ""
   }
 ]
