@@ -6466,5 +6466,323 @@
     ],
     "summary": "Sesi Blogks (Hacktrace Ranges, Hard, in progress): setelah vektor chat Log4Shell gugur, satu-satunya permukaan tersisa adalah web port 80 yang selama ini hanya dilewati. DevTools mengungkap request login asli: body bergaya form Uname=x&Pass=y tapi dikirim sebagai Content-Type: text/plain, artinya server membaca php://input mentah, bukan $_POST. Reframing kunci: 403 dari login.php ternyata bukan filter header melainkan respons 'login gagal' itu sendiri — browser pun menerima 403 dan JS hanya redirect ke panel kalau status 200, jadi semua request sebelumnya sudah sampai ke logika login dan waktu sempat terbuang mengejar filter yang tidak ada. SQLi auth bypass manual tetap 403 sehingga dieskalasi ke sqlmap; kendalanya body sukses dan gagal sama-sama kosong sehingga satu-satunya sinyal true/false adalah HTTP status, dan request harus dikirim dari file agar content-type asli terjaga. Investigasi web berlanjut; belum ada bypass.",
     "url": ""
+  },
+  {
+    "id": "soc-wildfire-office-updater-fp-20260715",
+    "date": "2026-07-15",
+    "title": "Triage Verdict WildFire pada Komponen Updater Office Suite Pihak Ketiga",
+    "platform": "MPM SOC",
+    "category": "Malware Analysis",
+    "tags": [
+      "cortex-xdr",
+      "wildfire",
+      "sandbox",
+      "false-positive",
+      "pe-overlay",
+      "code-signing",
+      "prevalence",
+      "soc",
+      "malware-triage"
+    ],
+    "concepts": [
+      "Sandbox heuristic vs behavior nyata: verdict MALWARE dipicu heuristik generik (PE ter-packed, overlay entropy tinggi, section non-standar, enumerasi proses, indikasi sandbox evasion), bukan aksi berbahaya yang teramati",
+      "Prevalence sebagai sinyal triage: eksekusi konsisten di banyak host dan user dari satu updater auto-task menandakan komponen sah, bukan intrusi bertarget",
+      "Keterbatasan code signing: signature vendor yang valid tidak otomatis berarti file aman (Authenticode tidak mencakup overlay/append region, referensi CVE-2013-3900 dan riset overlay abuse)",
+      "Verifikasi verdict lewat telemetry endpoint alih-alih menerima skor sandbox mentah"
+    ],
+    "terms": [
+      "Cortex XDR",
+      "WildFire",
+      "XQL",
+      "TheHive",
+      "PE overlay",
+      "Authenticode",
+      "CVE-2013-3900",
+      "digital signature",
+      "auto-updater"
+    ],
+    "commands": [
+      "dataset = xdr_data | filter event_type = ENUM.PROCESS | comp count() by actor_process_signature_vendor",
+      "dataset = xdr_data | comp count_distinct(agent_hostname), count_distinct(actor_effective_username) by action_process_image_sha256"
+    ],
+    "problems": [
+      "Verdict sandbox MALWARE murni berbasis heuristik packing/evasion tanpa perilaku jahat yang benar-benar teramati di endpoint",
+      "Digital signature valid sempat dianggap jaminan aman; perlu ditegaskan bahwa Authenticode tidak melindungi overlay sehingga signature saja bukan bukti bersih"
+    ],
+    "summary": "Triage alert malware Cortex XDR dengan verdict MALWARE dari WildFire yang dipicu heuristik generik (PE ter-packed, overlay entropy tinggi, section non-standar, enumerasi proses, indikasi sandbox evasion). Verifikasi lewat query telemetry endpoint memperlihatkan eksekusi berasal dari updater auto-task sebuah office suite komersial, konsisten di banyak host dan user, dengan binary ditandatangani vendor. Ditutup sebagai false positive di TheHive. Termasuk pendalaman kenapa digital signature yang valid tidak otomatis berarti file aman: Authenticode tidak mencakup region overlay (referensi CVE-2013-3900 dan riset overlay abuse), sehingga prevalence dan konteks eksekusi jadi sinyal triage yang lebih menentukan daripada skor sandbox mentah.",
+    "url": ""
+  },
+  {
+    "id": "soc-bioc-powershell-base64-developer-fp-20260715",
+    "date": "2026-07-15",
+    "title": "Analisis Alert BIOC PowerShell Base64 dari Aktivitas Developer",
+    "platform": "MPM SOC",
+    "category": "Malware Analysis",
+    "tags": [
+      "cortex-xdr",
+      "bioc",
+      "powershell",
+      "base64",
+      "cyberchef",
+      "false-positive",
+      "user-context",
+      "soc",
+      "malware-triage"
+    ],
+    "concepts": [
+      "Encoding bukan obfuscation: base64 hanya representasi, decode langsung mengungkap isi sebenarnya tanpa niat menyembunyikan",
+      "Membaca AST parser vs eksekusi: wrapper luar adalah parser AST bawaan tooling IDE yang memeriksa script, bukan menjalankan payload berbahaya",
+      "Konteks user sebagai bagian dari verdict: peran pemilik host (developer) dan parent process yang sah menguatkan klasifikasi benign",
+      "Absennya indikator eksekusi berbahaya (tidak ada download, IEX, persistence, atau perubahan registry) sebagai bukti negatif yang menentukan"
+    ],
+    "terms": [
+      "Cortex XDR BIOC",
+      "PowerShell",
+      "EncodedCommand",
+      "base64",
+      "CyberChef",
+      "AST",
+      "parent process",
+      "IEX"
+    ],
+    "commands": [
+      "echo '<encoded_blob>' | base64 -d   # decode encoded command untuk direview",
+      "CyberChef: From Base64 -> review decoded script (tidak dieksekusi)"
+    ],
+    "problems": [
+      "Perintah PowerShell ter-encode base64 secara permukaan mirip pola ancaman, sehingga memicu alert perilaku BIOC",
+      "Perlu memisahkan wrapper parser AST milik tooling IDE dari eksekusi payload agar tidak salah verdict"
+    ],
+    "summary": "Analisis alert BIOC Cortex XDR untuk perintah PowerShell ter-encode base64. Payload didekode (CyberChef/base64 -d) dan ternyata script penyalinan file source frontend biasa, sementara wrapper luarnya adalah parser AST bawaan tooling IDE yang hanya memeriksa command. Tidak ditemukan indikator eksekusi berbahaya: tidak ada download, IEX, persistence, maupun perubahan registry. Divalidasi lewat konteks parent process dan peran pemilik host sebagai developer, lalu ditutup sebagai false positive dengan closure note ringkas. Poin kunci: encoding bukan obfuscation, dan membaca alur (parse vs execute) plus konteks user adalah bagian sah dari verdict.",
+    "url": ""
+  },
+  {
+    "id": "soc-aql-egress-rst-hypothesis-20260724",
+    "date": "2026-07-24",
+    "title": "Debugging AQL dan Uji Tiga Hipotesis pada Traffic Egress",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "qradar",
+      "aql",
+      "tcp-flags",
+      "hypothesis-falsification",
+      "egress-analysis",
+      "verdict-calibration",
+      "threat-intel",
+      "soc"
+    ],
+    "concepts": [
+      "Query debugging AQL: perbaikan typo field waktu, sintaks pencocokan subnet, wrapping fungsi yang tidak perlu, dan alias kolom",
+      "Falsifikasi hipotesis: tiga dugaan senior (eksfiltrasi, SSH tunneling, beaconing) diuji satu per satu dan tidak ada yang didukung data",
+      "Arah koneksi vs arah log: event yang tercatat adalah balasan RST, bukan koneksi keluar yang berhasil",
+      "Kalibrasi bahasa verdict: dirumuskan sebagai inconclusive dengan indikator kuat mengarah benign, bukan klaim FP mutlak",
+      "Keterbatasan reputasi vendor skor rendah sebagai dasar tunggal verdict"
+    ],
+    "terms": [
+      "QRadar",
+      "AQL",
+      "TCP flags",
+      "ACK/RST",
+      "threat intel feed",
+      "VirusTotal",
+      "egress traffic",
+      "perimeter reject"
+    ],
+    "commands": [
+      "SELECT sourceip, destinationip, tcpflags FROM events WHERE INCIDR(<subnet>, destinationip) LAST 24 HOURS",
+      "SELECT COUNT(*) FROM events WHERE tcpflags IN ('ACK','RST') GROUP BY destinationip LAST 24 HOURS"
+    ],
+    "problems": [
+      "Query AQL awal bermasalah: typo field waktu, sintaks subnet keliru, fungsi ter-wrap tanpa perlu, dan alias kolom yang membingungkan output",
+      "Paket tanpa payload menggugurkan hipotesis eksfiltrasi; sebaran RST ke puluhan host menggugurkan tunneling; interval tidak konsisten menggugurkan beaconing",
+      "Reputasi vendor skor rendah tidak cukup kuat dijadikan dasar verdict, sehingga posisi akhir dijaga tetap inconclusive"
+    ],
+    "summary": "Sesi threat hunting egress di QRadar. Diawali perbaikan query AQL (typo field waktu, sintaks pencocokan subnet, wrapping fungsi tak perlu, alias kolom), lalu analisis puluhan event selama 24 jam menuju satu blok /24 eksternal yang semuanya berukuran header saja dengan flag ACK/RST. Tiga hipotesis rekan senior diuji dan tak satu pun didukung data: paket tanpa payload menggugurkan eksfiltrasi, sebaran RST ke puluhan host menggugurkan SSH tunneling, interval tidak konsisten menggugurkan beaconing. Hipotesis paling defensible adalah scanning masuk yang ditolak perimeter dengan event yang tercatat berupa balasan RST (arah log berlawanan dengan arah koneksi yang dipersepsikan). Verdict akhir dijaga sebagai inconclusive dengan indikator kuat mengarah benign, bukan FP mutlak.",
+    "url": ""
+  },
+  {
+    "id": "soc-domain-sweep-parsing-artifact-20260726",
+    "date": "2026-07-26",
+    "title": "Sweep Domain 24 Jam dan Temuan Artifact Parsing",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "qradar",
+      "aql",
+      "dsm",
+      "custom-property",
+      "parsing-artifact",
+      "noise-floor",
+      "shift-handover",
+      "soc"
+    ],
+    "concepts": [
+      "Noise floor dan volume vs relevansi: ratusan ribu event 24 jam mayoritas noise debug perangkat jaringan",
+      "Artifact parser sebagai penyebab false trigger: source dan destination terisi nilai identik sehingga rule reputasi tidak bisa divalidasi",
+      "Kejujuran soal cakupan data: hanya sebagian kecil window yang benar-benar ditinjau karena pagination, dicatat sebagai keterbatasan metodologi",
+      "Follow up teknis: perbaikan properti parsing DSM dan penurunan verbositas debug logging"
+    ],
+    "terms": [
+      "QRadar",
+      "AQL",
+      "DSM",
+      "custom property",
+      "parsing artifact",
+      "debug logging",
+      "shift handover",
+      "pagination"
+    ],
+    "commands": [
+      "SELECT * FROM events WHERE LOGSOURCETYPENAME(devicetype) ILIKE '%network%' LAST 24 HOURS   # domain-wide, tanpa filter IP",
+      "SELECT COUNT(*) FROM events WHERE sourceip = destinationip LAST 24 HOURS"
+    ],
+    "problems": [
+      "Query domain-wide tanpa filter menghasilkan ratusan ribu event yang didominasi noise debug perangkat jaringan",
+      "Artifact parsing membuat source dan destination terisi nilai identik sehingga rule reputasi tidak bisa divalidasi",
+      "Hanya sebagian kecil window yang sempat ditinjau karena pagination; keterbatasan cakupan data dicatat eksplisit"
+    ],
+    "summary": "Threat hunting sweep domain-wide 24 jam tanpa filter IP di QRadar yang menghasilkan ratusan ribu event. Analisis menunjukkan mayoritas volume adalah noise debug dari perangkat jaringan, dan ditemukan artifact parsing di mana source dan destination terisi nilai yang sama sehingga trigger rule reputasi tidak bisa divalidasi. Hasil dirangkum ke catatan serah terima shift dengan dua follow up: perbaikan properti parsing DSM dan penurunan verbositas debug logging. Dicatat pula keterbatasan metodologi secara jujur: data yang benar-benar ditinjau hanya sebagian kecil dari window karena pagination, bukan keseluruhan periode.",
+    "url": ""
+  },
+  {
+    "id": "soc-powershell-encoded-cli-tooling-fp-20260727",
+    "date": "2026-07-27",
+    "title": "Pembacaan Wrapper PowerShell Ter-encode dari Tooling CLI Developer",
+    "platform": "MPM SOC",
+    "category": "Malware Analysis",
+    "tags": [
+      "powershell",
+      "base64",
+      "ast-parser",
+      "edr",
+      "false-positive",
+      "closure-note",
+      "developer-tooling",
+      "soc",
+      "malware-triage"
+    ],
+    "concepts": [
+      "Decode bukan berarti execute: payload hanya didekode lalu diparse jadi AST dan diperiksa, tidak dijalankan",
+      "Membedakan tooling validator dari attacker tooling: fungsi inspeksi memeriksa elemen command, redirection, dan pola obfuscation sebagai validator, bukan sebagai malware",
+      "Penulisan closure note berlapis: versi formal untuk arsip dan versi satu baris untuk ringkasan cepat",
+      "Payload akhir hanyalah pemanggil script Python di direktori temp milik tooling CLI"
+    ],
+    "terms": [
+      "PowerShell",
+      "base64",
+      "AST parser",
+      "EDR",
+      "false positive",
+      "closure note",
+      "temp directory",
+      "CLI tooling"
+    ],
+    "commands": [
+      "echo '<encoded_blob>' | base64 -d   # decode blok terenkode untuk direview",
+      "Review alur: decode -> parse AST -> fungsi inspeksi (command, redirection, obfuscation) -> tidak ada execute"
+    ],
+    "problems": [
+      "Blok base64 dalam script secara permukaan mirip pola ancaman umum sehingga rawan diverdict jahat",
+      "Perlu ditelusuri bahwa payload hanya diparse dan diperiksa (validator), bukan dieksekusi, sebelum menutup FP"
+    ],
+    "summary": "Analisis satu script PowerShell berisi blok base64 yang secara permukaan mirip pola ancaman umum. Penelusuran alur eksekusi menunjukkan payload hanya didekode lalu diparse menjadi AST dan diperiksa oleh fungsi inspeksi (elemen command, redirection, pola obfuscation), bukan dieksekusi, sehingga wrapper-nya berperan sebagai validator, bukan attacker tooling. Payload aslinya sendiri hanya pemanggil script Python di direktori temp milik tooling CLI developer. Ditutup sebagai false positive dengan closure note dua tingkat: versi formal untuk arsip dan versi satu baris untuk ringkasan cepat. Pelajaran inti: decode tidak sama dengan execute.",
+    "url": ""
+  },
+  {
+    "id": "soc-sysmon-eid8-createremotethread-t1055-20260731",
+    "date": "2026-07-31",
+    "title": "Korelasi Sysmon Event ID 8 dan Validasi Dugaan Process Injection",
+    "platform": "MPM SOC",
+    "category": "Malware Analysis",
+    "tags": [
+      "sysmon",
+      "qradar",
+      "aql",
+      "process-injection",
+      "mitre-t1055",
+      "createremotethread",
+      "event-correlation",
+      "false-positive",
+      "soc"
+    ],
+    "concepts": [
+      "T1055 legitimate vs malicious: CreateRemoteThread bermagnitude tinggi belum tentu jahat tanpa konteks sumber dan target",
+      "Membangun rantai bukti lintas event type: ProcessAccess (granted access penuh) -> CreateRemoteThread (ke target) -> ProcessCreate",
+      "Target injeksi self-owned sebagai pembeda kunci: agen menyuntik child process miliknya sendiri, bukan proses pihak lain",
+      "Sumber teridentifikasi sebagai agen monitoring infrastruktur berbasis JRE yang berjalan sebagai SYSTEM, diikuti eksekusi query direktori",
+      "Temuan sekunder direkomendasikan untuk divalidasi lebih lanjut, dipisahkan dari verdict utama"
+    ],
+    "terms": [
+      "Sysmon EID 8",
+      "Sysmon EID 10",
+      "Sysmon EID 1",
+      "QRadar",
+      "MITRE T1055",
+      "AQL",
+      "UTF8(payload)",
+      "CreateRemoteThread",
+      "SYSTEM"
+    ],
+    "commands": [
+      "SELECT UTF8(payload) FROM events WHERE UTF8(payload) ILIKE '%CreateRemoteThread%' LAST N HOURS",
+      "SELECT UTF8(payload) FROM events WHERE \"EventID\" = '8' LAST N HOURS   # cocokkan angka penuh, hindari substring"
+    ],
+    "problems": [
+      "Suffix \"(custom)\" di UI bukan bagian nama properti saat dipakai di AQL",
+      "Field payload harus dibungkus UTF8() agar ILIKE jalan",
+      "Filter START/STOP mengacu ke waktu internal SIEM, bukan device time; skew belasan menit membuat query time-bounded balik kosong padahal LAST N HOURS berhasil",
+      "Matching angka EventID rawan salah karena '1' juga cocok dengan '10', '11', '12' bila pakai substring; harus cocok angka penuh"
+    ],
+    "summary": "Alert magnitude tinggi untuk CreateRemoteThread yang dipetakan ke MITRE T1055. Investigasi menyusun rantai tiga tipe event Sysmon: ProcessAccess (EID 10) dengan granted access penuh, CreateRemoteThread (EID 8) ke proses target, lalu ProcessCreate (EID 1). Terungkap sumbernya adalah agen monitoring infrastruktur berbasis JRE yang berjalan sebagai SYSTEM, dan target injeksinya adalah child process milik agen itu sendiri, diikuti eksekusi query direktori — pola sah, bukan intrusi. Ditutup sebagai false positive dengan laporan analisis formal, plus satu temuan sekunder yang direkomendasikan untuk divalidasi lebih lanjut. Sepanjang query AQL dicatat beberapa jebakan: suffix (custom) bukan bagian nama properti, payload wajib dibungkus UTF8() agar ILIKE jalan, filter START/STOP memakai waktu internal SIEM sehingga skew menit membuat query time-bounded kosong, dan matching EventID harus angka penuh karena 1 juga cocok dengan 10/11/12.",
+    "url": ""
+  },
+  {
+    "id": "soc-waf-unparsable-request-flood-fp-20260803",
+    "date": "2026-08-03",
+    "title": "Investigasi Alert Flood WAF dan Dua Temuan Sampingan di Sisi Aplikasi",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "f5-asm",
+      "waf",
+      "qradar",
+      "http-parser",
+      "source-port-analysis",
+      "jwt",
+      "token-leakage",
+      "false-positive",
+      "soc"
+    ],
+    "concepts": [
+      "Protocol-level violation vs serangan aplikasi: unparsable request content adalah pelanggaran parsing HTTP, bukan payload serangan aplikatif",
+      "Membaca response code nol sebagai bukti tidak ada dampak backend: request tidak pernah diteruskan (action alerted, bukan blocked)",
+      "Distribusi source port sebagai sinyal transport: satu event per port dengan beberapa port nyaris berurutan pada timestamp identik mengarah ke fragmentasi transport, bukan tooling penyerang",
+      "URI di alert disintesis WAF dari value header, bukan request line asli; sampel raw hanya satu baris header dengan nama dan value acak tanpa request line",
+      "Temuan sekunder bisa lebih berharga daripada verdict alert-nya",
+      "Korelasi lintas log source dan scoping tujuh hari untuk mengonfirmasi hanya satu klien yang memunculkan pola ini"
+    ],
+    "terms": [
+      "F5 ASM",
+      "WAF",
+      "QRadar",
+      "HTTP parser attack",
+      "unparsable request content",
+      "source port distribution",
+      "JWT",
+      "bearer token",
+      "query string token leakage"
+    ],
+    "commands": [
+      "SELECT sourceport, COUNT(*) FROM events WHERE UTF8(payload) ILIKE '%unparsable request content%' GROUP BY sourceport LAST 24 HOURS",
+      "SELECT * FROM events WHERE UTF8(payload) ILIKE '%unparsable request content%' LAST 7 DAYS   # scoping lintas klien"
+    ],
+    "problems": [
+      "Ratusan violation dari satu sumber dalam beberapa jam sempat tampak seperti serangan; action alerted bukan blocked dan response code nol menandakan request tidak pernah sampai backend",
+      "URI yang tampil di alert menyesatkan karena disintesis WAF dari value header, bukan request line asli",
+      "Dua temuan aplikasi lebih substantif daripada verdict alert: bearer token dikirim sebagai query string (tercatat cleartext di beberapa layer logging) dan satu endpoint mengembalikan 404 sehingga memicu loop reconnect klien"
+    ],
+    "summary": "Investigasi alert flood F5 ASM: ratusan violation unparsable request content dari satu sumber dalam beberapa jam, dengan action alerted (bukan blocked) dan response code nol yang berarti request tidak pernah diteruskan ke backend. Analisis sampel raw menunjukkan isi request hanya satu baris header dengan nama dan value acak tanpa request line, dan URI yang tampil di alert ternyata disintesis WAF dari value header tersebut. Distribusi source port satu event per port dengan beberapa port nyaris berurutan pada timestamp identik mengarah ke fragmentasi di sisi transport, bukan tooling penyerang. Korelasi lintas log source memperlihatkan sumber yang sama menjalankan traffic aplikasi normal dan terautentikasi di jam berdekatan, dan scoping tujuh hari mengonfirmasi hanya satu klien yang memunculkan pola ini. Verdict false positive, dengan dua temuan nyata diteruskan ke tim aplikasi: bearer token dikirim sebagai parameter query string sehingga tercatat cleartext di beberapa layer logging, dan satu endpoint yang mengembalikan 404 sehingga memicu loop reconnect klien.",
+    "url": ""
   }
 ]
