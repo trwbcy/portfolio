@@ -6784,5 +6784,303 @@
     ],
     "summary": "Investigasi alert flood F5 ASM: ratusan violation unparsable request content dari satu sumber dalam beberapa jam, dengan action alerted (bukan blocked) dan response code nol yang berarti request tidak pernah diteruskan ke backend. Analisis sampel raw menunjukkan isi request hanya satu baris header dengan nama dan value acak tanpa request line, dan URI yang tampil di alert ternyata disintesis WAF dari value header tersebut. Distribusi source port satu event per port dengan beberapa port nyaris berurutan pada timestamp identik mengarah ke fragmentasi di sisi transport, bukan tooling penyerang. Korelasi lintas log source memperlihatkan sumber yang sama menjalankan traffic aplikasi normal dan terautentikasi di jam berdekatan, dan scoping tujuh hari mengonfirmasi hanya satu klien yang memunculkan pola ini. Verdict false positive, dengan dua temuan nyata diteruskan ke tim aplikasi: bearer token dikirim sebagai parameter query string sehingga tercatat cleartext di beberapa layer logging, dan satu endpoint yang mengembalikan 404 sehingga memicu loop reconnect klien.",
     "url": ""
+  },
+  {
+    "id": "tcm-noob-village-ctf-defcon-2026-20260809",
+    "date": "2026-08-09",
+    "title": "TCM Security Noob Village CTF @ DEF CON 2026",
+    "platform": "TCM Security",
+    "category": "CTF Methodology",
+    "tags": [
+      "ctf",
+      "log-analysis",
+      "network-forensics",
+      "file-carving",
+      "cryptanalysis",
+      "caesar-cipher",
+      "vigenere",
+      "reverse-engineering",
+      "elf",
+      "stripped",
+      "osint",
+      "robots-txt",
+      "web-exploitation",
+      "cookie-forgery",
+      "jwt",
+      "hs256",
+      "git-dump"
+    ],
+    "concepts": [
+      "Analisis log: deteksi anomali berbasis baseline pada log autentikasi, memisahkan satu entri menyimpang dari 81 baris berdasarkan penyimpangan alamat sumber, user agent, dan interval waktu",
+      "Forensik jaringan: analisis hierarki protokol dan ekstraksi objek HTTP dengan tshark, korelasi DNS untuk memetakan nama host ke alamat peladen, pemulihan kredensial HTTP Basic dari lalu lintas teks terang",
+      "Forensik digital: carving tingkat bita pada citra tanpa sistem berkas dan verifikasi batas offset dengan xxd, pembongkaran struktur objek PDF memakai qpdf untuk menemukan kunci non standar yang tidak terbaca exiftool",
+      "Kriptografi: kriptanalisis sandi geser memanfaatkan awalan flag sebagai crib, dekode Vigenere dengan kunci yang bocor melalui berkas konteks",
+      "Rekayasa balik: analisis statis biner ELF terstrip memakai strings dan rabin2 tanpa eksekusi",
+      "OSINT: enumerasi catatan DNS TXT, pengungkapan lintasan melalui robots.txt, pemulihan konten terhapus lewat Wayback CDX API",
+      "Eksploitasi web: manipulasi cookie peran tanpa tanda tangan, penandatanganan ulang JWT HS256 setelah rahasia penandatanganan bocor lewat endpoint konfigurasi debug",
+      "Forensik kendali versi: pemulihan berkas rahasia yang dihapus dari HEAD namun objek blobnya masih hidup di riwayat Git"
+    ],
+    "terms": [
+      "baseline anomaly detection",
+      "protocol hierarchy",
+      "HTTP object extraction",
+      "HTTP Basic auth",
+      "file carving",
+      "PDF object structure",
+      "Caesar cipher",
+      "crib",
+      "Vigenere",
+      "stripped ELF",
+      "DNS TXT record",
+      "robots.txt",
+      "Wayback CDX API",
+      "cookie forgery",
+      "JWT HS256",
+      "Git blob recovery",
+      "decoy flag"
+    ],
+    "commands": [
+      "tshark",
+      "capinfos",
+      "sleuthkit",
+      "rabin2",
+      "qpdf",
+      "exiftool",
+      "dig",
+      "curl",
+      "git",
+      "python3 dengan PyJWT"
+    ],
+    "problems": [
+      "Menyelesaikan 14 soal lintas kategori: analisis log, forensik jaringan, forensik digital, kriptografi, rekayasa balik, OSINT, eksploitasi web, dan forensik kendali versi",
+      "8 dari 14 soal memuat flag umpan, sehingga setiap kandidat jawaban harus divalidasi lewat konteks artefak sebelum submisi"
+    ],
+    "summary": "Menyelesaikan seluruh 14 soal pada kompetisi Capture The Flag TCM Security Noob Village di DEF CON 2026 dengan total 1886 poin, diikuti secara jarak jauh. Cakupan kategori meliputi analisis log, forensik jaringan, forensik digital, kriptografi, rekayasa balik, rekonesans terbuka, eksploitasi web, dan forensik kendali versi.",
+    "url": ""
+  },
+  {
+    "id": "tcm-noob-village-ctf-writeup-doc-20260809",
+    "date": "2026-08-09",
+    "title": "Dokumentasi writeup TCM Noob Village CTF",
+    "platform": "TCM Security",
+    "category": "Documentation",
+    "tags": [
+      "writeup",
+      "documentation",
+      "ctf-writeup",
+      "reporting",
+      "mitre-attack",
+      "attack-flow"
+    ],
+    "concepts": [
+      "Laporan teknis lengkap 44 halaman atas seluruh 14 soal, mencakup metodologi per soal dan bukti eksekusi",
+      "Analisis pola flag umpan lintas soal",
+      "Pemetaan MITRE ATT&CK: T1078, T1040, T1140, T1552.001, T1596.001, T1593, T1005, T1027, T1548, T1606.001",
+      "Rekomendasi remediasi per temuan"
+    ],
+    "terms": [
+      "MITRE ATT&CK",
+      "T1078",
+      "T1040",
+      "T1140",
+      "T1552.001",
+      "T1596.001",
+      "T1593",
+      "T1005",
+      "T1027",
+      "T1548",
+      "T1606.001",
+      "writeup",
+      "remediasi"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyusun laporan teknis lengkap 44 halaman atas seluruh 14 soal, mencakup metodologi per soal, bukti eksekusi, analisis pola flag umpan, pemetaan MITRE ATT&CK, dan rekomendasi remediasi.",
+    "url": ""
+  },
+  {
+    "id": "soc-dns-spyware-source-port-attribution-20260806",
+    "date": "2026-08-06",
+    "title": "Atribusi proses pada alert DNS spyware lewat korelasi source port",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "dns",
+      "adware",
+      "correlation",
+      "qradar",
+      "cortex-xdr"
+    ],
+    "concepts": [
+      "Korelasi dua arah antara log firewall dan telemetri endpoint",
+      "Source port sebagai join key unik antar sistem yang tidak berbagi identifier",
+      "Membedakan beaconing bercadence mesin dari aktivitas yang terikat sesi pengguna",
+      "Exponential backoff sebagai sidik jari komponen software yang gagal konek",
+      "Batas argument from absence ketika agen endpoint melakukan agregasi koneksi UDP"
+    ],
+    "terms": [
+      "dns-malware",
+      "browser hijacker",
+      "PUP",
+      "exponential backoff",
+      "TAP mode",
+      "join key",
+      "ephemeral port"
+    ],
+    "commands": [
+      "dataset = xdr_data | filter action_external_hostname contains \"<domain>\"",
+      "dataset = xdr_data | filter action_remote_port = 53 | fields action_local_port, actor_process_image_name",
+      "dataset = xdr_data | bin _time span = 1m | comp count() as events by _time, actor_process_image_name",
+      "SELECT sourceip, sourceport FROM events WHERE UTF8(payload) ILIKE '%<indicator>%' START '<t0>' STOP '<t1>'"
+    ],
+    "problems": [
+      "Telemetri endpoint tidak menyimpan nama domain hasil kueri DNS, sehingga atribusi proses tidak bisa dijawab langsung dari satu tool",
+      "Hipotesis pertama menuduh browser yang salah, murni karena kedekatan waktu dan dominasi volume proses",
+      "Agen endpoint ternyata tidak mencatat seluruh koneksi UDP port 53, jadi ketiadaan proses di suatu jendela bukan bukti proses itu diam",
+      "Percobaan join source port pertama gagal total karena jendela waktunya salah, bukan karena datanya tidak ada"
+    ],
+    "summary": "Menginvestigasi alert DNS spyware dari firewall Palo Alto yang diteruskan ke QRadar, dengan tujuan menentukan proses mana yang melakukan permintaan DNS ke domain adware. Telemetri Cortex XDR ternyata tidak menyimpan nama domain, sehingga atribusi harus ditempuh lewat korelasi. Hipotesis awal saya menunjuk browser yang dipasang sendiri oleh user karena volume dan kedekatan waktunya, dan hipotesis itu akhirnya gugur. Atribusi final baru definitif setelah source port dari log firewall dicocokkan persis dengan action_local_port di telemetri endpoint pada detik yang sama, dan ternyata pelakunya browser terkelola, bukan yang tidak terkelola. Analisis pola menunjukkan aktivitas berhenti total di akhir pekan dan tiap gelombang mengikuti exponential backoff, yang membedakannya dari beaconing C2.",
+    "url": ""
+  },
+  {
+    "id": "soc-clock-skew-time-correlation-20260806",
+    "date": "2026-08-06",
+    "title": "Menemukan selisih jam antar sistem yang membalik kesimpulan investigasi",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "siem",
+      "time-correlation",
+      "methodology",
+      "log-analysis"
+    ],
+    "concepts": [
+      "Selisih clock antar sistem sebagai sumber kesimpulan palsu pada korelasi lintas tool",
+      "Menguji dua hipotesis acuan waktu secara kuantitatif, bukan memilih berdasarkan asumsi",
+      "Memakai dataset ketiga yang independen sebagai wasit untuk menentukan clock mana yang benar",
+      "Membedakan waktu event menurut perangkat pengirim dan menurut SIEM penerima"
+    ],
+    "terms": [
+      "clock skew",
+      "device time",
+      "log source time",
+      "NTP",
+      "time correlation",
+      "falsification"
+    ],
+    "commands": [
+      "SELECT DATEFORMAT(deviceTime, 'yyyy-MM-dd HH:mm:ss'), DATEFORMAT(starttime, 'yyyy-MM-dd HH:mm:ss') FROM events",
+      "python3 -c \"import pandas as pd; df=pd.read_csv(f); print((df.dev-df.q).dt.total_seconds().describe())\""
+    ],
+    "problems": [
+      "Query awal memakai field waktu SIEM, padahal field itu tertinggal sekitar 16 menit dari waktu perangkat pengirim",
+      "Akibat selisih itu, sebagian besar kejadian tampak terjadi saat browser tidak aktif, dan sempat saya tafsirkan sebagai adanya pemicu di luar browser",
+      "Kesimpulan sementara yang keliru itu bertahan beberapa tahap sebelum ketahuan, karena secara internal ceritanya konsisten"
+    ],
+    "summary": "Di tengah investigasi alert DNS, saya menemukan bahwa dua field waktu pada satu event yang sama berbeda konsisten sekitar 16 menit. Untuk menentukan acuan mana yang benar, saya menguji kedua kemungkinan terhadap dataset ketiga yang independen, yaitu jendela aktivitas proses di telemetri endpoint. Satu acuan menghasilkan kecocokan penuh tanpa pengecualian, acuan lainnya menyisakan puluhan kejadian yang tidak bisa dijelaskan. Koreksi ini menggugurkan dua kesimpulan sementara sekaligus dan sekaligus menjelaskan kenapa upaya pencocokan sebelumnya gagal. Pelajaran yang saya ambil: pada korelasi lintas tool, acuan waktu harus divalidasi lebih dulu, bukan diasumsikan, dan selisih clock bisa menghasilkan cerita yang terasa masuk akal padahal salah.",
+    "url": ""
+  },
+  {
+    "id": "static-pe-analysis-packed-signed-dll-20260808",
+    "date": "2026-08-08",
+    "title": "Static PE analysis of a packed, signed DLL",
+    "platform": "MPM SOC",
+    "category": "Malware Analysis",
+    "tags": [
+      "malware-analysis",
+      "reverse-engineering",
+      "blue-team",
+      "static-analysis",
+      "packed",
+      "entropy-analysis",
+      "code-signing",
+      "process-injection",
+      "pe32plus"
+    ],
+    "concepts": [
+      "Framing investigasi: menjelaskan kenapa satu scanner sempat salah menilai file, bukan mencari malware pada file yang ternyata bersih",
+      "Entropy section sebagai indikator packing: satu section menampung sekitar 99,7% isi file dengan entropy 7,686 dari maksimal 8,0, ciri konten terenkripsi atau terkompresi rapat oleh protector komersil",
+      "RawSize nol pada section kode asli (.text, .rdata, .data, .pdata) berarti kode sebenarnya tidak ada di file dan baru direkonstruksi ke memory saat runtime",
+      "Nama section yang diacak dan tidak mengikuti konvensi compiler manapun sebagai sinyal tambahan protector",
+      "Import table kecil (136 fungsi dari dua DLL) relatif terhadap ukuran file sebagai indikator packing",
+      "Set import ntdll.dll membentuk primitif process injection lengkap: alokasi memory, tulis dan baca memory proses lain, buka dan bekukan thread, serta map dan unmap section",
+      "Membaca rantai sertifikat Authenticode untuk memisahkan sinyal statis yang mencurigakan dari legitimasi penandatangan",
+      "Kesimpulan gabungan: enam sinyal menumpuk sekaligus tanpa satu penyebab tunggal, dan kombinasi packing berat, API hooking, primitif injection native, serta anti-debug memang identik dengan profil malware meski fungsi file sepenuhnya sah"
+    ],
+    "terms": [
+      "entropy",
+      "packer",
+      "protector",
+      "RawSize",
+      "Authenticode",
+      "RSA-4096",
+      "SHA-384",
+      "Microsoft Detours",
+      "API hooking",
+      "process injection",
+      "ntdll.dll",
+      "anti-debug",
+      "import table"
+    ],
+    "commands": [
+      "pefile",
+      "openssl",
+      "strings",
+      "Python"
+    ],
+    "problems": [
+      "Menjelaskan fitur file apa saja yang memicu satu vendor antivirus menilai DLL ini sebagai malware, sementara file tersebut sebenarnya sah",
+      "Memisahkan sinyal statis yang mencurigakan (packing, hooking, primitif injection native, anti-debug) dari fungsi file yang sebenarnya legit dan tertandatangani resmi"
+    ],
+    "summary": "Membedah DLL berukuran 9,4 MB dari sebuah produk pihak ketiga yang sempat dinilai malware oleh satu vendor antivirus, untuk memahami fitur file apa yang memicu penilaian itu. Catatan penting: file ini saat ini bersih di seluruh vendor dan vendor yang semula menandainya sudah mengoreksi penilaiannya sendiri. Analisis statis menunjukkan sekitar 99,7% isi file berada pada satu section dengan entropy 7,686 dari maksimal 8,0, section kode asli (.text, .rdata, .data, .pdata) semuanya memiliki RawSize nol sehingga kode baru direkonstruksi ke memory saat runtime, nama section diacak, import table kecil (136 fungsi dari dua DLL), dan import ntdll.dll membentuk set primitif process injection yang lengkap plus mekanisme anti-debug dan pemeriksaan timing. File menautkan Microsoft Detours untuk API hooking, terlihat dari section .detourc dan .detourd. Ekstraksi rantai sertifikat Authenticode mengonfirmasi file ditandatangani vendor resminya dengan RSA-4096 dan SHA-384 melalui CA publik dengan rantai valid. Tidak ada satu komponen tunggal penyebabnya: enam sinyal menumpuk sekaligus, dan kombinasi packing berat, API hooking, primitif injection native, serta anti-debug memang identik dengan profil malware meski fungsi file ini sepenuhnya sah.",
+    "url": ""
+  },
+  {
+    "id": "vendor-verdict-reliability-reputation-lag-20260808",
+    "date": "2026-08-08",
+    "title": "Vendor verdict reliability and reputation lag",
+    "platform": "MPM SOC",
+    "category": "Lesson Learned / Methodology",
+    "tags": [
+      "threat-intel",
+      "methodology",
+      "blue-team",
+      "lesson-learned",
+      "verdict-calibration",
+      "false-positive",
+      "code-signing"
+    ],
+    "concepts": [
+      "Reputation lag: file yang baru dikompilasi sekitar sepuluh hari sebelumnya belum punya riwayat telemetri, sehingga penilaian sepenuhnya bergantung pada ML classifier yang membaca karakteristik statis",
+      "Verdict satu vendor pada file baru adalah tebakan berbobot, bukan fakta, dan bisa berubah tanpa perubahan apapun pada file (hash sebelum dan sesudah identik)",
+      "Deteksi agresif pada file baru adalah pilihan desain vendor, bukan tanda vendor lain kurang teliti",
+      "Langkah verifikasi: cek umur file via TimeDateStamp pada PE header atau tanggal first seen",
+      "Langkah verifikasi: hitung berapa vendor yang sepakat, satu dari tujuh puluh punya bobot berbeda dengan lima belas dari tujuh puluh",
+      "Langkah verifikasi: bedakan verdict generik hasil ML dari nama family malware yang spesifik",
+      "Langkah verifikasi: verifikasi rantai sertifikat dan status penandatangan",
+      "Langkah verifikasi: periksa ulang hash yang sama 24 sampai 48 jam kemudian, langkah yang paling sering dilewatkan dan justru menyelesaikan kasus ini"
+    ],
+    "terms": [
+      "reputation lag",
+      "ML classifier",
+      "first seen",
+      "TimeDateStamp",
+      "verdict",
+      "false positive",
+      "telemetry",
+      "Authenticode"
+    ],
+    "commands": [
+      "VirusTotal",
+      "analisis PE header"
+    ],
+    "problems": [
+      "Menjelaskan kenapa file yang sama dinilai malware oleh satu vendor pada suatu hari lalu bersih oleh vendor yang sama keesokan paginya tanpa perubahan file apapun",
+      "Menyusun kriteria kapan verdict satu vendor layak dipercaya, khususnya untuk file yang masih baru dan belum punya telemetri"
+    ],
+    "summary": "Menelusuri kasus file yang dinilai malware oleh satu vendor pada suatu hari lalu dinilai bersih oleh vendor yang sama keesokan paginya, tanpa perubahan apapun pada file (hash sebelum dan sesudah identik). Penyebabnya reputation lag: file baru dikompilasi sekitar sepuluh hari sebelumnya sehingga belum punya riwayat telemetri, dan penilaian sepenuhnya bergantung pada ML classifier yang membaca karakteristik statis. Setelah telemetri terkumpul dan sertifikat terverifikasi, penilaian dikoreksi menjadi bersih di seluruh 70 vendor. Dari sini disusun urutan pemeriksaan sebelum mempercayai verdict satu vendor: cek umur file via TimeDateStamp atau tanggal first seen, hitung berapa vendor yang sepakat, bedakan verdict generik ML dari nama family yang spesifik, verifikasi rantai sertifikat dan penandatangan, lalu periksa ulang hash yang sama 24 sampai 48 jam kemudian. Langkah terakhir paling sering dilewatkan dan justru itu yang menyelesaikan kasus ini. Pelajaran yang dibawa: verdict satu vendor pada file yang masih baru adalah tebakan berbobot, bukan fakta, dan deteksi agresif pada file baru adalah pilihan desain vendor, bukan tanda vendor lain kurang teliti.",
+    "url": ""
   }
 ]
