@@ -7082,5 +7082,70 @@
     ],
     "summary": "Menelusuri kasus file yang dinilai malware oleh satu vendor pada suatu hari lalu dinilai bersih oleh vendor yang sama keesokan paginya, tanpa perubahan apapun pada file (hash sebelum dan sesudah identik). Penyebabnya reputation lag: file baru dikompilasi sekitar sepuluh hari sebelumnya sehingga belum punya riwayat telemetri, dan penilaian sepenuhnya bergantung pada ML classifier yang membaca karakteristik statis. Setelah telemetri terkumpul dan sertifikat terverifikasi, penilaian dikoreksi menjadi bersih di seluruh 70 vendor. Dari sini disusun urutan pemeriksaan sebelum mempercayai verdict satu vendor: cek umur file via TimeDateStamp atau tanggal first seen, hitung berapa vendor yang sepakat, bedakan verdict generik ML dari nama family yang spesifik, verifikasi rantai sertifikat dan penandatangan, lalu periksa ulang hash yang sama 24 sampai 48 jam kemudian. Langkah terakhir paling sering dilewatkan dan justru itu yang menyelesaikan kasus ini. Pelajaran yang dibawa: verdict satu vendor pada file yang masih baru adalah tebakan berbobot, bukan fakta, dan deteksi agresif pada file baru adalah pilihan desain vendor, bukan tanda vendor lain kurang teliti.",
     "url": ""
+  },
+  {
+    "id": "windows-credential-chain-lsa-to-encrypted-container-20260810",
+    "date": "2026-08-10",
+    "title": "Rantai kredensial Windows: dari LSA secret ke container terenkripsi",
+    "platform": "Self-Study",
+    "category": "CTF / Digital Forensics",
+    "tags": [
+      "ctf",
+      "dfir",
+      "windows",
+      "credential-extraction",
+      "dpapi",
+      "chrome",
+      "lsa-secret",
+      "veracrypt",
+      "entropy-analysis",
+      "encrypted-container"
+    ],
+    "concepts": [
+      "LSA secret sering lebih murah daripada cracking: impacket-secretsdump dengan hive SAM, SYSTEM, dan SECURITY tidak hanya mengeluarkan NTLM hash. Kalau mesin di-set autologon, LSA menyimpan DefaultPassword dalam bentuk plaintext. Baca output secretsdump sampai habis sebelum buka hashcat atau john",
+      "Alur dekripsi password Chrome di Windows: password Windows membuka DPAPI masterkey user, masterkey membuka blob encrypted_key di Local State, dan kunci AES-256 hasilnya baru bisa dipakai untuk dekrip kolom password_value di Login Data (AES-GCM, prefix v10). Tanpa password OS seluruh rantai DPAPI mati, itu sebabnya triage KAPE menyertakan hive SAM bareng profil browser",
+      "Mengenali container terenkripsi tanpa menebak: file tanpa ekstensi berukuran pas 100 MB, file cuma bilang data, entropi 7.999998, chi-square di persentil 50, serial correlation mendekati nol, dan ukuran kelipatan 512. Kombinasi itu praktis hanya cocok dengan volume terenkripsi, dan verifikasi ini murah untuk mencegah kerja di target yang salah",
+      "Versi tool bisa menyamar jadi password salah: VeraCrypt versi lama menolak container yang dibuat dengan KDF Argon2id (baru ada di 1.26.29 ke atas) dengan pesan yang terlihat seperti password keliru",
+      "Kendala praktis di Linux: VeraCrypt butuh FUSE2 (libfuse2t64) sementara Kali baru sudah pindah ke FUSE3, AppImage-nya perlu di-extract dan dijalankan lewat AppRun supaya bisa mount di bawah sudo, dan opsi read-only-nya --mount-options=ro bukan --readonly"
+    ],
+    "terms": [
+      "LSA secret",
+      "DefaultPassword",
+      "autologon",
+      "NTLM hash",
+      "DPAPI",
+      "masterkey",
+      "encrypted_key",
+      "Local State",
+      "Login Data",
+      "AES-256",
+      "AES-GCM",
+      "v10 prefix",
+      "entropy",
+      "chi-square",
+      "serial correlation",
+      "VeraCrypt",
+      "Argon2id",
+      "KDF",
+      "FUSE2",
+      "FUSE3",
+      "AppImage",
+      "AppRun",
+      "KAPE"
+    ],
+    "commands": [
+      "impacket-secretsdump -sam SAM -system SYSTEM -security SECURITY LOCAL",
+      "file container.bin",
+      "ent container.bin   # entropi, chi-square, serial correlation",
+      "./squashfs-root/AppRun --text --mount --mount-options=ro container.bin /mnt/vc"
+    ],
+    "problems": [
+      "Challenge forensik Windows tingkat Hard berupa rantai lima artifact yang saling mengunci, tiap kunci hanya bisa dibuka pakai hasil langkah sebelumnya, dan gagal di satu titik membuntukan sisa rantai",
+      "Nyaris membuang waktu menyiapkan cracking wordlist padahal password sudah muncul plaintext di output secretsdump yang sama",
+      "Nyaris menyalahkan password saat container ditolak, padahal penyebabnya versi VeraCrypt yang belum mendukung Argon2id",
+      "VeraCrypt tidak mau mount di Kali baru karena mismatch FUSE2 dan FUSE3"
+    ],
+    "summary": "Menyelesaikan challenge forensik Windows tingkat Hard yang intinya bukan satu teknik tunggal, tapi rantai lima artifact yang saling mengunci. Rantai dimulai dari LSA secret via impacket-secretsdump (hive SAM, SYSTEM, SECURITY) yang pada mesin autologon menyimpan DefaultPassword plaintext, sehingga cracking tidak perlu. Password OS itu jadi akar rantai DPAPI Chrome: membuka masterkey user, lalu blob encrypted_key di Local State, lalu kunci AES-256 untuk dekrip kolom password_value di Login Data (AES-GCM, prefix v10). Artifact terakhir berupa container terenkripsi yang dikenali lewat profil statistik (ukuran pas 100 MB kelipatan 512, entropi 7.999998, chi-square persentil 50, serial correlation mendekati nol) tanpa perlu menebak. Dua jebakan yang hampir menyesatkan: VeraCrypt versi lama menolak container ber-KDF Argon2id dengan pesan yang mirip password salah, dan kendala mount di Kali baru karena VeraCrypt butuh FUSE2 sementara sistem sudah FUSE3, yang diselesaikan dengan extract AppImage lalu jalankan lewat AppRun memakai --mount-options=ro. Pelajaran inti: baca seluruh output tool sebelum pindah ke cracking, dan verifikasi jenis artifact secara murah sebelum menghabiskan waktu di target yang salah.",
+    "url": ""
   }
 ]
