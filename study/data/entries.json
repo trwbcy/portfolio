@@ -7147,5 +7147,654 @@
     ],
     "summary": "Menyelesaikan challenge forensik Windows tingkat Hard yang intinya bukan satu teknik tunggal, tapi rantai lima artifact yang saling mengunci. Rantai dimulai dari LSA secret via impacket-secretsdump (hive SAM, SYSTEM, SECURITY) yang pada mesin autologon menyimpan DefaultPassword plaintext, sehingga cracking tidak perlu. Password OS itu jadi akar rantai DPAPI Chrome: membuka masterkey user, lalu blob encrypted_key di Local State, lalu kunci AES-256 untuk dekrip kolom password_value di Login Data (AES-GCM, prefix v10). Artifact terakhir berupa container terenkripsi yang dikenali lewat profil statistik (ukuran pas 100 MB kelipatan 512, entropi 7.999998, chi-square persentil 50, serial correlation mendekati nol) tanpa perlu menebak. Dua jebakan yang hampir menyesatkan: VeraCrypt versi lama menolak container ber-KDF Argon2id dengan pesan yang mirip password salah, dan kendala mount di Kali baru karena VeraCrypt butuh FUSE2 sementara sistem sudah FUSE3, yang diselesaikan dengan extract AppImage lalu jalankan lewat AppRun memakai --mount-options=ro. Pelajaran inti: baca seluruh output tool sebelum pindah ke cracking, dan verifikasi jenis artifact secara murah sebelum menghabiskan waktu di target yang salah.",
     "url": ""
+  },
+  {
+    "id": "hacktrace-llm-support-agent-prompt-injection-20260817",
+    "date": "2026-08-17",
+    "title": "Prompt Injection Against a Stateless LLM Support Agent",
+    "platform": "Hacktrace",
+    "category": "Web Exploitation",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "prompt-injection",
+      "llm-security",
+      "web-exploitation",
+      "api-enumeration",
+      "python"
+    ],
+    "concepts": [
+      "Endpoint chat tidak menyimpan state percakapan di sisi server: seluruh riwayat pesan dikirim ulang oleh klien pada setiap request, sehingga giliran assistant bisa dipalsukan sepenuhnya dari sisi penyerang",
+      "Giliran assistant palsu yang diselipkan ke riwayat diperlakukan model sebagai keluarannya sendiri, sehingga konteks fiktif itu jadi dasar jawaban berikutnya",
+      "Guard proof of work berbasis SHA-256 harus diselesaikan lebih dulu supaya request diterima, jadi eksploitasi manual lewat browser tidak praktis dan perlu klien sendiri",
+      "Request fingerprinting perlu dikalahkan agar sesi otomatis tidak ditolak sebelum payload sempat masuk",
+      "Pelajaran defensif: riwayat percakapan adalah trust boundary. Bagian riwayat mana pun yang bisa ditulis klien harus diperlakukan sebagai input yang dikendalikan penyerang, bukan sebagai memori tepercaya"
+    ],
+    "terms": [
+      "prompt injection",
+      "LLM",
+      "system prompt",
+      "conversation state",
+      "message history",
+      "assistant turn",
+      "proof of work",
+      "SHA-256",
+      "request fingerprinting",
+      "trust boundary"
+    ],
+    "commands": [
+      "python3 (solver proof of work SHA-256 dan penyusunan ulang request)",
+      "curl"
+    ],
+    "problems": [
+      "Endpoint tidak bisa disentuh langsung karena ada guard proof of work dan fingerprinting request, sehingga klien sendiri harus dibangun lebih dulu",
+      "Instruksi injeksi langsung diabaikan model; yang berhasil adalah membangun konteks palsu lewat giliran assistant yang dikarang, bukan lewat perintah eksplisit"
+    ],
+    "summary": "Mengompromikan chatbot support pelanggan pada Hacktrace Independence Day Competition dengan memanfaatkan fakta bahwa endpoint chat-nya tidak menyimpan state percakapan di sisi server. Klien mengirim ulang seluruh riwayat pesan pada setiap request, sehingga giliran assistant bisa dikarang untuk membangun konteks palsu yang kemudian diperlakukan model sebagai hasil pemikirannya sendiri. Untuk sampai ke endpoint-nya saja perlu menyelesaikan guard proof of work SHA-256 dan mengalahkan fingerprinting request, jadi eksploitasi dilakukan lewat klien sendiri, bukan lewat browser. Pelajaran defensifnya lugas: riwayat percakapan adalah trust boundary, dan bagian riwayat mana pun yang bisa ditulis klien harus dianggap dikendalikan penyerang.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-xor-key-reconstruction-stripped-pe-20260817",
+    "date": "2026-08-17",
+    "title": "XOR Key Reconstruction in a Stripped PE Binary",
+    "platform": "Hacktrace",
+    "category": "Reverse Engineering",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "reverse-engineering",
+      "stripped",
+      "mingw",
+      "xor",
+      "base64",
+      "static-analysis"
+    ],
+    "concepts": [
+      "Kunci validasi tidak pernah tersimpan utuh di binary: nilainya adalah hasil XOR dua array terpisah di section data, jadi mencari konstanta lewat strings tidak akan pernah membuahkan hasil",
+      "Pemeriksaan password menumpuk lapisan base64 dan ROT13 di atas hasil XOR, sehingga urutan rekonstruksi menentukan benar atau tidaknya kunci",
+      "Payload dienkripsi memakai password itu sendiri, jadi verifikasi kebenaran kunci baru bisa dilakukan setelah seluruh derivasi disusun ulang",
+      "Pada binary terstrip, jalur yang lebih cepat adalah merekonstruksi fungsi derivasi apa adanya, bukan menebak nilai akhirnya"
+    ],
+    "terms": [
+      "PE64",
+      "MinGW",
+      "stripped binary",
+      "data section",
+      "XOR",
+      "base64",
+      "ROT13",
+      "key derivation",
+      "Ghidra"
+    ],
+    "commands": [
+      "ghidra",
+      "strings",
+      "python3"
+    ],
+    "problems": [
+      "Kunci tidak ditemukan sebagai konstanta karena hanya ada dalam bentuk dua array yang harus di-XOR lebih dulu",
+      "Salah urutan transformasi menghasilkan kunci yang terlihat masuk akal tapi gagal saat dipakai membuka payload"
+    ],
+    "summary": "Membalik binary Windows 64 bit hasil kompilasi MinGW yang kunci validasinya tidak pernah tersimpan dalam satu potong. Kunci sebenarnya adalah hasil XOR dua array terpisah di section data, pemeriksaan password menambahkan lapisan base64 dan ROT13 di atas hasil XOR itu, dan payload-nya sendiri dienkripsi memakai password hasil derivasi tersebut. Menyelesaikannya berarti menyusun ulang seluruh rantai derivasi dalam urutan yang benar, bukan mencari satu konstanta di dalam binary.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-apk-native-key-fragmentation-20260817",
+    "date": "2026-08-17",
+    "title": "Layered Key Fragmentation Across an APK and its Native Library",
+    "platform": "Hacktrace",
+    "category": "Reverse Engineering",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "reverse-engineering",
+      "android",
+      "apk",
+      "jadx",
+      "aes",
+      "cbc-mode",
+      "hardcoded-credentials",
+      "shared-library",
+      "static-analysis"
+    ],
+    "concepts": [
+      "Kunci dekripsi dipecah jadi empat fragmen terenkripsi yang disebar ke dua activity dan dua helper class terobfuskasi, masing-masing dienkripsi AES-CBC dengan kunci dan IV hardcoded yang berbeda",
+      "Fragmen harus disusun ulang dalam urutan yang benar sebelum menghasilkan kunci asli, jadi menemukan satu fragmen saja belum memberi kemajuan yang terukur",
+      "Ciphertext akhir tersimpan di section read only pada native library, bukan di kode Java, sehingga analisis harus menyeberang dari layer Java ke layer native",
+      "Gate di dalam aplikasi yang seharusnya melepas kunci jadi tidak relevan begitu seluruh material kunci berhasil dipulihkan secara statis, dan itu justru inti pelajarannya"
+    ],
+    "terms": [
+      "APK",
+      "activity",
+      "obfuscation",
+      "AES-CBC",
+      "IV",
+      "hardcoded key",
+      "native library",
+      ".rodata",
+      "JNI",
+      "jadx",
+      "apktool"
+    ],
+    "commands": [
+      "jadx",
+      "apktool",
+      "python3 (pycryptodome)"
+    ],
+    "problems": [
+      "Empat fragmen kunci tersebar di dua activity dan dua helper class terobfuskasi, masing-masing dengan kunci dan IV sendiri",
+      "Blob ciphertext tidak ada di kode Java melainkan di section read only native library, sehingga perlu pivot ke analisis binary"
+    ],
+    "summary": "Membalik aplikasi Android yang memecah kunci dekripsinya menjadi empat fragmen terenkripsi, tersebar di dua activity dan dua helper class terobfuskasi, dan masing-masing fragmen dienkripsi AES-CBC dengan kunci serta IV hardcoded yang berbeda. Setelah keempat fragmen disusun ulang menjadi kunci asli, blob ciphertext di section read only native library bisa didekripsi. Gate di dalam aplikasi yang semestinya melepas kunci sama sekali tidak relevan setelah material kunci dipulihkan secara statis, dan justru itulah poinnya.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-native-pin-offline-bruteforce-20260817",
+    "date": "2026-08-17",
+    "title": "Offline Brute Force Against Native PIN Validation",
+    "platform": "Hacktrace",
+    "category": "Reverse Engineering",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "reverse-engineering",
+      "shared-library",
+      "brute-force",
+      "python",
+      "static-analysis"
+    ],
+    "concepts": [
+      "Parameter validasi diekstrak dari section data pada shared library, lalu logika pemeriksaannya dibangun ulang di luar aplikasi",
+      "Brute force enam digit yang dijalankan offline dan multi core selesai di bawah satu menit, sementara menyerang aplikasinya langsung akan kena rate limit dan jauh lebih lambat",
+      "Memindahkan pemeriksaan ke luar aplikasi menghapus seluruh kontrol sisi aplikasi, karena kontrol itu tidak pernah melindungi materi kuncinya",
+      "Pelajaran operasional: pekerjaan yang berjalan lama harus ditaruh di mesin yang persisten, bukan di container yang bisa hilang di tengah jalan"
+    ],
+    "terms": [
+      "shared library",
+      "data section",
+      "offline brute force",
+      "multiprocessing",
+      "rate limiting",
+      "six digit PIN",
+      "ephemeral container"
+    ],
+    "commands": [
+      "ghidra",
+      "python3 (multiprocessing)"
+    ],
+    "problems": [
+      "Menyerang validasi PIN lewat aplikasi kena rate limit sehingga tidak layak secara waktu",
+      "Job brute force pertama hilang karena dijalankan di container yang tidak persisten dan harus diulang dari awal"
+    ],
+    "summary": "Mengekstrak parameter validasi dari section data sebuah native shared library, lalu membangun ulang pemeriksaannya sebagai brute force offline multi core yang memulihkan PIN enam digit dalam waktu di bawah satu menit. Menyerang aplikasinya secara langsung akan kena rate limit dan jauh lebih lambat. Pelajaran praktis yang didapat dengan cara pahit: pekerjaan yang berjalan lama harus dijalankan di mesin yang persisten, bukan di container sementara.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-sdr-steganography-chain-20260817",
+    "date": "2026-08-17",
+    "title": "Multi Stage SDR and Steganography Chain",
+    "platform": "Hacktrace",
+    "category": "Steganography",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "steganography",
+      "steghide",
+      "lsb",
+      "audio-spectrogram",
+      "osint",
+      "aes",
+      "base64",
+      "dead-end-validation"
+    ],
+    "concepts": [
+      "Isi spektrogram yang terlihat mencolok justru umpan; payload sebenarnya berupa blob base64 di chunk comment pada metadata WAV",
+      "Kunci dan IV dekripsi tidak ada di berkas audio sama sekali, melainkan dipublikasikan sebagai teks pada deskripsi dua posting media sosial, sehingga rantainya menyeberang ke OSINT",
+      "Passphrase hasil dekripsi membuka payload steghide di berkas gambar terpisah, jadi artefak akhir berada di media yang berbeda dari titik awal",
+      "Dua jalan buntu dipasang sengaja, yaitu pita ultrasonik dan encoding LSB pada audio, dan keduanya benar-benar kosong. Membuktikan kekosongan itu tetap perlu supaya tidak dikerjakan berulang"
+    ],
+    "terms": [
+      "spectrogram",
+      "WAV metadata",
+      "comment chunk",
+      "base64",
+      "AES key",
+      "IV",
+      "ultrasonic band",
+      "audio LSB",
+      "steghide",
+      "OSINT"
+    ],
+    "commands": [
+      "sox",
+      "ffmpeg",
+      "python3 (parsing chunk WAV)",
+      "steghide extract"
+    ],
+    "problems": [
+      "Konten yang terlihat di spektrogram sepenuhnya umpan, sehingga waktu awal habis di jalur yang salah",
+      "Pita ultrasonik dan LSB audio dua-duanya kosong dan harus dibuktikan kosong sebelum ditinggalkan",
+      "Material kunci hanya bisa didapat dari luar berkas, lewat deskripsi posting media sosial"
+    ],
+    "summary": "Mengerjakan soal sinyal yang seluruh konten mencolok pada spektrogramnya ternyata umpan. Payload sebenarnya adalah blob base64 yang disembunyikan di chunk comment pada metadata WAV, sementara kunci dan IV dekripsinya dipublikasikan sebagai teks di deskripsi dua posting media sosial. Passphrase hasil dekripsi kemudian membuka payload steghide pada berkas gambar terpisah. Dua jalan buntu dipasang sengaja, pita ultrasonik dan encoding LSB pada audio, dan keduanya memang tidak berisi apa pun.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-headless-mfsk64-fldigi-20260817",
+    "date": "2026-08-17",
+    "title": "Headless MFSK64 Decoding with fldigi",
+    "platform": "Hacktrace",
+    "category": "CTF Methodology",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "tooling",
+      "audio-spectrogram",
+      "protocol-analysis",
+      "troubleshooting",
+      "python"
+    ],
+    "concepts": [
+      "Mode digital diidentifikasi lebih dulu sebagai MFSK64 dari jumlah tone dan jarak antar tone di spektrogram, sebelum decoder mana pun dijalankan",
+      "fldigi bisa dijalankan sepenuhnya tanpa layar memakai virtual framebuffer, jadi tidak perlu desktop untuk decoding",
+      "Audio dialirkan lewat null sink dengan monitor-nya dijadikan source default, sehingga berkas audio bisa diumpankan tanpa perangkat suara fisik",
+      "Config di-seed lebih dulu supaya wizard setup awal tidak muncul dan memblokir jalannya proses otomatis",
+      "Pemilihan modem dan pengambilan receive text dikendalikan lewat XML-RPC, sehingga seluruh proses bisa diskrip",
+      "Hasilnya rig yang bisa dipakai ulang untuk soal audio mode digital berikutnya, bukan solusi sekali pakai"
+    ],
+    "terms": [
+      "fldigi",
+      "MFSK64",
+      "digital mode",
+      "tone spacing",
+      "virtual framebuffer",
+      "Xvfb",
+      "null sink",
+      "monitor source",
+      "XML-RPC",
+      "receive text"
+    ],
+    "commands": [
+      "Xvfb",
+      "pactl load-module module-null-sink",
+      "fldigi",
+      "python3 (klien XML-RPC)"
+    ],
+    "problems": [
+      "fldigi menuntut sesi grafis dan perangkat audio, keduanya tidak tersedia di lingkungan headless",
+      "Wizard setup awal memblokir proses otomatis sampai config di-seed lebih dulu"
+    ],
+    "summary": "Mendekode transmisi radio amatir mode digital dengan menjalankan fldigi sepenuhnya headless: virtual framebuffer sebagai pengganti sesi grafis, null sink audio dengan monitor-nya dijadikan source default, config yang di-seed lebih dulu supaya wizard setup terlewati, dan kendali lewat XML-RPC untuk pemilihan modem serta pengambilan receive text. Mode-nya diidentifikasi sebagai MFSK64 dari jumlah tone dan jarak antar tone di spektrogram sebelum decoding dimulai. Rig ini sekarang bisa dipakai ulang untuk soal audio mode digital mana pun.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-rsa-prime-recovery-time-seeded-prng-20260818",
+    "date": "2026-08-18",
+    "title": "RSA Prime Recovery from a Time Seeded PRNG",
+    "platform": "Hacktrace",
+    "category": "Cryptography",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "cryptanalysis",
+      "python",
+      "auth-bypass",
+      "signature-forgery"
+    ],
+    "concepts": [
+      "Layanan hanya membangkitkan satu dari dua bilangan primanya lewat linear congruential generator yang di-seed dengan waktu saat itu, sementara prima kedua di-seed ulang dari sumber entropi yang benar",
+      "Satu prima lemah sudah cukup: timestamp registrasi mempersempit ruang seed jadi kecil sekali, dan memulihkan prima itu langsung memfaktorkan modulus",
+      "Entropi yang benar pada satu bagian tidak menutupi kelemahan di bagian lain, karena keamanan RSA runtuh begitu salah satu faktor bisa diprediksi",
+      "Catatan terpisah: skema tanda tangannya menandatangani string terformat, bukan nonce tantangan mentah, dan itu masalah tersendiri di luar isu prima"
+    ],
+    "terms": [
+      "RSA",
+      "linear congruential generator",
+      "LCG",
+      "seed",
+      "epoch timestamp",
+      "modulus factorization",
+      "weak prime",
+      "challenge nonce",
+      "signature scheme"
+    ],
+    "commands": [
+      "python3 (sympy, gmpy2)",
+      "openssl"
+    ],
+    "problems": [
+      "Menentukan bagian mana dari pembangkitan kunci yang lemah, karena satu prima memang dibangkitkan dengan benar dan sempat menutupi masalahnya",
+      "Mempersempit ruang seed memakai timestamp registrasi agar pencarian bisa selesai dalam waktu wajar"
+    ],
+    "summary": "Membobol layanan autentikasi berbasis RSA yang hanya membangkitkan satu dari dua bilangan primanya lewat linear congruential generator ber-seed waktu, sementara prima kedua di-seed ulang dari sumber entropi yang benar. Satu prima lemah sudah cukup: timestamp registrasi mempersempit ruang seed menjadi sangat kecil, dan memulihkan prima tersebut langsung memfaktorkan modulus. Tercatat juga bahwa skema tanda tangannya menandatangani string terformat, bukan nonce tantangan mentah, yang merupakan masalah terpisah.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-custom-block-cipher-cryptanalysis-20260818",
+    "date": "2026-08-18",
+    "title": "Cryptanalysis of a Custom Block Cipher",
+    "platform": "Hacktrace",
+    "category": "Cryptography",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "cryptanalysis",
+      "reverse-engineering",
+      "python",
+      "dead-end-validation"
+    ],
+    "concepts": [
+      "Tiap blok keluaran adalah perkalian matriks terhadap kunci tanpa reduksi modular, lalu diberi rotasi byte yang hanya mengenai byte terendah tiap kolom",
+      "Karena besar rotasi terbatas pada rentang tiga bit, nilainya bisa dipastikan dengan membandingkan enkripsi basis vektor yang digandakan terhadap dua kali enkripsi basis vektor itu",
+      "Batas jumlah query yang dipasang layanan tidak berarti apa-apa karena proses fork per koneksi, sehingga query pertama pada tiap koneksi baru selalu deterministik",
+      "Dua umpan sengaja ditanam di binary, yaitu XOR yang saling meniadakan dan RNG ber-seed waktu yang tidak pernah dipakai; keduanya menghabiskan waktu sebelum bisa disingkirkan"
+    ],
+    "terms": [
+      "custom cipher",
+      "matrix multiplication",
+      "modular reduction",
+      "byte rotation",
+      "basis vector",
+      "chosen plaintext",
+      "fork per connection",
+      "determinism",
+      "decoy"
+    ],
+    "commands": [
+      "ghidra",
+      "python3 (numpy)",
+      "pwntools"
+    ],
+    "problems": [
+      "Struktur cipher harus dipulihkan dari binary tanpa dokumentasi apa pun tentang skemanya",
+      "Batas query layanan sempat terlihat sebagai kendala serius sampai ketahuan proses fork per koneksi membuatnya tidak relevan",
+      "Dua konstruksi umpan di binary menghabiskan waktu sebelum terbukti tidak berpengaruh pada hasil enkripsi"
+    ],
+    "summary": "Menganalisis cipher buatan sendiri di sebuah binary yang tidak terstrip. Tiap blok keluaran adalah perkalian matriks terhadap kunci tanpa reduksi modular, diikuti rotasi byte yang hanya mengenai byte terendah tiap kolom. Karena besar rotasinya terbatas pada rentang tiga bit, nilainya bisa dipastikan persis dengan membandingkan enkripsi basis vektor yang digandakan terhadap dua kali enkripsi basis vektor tersebut. Batas jumlah query yang dipasang layanan ternyata tidak berarti karena proses fork per koneksi, sehingga query pertama pada tiap koneksi baru selalu deterministik. Dua umpan yang sengaja ditanam di binary, XOR yang saling meniadakan dan RNG ber-seed waktu yang tidak pernah dipakai, sempat menghabiskan waktu sebelum bisa disingkirkan.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-image-in-spectrum-ssb-decoding-20260818",
+    "date": "2026-08-18",
+    "title": "Image in Spectrum SSB Decoding",
+    "platform": "Hacktrace",
+    "category": "Steganography",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "steganography",
+      "audio-spectrogram",
+      "python",
+      "tooling"
+    ],
+    "concepts": [
+      "Kode QR dilukis langsung ke spektrum frekuensi transmisi single sideband, bukan dienkode lewat mode digital mana pun, sehingga decoder mode digital tidak akan pernah menghasilkan apa-apa",
+      "Rekonstruksi butuh auto crop pada area aktif, penyesuaian jadi bentuk persegi, dan thresholding sebelum bentuknya menyerupai kode QR yang sah",
+      "Quiet zone di sekeliling kode harus ditambahkan manual karena spektrum tidak menyisakan margin, dan tanpa itu decoder menolak gambar",
+      "Satu pustaka decoder gagal pada gambar hasil rekonstruksi sementara pustaka lain berhasil, jadi kegagalan decode bukan bukti gambarnya salah"
+    ],
+    "terms": [
+      "single sideband",
+      "SSB",
+      "spectrogram",
+      "QR code",
+      "quiet zone",
+      "thresholding",
+      "auto crop",
+      "decoder library"
+    ],
+    "commands": [
+      "python3 (numpy, scipy.signal, PIL)",
+      "zbarimg"
+    ],
+    "problems": [
+      "Payload tidak berupa mode digital sehingga seluruh pendekatan decoding sinyal standar tidak berlaku",
+      "Kode QR hasil rekonstruksi ditolak decoder sampai quiet zone ditambahkan dan gambarnya di-threshold",
+      "Satu pustaka decoder gagal pada gambar yang sama yang berhasil dibaca pustaka lain"
+    ],
+    "summary": "Memulihkan kode QR yang dilukis ke dalam spektrum frekuensi transmisi single sideband, bukan dienkode lewat mode digital apa pun. Prosesnya memerlukan auto crop pada area aktif, penyesuaian gambar jadi persegi berikut thresholding, serta penambahan quiet zone sebelum ada decoder yang mau menerimanya. Satu pustaka decoder gagal pada gambar hasil rekonstruksi sementara pustaka lain berhasil, dan itu layak diingat untuk soal serupa berikutnya.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-openssl-tree-diff-planted-backdoor-20260818",
+    "date": "2026-08-18",
+    "title": "Diffing an Open Source TLS Stack to Find a Planted Backdoor",
+    "platform": "Hacktrace",
+    "category": "Reverse Engineering",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "source-code-review",
+      "ssl",
+      "cryptanalysis",
+      "pcap",
+      "exfiltration",
+      "methodology"
+    ],
+    "concepts": [
+      "Satu fungsi sengaja dilemahkan di dalam pohon sumber OpenSSL utuh, sementara seluruh pohon sudah diformat ulang dan tiap berkas membawa header modifikasi palsu yang identik",
+      "Diff terhadap versi yang kira-kira mirip menghasilkan noise di mana-mana, sehingga pemilihan pembanding menentukan seluruh hasilnya",
+      "Diff terhadap tag rilis upstream yang persis, dengan perubahan whitespace dan baris kosong diabaikan, menyisakan perbedaan boilerplate di seluruh pohon kecuali satu berkas yang berbeda secara substansial",
+      "Cacat yang ditanam menurunkan material kunci ephemeral untuk Encrypted ClientHello dari waktu saat itu, bukan dari sumber acak, sehingga tiap kunci sesi bisa dipulihkan dari timestamp paket",
+      "Setelah beacon didekripsi, data yang diselundupkan lewat nilai inner SNI bisa dipulihkan, jadi kelemahan kripto dan analisis trafik menyatu jadi satu rantai"
+    ],
+    "terms": [
+      "OpenSSL",
+      "upstream release tag",
+      "whitespace ignored diff",
+      "boilerplate diff",
+      "Encrypted ClientHello",
+      "ECH",
+      "ephemeral key",
+      "PRNG seeding",
+      "inner SNI",
+      "session key",
+      "beacon"
+    ],
+    "commands": [
+      "git diff",
+      "diff -ruw -B",
+      "tshark",
+      "python3"
+    ],
+    "problems": [
+      "Pohon sumber diformat ulang menyeluruh dan tiap berkas membawa header modifikasi palsu, sehingga sinyal perubahan asli tenggelam dalam noise",
+      "Memilih pembanding yang salah membuat hasil diff tidak terpakai sama sekali, dan baru berguna setelah dibandingkan dengan tag rilis upstream yang persis"
+    ],
+    "summary": "Menemukan satu fungsi yang sengaja dilemahkan di dalam pohon sumber OpenSSL utuh. Pohon tersebut sudah diformat ulang menyeluruh dan tiap berkas membawa header modifikasi palsu yang identik, sehingga diff terhadap versi yang sekadar mirip menghasilkan noise di semua tempat. Diff terhadap tag rilis upstream yang persis, dengan perubahan whitespace dan baris kosong diabaikan, menyusutkan seluruh pohon menjadi perbedaan boilerplate kecuali satu berkas yang berbeda secara substansial. Cacat yang ditanam menurunkan material kunci ephemeral untuk Encrypted ClientHello dari waktu saat itu alih-alih dari sumber acak, sehingga tiap kunci sesi bisa dipulihkan dari timestamp paket. Setelah beacon didekripsi, data yang diselundupkan lewat nilai inner SNI ikut terpulihkan.",
+    "url": ""
+  },
+  {
+    "id": "hacktrace-host-compromise-forensics-triage-20260818",
+    "date": "2026-08-18",
+    "title": "Large Scale Host Compromise Forensics",
+    "platform": "Hacktrace",
+    "category": "DFIR",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "dfir",
+      "forensics",
+      "network-forensics",
+      "pcap",
+      "webshell",
+      "c2-protocol",
+      "aes",
+      "exfiltration",
+      "incident-response",
+      "log-analysis"
+    ],
+    "concepts": [
+      "Koleksi triage 350 MB dengan inti packet capture 220 MB plus log web, audit, dan sistem, sehingga urutan pembacaan artefak menentukan kecepatan kerja",
+      "Rantai serangan dipetakan dari sumber penyerang, tooling enumerasi yang dipakai, endpoint rentan, sampai webshell yang dijatuhkan lewat endpoint tersebut",
+      "Implan kedua memakai AES-128-CBC untuk kanal C2-nya, sehingga endpoint C2 baru terbaca setelah pola trafiknya dikenali",
+      "Tahap ransomware dikarakterisasi lewat ekstensi dan jumlah berkas yang terdampak, bukan lewat sampel binernya",
+      "Detail modern yang menonjol: intrusi menjalankan model bahasa lokal berukuran kecil sebagai tooling di host",
+      "Audit log tidak memuat catatan eksekusi proses, jadi command line persis hanya bisa diambil dari packet capture, bukan dari log",
+      "Platform memberi cooldown setelah jawaban salah berulang, sehingga menebak justru memperlambat; sebagian jawaban sengaja dibiarkan kosong"
+    ],
+    "terms": [
+      "triage collection",
+      "packet capture",
+      "web access log",
+      "audit log",
+      "enumeration tooling",
+      "webshell",
+      "implant",
+      "AES-128-CBC",
+      "C2 endpoint",
+      "ransomware",
+      "local language model"
+    ],
+    "commands": [
+      "tshark",
+      "grep",
+      "python3"
+    ],
+    "problems": [
+      "Audit log tidak mencatat eksekusi proses, sehingga command line harus direkonstruksi dari packet capture",
+      "Cooldown platform setelah jawaban salah berulang membuat tebakan mahal, sehingga beberapa bagian dibiarkan belum terjawab alih-alih diisi asal"
+    ],
+    "summary": "Mengerjakan koleksi triage 350 MB yang berpusat pada packet capture 220 MB plus log web, audit, dan sistem. Berhasil menetapkan sumber penyerang, tooling enumerasi yang dipakai, endpoint yang rentan, dan webshell yang dijatuhkan lewat endpoint itu. Implan kedua teridentifikasi memakai AES-128-CBC untuk kanal C2-nya, endpoint C2 berhasil dipetakan, dan tahap ransomware dikarakterisasi termasuk ekstensi serta jumlah berkas yang terdampak. Detail modern yang menonjol: intrusi ini menjalankan model bahasa lokal berukuran kecil sebagai tooling di host. Sengaja dibiarkan selesai sebagian alih-alih menebak, karena platform menerapkan cooldown setelah jawaban salah berulang dan audit log tidak memuat catatan eksekusi proses, sehingga command line persis harus datang dari packet capture, bukan dari log.",
+    "url": ""
+  },
+  {
+    "id": "soc-erp-database-deletion-attribution-20260819",
+    "date": "2026-08-19",
+    "title": "Database Deletion Attribution Starting from Performance Telemetry",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "siem",
+      "qradar",
+      "aql",
+      "log-analysis",
+      "investigation",
+      "methodology"
+    ],
+    "concepts": [
+      "Titik awal investigasi datang dari telemetri performa basis data berupa statement DELETE berjalan lama, bukan dari alert SIEM maupun deteksi EDR, sehingga tidak ada satu pun artefak deteksi yang bisa dijadikan pijakan awal",
+      "Jalur atribusi dibangun dari nol di SIEM memakai AQL, dimulai dari penemuan log source lalu dipersempit melewati beberapa kandidat host",
+      "Koneksi di layer aplikasi ERP memakai service account bersama, sehingga identitas pelaku tidak bisa diambil dari layer basis data dan harus dikejar di layer sistem operasi dan autentikasi",
+      "Strategi penyempitan yang diusulkan: mengiriskan event autentikasi terhadap himpunan kecil akun yang benar-benar memegang izin delete pada tabel terkait, bukan mengandalkan kedekatan timestamp semata",
+      "Pelajaran deteksi: kalau satu-satunya jejak sebuah aksi berada di telemetri performa, artinya aksi kelas itu memang belum punya jalur deteksi"
+    ],
+    "terms": [
+      "ERP",
+      "AOS",
+      "SIEM",
+      "AQL",
+      "log source",
+      "service account",
+      "shared account",
+      "ADFS",
+      "authentication event",
+      "delete permission",
+      "attribution"
+    ],
+    "commands": [
+      "SELECT LOGSOURCENAME(logsourceid), COUNT(*) FROM events GROUP BY logsourceid LAST 7 DAYS",
+      "SELECT DATEFORMAT(devicetime, 'yyyy-MM-dd HH:mm:ss'), username, eventid FROM events WHERE logsourceid = <id> START <epoch_ms> STOP <epoch_ms>"
+    ],
+    "problems": [
+      "Investigasi berangkat dari telemetri performa, bukan dari alert, sehingga tidak ada artefak deteksi yang bisa dijadikan pijakan",
+      "Service account bersama di layer aplikasi menutup jalur identitas di layer basis data",
+      "Kandidat host harus dipersempit satu per satu karena tidak ada pemetaan langsung antara layer aplikasi dan host asal koneksi"
+    ],
+    "summary": "Menginvestigasi penghapusan record pajak di basis data produksi sebuah sistem ERP, dengan titik awal yang tidak biasa: temuan muncul di telemetri performa basis data sebagai statement DELETE berjalan lama, bukan dari alert SIEM atau deteksi EDR. Jalur atribusi dibangun dari nol di SIEM memakai AQL, dimulai dari penemuan log source lalu dipersempit melewati beberapa kandidat host. Koneksi di layer aplikasi memakai service account bersama, sehingga identitas harus dikejar di layer sistem operasi dan autentikasi. Investigasi ditutup dengan usulan strategi penyempitan yang mengiriskan event autentikasi terhadap himpunan kecil akun yang benar-benar memegang izin delete pada tabel terkait, alih-alih mencoba menyelesaikannya lewat kedekatan timestamp saja.",
+    "url": ""
+  },
+  {
+    "id": "soc-log-source-coverage-gap-20260819",
+    "date": "2026-08-19",
+    "title": "Log Source Coverage Gap Discovery",
+    "platform": "MPM SOC",
+    "category": "Lesson Learned / Methodology",
+    "tags": [
+      "threat-hunting",
+      "siem",
+      "qradar",
+      "aql",
+      "detection",
+      "methodology",
+      "lesson-learned",
+      "log-management",
+      "logging"
+    ],
+    "concepts": [
+      "Hasil paling berharga dari investigasi bukan atribusinya, yang ternyata memang tidak bisa diselesaikan dari SIEM, melainkan penemuan bahwa host yang diperiksa tidak memiliki logging aktif sama sekali",
+      "Seluruh event yang teratribusi ke host itu dalam jendela 30 hari jatuh pada satu tanggal saja, yaitu ingest massal sekali jalan, dengan device timestamp tersebar di beberapa bulan sebelumnya",
+      "Host basis data sebenarnya dan server aplikasinya dikonfirmasi tidak memiliki log source terdaftar di SIEM sama sekali",
+      "Log source yang mati tidak mengumumkan dirinya; ia hanya mengembalikan nol baris dan tampak seperti ketiadaan bukti",
+      "Temuan cakupan logging layak diangkat sebagai temuan operasional tersendiri, terlepas dari hasil investigasi yang memicunya",
+      "Kebiasaan yang perlu dibangun: cek kesehatan log source sebagai langkah awal investigasi, bukan sebagai penjelasan setelah query gagal"
+    ],
+    "terms": [
+      "log source",
+      "log source health",
+      "bulk ingest",
+      "device time",
+      "coverage gap",
+      "visibility gap",
+      "silent log source",
+      "absence of evidence"
+    ],
+    "commands": [
+      "SELECT LOGSOURCENAME(logsourceid), MAX(devicetime), COUNT(*) FROM events GROUP BY logsourceid LAST 30 DAYS",
+      "SELECT DATEFORMAT(devicetime, 'yyyy-MM-dd'), COUNT(*) FROM events WHERE logsourceid = <id> GROUP BY 1 LAST 30 DAYS"
+    ],
+    "problems": [
+      "Query yang mengembalikan nol baris sempat terbaca sebagai bukti negatif, padahal penyebabnya log source yang tidak mengirim data",
+      "Aset yang paling relevan untuk investigasi justru tidak terdaftar sebagai log source di SIEM, sehingga atribusi memang mustahil dari sana"
+    ],
+    "summary": "Hasil yang lebih berharga dari investigasi penghapusan record bukan atribusinya, yang ternyata tidak mungkin diselesaikan dari SIEM, melainkan penemuan bahwa host yang diperiksa tidak memiliki logging aktif sama sekali. Seluruh event yang teratribusi ke host tersebut dalam jendela 30 hari jatuh pada satu tanggal saja, yaitu ingest massal sekali jalan, dengan device timestamp tersebar di beberapa bulan sebelumnya. Terpisah dari itu, dikonfirmasi bahwa host basis data sebenarnya dan server aplikasinya tidak memiliki log source terdaftar di SIEM sama sekali. Temuan ini diangkat sebagai temuan operasional tersendiri. Log source yang mati tidak mengumumkan dirinya, ia hanya diam mengembalikan nol baris dan terlihat seperti ketiadaan bukti.",
+    "url": ""
+  },
+  {
+    "id": "soc-aql-timestamp-semantics-20260819",
+    "date": "2026-08-19",
+    "title": "AQL Timestamp Semantics",
+    "platform": "MPM SOC",
+    "category": "Lesson Learned / Methodology",
+    "tags": [
+      "qradar",
+      "aql",
+      "siem",
+      "methodology",
+      "lesson-learned",
+      "time-correlation",
+      "log-analysis",
+      "validation"
+    ],
+    "concepts": [
+      "Device time dan event start time adalah dua field terpisah dengan tingkat keandalan yang berbeda, dan satu log source bisa mengisi salah satunya sambil membiarkan yang lain basi atau kosong",
+      "Query berjendela waktu terhadap field yang salah mengembalikan nol baris dan terlihat seperti negatif yang sah, padahal datanya ada",
+      "Keduanya berupa epoch milliseconds, sehingga membandingkannya langsung dengan string tanggal melempar parse error alih-alih gagal dengan rapi",
+      "Gunakan nilai epoch, fungsi parse yang eksplisit, atau klausa rentang waktu, jangan mencampur tipe",
+      "Kebiasaan yang lebih luas: sebelum menyimpulkan sebuah query tidak menemukan apa-apa, buktikan dulu bahwa field yang difilter memang terisi untuk log source tersebut"
+    ],
+    "terms": [
+      "AQL",
+      "device time",
+      "event start time",
+      "epoch milliseconds",
+      "DATEFORMAT",
+      "parse error",
+      "time range clause",
+      "empty result set",
+      "negative result"
+    ],
+    "commands": [
+      "SELECT devicetime, starttime FROM events WHERE logsourceid = <id> LAST 1 DAYS",
+      "SELECT COUNT(*) FROM events WHERE devicetime > <epoch_ms> AND devicetime < <epoch_ms>",
+      "SELECT COUNT(*) FROM events WHERE logsourceid = <id> START <epoch_ms> STOP <epoch_ms>"
+    ],
+    "problems": [
+      "Beberapa siklus query habis di hasil kosong karena jendela waktu diterapkan pada field waktu yang tidak terisi untuk log source itu",
+      "Perbandingan field waktu terhadap string tanggal melempar parse error, bukan hasil kosong, sehingga sempat terbaca sebagai masalah sintaks"
+    ],
+    "summary": "Pelajaran yang dicatat setelah beberapa siklus query habis di hasil kosong. Device time dan event start time adalah field terpisah dengan keandalan terpisah, dan satu log source bisa mengisi salah satunya sambil membiarkan yang lain basi atau kosong, sehingga query berjendela waktu terhadap field yang salah mengembalikan nol baris dan tampak seperti negatif yang sah. Keduanya berupa epoch milliseconds, jadi membandingkan salah satunya dengan string tanggal melempar parse error alih-alih gagal dengan rapi. Pakai nilai epoch, fungsi parse eksplisit, atau klausa rentang waktu. Kebiasaan yang lebih luas: sebelum menyimpulkan sebuah query tidak menemukan apa-apa, buktikan dulu bahwa field yang difilter memang terisi untuk log source itu.",
+    "url": ""
   }
 ]
