@@ -7796,5 +7796,527 @@
     ],
     "summary": "Pelajaran yang dicatat setelah beberapa siklus query habis di hasil kosong. Device time dan event start time adalah field terpisah dengan keandalan terpisah, dan satu log source bisa mengisi salah satunya sambil membiarkan yang lain basi atau kosong, sehingga query berjendela waktu terhadap field yang salah mengembalikan nol baris dan tampak seperti negatif yang sah. Keduanya berupa epoch milliseconds, jadi membandingkan salah satunya dengan string tanggal melempar parse error alih-alih gagal dengan rapi. Pakai nilai epoch, fungsi parse eksplisit, atau klausa rentang waktu. Kebiasaan yang lebih luas: sebelum menyimpulkan sebuah query tidak menemukan apa-apa, buktikan dulu bahwa field yang difilter memang terisi untuk log source itu.",
     "url": ""
+  },
+  {
+    "id": "phalanx-jwt-kid-attack-surface-mapping-20260822",
+    "date": "2026-08-22",
+    "title": "Mapping JWT kid Parameter Attack Surface",
+    "platform": "Hacktrace Ranges",
+    "category": "Web Exploitation",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "phalanx",
+      "linux",
+      "moderate",
+      "web",
+      "jwt",
+      "authentication",
+      "information-disclosure"
+    ],
+    "concepts": [
+      "Parameter kid di header JWT ditelusuri satu per satu sebagai permukaan serangan: path traversal ke berkas kunci, injeksi kunci lewat penyimpanan yang bisa ditulis, alg:none, dan SQL injection di dalam nilai kid itu sendiri",
+      "Seluruh vektor gagal, tapi pola pesan errornya justru jadi hasil yang berguna: payload null-byte memicu pesan kegagalan resolusi kunci, sementara payload traversal memicu pesan token tidak valid atau kedaluwarsa",
+      "Selisih pesan error itu berfungsi sebagai oracle yang menunjukkan sejauh mana input diproses sebelum ditolak, jadi tiap pesan memetakan tahap validasi yang berbeda",
+      "Kebiasaan yang dibangun: membaca perbedaan pesan error sebagai sinyal tentang alur internal, bukan sekadar sebagai tanda payload gagal"
+    ],
+    "terms": [
+      "JWT",
+      "kid header",
+      "path traversal",
+      "null byte",
+      "alg:none",
+      "key resolution",
+      "error oracle",
+      "token validation"
+    ],
+    "commands": [
+      "python3 (penyusunan JWT dan variasi nilai kid)",
+      "curl"
+    ],
+    "problems": [
+      "Empat kelas vektor pada parameter kid semuanya buntu, sehingga nilai sesi bergantung pada apa yang bisa disimpulkan dari respons",
+      "Pesan error harus dipetakan dulu ke tahap validasi supaya bisa dipakai membedakan input yang ditolak di awal dari input yang sempat diproses"
+    ],
+    "summary": "Menelusuri satu per satu vektor serangan yang mungkin lewat parameter kid di header JWT: path traversal ke berkas kunci, injeksi kunci lewat penyimpanan yang bisa ditulis, alg:none, dan SQL injection di dalam nilai kid. Semuanya gagal, tapi yang berguna justru pola respons errornya, karena payload null-byte dan payload traversal memicu pesan yang berbeda. Perbedaan pesan itu adalah oracle yang memberi tahu sejauh mana input diproses sebelum ditolak. Pelajarannya: selisih pesan error dibaca sebagai sinyal, bukan sekadar tanda kegagalan.",
+    "url": ""
+  },
+  {
+    "id": "phalanx-redis-emulator-recognition-20260822",
+    "date": "2026-08-22",
+    "title": "Recognizing a Service Emulator Instead of the Real Thing",
+    "platform": "Hacktrace Ranges",
+    "category": "Reconnaissance",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "phalanx",
+      "linux",
+      "moderate",
+      "recon",
+      "redis",
+      "service-enumeration",
+      "version-fingerprinting"
+    ],
+    "concepts": [
+      "Port 6379 terbuka dan merespons seperti Redis, tapi yang berjalan hanya emulator dengan dukungan perintah sebagian",
+      "Perintah seperti SCAN dan RANDOMKEY tidak jalan, dan ketiadaan dukungan itu langsung menggugurkan satu kelas vektor yang sudah disiapkan, yaitu injeksi kunci JWT lewat penyimpanan yang bisa ditulis",
+      "Sebelum membangun rantai serangan di atas sebuah service, implementasinya harus diverifikasi asli lebih dulu, bukan diasumsikan dari banner atau nomor port",
+      "Cara cepat memverifikasi: tembak perintah yang jarang dipakai dan lihat apakah didukung, karena tiruan biasanya hanya mengimplementasikan perintah yang umum"
+    ],
+    "terms": [
+      "Redis",
+      "service emulator",
+      "command coverage",
+      "SCAN",
+      "RANDOMKEY",
+      "banner",
+      "port 6379",
+      "attack chain assumption"
+    ],
+    "commands": [
+      "nmap",
+      "redis-cli",
+      "nc"
+    ],
+    "problems": [
+      "Vektor injeksi kunci JWT lewat penyimpanan yang bisa ditulis sudah disiapkan sebelum diketahui service-nya bukan implementasi asli",
+      "Banner dan nomor port terlihat meyakinkan, sehingga verifikasi dukungan perintah jadi satu-satunya cara membedakan"
+    ],
+    "summary": "Port 6379 terbuka dan merespons seperti Redis, tapi ternyata hanya emulator dengan dukungan perintah sebagian, karena SCAN dan RANDOMKEY tidak jalan. Penemuan ini langsung menggugurkan satu kelas vektor serangan yang sudah disiapkan, yaitu injeksi kunci JWT lewat penyimpanan yang bisa ditulis. Pelajarannya: sebelum membangun rantai serangan di atas sebuah service, verifikasi dulu bahwa service itu implementasi asli, bukan tiruan yang dipasang pembuat soal. Cara cepatnya adalah menembak perintah yang jarang dipakai dan melihat apakah didukung.",
+    "url": ""
+  },
+  {
+    "id": "phalanx-negative-results-documentation-20260822",
+    "date": "2026-08-22",
+    "title": "Documenting Negative Results on a Hard Target",
+    "platform": "Hacktrace Ranges",
+    "category": "CTF Methodology",
+    "tags": [
+      "ctf",
+      "hacktrace",
+      "phalanx",
+      "linux",
+      "moderate",
+      "web",
+      "methodology",
+      "dead-end-validation",
+      "sql-injection",
+      "evidence-discipline"
+    ],
+    "concepts": [
+      "Sesi panjang tanpa flag tetap menghasilkan nilai berupa daftar vektor yang berhasil dieliminasi secara eksplisit",
+      "SSTI di endpoint preview gugur karena semua payload ter-escape, dan komentar CSS di halaman mengonfirmasi fitur itu memang decoy",
+      "SQL injection di parameter sort dan pencarian gugur karena query terparameterisasi, hanya wildcard LIKE yang lolos",
+      "Mass assignment pada field role saat registrasi dan brute force secret JWT dengan wordlist besar sama-sama tidak membuahkan hasil",
+      "Mencatat hasil negatif sama pentingnya dengan mencatat keberhasilan, karena mencegah jalan buntu yang sama diulang di sesi berikutnya",
+      "Target yang dirancang supaya tidak mudah diselesaikan dengan bantuan AI memaksa kembali ke enumerasi sistematis"
+    ],
+    "terms": [
+      "negative result",
+      "SSTI",
+      "output escaping",
+      "decoy feature",
+      "parameterized query",
+      "LIKE wildcard",
+      "mass assignment",
+      "JWT secret brute force",
+      "systematic enumeration"
+    ],
+    "commands": [
+      "ffuf",
+      "sqlmap",
+      "hashcat",
+      "burp suite"
+    ],
+    "problems": [
+      "Sesi berakhir tanpa flag, sehingga catatan yang bisa dipakai ulang harus dibangun dari vektor yang tereliminasi",
+      "Satu fitur yang terlihat menjanjikan ternyata decoy, dan itu baru terkonfirmasi lewat komentar CSS di halaman"
+    ],
+    "summary": "Sesi panjang tanpa flag, tapi dengan daftar panjang vektor yang berhasil dieliminasi: SSTI di endpoint preview dengan seluruh payload ter-escape dan fitur yang terkonfirmasi sebagai decoy lewat komentar CSS, SQL injection di parameter sort dan pencarian yang tertutup query terparameterisasi sehingga hanya wildcard LIKE yang lolos, mass assignment field role saat registrasi, dan brute force secret JWT dengan wordlist besar. Mencatat hasil negatif secara eksplisit ternyata sama pentingnya dengan mencatat keberhasilan, karena mencegah jalan buntu yang sama diulang di sesi berikutnya. Target ini memang dirancang supaya tidak mudah diselesaikan dengan bantuan AI, dan itu memaksa kembali ke metode enumerasi yang sistematis.",
+    "url": ""
+  },
+  {
+    "id": "siem-category-id-vs-name-filtering-20260823",
+    "date": "2026-08-23",
+    "title": "Filtering by Category ID Instead of Category Name",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "qradar",
+      "aql",
+      "query",
+      "threat-hunting",
+      "log-analysis"
+    ],
+    "concepts": [
+      "Penerjemah nama kategori dan nama event di bahasa query SIEM adalah fungsi, bukan kolom, dan itu punya dua konsekuensi langsung",
+      "Konsekuensi pertama: fungsi dievaluasi per baris sehingga tidak kena index dan terasa lambat pada dataset besar",
+      "Konsekuensi kedua: alias hasil fungsi tidak bisa dipakai ulang di klausa WHERE, sehingga filter harus ditulis terhadap kolom aslinya",
+      "Pola yang benar dua tahap: pakai nama untuk eksplorasi sekali guna demi menemukan ID numeriknya, lalu semua query rutin memakai ID numerik itu",
+      "Cara tercepat menemukan ID adalah bertolak dari satu event contoh yang sudah dikenal, bukan menebak dari daftar kategori"
+    ],
+    "terms": [
+      "AQL",
+      "category ID",
+      "category name",
+      "QID",
+      "fungsi per baris",
+      "index",
+      "alias",
+      "WHERE clause",
+      "query rutin"
+    ],
+    "commands": [
+      "SELECT CATEGORYNAME(category), COUNT(*) FROM events GROUP BY category LAST 24 HOURS   # eksplorasi sekali guna",
+      "SELECT * FROM events WHERE category = <category_id> LAST 24 HOURS   # pola rutin, filter ke kolom asli"
+    ],
+    "problems": [
+      "Query yang menyaring lewat nama kategori terasa lambat karena fungsi dievaluasi baris per baris dan tidak memanfaatkan index",
+      "Alias hasil fungsi ditolak saat dipakai di klausa WHERE, sehingga pola query harus disusun ulang ke kolom numerik"
+    ],
+    "summary": "Di bahasa query SIEM, penerjemah nama kategori dan nama event adalah fungsi, bukan kolom. Konsekuensinya dua: fungsi dievaluasi per baris sehingga tidak kena index dan lambat di dataset besar, dan alias hasil fungsi tidak bisa dipakai ulang di klausa WHERE. Pola yang benar adalah dua tahap, yaitu memakai nama untuk eksplorasi sekali guna demi menemukan ID numeriknya, lalu memakai ID numerik itu di semua query rutin. Cara tercepat menemukan ID adalah bertolak dari satu event contoh yang sudah dikenal, bukan menebak.",
+    "url": ""
+  },
+  {
+    "id": "siem-vendor-signature-classification-20260823",
+    "date": "2026-08-23",
+    "title": "Letting Vendor Signatures Do the Classification",
+    "platform": "MPM SOC",
+    "category": "Lesson Learned / Methodology",
+    "tags": [
+      "siem",
+      "detection-engineering",
+      "threat-hunting",
+      "waf",
+      "detection",
+      "methodology"
+    ],
+    "concepts": [
+      "Rencana awal menulis regex sendiri untuk membaca payload dan menentukan jenis serangan gugur setelah seluruh kategori diprofilkan",
+      "Satu kategori saja memuat 106 signature berbeda, sehingga regex buatan tangan hanya akan menangkap sebagian kecil dan langsung basi begitu payload bervariasi",
+      "WAF dan IPS sudah punya ribuan signature dan sudah memberi verdict lewat ID event masing-masing, jadi klasifikasinya sudah tersedia tanpa perlu dibuat ulang",
+      "Menulis regex payload sendiri sama saja membuat ulang pekerjaan vendor dalam versi yang lebih buruk dan lebih rapuh",
+      "Pendekatan yang dipakai: kelompokkan berdasarkan ID signature, lalu pilah tier berdasarkan seberapa layak dikejar, bukan berdasarkan jenis serangan"
+    ],
+    "terms": [
+      "signature ID",
+      "vendor verdict",
+      "WAF",
+      "IPS",
+      "payload regex",
+      "profiling kategori",
+      "tier triage",
+      "maintainability"
+    ],
+    "commands": [
+      "SELECT <kolom_event_id>, COUNT(*) FROM events WHERE category = <category_id> GROUP BY <kolom_event_id> LAST 7 DAYS"
+    ],
+    "problems": [
+      "Jumlah signature dalam satu kategori jauh melampaui apa yang realistis dicakup regex buatan tangan",
+      "Klasifikasi berbasis jenis serangan tidak membantu penentuan urutan kerja, sehingga tier harus disusun atas dasar kelayakan dikejar"
+    ],
+    "summary": "Rencana awal menulis regex sendiri untuk membaca payload dan menentukan jenis serangan dibatalkan setelah seluruh kategori diprofilkan, karena ternyata ada 106 signature berbeda dalam satu kategori saja. Regex buatan tangan hanya akan menangkap sebagian kecilnya dan langsung basi begitu payload bervariasi. WAF dan IPS sudah punya ribuan signature dan sudah memberi verdict lewat ID event masing-masing, jadi menulis regex payload sendiri sama saja membuat ulang pekerjaan vendor dalam versi yang lebih buruk. Yang dipakai kemudian adalah pengelompokan berdasarkan ID signature, lalu pemilahan tier berdasarkan seberapa layak dikejar, bukan berdasarkan jenis serangan.",
+    "url": ""
+  },
+  {
+    "id": "siem-category-mapping-per-log-source-20260823",
+    "date": "2026-08-23",
+    "title": "Category Mapping Differs per Log Source",
+    "platform": "MPM SOC",
+    "category": "Lesson Learned / Methodology",
+    "tags": [
+      "siem",
+      "threat-hunting",
+      "methodology",
+      "log-management",
+      "detection"
+    ],
+    "concepts": [
+      "ID kategori bersifat global dan tidak berubah, tapi signature mana yang muncul berbeda-beda tergantung sensor karena tiap parser punya peta ID event sendiri",
+      "Sensor dengan signature granular memetakan serangan ke kategori yang spesifik, sementara sensor lain memetakan semua serangan web ke satu kategori generik lewat rule engine",
+      "Akibat langsungnya: menyalin daftar signature dari satu segmen ke segmen lain menghasilkan nol baris",
+      "Nol baris seperti itu gampang salah dibaca sebagai bersih, padahal yang terjadi hanya peta ID event yang berbeda",
+      "Profiling kategori karena itu ditulis sebagai prosedur enam langkah supaya bisa diulang setiap kali masuk ke segmen baru, bukan dikerjakan ad hoc"
+    ],
+    "terms": [
+      "category ID",
+      "event ID mapping",
+      "parser",
+      "rule engine",
+      "granular signature",
+      "generic category",
+      "profiling procedure",
+      "empty result"
+    ],
+    "commands": [
+      "SELECT <kolom_event_id>, COUNT(*) FROM events WHERE category = <category_id> GROUP BY <kolom_event_id> LAST 7 DAYS   # ulangi per segmen"
+    ],
+    "problems": [
+      "Daftar signature yang terbukti jalan di satu segmen mengembalikan nol baris saat dipakai di segmen lain",
+      "Hasil nol baris tidak membedakan antara benar-benar tidak ada aktivitas dan peta ID event yang berbeda, sehingga perlu langkah profiling tersendiri"
+    ],
+    "summary": "Pelajaran struktural yang baru dipahami hari ini: ID kategori bersifat global dan tidak berubah, tapi signature mana yang muncul berbeda-beda tergantung sensor, karena setiap parser punya peta ID event sendiri. Sensor dengan signature granular memetakan serangan ke kategori spesifik, sementara sensor lain memetakan semua serangan web ke satu kategori generik lewat rule engine. Akibatnya menyalin daftar signature dari satu segmen ke segmen lain menghasilkan nol baris, dan nol baris itu gampang salah dibaca sebagai bersih. Prosedur profiling enam langkah dituliskan supaya pemeriksaan ini bisa diulang setiap kali masuk ke segmen baru.",
+    "url": ""
+  },
+  {
+    "id": "siem-inline-conditional-classifier-columns-20260823",
+    "date": "2026-08-23",
+    "title": "Building Classifier Columns with Inline Conditionals",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "query",
+      "detection-engineering",
+      "aql",
+      "qradar",
+      "log-analysis"
+    ],
+    "concepts": [
+      "Ketika sensor hanya memberi satu ID event generik, klasifikasi tidak bisa datang dari verdict vendor dan harus diambil dari isi payload",
+      "Solusinya membangun kolom turunan memakai conditional inline bertingkat yang menerjemahkan pola URL menjadi label kelas serangan",
+      "Kolom terpisah dibuat untuk tool yang dipakai dan untuk hasil akhir request, supaya klasifikasi dan dampak tidak tercampur dalam satu kolom",
+      "Aturan yang dipegang: pola classifier diambil dari data yang benar-benar ada di lingkungan itu, bukan dari daftar serangan umum di internet",
+      "Caranya dengan mengekspor sampel lalu mengelompokkan berdasarkan URL untuk melihat pola apa yang benar-benar muncul",
+      "Jebakan sintaks yang memakan waktu: operator AND mengikat lebih kuat daripada OR, jadi setiap grup OR di klausa WHERE wajib dibungkus kurung atau filter lain hanya berlaku pada kondisi terakhir"
+    ],
+    "terms": [
+      "classifier column",
+      "inline conditional",
+      "derived column",
+      "URL pattern",
+      "operator precedence",
+      "AND",
+      "OR",
+      "sampling data",
+      "payload classification"
+    ],
+    "commands": [
+      "SELECT <ekspresi_kondisional> AS attack_class, <ekspresi_kondisional> AS tool_used FROM events WHERE category = <category_id> LAST 24 HOURS",
+      "SELECT url, COUNT(*) FROM events WHERE category = <category_id> GROUP BY url ORDER BY 2 DESC LAST 7 DAYS   # ambil pola dari data nyata",
+      "SELECT ... WHERE (<kondisi_a> OR <kondisi_b>) AND <filter_lain>   # grup OR wajib dikurung"
+    ],
+    "problems": [
+      "Sensor hanya mengeluarkan satu ID event generik, sehingga tidak ada verdict vendor yang bisa dipakai untuk mengelompokkan",
+      "Filter sempat terlihat berfungsi padahal hanya berlaku pada kondisi terakhir, karena grup OR tidak dibungkus kurung"
+    ],
+    "summary": "Ketika sensor hanya memberi satu ID event generik, klasifikasi harus datang dari isi payload. Solusinya membangun kolom turunan memakai conditional inline bertingkat yang menerjemahkan pola URL menjadi label kelas serangan, ditambah kolom terpisah untuk tool yang dipakai dan untuk hasil akhir request. Aturan yang dipegang: pola classifier harus diambil dari data yang benar-benar ada di lingkungan itu, bukan dari daftar serangan umum di internet, dan caranya dengan mengekspor sampel lalu mengelompokkan berdasarkan URL. Satu jebakan sintaks yang memakan waktu: operator AND mengikat lebih kuat daripada OR, jadi setiap grup OR di klausa WHERE wajib dibungkus kurung atau filter lain hanya berlaku pada kondisi terakhir.",
+    "url": ""
+  },
+  {
+    "id": "siem-source-ip-field-relay-artifact-20260823",
+    "date": "2026-08-23",
+    "title": "The Source IP Field Is Not Always the Attacker",
+    "platform": "MPM SOC",
+    "category": "Lesson Learned / Methodology",
+    "tags": [
+      "siem",
+      "log-analysis",
+      "methodology",
+      "qradar",
+      "aql",
+      "custom-property"
+    ],
+    "concepts": [
+      "Kolom source IP di SIEM bisa berisi alamat relay syslog atau perangkat pengirim log, bukan alamat penyerang sebenarnya",
+      "Alamat penyerang yang sebenarnya justru tersimpan sebagai key-value di dalam body payload, sehingga tidak ikut terparse ke kolom",
+      "Ini kali ketiga pola yang sama ditemui pada sensor yang berbeda; dua kali bisa disebut kebetulan, tiga kali berarti pola",
+      "Karena itu pemeriksaan ini masuk ke checklist onboarding log source, bukan ditemukan ulang tiap kali investigasi",
+      "Bahasa query yang dipakai tidak punya fungsi ekstraksi regex, jadi satu-satunya jalan keluar adalah membuat custom property berbasis regex supaya nilainya bisa dipakai untuk filter dan agregasi"
+    ],
+    "terms": [
+      "source IP",
+      "syslog relay",
+      "log forwarder",
+      "key-value payload",
+      "custom property",
+      "regex extraction",
+      "parser coverage",
+      "log source onboarding"
+    ],
+    "commands": [
+      "SELECT sourceip, COUNT(*) FROM events WHERE logsourceid = <id> GROUP BY sourceip LAST 24 HOURS   # cek apakah nilainya seragam",
+      "SELECT UTF8(payload) FROM events WHERE logsourceid = <id> LAST 1 HOURS   # cari alamat asli di body"
+    ],
+    "problems": [
+      "Agregasi berdasarkan kolom source IP menghasilkan satu alamat dominan yang ternyata perangkat pengirim log, bukan penyerang",
+      "Nilai yang benar hanya ada di dalam body payload dan tidak bisa difilter maupun diagregasi sampai custom property dibuat"
+    ],
+    "summary": "Ketiga kalinya pola ini ditemui pada sensor yang berbeda: kolom source IP di SIEM ternyata berisi alamat relay syslog atau perangkat pengirim log, bukan alamat penyerang sebenarnya, yang justru tersimpan sebagai key-value di dalam body payload. Dua kali kejadian bisa disebut kebetulan, tiga kali berarti pola, dan sekarang jadi bagian dari checklist onboarding log source. Karena bahasa query ini tidak punya fungsi ekstraksi regex, satu-satunya jalan keluar adalah membuat custom property berbasis regex supaya nilai itu bisa dipakai untuk filter dan agregasi.",
+    "url": ""
+  },
+  {
+    "id": "siem-alert-priority-score-semantics-20260823",
+    "date": "2026-08-23",
+    "title": "What an Alert Priority Score Actually Measures",
+    "platform": "MPM SOC",
+    "category": "SOC Fundamentals",
+    "tags": [
+      "siem",
+      "soc",
+      "triage",
+      "qradar",
+      "methodology",
+      "detection"
+    ],
+    "concepts": [
+      "Skor prioritas alert dihitung dari tiga komponen: tingkat keparahan kalau serangan berhasil, tingkat kepercayaan terhadap sensor, dan tingkat relevansi target",
+      "Yang penting dipahami: skor itu mengukur prioritas antrean, bukan tingkat bahaya",
+      "Kalau bobot aset dan hierarki jaringan belum ditata, komponen relevansi akan tertekan terus sehingga skor akhir rendah meskipun serangannya serius",
+      "Praktik yang diambil: jangan mengurutkan triage berdasarkan skor gabungan",
+      "Tampilkan ketiga komponen secara terpisah supaya kelihatan komponen mana yang menekan skornya",
+      "Pakai indikator hasil nyata, misalnya status respons HTTP, sebagai penentu prioritas"
+    ],
+    "terms": [
+      "priority score",
+      "severity",
+      "credibility",
+      "relevance",
+      "asset weighting",
+      "network hierarchy",
+      "queue priority",
+      "HTTP response status"
+    ],
+    "commands": [
+      "SELECT <komponen_severity>, <komponen_credibility>, <komponen_relevance>, COUNT(*) FROM events WHERE category = <category_id> GROUP BY 1,2,3 LAST 24 HOURS"
+    ],
+    "problems": [
+      "Skor gabungan yang rendah sempat terbaca sebagai serangan yang tidak berbahaya, padahal yang tertekan adalah komponen relevansi",
+      "Mengurutkan antrean triage berdasarkan skor gabungan menyembunyikan komponen mana yang sebenarnya menentukan urutan"
+    ],
+    "summary": "Skor prioritas alert dihitung dari tiga komponen: tingkat keparahan kalau serangan berhasil, tingkat kepercayaan terhadap sensor, dan tingkat relevansi target. Yang penting dipahami hari ini adalah skor itu mengukur prioritas antrean, bukan tingkat bahaya. Kalau bobot aset dan hierarki jaringan belum ditata, komponen relevansi akan tertekan terus dan skor akhirnya jadi rendah meskipun serangannya serius. Praktik yang diambil: jangan mengurutkan triage berdasarkan skor gabungan, tampilkan ketiga komponennya terpisah supaya kelihatan mana yang menekan, dan pakai indikator hasil nyata seperti status respons HTTP sebagai penentu prioritas.",
+    "url": ""
+  },
+  {
+    "id": "edr-ai-coding-agent-alert-triage-20260823",
+    "date": "2026-08-23",
+    "title": "Triaging Alerts Generated by AI Coding Agents",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "edr",
+      "triage",
+      "ai-security",
+      "llm-security",
+      "prompt-injection",
+      "process-tree",
+      "base64"
+    ],
+    "concepts": [
+      "Agent coding berbasis AI secara desain memicu deteksi EDR karena memanggil shell sendiri, membungkus perintah dalam base64 supaya tidak rusak oleh quoting, dan mengunggah isi berkas ke API vendor sebagai konteks",
+      "Ketiga perilaku itu normal untuk agent tapi identik dengan pola malware, sehingga alert-nya tidak bisa langsung ditutup maupun langsung dieskalasi",
+      "Kerangka triage yang disusun: telusuri akar rantai proses, periksa apakah tujuan unggahan hanya API vendor, dan decode isi perintahnya untuk menilai apakah masuk akal sebagai pekerjaan coding",
+      "Catatan paling penting: agent bisa terkena prompt injection lewat berkas atau repositori yang dibacanya",
+      "Karena itu fakta bahwa proses induknya adalah binary agent yang bertanda tangan sah hanya memberi tahu siapa yang menjalankan, bukan siapa yang menyuruh"
+    ],
+    "terms": [
+      "AI coding agent",
+      "EDR detection",
+      "shell invocation",
+      "base64 command",
+      "context upload",
+      "process chain root",
+      "prompt injection",
+      "signed binary",
+      "provenance"
+    ],
+    "commands": [
+      "decode base64 pada isi perintah sebelum menilai",
+      "telusuri rantai proses induk sampai akar"
+    ],
+    "problems": [
+      "Perilaku normal agent tidak bisa dibedakan dari pola malware hanya lewat sinyal deteksi, sehingga perlu kerangka triage tersendiri",
+      "Tanda tangan sah pada binary induk sempat terasa cukup sebagai dasar penutupan alert, padahal tidak menjawab siapa yang memberi instruksi"
+    ],
+    "summary": "Agent coding berbasis AI secara desain memicu deteksi EDR: dia memanggil shell sendiri, membungkus perintah dalam base64 supaya tidak rusak oleh quoting, dan mengunggah isi berkas ke API vendor sebagai konteks. Ketiganya normal untuk agent tapi identik dengan pola malware. Kerangka triage yang disusun: telusuri akar rantai proses, periksa apakah tujuan unggahan hanya API vendor, dan decode isi perintahnya untuk menilai apakah masuk akal sebagai pekerjaan coding. Catatan paling penting: agent bisa terkena prompt injection lewat berkas atau repositori yang dibacanya, jadi fakta bahwa proses induknya adalah binary agent yang bertanda tangan sah hanya memberi tahu siapa yang menjalankan, bukan siapa yang menyuruh.",
+    "url": ""
+  },
+  {
+    "id": "threat-intel-blockchain-rpc-dead-drop-20260823",
+    "date": "2026-08-23",
+    "title": "Blockchain RPC as a Command-and-Control Dead Drop",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-intel",
+      "c2",
+      "triage",
+      "blockchain",
+      "json-rpc",
+      "edr"
+    ],
+    "concepts": [
+      "Sebuah alert menandai binary sistem yang sah memanggil RPC endpoint blockchain publik, dan perintahnya sendiri hanya operasi baca untuk mengambil detail sebuah transaksi",
+      "Operasi itu tidak memindahkan dana dan tidak butuh kunci privat, jadi tidak ada indikasi finansial yang bisa dijadikan pegangan",
+      "Ada teknik nyata yang bentuknya persis sama: penyerang menaruh alamat server atau URL payload di dalam memo sebuah transaksi, lalu malware memanggil fungsi baca yang sama untuk mengambil instruksi berikutnya",
+      "Endpoint publiknya tidak bisa di-takedown dan trafiknya terlihat seperti aktivitas developer biasa, sehingga blokir berbasis reputasi tidak menolong",
+      "Pada lapisan perintah, developer yang sedang debug dan malware yang sedang mengambil instruksi tidak bisa dibedakan",
+      "Yang membedakan hanya rantai proses induk dan ada tidaknya koneksi lanjutan sesudahnya"
+    ],
+    "terms": [
+      "blockchain RPC",
+      "dead drop",
+      "transaction memo",
+      "read-only call",
+      "C2 instruction retrieval",
+      "takedown resistance",
+      "parent process chain",
+      "follow-on connection"
+    ],
+    "commands": [
+      "periksa rantai proses induk dari pemanggil RPC",
+      "cek ada tidaknya koneksi keluar lanjutan setelah panggilan baca"
+    ],
+    "problems": [
+      "Isi perintah tidak memberi sinyal jahat apa pun karena hanya operasi baca, sehingga verdict tidak bisa disandarkan pada payload",
+      "Endpoint publik tidak bisa di-takedown dan tampak seperti trafik developer, sehingga penilaian harus bergeser ke konteks proses"
+    ],
+    "summary": "Sebuah alert menandai binary sistem yang sah memanggil RPC endpoint blockchain publik. Perintahnya sendiri hanya operasi baca untuk mengambil detail sebuah transaksi, tidak memindahkan dana dan tidak butuh kunci privat. Tapi ada teknik nyata yang bentuknya persis sama: penyerang menaruh alamat server atau URL payload di dalam memo sebuah transaksi, lalu malware memanggil fungsi baca yang sama untuk mengambil instruksi berikutnya. Endpoint publiknya tidak bisa di-takedown dan trafiknya terlihat seperti developer biasa. Pelajarannya: pada lapisan perintah, developer yang sedang debug dan malware yang sedang mengambil instruksi tidak bisa dibedakan. Yang membedakan hanya rantai proses induk dan ada tidaknya koneksi lanjutan sesudahnya.",
+    "url": ""
+  },
+  {
+    "id": "edr-network-volume-field-families-20260823",
+    "date": "2026-08-23",
+    "title": "Endpoint Network Volume Telemetry Has Two Field Families",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "edr",
+      "query",
+      "threat-hunting",
+      "cortex-xdr",
+      "validation",
+      "endpoint"
+    ],
+    "concepts": [
+      "Saat menyusun query untuk mengukur volume data masuk dan keluar per host, ada dua pasang field byte yang mirip namanya tapi beda konteks: satu pasang untuk event koneksi mentah, satu pasang lagi untuk agregat di level story",
+      "Mengambil pasangan yang salah menghasilkan kolom kosong tanpa error apa pun, dan itu berbahaya karena terlihat seperti tidak ada trafik",
+      "Karena itu pemeriksaan field mana yang benar-benar terisi dijadikan langkah nol yang wajib sebelum hasilnya dipakai",
+      "Batasan yang sudah dibuktikan sebelumnya tetap berlaku: agent endpoint melakukan sampling dan tidak mencatat setiap koneksi",
+      "Konsekuensinya angka ini valid untuk peringkat relatif dan deteksi lonjakan, tapi tidak untuk volume absolut di laporan"
+    ],
+    "terms": [
+      "byte field",
+      "raw connection event",
+      "story level aggregate",
+      "empty column",
+      "silent mismatch",
+      "sampling",
+      "relative ranking",
+      "spike detection",
+      "absolute volume"
+    ],
+    "commands": [
+      "cek keterisian kedua pasang field byte sebelum agregasi   # langkah nol",
+      "agregasi per host memakai pasangan field yang terbukti terisi"
+    ],
+    "problems": [
+      "Pasangan field yang salah menghasilkan kolom kosong tanpa error, sehingga hasilnya mudah salah dibaca sebagai ketiadaan trafik",
+      "Sampling di sisi agent membuat angka volume tidak bisa dipakai sebagai nilai absolut dalam laporan"
+    ],
+    "summary": "Saat menyusun query untuk mengukur volume data masuk dan keluar per host, ditemukan dua pasang field byte yang mirip namanya tapi beda konteks: satu pasang untuk event koneksi mentah, satu pasang lagi untuk agregat di level story. Mengambil pasangan yang salah menghasilkan kolom kosong tanpa error apa pun, yang berbahaya karena terlihat seperti tidak ada trafik. Karena itu pemeriksaan field mana yang benar-benar terisi dijadikan langkah nol yang wajib sebelum hasilnya dipakai. Ditambah satu batasan yang sudah dibuktikan sebelumnya, bahwa agent endpoint melakukan sampling dan tidak mencatat setiap koneksi, jadi angka ini valid untuk peringkat relatif dan deteksi lonjakan tapi tidak untuk volume absolut di laporan.",
+    "url": ""
   }
 ]
