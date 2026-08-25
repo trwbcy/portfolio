@@ -8318,5 +8318,218 @@
     ],
     "summary": "Saat menyusun query untuk mengukur volume data masuk dan keluar per host, ditemukan dua pasang field byte yang mirip namanya tapi beda konteks: satu pasang untuk event koneksi mentah, satu pasang lagi untuk agregat di level story. Mengambil pasangan yang salah menghasilkan kolom kosong tanpa error apa pun, yang berbahaya karena terlihat seperti tidak ada trafik. Karena itu pemeriksaan field mana yang benar-benar terisi dijadikan langkah nol yang wajib sebelum hasilnya dipakai. Ditambah satu batasan yang sudah dibuktikan sebelumnya, bahwa agent endpoint melakukan sampling dan tidak mencatat setiap koneksi, jadi angka ini valid untuk peringkat relatif dan deteksi lonjakan tapi tidak untuk volume absolut di laporan.",
     "url": ""
+  },
+  {
+    "id": "soc-prevalence-bioc-triage-playbook-20260824",
+    "date": "2026-08-24",
+    "title": "Menyusun playbook triage untuk deteksi berbasis prevalensi",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "soc",
+      "edr",
+      "cortex-xdr",
+      "bioc",
+      "prevalence",
+      "detection-engineering",
+      "playbook",
+      "triage",
+      "code-signing"
+    ],
+    "concepts": [
+      "Deteksi berbasis prevalensi bekerja dengan logika yang berbeda dari deteksi berbasis signature: yang dinilai bukan isi berkasnya, melainkan seberapa jarang berkas itu terlihat",
+      "Baseline rolling 30 hari jadi acuan kelangkaan, sehingga apa pun yang baru muncul otomatis masuk kategori jarang terlihat",
+      "Status Authenticode dipakai sebagai pembeda awal antara binary bertanda tangan dan binary tanpa tanda tangan",
+      "Playbook disusun sebagai pohon keputusan, bukan daftar langkah linier, supaya jalur triage-nya bercabang sesuai kondisi",
+      "Cabang utama dipisahkan berdasarkan writability lokasi berkas, karena lokasi yang bisa ditulis pengguna punya implikasi berbeda dari lokasi yang tidak",
+      "Perilaku setelah eksekusi yang menentukan verdict, bukan atribut berkasnya saja"
+    ],
+    "terms": [
+      "BIOC (Behavioral Indicator of Compromise)",
+      "Authenticode",
+      "prevalence baseline",
+      "user-writable path",
+      "integrity level",
+      "CGO (Causality Group Owner)"
+    ],
+    "commands": [],
+    "problems": [
+      "Alert yang menyala murni karena kombinasi belum pernah terlihat dan tidak ditandatangani secara matematis pasti kena setiap aplikasi internal yang baru dideploy",
+      "Tantangannya membuat alur keputusan yang tetap memisahkan aplikasi internal sah dari binary yang menyamar, padahal profil alert keduanya identik"
+    ],
+    "summary": "Menyusun playbook triage untuk alert Cortex XDR Analytics BIOC bertipe rare unsigned process execution. Strukturnya pohon keputusan dua cabang: lokasi path menentukan cabang, perilaku setelah eksekusi menentukan verdict. Termasuk daftar data minimum yang harus lengkap sebelum menyimpulkan, empat pemeriksaan perilaku (modul yang dimuat, koneksi jaringan, child process, persistence baru), dan pemetaan hasil ke taksonomi verdict yang tersedia.",
+    "url": ""
+  },
+  {
+    "id": "soc-alert-queue-distribution-analysis-20260824",
+    "date": "2026-08-24",
+    "title": "Analisis sebaran antrian alert untuk menentukan prioritas dokumentasi",
+    "platform": "MPM SOC",
+    "category": "Threat Hunting",
+    "tags": [
+      "soc",
+      "threat-hunting",
+      "triage",
+      "detection",
+      "investigation",
+      "log-analysis",
+      "methodology"
+    ],
+    "concepts": [
+      "Analisis frekuensi terhadap antrian alert dipakai untuk melihat deteksi mana yang benar-benar mendominasi beban kerja",
+      "Clustering berdasarkan host dan akun menunjukkan apakah alert yang banyak itu benar-benar tersebar atau hanya pengulangan dari sumber yang sama",
+      "Prioritas penulisan dokumentasi ditentukan dari volume nyata di antrian, bukan dari kesan sesaat tentang mana yang penting",
+      "Membedakan alert berulang dari alert unik mengubah kesimpulan tentang berapa banyak pekerjaan yang sebenarnya ada di balik satu angka besar"
+    ],
+    "terms": [
+      "alert fatigue",
+      "detection tuning",
+      "incident export",
+      "clustering"
+    ],
+    "commands": [],
+    "problems": [
+      "Menentukan playbook mana yang paling layak ditulis duluan tanpa hanya mengandalkan perasaan",
+      "Perlu dasar kuantitatif yang diambil dari data antrian yang sebenarnya, bukan dari asumsi"
+    ],
+    "summary": "Menganalisis export incident dalam jumlah besar untuk melihat deteksi mana yang paling mendominasi antrian. Hasilnya menunjukkan satu jenis alert menyumbang porsi yang jauh lebih besar dari yang lain dan berulang hampir setiap hari dengan pola host dan akun yang konsisten. Temuan ini dipakai untuk menentukan urutan penulisan playbook berikutnya, dan menunjukkan bahwa satu percakapan dengan pemilik aplikasi bisa menyelesaikan dua register alert sekaligus.",
+    "url": ""
+  },
+  {
+    "id": "soc-playbook-to-presentation-deck-20260824",
+    "date": "2026-08-24",
+    "title": "Mengubah playbook triage jadi materi presentasi teknis",
+    "platform": "MPM SOC",
+    "category": "Learning / Research",
+    "tags": [
+      "soc",
+      "presentation",
+      "soc-presentation",
+      "documentation",
+      "playbook",
+      "methodology"
+    ],
+    "concepts": [
+      "Pohon keputusan versi lengkap disederhanakan supaya masih terbaca lewat proyektor, sementara versi lengkapnya tetap hidup di dokumen tertulis",
+      "Detail yang tidak muat di slide dipindahkan ke speaker notes, bukan dipaksa masuk ke badan slide",
+      "Script narasi disusun dengan estimasi durasi per slide supaya alur bicaranya bisa diuji sebelum tampil",
+      "Versi potong disiapkan lebih dulu untuk slot waktu yang lebih pendek, jadi pemangkasan tidak dilakukan mendadak saat presentasi",
+      "Daftar antisipasi pertanyaan beserta jawabannya disusun sebagai bagian dari materi, bukan diserahkan ke improvisasi"
+    ],
+    "terms": [
+      "speaker notes",
+      "decision tree visualization",
+      "presenter script"
+    ],
+    "commands": [],
+    "problems": [
+      "Diagram keputusan versi lengkap terlalu padat untuk dilihat sepuluh detik di layar",
+      "Perlu versi sederhana untuk slide tanpa kehilangan versi lengkapnya di dokumen tertulis"
+    ],
+    "summary": "Menyusun deck presentasi dan script narasi lengkap dari playbook yang sudah dibuat. Slide sengaja dibuat minim teks, detail dipindahkan ke speaker notes dan script. Termasuk estimasi durasi per slide, versi ringkas untuk slot waktu pendek, dan daftar antisipasi pertanyaan beserta jawabannya.",
+    "url": ""
+  },
+  {
+    "id": "soc-triage-workflow-sop-authoring-20260825",
+    "date": "2026-08-25",
+    "title": "Menulis SOP alur triage alert dari nol",
+    "platform": "MPM SOC",
+    "category": "Documentation",
+    "tags": [
+      "soc",
+      "documentation",
+      "workflow",
+      "triage",
+      "closure-note",
+      "detection-response",
+      "methodology"
+    ],
+    "concepts": [
+      "SOP, playbook, dan runbook dibedakan berdasarkan ada tidaknya percabangan keputusan di dalamnya, bukan berdasarkan panjang dokumennya",
+      "Dokumentasi menuliskan proses apa adanya, bukan proses ideal, supaya tetap cocok dengan kenyataan saat dipakai",
+      "Kriteria kelengkapan data ditetapkan lebih dulu sebagai syarat sebelum sebuah kesimpulan boleh diambil",
+      "Pemetaan verdict perlu disepakati ketika taksonomi yang tersedia tidak menyediakan opsi yang persis, supaya pencatatannya tetap konsisten antar kasus",
+      "Kewajiban pencatatan saat mengambil tindakan containment dituliskan eksplisit sebagai bagian dari alur, bukan sebagai kebiasaan tak tertulis"
+    ],
+    "terms": [
+      "SOP",
+      "triage workflow",
+      "verdict taxonomy",
+      "benign true positive",
+      "closure note"
+    ],
+    "commands": [],
+    "problems": [
+      "Taksonomi verdict yang tersedia tidak punya opsi untuk aktivitas yang benar-benar terjadi tapi sah",
+      "Perlu kesepakatan pemetaan yang konsisten supaya riwayat kasus tetap terbaca akurat oleh orang yang membacanya berbulan-bulan kemudian"
+    ],
+    "summary": "Menyusun SOP alur triage alert dari nol, mencakup ruang lingkup, peran, jalur masuk alert, urutan pengumpulan konteks sebelum menyimpulkan, kriteria penentuan verdict, dan kewajiban pencatatan saat mengambil tindakan containment. Prinsip yang dipakai: dokumentasi menuliskan proses yang benar-benar berjalan, bukan proses ideal.",
+    "url": ""
+  },
+  {
+    "id": "soc-operational-vs-reference-doc-split-20260825",
+    "date": "2026-08-25",
+    "title": "Memisahkan dokumen operasional dari dokumen rujukan",
+    "platform": "MPM SOC",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "methodology",
+      "workflow",
+      "best-practices",
+      "lesson-learned",
+      "soc"
+    ],
+    "concepts": [
+      "Dokumen yang dibaca sambil bekerja dan dokumen yang dibuka saat mentok adalah dua mode baca yang berbeda dan menuntut bentuk yang berbeda",
+      "Materi rujukan dipindahkan ke dokumen terpisah supaya dokumen operasional tetap ringan saat dipakai di tengah alur kerja",
+      "Di dokumen utama hanya ditinggalkan ringkasan pendek sebagai pemicu ingatan, bukan penjelasan penuh",
+      "Nilai isi tidak otomatis menentukan tempatnya: materi yang mahal justru bisa merusak dokumen kalau ditaruh di mode baca yang salah"
+    ],
+    "terms": [
+      "operational document",
+      "reference document",
+      "cognitive load"
+    ],
+    "commands": [],
+    "problems": [
+      "Materi rujukan yang isinya mahal cenderung ingin dimasukkan semua ke dokumen utama",
+      "Akibatnya dokumen jadi berat dan justru tidak dipakai saat dibutuhkan"
+    ],
+    "summary": "Merestrukturisasi dokumentasi setelah bagian rujukan teknis terasa terlalu berat dibaca di tengah alur kerja. Materi rujukan dipindahkan ke dokumen terpisah, dan di dokumen operasional hanya ditinggalkan daftar ringkas enam baris sebagai pemicu ingatan. Pelajarannya: dokumen yang dibaca sambil bekerja dan dokumen yang dibuka saat mentok itu dua jenis berbeda dan tidak boleh digabung.",
+    "url": ""
+  },
+  {
+    "id": "soc-technical-tone-calibration-peer-audience-20260825",
+    "date": "2026-08-25",
+    "title": "Kalibrasi nada materi teknis untuk audiens sebaya",
+    "platform": "MPM SOC",
+    "category": "Learning / Research",
+    "tags": [
+      "presentation",
+      "soc-presentation",
+      "documentation",
+      "methodology",
+      "lesson-learned",
+      "best-practices"
+    ],
+    "concepts": [
+      "Kalimat perintah dan kalimat pelaporan pengalaman memberi kesan yang sangat berbeda ke audiens sebaya, meskipun isinya sama persis",
+      "Kerendahan hati ditempatkan padat di satu bagian pembuka, tidak disebar ke seluruh materi, supaya sisanya tetap terdengar tegas",
+      "Kredibilitas dibangun lewat kekhususan detail, bukan lewat klaim tentang pengalaman",
+      "Glosarium istilah ditambahkan supaya singkatan teknis tidak jadi hambatan bagi audiens yang latar belakangnya campuran"
+    ],
+    "terms": [
+      "glossary",
+      "audience calibration",
+      "presenter script"
+    ],
+    "commands": [],
+    "problems": [
+      "Materi teknis yang ditulis dalam bentuk instruksi mudah terbaca menggurui",
+      "Tapi terlalu banyak kalimat merendah justru bikin isinya terdengar ragu, jadi perlu titik seimbang: sopan sekali di pembuka, tegas di sisa materi"
+    ],
+    "summary": "Merevisi deck dan script presentasi yang sudah jadi, fokus ke kalibrasi nada. Semua kalimat berbentuk instruksi diubah jadi pelaporan pengalaman, kerendahan hati dipadatkan ke satu bagian pembuka, dan satu slide glosarium ditambahkan supaya singkatan teknis tidak jadi hambatan. Pelajaran utamanya: yang menunjukkan kompetensi bukan klaim pengalaman, tapi kekhususan detail yang hanya bisa keluar dari orang yang benar-benar mengerjakannya.",
+    "url": ""
   }
 ]
