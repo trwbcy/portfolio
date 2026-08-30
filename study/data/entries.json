@@ -8531,5 +8531,644 @@
     ],
     "summary": "Merevisi deck dan script presentasi yang sudah jadi, fokus ke kalibrasi nada. Semua kalimat berbentuk instruksi diubah jadi pelaporan pengalaman, kerendahan hati dipadatkan ke satu bagian pembuka, dan satu slide glosarium ditambahkan supaya singkatan teknis tidak jadi hambatan. Pelajaran utamanya: yang menunjukkan kompetensi bukan klaim pengalaman, tapi kekhususan detail yang hanya bisa keluar dari orang yang benar-benar mengerjakannya.",
     "url": ""
+  },
+  {
+    "id": "edr-inprocess-shellcode-office-suite-fp-20260826",
+    "date": "2026-08-26",
+    "title": "Triase alert proteksi shellcode in-process pada office suite",
+    "platform": "Cortex XDR",
+    "category": "Malware Analysis",
+    "tags": [
+      "false-positive",
+      "cortex-xdr",
+      "edr",
+      "endpoint",
+      "detection",
+      "behavioral-analysis",
+      "process-injection",
+      "malware-triage",
+      "triage",
+      "soc"
+    ],
+    "concepts": [
+      "Memori JIT pada aplikasi produktivitas bisa memicu modul deteksi shellcode tanpa ada aktivitas jahat di baliknya",
+      "Pembuktian negatif dilakukan lewat module provenance: seluruh modul yang dimuat ditelusuri asalnya dan semuanya berujung ke direktori instalasi aplikasi atau direktori sistem",
+      "Child process internal aplikasi dipetakan, lalu aktivitas file, registry, dan jaringan diperiksa pada rentang waktu alert",
+      "Aktivitas file yang ditemukan hanya berupa pembaruan addon, tanpa persistence, akses kredensial, maupun pergerakan lateral",
+      "Alert berbasis perilaku memori menuntut pembuktian negatif yang eksplisit, bukan sekadar ketiadaan indikator"
+    ],
+    "terms": [
+      "in-process shellcode protection",
+      "JIT memory",
+      "module provenance",
+      "child process",
+      "persistence",
+      "credential access",
+      "lateral movement",
+      "false positive"
+    ],
+    "commands": [],
+    "problems": [
+      "Alert dipicu saat aplikasi office membuka spreadsheet, sehingga perilaku wajar aplikasi harus dibedakan dari injeksi memori",
+      "Ketiadaan indikator saja tidak cukup untuk menutup alert berbasis perilaku memori"
+    ],
+    "summary": "Menganalisis alert proteksi shellcode in-process yang dipicu sebuah office suite saat membuka spreadsheet. Verifikasi dilakukan dengan menelusuri asal seluruh modul yang dimuat, memetakan child process internal aplikasi, dan memeriksa aktivitas file, registry, serta jaringan pada rentang waktu alert. Seluruh modul dapat ditelusuri ke direktori instalasi aplikasi atau direktori sistem, aktivitas file hanya berupa pembaruan addon, dan tidak ditemukan persistence, akses kredensial, maupun pergerakan lateral. Verdict akhir false positive. Pelajaran utamanya adalah alert berbasis perilaku memori menuntut pembuktian negatif yang eksplisit, bukan sekadar ketiadaan indikator.",
+    "url": ""
+  },
+  {
+    "id": "soc-playbook-closure-note-scope-discipline-20260826",
+    "date": "2026-08-26",
+    "title": "Menyusun playbook SOC dan memisahkan temuan sampingan dari verdict utama",
+    "platform": "Self-study",
+    "category": "Documentation",
+    "tags": [
+      "playbook",
+      "documentation",
+      "closure-note",
+      "reporting",
+      "methodology",
+      "soc",
+      "workflow"
+    ],
+    "concepts": [
+      "Disiplin scope dalam catatan penutupan kasus: temuan sampingan yang tidak berhubungan dengan verdict sengaja dikeluarkan supaya dasar penutupan tidak salah dibaca",
+      "Satu investigasi ditulis untuk dua audiens sekaligus, yaitu versi teknis dan versi bahasa awam satu baris",
+      "Temuan sampingan tetap dilaporkan, tapi lewat jalur terpisah dari catatan penutupan",
+      "Bagian playbook yang masih menggantung ditandai eksplisit supaya tidak diperlakukan sebagai selesai"
+    ],
+    "terms": [
+      "closure note",
+      "playbook",
+      "scope discipline",
+      "layman summary",
+      "side finding"
+    ],
+    "commands": [],
+    "problems": [
+      "Memutuskan apa yang tidak boleh masuk ke catatan penutupan supaya pembaca tidak salah menafsirkan dasar verdict",
+      "Menandai bagian playbook yang belum selesai supaya tidak terbaca sebagai final"
+    ],
+    "summary": "Melanjutkan penyusunan playbook SOC sambil mempraktikkan penulisan catatan penutupan kasus dalam dua tingkat bahasa, yaitu versi teknis dan versi bahasa awam satu baris. Latihan utamanya adalah memutuskan apa yang tidak boleh masuk ke catatan penutupan. Temuan sampingan yang tidak berhubungan dengan verdict sengaja dikeluarkan agar pembaca tidak salah menafsirkan dasar penutupan, dan dijadwalkan untuk dilaporkan terpisah. Selain itu, mendokumentasikan cara menandai bagian playbook yang masih menggantung supaya tidak diperlakukan sebagai selesai.",
+    "url": ""
+  },
+  {
+    "id": "sandbox-verdict-electron-update-noise-20260827",
+    "date": "2026-08-27",
+    "title": "Membaca laporan sandbox untuk memisahkan noise dari perilaku sebenarnya",
+    "platform": "Palo Alto WildFire",
+    "category": "Malware Analysis",
+    "tags": [
+      "sandbox",
+      "wildfire",
+      "false-positive",
+      "malware-triage",
+      "code-signing",
+      "verdict-calibration",
+      "static-analysis",
+      "soc"
+    ],
+    "concepts": [
+      "Verdict sandbox diperlakukan sebagai hipotesis yang perlu diuji ke timeline event, bukan sebagai kesimpulan",
+      "Verifikasi tanda tangan gagal karena ukuran berkas melewati batas, sehingga trust anchor gugur",
+      "Prevalensi nol tidak otomatis berarti jahat ketika build-nya baru berumur beberapa jam",
+      "Pola perilaku umum aplikasi Electron seperti trafik QUIC yang terbaca sebagai UDP tak dikenal dan eksekusi dari direktori profil pengguna menyerupai indikator jahat",
+      "Perbedaan verdict antar mesin virtual dalam satu laporan adalah sinyal kuat noise",
+      "Daftar perilaku pada ringkasan verdict harus selalu dicocokkan ke timeline event"
+    ],
+    "terms": [
+      "sandbox verdict",
+      "code signing",
+      "trust anchor",
+      "prevalence",
+      "Electron",
+      "QUIC",
+      "user profile directory",
+      "event timeline"
+    ],
+    "commands": [],
+    "problems": [
+      "Paket pembaruan mendapat verdict malware tapi belum punya rekam jejak di layanan reputasi publik",
+      "Perilaku berat pada ringkasan verdict tidak punya satu pun artefak pendukung di timeline event",
+      "Verdict antar mesin virtual sandbox saling bertentangan dalam satu laporan yang sama"
+    ],
+    "summary": "Menganalisis laporan sandbox atas paket pembaruan aplikasi desktop berbasis Electron yang mendapat verdict malware namun belum punya rekam jejak di layanan reputasi publik. Faktor yang mendorong verdict ternyata bersifat struktural, yaitu verifikasi tanda tangan yang gagal karena ukuran berkas melewati batas sehingga trust anchor gugur, prevalensi nol karena build baru berumur beberapa jam, dan pola perilaku umum aplikasi Electron seperti trafik QUIC yang terbaca sebagai UDP tak dikenal serta eksekusi dari direktori profil pengguna. Perilaku berat yang tercantum pada verdict tidak punya satu pun artefak pendukung di timeline event sandbox, dan verdict antar mesin virtual sandbox saling bertentangan. Pelajaran kunci: perbedaan verdict antar VM dalam satu laporan adalah sinyal kuat noise, dan daftar perilaku pada ringkasan verdict harus selalu dicocokkan ke timeline event.",
+    "url": ""
+  },
+  {
+    "id": "soc-finding-communication-three-audiences-20260827",
+    "date": "2026-08-27",
+    "title": "Menyesuaikan register komunikasi temuan untuk tiga audiens berbeda",
+    "platform": "Self-study",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "reporting",
+      "workflow",
+      "methodology",
+      "verdict-calibration",
+      "soc",
+      "analyst"
+    ],
+    "concepts": [
+      "Satu hasil analisis diubah jadi tiga bentuk penyampaian, yaitu analisis teknis lengkap, penjelasan bahasa awam, dan versi eskalasi tingkat menengah",
+      "Versi eskalasi menyajikan bukti dan tingkat keyakinan tanpa menyatakan verdict final",
+      "Penutup versi eskalasi berupa satu pertanyaan biner supaya penerima dapat memutuskan cepat",
+      "Menahan verdict bukan tanda ragu, melainkan cara menjaga alur keputusan tetap berada di tempat yang benar"
+    ],
+    "terms": [
+      "escalation",
+      "confidence level",
+      "binary question",
+      "layman summary",
+      "register"
+    ],
+    "commands": [],
+    "problems": [
+      "Menyampaikan tingkat keyakinan tanpa merampas kewenangan verdict pihak yang lebih senior",
+      "Register bahasa yang sama tidak cocok dipakai untuk tiga audiens yang berbeda"
+    ],
+    "summary": "Mengubah satu hasil analisis menjadi tiga bentuk penyampaian, yaitu analisis teknis lengkap, penjelasan bahasa awam, dan versi eskalasi tingkat menengah. Fokus latihannya ada pada versi eskalasi: menyajikan bukti dan tingkat keyakinan tanpa menyatakan verdict final, lalu menutup dengan satu pertanyaan biner agar penerima dapat memutuskan cepat. Pelajarannya adalah bahwa menahan verdict bukan tanda ragu, melainkan cara menjaga alur keputusan tetap berada di tempat yang benar.",
+    "url": ""
+  },
+  {
+    "id": "dirtbags-flags-recon-osint-chain-20260828",
+    "date": "2026-08-28",
+    "title": "Dirtbags and Flags CTF 2026: kategori Reconnaissance",
+    "platform": "SkillBit",
+    "category": "Reconnaissance",
+    "tags": [
+      "ctf",
+      "osint",
+      "recon",
+      "reconnaissance",
+      "dns",
+      "cve",
+      "intelligence-gathering",
+      "database-dump"
+    ],
+    "concepts": [
+      "Rantai atribusi OSINT dari artefak visual ke entitas nyata",
+      "Resolusi DNS terhadap domain penyelenggara sebagai titik awal penelusuran",
+      "Penelusuran rantai CVE untuk sampai ke individu yang tepat",
+      "Identifikasi merek dan lokasi alat berat dari foto lokasi konstruksi",
+      "Pemulihan dump basis data yang sudah hilang lewat arsip web, lalu penelusuran baris tertentu di dalamnya",
+      "Soal OSINT jarang selesai dengan satu query, dan sebagian besar waktu habis untuk memutuskan artefak mana yang layak dijadikan pivot berikutnya"
+    ],
+    "terms": [
+      "OSINT",
+      "DNS resolution",
+      "CVE",
+      "web archive",
+      "database dump",
+      "pivot"
+    ],
+    "commands": [],
+    "problems": [
+      "Menentukan artefak mana yang layak dijadikan pivot berikutnya",
+      "Konten yang sudah dihapus harus dipulihkan lewat arsip web sebelum bisa ditelusuri"
+    ],
+    "summary": "Mengerjakan rangkaian soal Reconnaissance pada kompetisi Dirtbags and Flags 2026 yang diikuti secara individu. Teknik yang dipakai mencakup resolusi DNS terhadap domain penyelenggara, penelusuran rantai CVE menuju individu yang tepat, identifikasi merek dan lokasi alat berat dari foto lokasi konstruksi, serta pemulihan dump basis data yang sudah hilang melalui arsip web dan penelusuran baris tertentu di dalamnya. Pelajarannya adalah soal OSINT jarang selesai dengan satu query, dan sebagian besar waktu justru habis untuk memutuskan artefak mana yang layak dijadikan pivot berikutnya.",
+    "url": ""
+  },
+  {
+    "id": "dirtbags-flags-crypto-classical-to-lattice-20260828",
+    "date": "2026-08-28",
+    "title": "Dirtbags and Flags CTF 2026: kriptografi klasik sampai serangan lattice",
+    "platform": "SkillBit",
+    "category": "Cryptography",
+    "tags": [
+      "ctf",
+      "cryptanalysis",
+      "caesar-cipher",
+      "vigenere",
+      "aes",
+      "known-plaintext-attack",
+      "magic-bytes"
+    ],
+    "concepts": [
+      "Sandi klasik tiga lapis berupa Caesar, Vigenere, dan transposisi kolom dipecahkan lapis demi lapis",
+      "Known plaintext attack pada AES mode CTR yang memakai nonce berulang, memanfaatkan header PNG yang nilainya sudah pasti",
+      "Pemulihan kunci privat ECDSA dari bias nonce lewat pendekatan Hidden Number Problem dengan reduksi lattice",
+      "Kunci hasil pemulihan dipakai untuk mendekripsi vault",
+      "Struktur berkas yang deterministik seperti magic header adalah sumber known plaintext yang paling sering terlewat"
+    ],
+    "terms": [
+      "Caesar cipher",
+      "Vigenere",
+      "columnar transposition",
+      "AES-CTR",
+      "nonce reuse",
+      "known plaintext attack",
+      "PNG header",
+      "ECDSA",
+      "Hidden Number Problem",
+      "LLL reduction"
+    ],
+    "commands": [],
+    "problems": [
+      "Nonce AES-CTR yang berulang baru bisa dieksploitasi setelah ditemukan plaintext yang nilainya pasti",
+      "Bias nonce ECDSA harus diubah dulu jadi bentuk yang bisa diselesaikan dengan reduksi lattice"
+    ],
+    "summary": "Menyelesaikan tiga soal kriptografi dengan tingkat kesulitan bertingkat. Pertama, sandi klasik tiga lapis berupa Caesar, Vigenere, dan transposisi kolom yang dipecahkan lapis demi lapis. Kedua, enkripsi AES mode CTR yang memakai nonce berulang, dipecahkan dengan known plaintext attack memanfaatkan header PNG yang nilainya sudah pasti. Ketiga, pemulihan kunci privat ECDSA dari bias nonce menggunakan pendekatan Hidden Number Problem dengan reduksi lattice, lalu memakai kunci hasil pemulihan untuk mendekripsi vault. Pelajarannya adalah struktur berkas yang deterministik seperti magic header adalah sumber known plaintext yang paling sering terlewat.",
+    "url": ""
+  },
+  {
+    "id": "dirtbags-flags-binary-exploitation-20260828",
+    "date": "2026-08-28",
+    "title": "Dirtbags and Flags CTF 2026: binary exploitation",
+    "platform": "SkillBit",
+    "category": "Offensive Security",
+    "tags": [
+      "ctf",
+      "exploit-dev",
+      "buffer-overflow",
+      "rop",
+      "ssl",
+      "linux"
+    ],
+    "concepts": [
+      "Overwrite entri GOT lewat format string pada argumen printf yang dikendalikan pengguna",
+      "Kebocoran stack canary melalui pembacaan di luar batas sebagai prasyarat rantai ROP tiga tahap",
+      "Dua variasi ret2win melalui fungsi input yang tidak membatasi panjang",
+      "Target pwn jarak jauh yang membalas status HTTP 400 kemungkinan besar berada di belakang reverse proxy yang melakukan terminasi TLS, sehingga koneksi harus dibungkus TLS alih alih memakai netcat polos"
+    ],
+    "terms": [
+      "format string",
+      "GOT overwrite",
+      "stack canary",
+      "out of bounds read",
+      "ROP chain",
+      "ret2win",
+      "TLS termination",
+      "reverse proxy"
+    ],
+    "commands": [],
+    "problems": [
+      "Stack canary harus bocor lebih dulu sebelum rantai ROP bisa disusun",
+      "Koneksi ke target jarak jauh dibalas status HTTP 400 karena ada terminasi TLS di depan port soal"
+    ],
+    "summary": "Menyelesaikan empat soal binary exploitation. Rangkaiannya mencakup overwrite entri GOT melalui format string pada argumen printf yang dikendalikan pengguna, kebocoran stack canary lewat pembacaan di luar batas yang dilanjutkan rantai ROP tiga tahap, dan dua variasi ret2win melalui fungsi input yang tidak membatasi panjang. Satu pelajaran operasional yang tersimpan: ketika target pwn jarak jauh membalas dengan status HTTP 400, penyebabnya kemungkinan besar reverse proxy yang melakukan terminasi TLS di depan port soal, sehingga koneksi harus dibungkus TLS alih alih memakai netcat polos.",
+    "url": ""
+  },
+  {
+    "id": "dirtbags-flags-reverse-engineering-anti-debug-20260828",
+    "date": "2026-08-28",
+    "title": "Dirtbags and Flags CTF 2026: reverse engineering dan anti-debug",
+    "platform": "SkillBit",
+    "category": "Reverse Engineering",
+    "tags": [
+      "ctf",
+      "reverse-engineering",
+      "static-analysis",
+      "xor",
+      "strings",
+      "hex-analysis"
+    ],
+    "concepts": [
+      "Shellcode yang mendekripsi dirinya sendiri dengan kunci XOR statis melalui alokasi memori dan perubahan proteksi halaman",
+      "Keygen dua lapis yang konstantanya tertanam sebagai immediate di instruksi alih alih berada di rodata, sehingga tidak terlihat oleh ekstraksi string",
+      "Varian fungsi hash djb2 yang memakai XOR alih alih penjumlahan",
+      "Sistem kode berisi tujuh belas batasan yang diselesaikan secara aljabar lalu diverifikasi ulang",
+      "Empat fungsi pemeriksa anti-debug ternyata mengembalikan konstanta magic yang menjadi empat byte pertama kunci XOR, sehingga mem-patch pemeriksaan justru merusak hasil akhir alih alih melewatinya"
+    ],
+    "terms": [
+      "shellcode",
+      "XOR key",
+      "page protection",
+      "keygen",
+      "immediate operand",
+      "rodata",
+      "djb2",
+      "anti-debug",
+      "magic constant"
+    ],
+    "commands": [],
+    "problems": [
+      "Konstanta kunci tidak muncul pada ekstraksi string karena tertanam sebagai immediate di instruksi",
+      "Mem-patch pemeriksaan anti-debug justru merusak hasil akhir karena nilai kembaliannya dipakai sebagai material kunci"
+    ],
+    "summary": "Menyelesaikan beberapa soal reverse engineering dengan pola yang berbeda beda. Cakupannya meliputi shellcode yang mendekripsi dirinya sendiri dengan kunci XOR statis melalui alokasi memori dan perubahan proteksi halaman, keygen dua lapis yang konstantanya tertanam sebagai immediate di instruksi alih alih berada di rodata sehingga tidak terlihat oleh ekstraksi string, varian fungsi hash djb2 yang memakai XOR alih alih penjumlahan, serta sistem kode berisi tujuh belas batasan yang diselesaikan secara aljabar lalu diverifikasi ulang. Temuan paling berharga ada pada soal anti-debug: empat fungsi pemeriksa ternyata mengembalikan konstanta magic yang menjadi empat byte pertama kunci XOR, sehingga mem-patch pemeriksaan justru merusak hasil akhir alih alih melewatinya.",
+    "url": ""
+  },
+  {
+    "id": "dirtbags-flags-web-cloud-ssrf-imds-20260828",
+    "date": "2026-08-28",
+    "title": "Dirtbags and Flags CTF 2026: web exploitation dan cloud",
+    "platform": "SkillBit",
+    "category": "Web Exploitation",
+    "tags": [
+      "ctf",
+      "web-exploitation",
+      "ssrf",
+      "sql-injection",
+      "union-based-sqli",
+      "broken-access-control",
+      "rce",
+      "filter-bypass",
+      "file-upload"
+    ],
+    "concepts": [
+      "Autentikasi sisi klien yang membocorkan kredensial pada respons",
+      "Mass assignment lewat field POST yang tidak difilter untuk menaikkan hak akses",
+      "SQL injection berbasis UNION melalui parameter dropdown",
+      "Path traversal pada unggahan berkas dikombinasikan dengan reloader mode debug untuk mencapai eksekusi kode",
+      "Injeksi bytecode pada interpreter dengan objek kode yang dikendalikan langsung, sehingga integer harus dibangun dari nilai boolean lalu dirantai menjadi eksekusi penuh",
+      "SSRF menuju layanan metadata instans yang versi satunya masih aktif: blocklist yang hanya mencocokkan bentuk string alamat IP dilewati dengan notasi desimal, kredensial peran diambil dari endpoint metadata, lalu dipakai membaca objek pada object storage"
+    ],
+    "terms": [
+      "client side authentication",
+      "mass assignment",
+      "UNION based SQL injection",
+      "path traversal",
+      "debug reloader",
+      "bytecode injection",
+      "SSRF",
+      "instance metadata service",
+      "object storage",
+      "decimal IP notation"
+    ],
+    "commands": [],
+    "problems": [
+      "Blocklist SSRF hanya mencocokkan bentuk string alamat IP, sehingga harus dilewati dengan representasi alamat yang berbeda",
+      "Objek kode dikendalikan langsung tapi tanpa konstanta integer, sehingga angka harus dibangun dari nilai boolean"
+    ],
+    "summary": "Menyelesaikan rangkaian soal web dan cloud. Teknik yang dipakai mencakup autentikasi sisi klien yang membocorkan kredensial pada respons, mass assignment lewat field POST yang tidak difilter untuk menaikkan hak akses, SQL injection berbasis UNION melalui parameter dropdown, path traversal pada unggahan berkas yang dikombinasikan dengan reloader mode debug untuk mencapai eksekusi kode, dan injeksi bytecode pada interpreter di mana objek kode dikendalikan langsung sehingga integer harus dibangun dari nilai boolean lalu dirantai menjadi eksekusi penuh. Rantai paling instruktif adalah SSRF pada aplikasi cloud dengan layanan metadata versi satu masih aktif, di mana blocklist yang hanya mencocokkan bentuk string alamat IP dilewati dengan notasi desimal, kredensial peran diambil dari endpoint metadata, lalu dipakai membaca objek pada object storage.",
+    "url": ""
+  },
+  {
+    "id": "dirtbags-flags-prompt-injection-artifacts-20260828",
+    "date": "2026-08-28",
+    "title": "Mengenali prompt injection di dalam artefak soal",
+    "platform": "SkillBit",
+    "category": "Lesson Learned / Methodology",
+    "tags": [
+      "ctf",
+      "prompt-injection",
+      "ai-security",
+      "llm-security",
+      "methodology",
+      "evidence-discipline"
+    ],
+    "concepts": [
+      "Isi berkas diperlakukan sebagai data, bukan instruksi, meski berkas itu berisi kalimat perintah",
+      "Flag palsu ditanam di sebuah log debug yang secara eksplisit menyasar agen AI",
+      "Flag umpan ditanam di dalam blok signature",
+      "Pola yang sama muncul pada berkas yang dianalisis saat investigasi nyata, misalnya konten dokumen atau log yang berisi kalimat perintah",
+      "Batas antara data dan instruksi harus ditegakkan oleh alur kerja analis, bukan diasumsikan ada"
+    ],
+    "terms": [
+      "prompt injection",
+      "decoy flag",
+      "data vs instruction",
+      "adversarial input",
+      "debug log",
+      "signature block"
+    ],
+    "commands": [],
+    "problems": [
+      "Artefak soal berisi kalimat perintah yang menyasar agen AI, sehingga batas data dan instruksi harus dijaga secara sadar"
+    ],
+    "summary": "Menemukan dua upaya prompt injection yang ditanam di dalam artefak soal, yaitu flag palsu di sebuah log debug yang secara eksplisit menyasar agen AI, dan flag umpan di dalam blok signature. Keduanya diperlakukan sebagai data dan tidak dieksekusi sebagai instruksi. Ini relevan langsung ke pekerjaan defensif karena pola yang sama muncul pada berkas yang dianalisis saat investigasi nyata, misalnya konten dokumen atau log yang berisi kalimat perintah. Pelajarannya adalah batas antara data dan instruksi harus ditegakkan oleh alur kerja analis, bukan diasumsikan ada.",
+    "url": ""
+  },
+  {
+    "id": "dirtbags-flags-layered-image-steganography-20260829",
+    "date": "2026-08-29",
+    "title": "Dirtbags and Flags CTF 2026: steganografi berlapis pada citra",
+    "platform": "SkillBit",
+    "category": "Steganography",
+    "tags": [
+      "ctf",
+      "steganography",
+      "forensics",
+      "steghide",
+      "lsb",
+      "audio-spectrogram",
+      "file-carving",
+      "xor"
+    ],
+    "concepts": [
+      "Metadata EXIF dipakai sebagai sumber passphrase untuk lapisan berikutnya pada citra yang sama",
+      "Setiap kanal warna diperlakukan sebagai kontainer data independen",
+      "Rantai empat lapis: arsip yang ditempelkan di belakang berkas PNG, berkas audio pada bit paling tidak signifikan kanal biru, spektogram audio yang menampilkan teks untuk dipakai sebagai kunci XOR, dan ciphertext berukuran kecil pada bit paling tidak signifikan kanal merah",
+      "Setiap ruang setelah penanda akhir berkas juga diperlakukan sebagai kontainer terpisah"
+    ],
+    "terms": [
+      "EXIF metadata",
+      "passphrase",
+      "steghide",
+      "LSB",
+      "blue channel",
+      "red channel",
+      "spectrogram",
+      "XOR key",
+      "appended archive",
+      "end of file marker"
+    ],
+    "commands": [
+      "steghide"
+    ],
+    "problems": [
+      "Passphrase lapisan berikutnya tidak diberikan dan harus diambil dari field metadata berkas yang sama",
+      "Payload tersebar di kanal warna yang berbeda dan di ruang setelah penanda akhir berkas"
+    ],
+    "summary": "Menyelesaikan dua soal steganografi dengan tingkat kedalaman berbeda. Yang pertama merupakan rantai dua tahap: metadata EXIF menyimpan kredensial, dan salah satu field metadata dipakai sebagai passphrase untuk mengekstrak payload tersembunyi dari citra yang sama. Yang kedua jauh lebih dalam, terdiri dari empat lapis, yaitu arsip yang ditempelkan di belakang berkas PNG, berkas audio yang disembunyikan pada bit paling tidak signifikan kanal biru, spektogram audio tersebut yang menampilkan teks untuk dipakai sebagai kunci XOR, dan ciphertext berukuran kecil pada bit paling tidak signifikan kanal merah. Pelajarannya adalah setiap kanal warna dan setiap ruang setelah penanda akhir berkas harus diperlakukan sebagai kontainer terpisah.",
+    "url": ""
+  },
+  {
+    "id": "dirtbags-flags-ntlm-dictionary-attack-limits-20260829",
+    "date": "2026-08-29",
+    "title": "Batas praktis serangan kamus terhadap hash NTLM",
+    "platform": "SkillBit",
+    "category": "CTF Methodology",
+    "tags": [
+      "ctf",
+      "password-cracking",
+      "offline-crack",
+      "wordlist-generation",
+      "password-mutation",
+      "dead-end-validation",
+      "methodology"
+    ],
+    "concepts": [
+      "Dua hash pertama jatuh pada varian kata sandi default yang sangat umum",
+      "Dua hash sisanya bertahan melewati wordlist umum, serangan kombinator, serangan mask, dan wordlist bertema soal",
+      "Keputusan yang diambil adalah meninggalkan soal alih alih menambah kandidat",
+      "Pada kompetisi berbatas waktu, ruang pencarian yang terus melebar tanpa sinyal keberhasilan adalah tanda jalur yang salah, bukan tanda kurang usaha"
+    ],
+    "terms": [
+      "NTLM hash",
+      "dictionary attack",
+      "combinator attack",
+      "mask attack",
+      "themed wordlist",
+      "opportunity cost",
+      "negative result"
+    ],
+    "commands": [
+      "hashcat"
+    ],
+    "problems": [
+      "Sebagian hash tidak jatuh meski kandidat terus ditambah, sehingga perlu titik berhenti yang disengaja",
+      "Menentukan kapan sebuah jalur layak ditinggalkan dalam kompetisi berbatas waktu"
+    ],
+    "summary": "Mengerjakan soal cracking hash NTLM dan hanya berhasil memulihkan sebagian. Dua hash pertama jatuh pada varian kata sandi default yang sangat umum, sementara dua sisanya bertahan melewati lebih dari seratus juta kandidat dari wordlist umum, serangan kombinator, serangan mask, dan wordlist bertema soal. Keputusan yang diambil adalah meninggalkan soal ini alih alih menambah kandidat. Nilai entri ini terletak pada hasil negatifnya: pada kompetisi berbatas waktu, ruang pencarian yang terus melebar tanpa sinyal keberhasilan adalah tanda jalur yang salah, bukan tanda kurang usaha.",
+    "url": ""
+  },
+  {
+    "id": "dirtbags-flags-osint-incident-history-physical-security-20260829",
+    "date": "2026-08-29",
+    "title": "Dirtbags and Flags CTF 2026: OSINT sejarah insiden dan keamanan fisik",
+    "platform": "SkillBit",
+    "category": "Reconnaissance",
+    "tags": [
+      "ctf",
+      "osint",
+      "recon",
+      "cve",
+      "intelligence-gathering",
+      "threat-intelligence",
+      "research"
+    ],
+    "concepts": [
+      "Literasi sejarah insiden sebagai bagian dari kemampuan investigasi",
+      "Identifikasi target pelanggaran data oleh sebuah kelompok hacktivist pada 2024",
+      "Insiden penyusupan sinyal siaran televisi tahun 1987",
+      "Identifikasi merek kamera pengawas beserta rantai CVE yang menyertainya",
+      "Identifikasi peralatan bypass keamanan fisik beserta operator yang mempopulerkannya melalui podcast dan liputan media",
+      "Sebagian besar soal semacam ini menguji seberapa luas rujukan yang sudah dibaca, bukan seberapa cepat mencari"
+    ],
+    "terms": [
+      "hacktivism",
+      "data breach",
+      "broadcast signal intrusion",
+      "surveillance camera",
+      "CVE chain",
+      "physical security bypass"
+    ],
+    "commands": [],
+    "problems": [
+      "Sebagian soal tidak bisa diselesaikan dengan pencarian langsung dan menuntut literasi sejarah insiden lintas domain"
+    ],
+    "summary": "Menyelesaikan sekelompok soal OSINT yang menuntut literasi sejarah dan lintas domain, mencakup identifikasi target pelanggaran data oleh sebuah kelompok hacktivist pada 2024, insiden penyusupan sinyal siaran televisi tahun 1987, identifikasi merek kamera pengawas beserta rantai CVE yang menyertainya, dan identifikasi peralatan bypass keamanan fisik beserta operator yang mempopulerkannya melalui podcast dan liputan media. Pelajarannya adalah sebagian besar soal semacam ini sebenarnya menguji seberapa luas rujukan yang sudah dibaca, bukan seberapa cepat mencari.",
+    "url": ""
+  },
+  {
+    "id": "edr-ioc-traffic-direction-rdap-ownership-20260830",
+    "date": "2026-08-30",
+    "title": "Menentukan arah trafik dan kepemilikan IP eksternal pada alert IOC",
+    "platform": "Cortex XDR",
+    "category": "Threat Hunting",
+    "tags": [
+      "ioc",
+      "cortex-xdr",
+      "xql",
+      "threat-intel",
+      "network-forensics",
+      "investigation",
+      "triage",
+      "soc"
+    ],
+    "concepts": [
+      "Struktur field alert dipakai sebagai penentu arah trafik: konteks host tujuan terisi pada field berprefiks tujuan sementara field hostname agen kosong, yang menandakan arah masuk",
+      "Pertanyaan arah trafik didahulukan sebelum pertanyaan lain pada alert berbasis IOC alamat IP",
+      "RDAP ke registry regional dipakai sebagai sumber otoritatif kepemilikan blok IP, dan alamat sumber terkonfirmasi milik penyedia VPS komersial, bukan aset internal",
+      "Dataset korelasi sisi server tidak membawa field proses dan hitungan byte, sehingga telemetri proses harus diambil dari dataset terpisah",
+      "Nama kolom sebaiknya ditemukan dengan menjalankan kueri tanpa tahap seleksi field lebih dulu, alih alih diasumsikan dari dokumentasi"
+    ],
+    "terms": [
+      "IOC",
+      "traffic direction",
+      "RDAP",
+      "regional registry",
+      "VPS provider",
+      "XQL dataset",
+      "field selection"
+    ],
+    "commands": [
+      "XQL query",
+      "RDAP lookup"
+    ],
+    "problems": [
+      "Alert severity kritis tidak langsung menunjukkan apakah trafiknya masuk atau keluar",
+      "Field proses dan hitungan byte tidak tersedia di dataset korelasi, sehingga telemetri proses harus dicari di dataset lain",
+      "Nama kolom yang diasumsikan dari dokumentasi tidak selalu cocok dengan yang tersedia"
+    ],
+    "summary": "Menginvestigasi alert severity kritis yang dipicu sebuah IOC alamat IP dan mendahulukan satu pertanyaan sebelum yang lain, yaitu apakah trafiknya masuk atau keluar. Sinyal penentunya ada pada struktur record alert: konteks host tujuan terisi pada field berprefiks tujuan sementara field hostname agen kosong, yang menandakan arah masuk. Kepemilikan alamat sumber diverifikasi lewat kueri RDAP ke registry regional dan terkonfirmasi milik penyedia VPS komersial, bukan aset internal. Pelajaran alat yang tersimpan: dataset korelasi sisi server tidak membawa field proses dan hitungan byte, sehingga telemetri proses harus diambil dari dataset terpisah, dan nama kolom sebaiknya ditemukan dengan menjalankan kueri tanpa tahap seleksi field lebih dulu alih alih mengasumsikannya dari dokumentasi.",
+    "url": ""
+  },
+  {
+    "id": "edr-post-exploitation-falsification-process-telemetry-20260830",
+    "date": "2026-08-30",
+    "title": "Falsifikasi kompromi lewat telemetri proses berskala besar",
+    "platform": "Cortex XDR",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "post-exploitation",
+      "process-tree",
+      "hypothesis-falsification",
+      "incident-response",
+      "closure-note",
+      "cortex-xdr",
+      "investigation"
+    ],
+    "concepts": [
+      "Ketiadaan dampak dibuktikan dengan menguji pola pasca-eksploitasi secara sistematis, bukan dengan ketiadaan alert",
+      "Delapan kategori pola pasca-eksploitasi diuji terhadap dataset proses berukuran besar pada host tujuan",
+      "Layanan reverse proxy yang menjadi sasaran diverifikasi tidak melahirkan satu pun child process",
+      "Seluruh kategori kembali kosong, sehingga kasus ditutup dengan verdict true positive tanpa dampak",
+      "Hipotesis arah trafik tidak boleh dikunci sebelum data pendukungnya masuk"
+    ],
+    "terms": [
+      "post-exploitation pattern",
+      "process telemetry",
+      "child process",
+      "reverse proxy",
+      "true positive no impact",
+      "hypothesis falsification"
+    ],
+    "commands": [],
+    "problems": [
+      "Hipotesis awal sempat condong ke arah trafik keluar dan baru dibatalkan setelah data proses tersedia",
+      "Menutup kasus butuh bukti eksplisit ketiadaan dampak, bukan sekadar tidak adanya alert lanjutan"
+    ],
+    "summary": "Setelah arah trafik dipastikan masuk dan tidak ada eksploitasi yang berhasil terlihat di permukaan, dilakukan pengujian sistematis terhadap telemetri proses pada host tujuan. Metodenya adalah menguji delapan kategori pola pasca-eksploitasi terhadap dataset proses berukuran besar, dan memverifikasi bahwa layanan reverse proxy yang menjadi sasaran tidak melahirkan satu pun child process. Seluruh kategori kembali kosong, sehingga kasus ditutup dengan verdict true positive tanpa dampak. Catatan koreksi diri yang layak disimpan: hipotesis awal sempat condong ke arah trafik keluar dan baru dibatalkan setelah data proses tersedia. Pelajarannya adalah hipotesis arah trafik tidak boleh dikunci sebelum data pendukungnya masuk.",
+    "url": ""
+  },
+  {
+    "id": "soc-investigation-to-runbook-entry-20260830",
+    "date": "2026-08-30",
+    "title": "Mengonversi investigasi selesai menjadi entri runbook",
+    "platform": "Notion",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "notion",
+      "playbook",
+      "workflow",
+      "methodology",
+      "soc"
+    ],
+    "concepts": [
+      "Metode ditangkap selagi masih segar, yaitu langsung setelah investigasi ditutup",
+      "Runbook berisi keputusan yang berulang, bukan catatan kasus",
+      "Isi entri berupa langkah keputusan, tabel referensi field, dan diagram alur",
+      "Metadata berupa alat, kategori, tingkat kesulitan, status, dan tanggal verifikasi terakhir ditambahkan supaya entri bisa diaudit ulang saat platformnya berubah",
+      "Label node pada diagram alur harus dikutip ganda dan pemisah baris di dalam node memakai tag HTML, bukan escape newline, kalau tidak diagram gagal di-parse"
+    ],
+    "terms": [
+      "runbook",
+      "decision step",
+      "field reference table",
+      "flow diagram",
+      "last verified date"
+    ],
+    "commands": [],
+    "problems": [
+      "Diagram alur gagal di-parse ketika label node tidak dikutip ganda dan pemisah baris ditulis sebagai escape newline"
+    ],
+    "summary": "Menulis entri runbook langsung setelah investigasi ditutup, dengan topik cara menentukan arah trafik pada alert. Isinya berupa langkah keputusan, tabel referensi field, dan diagram alur. Entri dilengkapi metadata berupa alat, kategori, tingkat kesulitan, status, dan tanggal verifikasi terakhir agar bisa diaudit ulang saat platformnya berubah. Catatan teknis dari proses penulisan: label node pada diagram alur harus dikutip ganda dan pemisah baris di dalam node memakai tag HTML, bukan escape newline, kalau tidak diagram gagal di-parse.",
+    "url": ""
   }
 ]
