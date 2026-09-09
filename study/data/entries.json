@@ -9170,5 +9170,733 @@
     ],
     "summary": "Menulis entri runbook langsung setelah investigasi ditutup, dengan topik cara menentukan arah trafik pada alert. Isinya berupa langkah keputusan, tabel referensi field, dan diagram alur. Entri dilengkapi metadata berupa alat, kategori, tingkat kesulitan, status, dan tanggal verifikasi terakhir agar bisa diaudit ulang saat platformnya berubah. Catatan teknis dari proses penulisan: label node pada diagram alur harus dikutip ganda dan pemisah baris di dalam node memakai tag HTML, bukan escape newline, kalau tidak diagram gagal di-parse.",
     "url": ""
+  },
+  {
+    "id": "portfolio-field-log-audit-cert-path-20260902",
+    "date": "2026-09-02",
+    "title": "Portfolio Field Log Audit Q1–Q3 2026 & Certification Path Diagnostic",
+    "platform": "Personal Project",
+    "category": "writeup",
+    "tags": [
+      "portfolio",
+      "field-log",
+      "audit",
+      "self-review",
+      "certification",
+      "career",
+      "gap-analysis",
+      "grc"
+    ],
+    "concepts": [
+      "Auditing the log itself is a different exercise from writing entries: the unit of analysis becomes the commit rate over time, not the content of any single entry",
+      "The Q3 collapse in logging rate tracks directly to time spent on competitions and investigations, so the drop measures attention rather than inactivity",
+      "Comparing certification paths side by side (Security+, TryHackMe PT1, SAL1) forces the criteria to be explicit instead of picking whichever is nearest",
+      "GRC came out as the primary Security+ readiness gap, which is the domain least covered by hands-on offensive and SOC work"
+    ],
+    "terms": [
+      "field log",
+      "commit rate",
+      "certification path",
+      "Security+",
+      "TryHackMe PT1",
+      "SAL1",
+      "GRC",
+      "readiness gap"
+    ],
+    "commands": [],
+    "problems": [
+      "The logging habit degraded during Q3 without being noticed, because competition and investigation work felt productive enough to mask it",
+      "Three certification targets were competing for the same study time with no explicit criteria to choose between them"
+    ],
+    "summary": "Audit of the portfolio field log across Q1–Q3 2026, covering 205 learning entries. Identified a commit rate collapse in Q3 driven by competition and investigation focus, then ran a certification path diagnostic comparing Security+, TryHackMe PT1, and SAL1. GRC came out as the primary gap standing between current coverage and Security+ readiness.",
+    "url": ""
+  },
+  {
+    "id": "soc-local-analysis-fp-linux-agent-rollout-20260903",
+    "date": "2026-09-03",
+    "title": "Local Analysis Malware on Linux Hosts: Isolating a Deployment Anomaly by Cross-Host Hash Comparison",
+    "platform": "Cortex XDR",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "edr",
+      "cortex-xdr",
+      "linux",
+      "false-positive",
+      "local-analysis",
+      "hash-comparison",
+      "triage",
+      "telemetry-gap"
+    ],
+    "concepts": [
+      "Three alerts on different hosts pointing at the same monitoring agent binary is a deployment story, not three independent detections",
+      "Cross-host hash comparison is the fastest way to separate a rollout anomaly from a real compromise: identical hashes across the fleet mean the binary is the constant",
+      "Local Analysis is a machine-learning verdict, so a newly deployed and unfamiliar binary is precisely the shape it over-flags",
+      "Linux endpoint telemetry is thinner than its Windows counterpart, and the limitation has to be written into the verdict rather than left implicit"
+    ],
+    "terms": [
+      "Local Analysis",
+      "machine-learning verdict",
+      "file hash",
+      "monitoring agent",
+      "deployment anomaly",
+      "False Positive",
+      "endpoint telemetry"
+    ],
+    "commands": [],
+    "problems": [
+      "Three related incidents had to be resolved as one root cause instead of being closed individually with the same reasoning repeated",
+      "Confidence in the verdict was limited by how little process telemetry the Linux endpoints returned, which had to be documented rather than glossed over"
+    ],
+    "summary": "Triage of three related Local Analysis Malware incidents on Linux hosts, all triggered by a monitoring agent binary. Cross-host hash comparison isolated the pattern as a deployment anomaly rather than a compromise, and the incidents were closed as False Positive from a new agent rollout, with the telemetry limitations of Linux endpoints documented alongside the verdict.",
+    "url": ""
+  },
+  {
+    "id": "soc-waf-wordlist-scanning-t1595-003-20260903",
+    "date": "2026-09-03",
+    "title": "WAF Triage: masscan-ng Admin Path Probing & WordPress Enumeration Mapped to T1595.003",
+    "platform": "Sophos XGS",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "waf",
+      "sophos-xgs",
+      "reconnaissance",
+      "scanning",
+      "masscan",
+      "wordpress",
+      "mitre-attack",
+      "t1595"
+    ],
+    "concepts": [
+      "Admin config path probing and WordPress path enumeration are the same technique wearing different wordlists, so both map to T1595.003",
+      "The scanner identity in the request pattern (masscan-ng) is a classification aid but not the verdict on its own",
+      "An 18 second response time on a scanning request is the anomaly worth recording: the scan is routine noise, the latency is not",
+      "Mapping opportunistic scanning to ATT&CK keeps the log consistent even when the outcome is no impact"
+    ],
+    "terms": [
+      "WAF log",
+      "masscan-ng",
+      "path enumeration",
+      "wordlist scanning",
+      "T1595.003",
+      "Active Scanning",
+      "response time anomaly"
+    ],
+    "commands": [],
+    "problems": [
+      "Two separate WAF logs described what turned out to be one reconnaissance technique and needed a consistent classification",
+      "An unusually long 18 second response time surfaced during triage and did not fit the otherwise routine scanning profile"
+    ],
+    "summary": "Triage of two WAF logs: a masscan-ng probe against admin configuration paths and a WordPress path enumeration attempt. Both were mapped to MITRE ATT&CK T1595.003 (Active Scanning: Wordlist Scanning). An anomalous 18 second response time was documented as a finding separate from the scanning activity itself.",
+    "url": ""
+  },
+  {
+    "id": "re-pyinstaller-unpack-python-tool-review-20260905",
+    "date": "2026-09-05",
+    "title": "Unpacking a PyInstaller Binary: Python 3.12 Decompilation and a Six-Finding Security Review",
+    "platform": "Personal Lab",
+    "category": "dfir",
+    "tags": [
+      "reverse-engineering",
+      "pyinstaller",
+      "python",
+      "decompilation",
+      "bytecode",
+      "code-review",
+      "poc",
+      "lab"
+    ],
+    "concepts": [
+      "PyInstaller packing is packaging, not protection: pyinstxtractor-ng recovers the .pyc set and the original module layout comes back with it",
+      "Python 3.12 bytecode needs a decompiler that tracks the current opcode set, which is where Decompyle++ earns its place over the older uncompyle lineage",
+      "Missing host key verification is the finding with the widest blast radius, because it turns every connection into a trust-on-first-use gamble",
+      "Client-side validation is advisory by definition, so any check that only lives in the client is bypassable by reconstructing the request",
+      "Overly permissive parsing of network input is the class of bug that only becomes visible once the source is readable",
+      "Rebuilding the tool in a lab with working PoC scripts converts each finding from an assertion into something demonstrable"
+    ],
+    "terms": [
+      "PyInstaller",
+      "pyinstxtractor-ng",
+      "Decompyle++",
+      "pycdc",
+      ".pyc bytecode",
+      "host key verification",
+      "client-side validation bypass",
+      "input parsing",
+      "proof of concept"
+    ],
+    "commands": [
+      "pyinstxtractor-ng <packed_binary>",
+      "pycdc <extracted_module>.pyc"
+    ],
+    "problems": [
+      "The tool shipped only as a packed binary, so the source had to be recovered before any review was possible",
+      "Python 3.12 bytecode was outside the range that most available decompilers handle cleanly",
+      "Findings needed a reproduction environment to be credible rather than resting on a reading of the decompiled source"
+    ],
+    "summary": "Reverse engineering of a PyInstaller-packed internal Python tool. Recovered the bytecode with pyinstxtractor-ng and decompiled the Python 3.12 modules using Decompyle++, then reviewed the source for six security findings, including missing host key verification, bypassable client-side validation, and overly permissive parsing of network input. Built a full lab reproduction environment with PoC scripts for each finding.",
+    "url": ""
+  },
+  {
+    "id": "soc-ai-coding-agent-process-execution-shadow-ai-20260906",
+    "date": "2026-09-06",
+    "title": "AI Coding Agent Spawning Shells: Benign Verdict, Shadow AI and DLP as the Real Finding",
+    "platform": "Cortex XDR",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "edr",
+      "cortex-xdr",
+      "process-execution",
+      "developer-activity",
+      "shadow-ai",
+      "dlp",
+      "governance",
+      "false-positive"
+    ],
+    "concepts": [
+      "A signed binary spawning PowerShell, cmd.exe and Node.js is the normal behaviour profile of an AI coding agent, not an execution chain worth escalating",
+      "Signature status plus the parent-child pattern matching the tool's documented behaviour is what closes the alert",
+      "The alert being benign does not make the investigation empty: an unsanctioned AI tool running on an endpoint is a governance finding in its own right",
+      "Shadow AI carries a DLP question that no endpoint alert will raise, because the risk is code and data leaving through the tool rather than anything the process does locally"
+    ],
+    "terms": [
+      "process execution alert",
+      "signed binary",
+      "parent-child process",
+      "AI coding agent",
+      "shadow AI",
+      "DLP",
+      "governance",
+      "benign activity"
+    ],
+    "commands": [],
+    "problems": [
+      "The behaviour pattern looks identical to a living-off-the-land execution chain and had to be separated from one on evidence rather than on assumption",
+      "The substantive risk sat outside the alert's scope, so closing it as benign would have discarded the finding that actually mattered"
+    ],
+    "summary": "Triage of a process execution alert raised by an AI coding agent, a signed binary spawning PowerShell, cmd.exe and Node.js. Classified as benign developer activity, while the substantive finding turned out to sit beyond the alert itself: shadow AI usage on managed endpoints and the DLP governance question that comes with it.",
+    "url": ""
+  },
+  {
+    "id": "soc-winring0-byovd-driver-triage-20260906",
+    "date": "2026-09-06",
+    "title": "WinRing0.sys on an Endpoint: BYOVD-Exploitable Driver Shipped Inside a Legitimate Agent Bundle",
+    "platform": "Cortex XDR",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "edr",
+      "cortex-xdr",
+      "byovd",
+      "kernel-driver",
+      "winring0",
+      "cve-2020-14979",
+      "sandbox",
+      "joe-sandbox",
+      "true-positive",
+      "xql"
+    ],
+    "concepts": [
+      "WinRing0.sys exposes MmMapIoSpace to unprivileged callers, which is what makes it a standing BYOVD candidate regardless of who shipped it",
+      "A vulnerable driver arriving through a legitimate monitoring agent bundle is a True Positive that is not malicious, and the verdict taxonomy has to hold both halves",
+      "The sandbox report confirms the capability of the driver, not the intent of the process that dropped it, so origin tracing is a separate step",
+      "The right outcome is escalation to the infrastructure team rather than containment, because the exposure is a deployment decision and not an incident",
+      "Verifying whether the driver was actually loaded ran into XQL dataset limits, which caps how far the verdict can be pushed"
+    ],
+    "terms": [
+      "WinRing0.sys",
+      "BYOVD",
+      "CVE-2020-14979",
+      "MmMapIoSpace",
+      "kernel driver",
+      "Joe Sandbox",
+      "True Positive non-malicious",
+      "XQL",
+      "driver load status"
+    ],
+    "commands": [],
+    "problems": [
+      "The driver is genuinely exploitable but arrived through a sanctioned software bundle, so neither a malicious nor a false positive verdict fit cleanly",
+      "The available XQL datasets could not confirm whether the driver had actually been loaded into the kernel, leaving the exposure unverified"
+    ],
+    "summary": "Triage of a WinRing0.sys kernel driver flagged on an endpoint. The Joe Sandbox report confirmed it as a BYOVD-exploitable driver (CVE-2020-14979, arbitrary physical memory mapping via MmMapIoSpace), and the origin traced back to a legitimate monitoring agent bundle. Closed as True Positive non-malicious with escalation to the infrastructure team, noting the XQL dataset limitations that prevented verifying kernel driver load status.",
+    "url": ""
+  },
+  {
+    "id": "thm-pt1-exam-web-stored-xss-20260907",
+    "date": "2026-09-07",
+    "title": "TryHackMe PT1 Exam — Web App Pentest: React Bundle Recon & Stored XSS via dangerouslySetInnerHTML",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "web-exploitation",
+      "stored-xss",
+      "react",
+      "flask",
+      "api-enumeration",
+      "pentest"
+    ],
+    "concepts": [
+      "The compiled React bundle is a recon surface in its own right: reading it maps the Flask/Python API endpoints that are never linked from the rendered UI",
+      "dangerouslySetInnerHTML is the sink that turns a stored value into executable script, so the hunt is for any field rendered through it",
+      "A stored payload in the transaction endpoint is what makes the impact cross-user, because another account renders the injected markup",
+      "A cookie-setting payload demonstrates concrete session impact rather than the usual alert() proof-of-concept"
+    ],
+    "terms": [
+      "Stored XSS",
+      "dangerouslySetInnerHTML",
+      "React bundle",
+      "Flask",
+      "API endpoint enumeration",
+      "cross-user impact",
+      "session cookie"
+    ],
+    "commands": [],
+    "problems": [
+      "The API surface was not discoverable from the UI alone and had to be reconstructed from the client-side bundle",
+      "Proving the finding required cross-user impact, so a self-contained reflected payload would not have been enough"
+    ],
+    "summary": "Web application pentest segment of the TryHackMe PT1 exam. Mapped the Flask/Python API endpoints by analysing the compiled React bundle, then identified a Stored XSS in the transaction endpoint reaching a dangerouslySetInnerHTML sink. Exploited it with a cookie-setting payload to demonstrate cross-user impact and obtain the flag.",
+    "url": ""
+  },
+  {
+    "id": "thm-pt1-exam-linux-sqli-to-root-20260907",
+    "date": "2026-09-07",
+    "title": "TryHackMe PT1 Exam — Network Pentest (Linux): Error-Based SQLi to RCE and SUID Root",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "network-pentest",
+      "linux",
+      "sql-injection",
+      "rce",
+      "privilege-escalation",
+      "suid",
+      "gtfobins"
+    ],
+    "concepts": [
+      "Error-based SQL injection on the login form gave both an authentication bypass and a readable oracle for enumerating the database",
+      "UNION ... INTO OUTFILE turns a read primitive into a write primitive, dropping a webshell into the web root for RCE",
+      "SUID binaries that are not part of the distribution default set are the privesc lead worth chasing first",
+      "grep and nano both have GTFOBins entries that read or write arbitrary files as the owning user, which is enough for root when they carry the SUID bit"
+    ],
+    "terms": [
+      "error-based SQL injection",
+      "UNION SELECT",
+      "INTO OUTFILE",
+      "webshell",
+      "SUID",
+      "GTFOBins",
+      "privilege escalation"
+    ],
+    "commands": [],
+    "problems": [
+      "Getting from database read access to command execution required a writable path reachable from the web root",
+      "Separating non-default SUID binaries from the expected baseline set to find the actual escalation path"
+    ],
+    "summary": "Network pentest segment of the TryHackMe PT1 exam against the Linux target. Found error-based SQL injection on the login form, escalated it to remote code execution by writing a webshell through UNION ... INTO OUTFILE, then escalated to root through non-default SUID grep and nano binaries using their GTFOBins techniques.",
+    "url": ""
+  },
+  {
+    "id": "thm-pt1-exam-windows-double-extension-upload-20260907",
+    "date": "2026-09-07",
+    "title": "TryHackMe PT1 Exam — Network Pentest (Windows): Double-Extension Upload Bypass into a PowerShell Watcher Task",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "network-pentest",
+      "windows",
+      "file-upload",
+      "filter-bypass",
+      "scheduled-task",
+      "powershell",
+      "initial-access"
+    ],
+    "concepts": [
+      "A PDF-only upload whitelist that validates on a substring rather than the final extension falls to the double-extension trick",
+      "A .exe.pdf filename satisfies the filter while remaining an executable to whatever consumes the upload directory",
+      "The scheduled task is the real execution primitive: a PowerShell watcher over the upload directory simulates a user opening the file",
+      "Understanding what consumes an upload matters more than the upload itself, since the filter bypass alone yields nothing without a consumer"
+    ],
+    "terms": [
+      "double extension",
+      "upload whitelist bypass",
+      "scheduled task",
+      "PowerShell watcher",
+      "client-side execution",
+      "user shell"
+    ],
+    "commands": [],
+    "problems": [
+      "The upload endpoint accepted only PDFs, so the payload had to pass the whitelist while still being executable",
+      "Execution was not triggered by the upload itself and depended on identifying the scheduled task that processed the directory"
+    ],
+    "summary": "Network pentest segment of the TryHackMe PT1 exam against the Windows target. Bypassed a PDF-only upload whitelist with the double-extension technique (.exe.pdf), which was then picked up by a PowerShell watcher scheduled task, obtaining a user shell through the simulated client-side execution chain.",
+    "url": ""
+  },
+  {
+    "id": "thm-sec1-exam-ir-triage-web-assessment-20260907",
+    "date": "2026-09-07",
+    "title": "TryHackMe SEC1 Exam (Contracts 1–2) — Windows IR Triage and Web Application Assessment",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "sec1",
+      "exam",
+      "incident-response",
+      "evtx",
+      "persistence",
+      "mitre-attack",
+      "t1547",
+      "mongodb",
+      "hydra",
+      "password-cracking"
+    ],
+    "concepts": [
+      "EVTX analysis is what turns scattered event records into a process execution timeline, and the timeline is what makes the rest of the triage answerable",
+      "Registry Run Keys (T1547.001) remain the first persistence location to check because they are cheap for the attacker and cheap to verify",
+      "Lateral movement is identified from the relationship between hosts in the timeline, not from any single host's logs",
+      "MongoDB enumeration is a distinct skill from relational database work: no schema to lean on, so the collections have to be walked",
+      "The credential chain runs brute-force to shadow file hashes to zip2john, where each step exists only because the previous one produced material for it"
+    ],
+    "terms": [
+      "EVTX",
+      "process execution timeline",
+      "Registry Run Keys",
+      "T1547.001",
+      "lateral movement",
+      "MongoDB",
+      "hydra",
+      "shadow file",
+      "zip2john",
+      "hash cracking"
+    ],
+    "commands": [],
+    "problems": [
+      "The IR scenario required reconstructing what happened from event logs alone, with no live access to the host",
+      "The web assessment chain broke if any link was solved out of order, since each credential source only unlocked once the previous artefact was recovered"
+    ],
+    "summary": "First two contracts of the TryHackMe SEC1 exam. Completed a Windows incident response triage scenario covering EVTX analysis, process execution timeline reconstruction, persistence via Registry Run Keys (T1547.001) and lateral movement identification. Then completed a web application assessment scenario running from MongoDB enumeration through hydra credential brute-force, shadow file hash cracking, and zip2john password recovery.",
+    "url": ""
+  },
+  {
+    "id": "thm-sec1-exam-static-malware-analysis-20260907",
+    "date": "2026-09-07",
+    "title": "TryHackMe SEC1 Exam (Contract 3) — Static Malware Analysis of a Windows PE Binary",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "sec1",
+      "exam",
+      "malware-analysis",
+      "static-analysis",
+      "pe-format",
+      "pestudio",
+      "cyberchef",
+      "hex-editor",
+      "c2",
+      "typosquatting"
+    ],
+    "concepts": [
+      "Static analysis answers what a binary is capable of, which is a different question from what it did, and the exam scenario only ever asks the first",
+      "PE metadata read through pestudio narrows the candidate behaviour before a single string is decoded",
+      "A hex editor is still the tool that finds what parsers skip, which is where the embedded C2 URL surfaced",
+      "Base64 in a binary is a packaging choice rather than obfuscation, and CyberChef turns the encoded payload path back into something readable",
+      "A typosquat domain is intent made visible: the resemblance to a legitimate domain is the whole point of choosing it",
+      "The CreateProcessA import is what maps the sample to the Discovery tactic, since capability is inferred from the imports available to it"
+    ],
+    "terms": [
+      "PE metadata",
+      "pestudio",
+      "HxD",
+      "CyberChef",
+      "base64",
+      "C2 URL",
+      "typosquat domain",
+      "CreateProcessA",
+      "Discovery tactic"
+    ],
+    "commands": [],
+    "problems": [
+      "The sample had to be characterised without executing it, so every conclusion rested on metadata, strings and imports",
+      "The C2 URL and payload path were embedded rather than exposed as plain strings and needed hex inspection and decoding to recover"
+    ],
+    "summary": "Third contract of the TryHackMe SEC1 exam: a static malware analysis scenario on a Windows PE binary using pestudio, the HxD hex editor and CyberChef. Identified the PE metadata, extracted an embedded C2 URL and a base64-encoded payload path, and mapped the typosquat domain along with the Discovery tactic inferred from the CreateProcessA capability.",
+    "url": ""
+  },
+  {
+    "id": "thm-pt1-exam-ad-workstation-pth-20260908",
+    "date": "2026-09-08",
+    "title": "TryHackMe PT1 Exam — AD Pentest (Workstation): Credential Reuse, SAM Dump & Pass-the-Hash",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "active-directory",
+      "credential-reuse",
+      "smb",
+      "password-cracking",
+      "sam",
+      "pass-the-hash",
+      "lateral-movement"
+    ],
+    "concepts": [
+      "Credentials harvested on an earlier host are the cheapest first move against the next one, and here they granted Guest-level SMB access",
+      "Network shares are a credential source: a password-protected ZIP pulled from a share became the next set of credentials once cracked",
+      "Dumping the SAM hive yields local account hashes that do not need to be cracked to be useful",
+      "Pass-the-Hash converts the dumped local administrator hash directly into an authenticated session"
+    ],
+    "terms": [
+      "credential reuse",
+      "Guest access",
+      "SMB share",
+      "password-protected ZIP",
+      "SAM hive",
+      "NTLM hash",
+      "Pass-the-Hash"
+    ],
+    "commands": [],
+    "problems": [
+      "Initial access to the workstation was limited to Guest-level SMB, so the foothold had to come from share contents rather than from a service",
+      "The archive retrieved from the share was password protected and had to be cracked before it yielded usable credentials"
+    ],
+    "summary": "Active Directory segment of the TryHackMe PT1 exam against the workstation. Credential reuse from a previously compromised host granted Guest SMB access, which exposed a password-protected ZIP on a network share. Cracked the archive for credentials, dumped the SAM hive, and performed Pass-the-Hash to reach local administrator.",
+    "url": ""
+  },
+  {
+    "id": "thm-pt1-exam-ad-dc-genericall-ntds-20260908",
+    "date": "2026-09-08",
+    "title": "TryHackMe PT1 Exam — AD Pentest (Domain Controller): Chisel Pivot, Kerberoast, GenericAll Abuse & NTDS Dump",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "active-directory",
+      "pivoting",
+      "chisel",
+      "kerberoasting",
+      "bloodhound",
+      "acl-abuse",
+      "bloodyad",
+      "ntds",
+      "pass-the-hash",
+      "domain-admin"
+    ],
+    "concepts": [
+      "A Chisel reverse SOCKS tunnel is what makes the domain controller reachable at all, so the pivot has to be stable before any AD tooling is useful",
+      "Kerberoasting a service account with a weak password gives domain credentials without touching the DC directly",
+      "BloodHound is what turns a pile of ACL data into a usable path: the GenericAll ACE over a Domain Admin was invisible to manual enumeration",
+      "GenericAll allows a forced password reset via bloodyAD, which is a write primitive rather than a credential-theft one",
+      "An explicit Deny ACE can block the compromised Domain Admin from acting, and Pass-the-Hash as the built-in Administrator sidesteps it"
+    ],
+    "terms": [
+      "reverse SOCKS proxy",
+      "Chisel",
+      "Kerberoasting",
+      "SPN",
+      "BloodHound",
+      "GenericAll",
+      "ACE",
+      "bloodyAD",
+      "NTDS.dit",
+      "Pass-the-Hash",
+      "Deny ACE"
+    ],
+    "commands": [],
+    "problems": [
+      "The domain controller was not directly routable and required a working pivot before enumeration could start",
+      "The Domain Admin account obtained through the forced password reset was blocked by an explicit Deny ACE, so the final step needed a different principal"
+    ],
+    "summary": "Active Directory segment of the TryHackMe PT1 exam against the domain controller. Built a Chisel reverse SOCKS pivot, Kerberoasted a service account that cracked instantly, and discovered a GenericAll ACE through BloodHound. Used bloodyAD to force-reset a Domain Admin password, dumped NTDS for 113 hashes, and finished with Pass-the-Hash as the built-in Administrator to bypass an explicit Deny ACE.",
+    "url": ""
+  },
+  {
+    "id": "thm-pt1-exam-windows-privesc-dead-ends-20260908",
+    "date": "2026-09-08",
+    "title": "TryHackMe PT1 Exam — Windows Privesc Deep-Dive: Writable Service Binary and AlwaysInstallElevated Dead Ends",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "windows",
+      "privilege-escalation",
+      "service-abuse",
+      "alwaysinstallelevated",
+      "acl",
+      "unsolved",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "A writable SYSTEM service binary is only an escalation path if something can actually restart the service, and write access alone is not enough",
+      "AlwaysInstallElevated is registry-visible but useless when the account cannot invoke msiexec in the required context",
+      "Testing vectors systematically (SCM restart, msiexec, scheduled task, batch script) is what makes the negative result trustworthy rather than a gap in coverage",
+      "The restrictive ACLs on the hr user were the common cause behind every blocked vector, not four unrelated failures",
+      "Service crash-recovery as a restart trigger stayed untested and is worth writing down as a lead rather than dropping"
+    ],
+    "terms": [
+      "writable service binary",
+      "SYSTEM service",
+      "httpd.exe",
+      "AlwaysInstallElevated",
+      "SCM",
+      "msiexec",
+      "scheduled task",
+      "ACL",
+      "crash recovery"
+    ],
+    "commands": [],
+    "problems": [
+      "The Apache httpd.exe service binary was writable but no available vector could restart the service as SYSTEM",
+      "Every escalation attempt terminated at the same restrictive ACLs on the hr user account, leaving the host unescalated"
+    ],
+    "summary": "Windows privilege escalation deep-dive during the TryHackMe PT1 exam, left unsolved. Enumerated a writable SYSTEM service binary (Apache httpd.exe) and the AlwaysInstallElevated registry setting, then systematically tested SCM restart, msiexec, scheduled task, and batch script vectors. All were blocked by restrictive ACLs on the hr user. Documented service crash-recovery as an untested lead for future reference.",
+    "url": ""
+  },
+  {
+    "id": "thm-pt1-exam-debrief-gap-analysis-20260908",
+    "date": "2026-09-08",
+    "title": "TryHackMe PT1 Exam Debrief — Writeup, Attack Flow Diagrams & Scoring Gap Analysis",
+    "platform": "TryHackMe",
+    "category": "writeup",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "documentation",
+      "reporting",
+      "gap-analysis",
+      "lesson-learned",
+      "methodology"
+    ],
+    "concepts": [
+      "The exam report is scored on its own terms, so reporting structure is a skill to prepare for and not a formality after the hacking",
+      "Attack flow diagrams carry the chain far better than a linear list of steps, especially across the pivot into the domain controller",
+      "Mapping the score back against the rubric localises the deficit: the 122-point shortfall sat mostly in web application coverage rather than being spread evenly",
+      "A gap analysis written immediately after the attempt is what makes a retake plan concrete instead of a vague intention to study more"
+    ],
+    "terms": [
+      "DOCX report",
+      "attack flow diagram",
+      "gap analysis",
+      "exam scoring rubric",
+      "lessons learned",
+      "retake preparation"
+    ],
+    "commands": [],
+    "problems": [
+      "Scored 628 out of 750, a 122-point deficit that needed to be attributed to specific coverage gaps rather than treated as a general shortfall",
+      "The web vulnerability methodology proved to be the weakest area and had no repeatable checklist behind it"
+    ],
+    "summary": "Debrief for the TryHackMe PT1 exam attempt. Compiled the full DOCX writeup with attack flow diagrams, then performed a gap analysis against the exam scoring: 628 out of 750, with the 122-point deficit sitting primarily in web application coverage. Documented lessons learned for retake preparation, including reporting structure requirements and the gaps in web vulnerability methodology.",
+    "url": ""
+  },
+  {
+    "id": "soc-email-quarantine-hphish-allowlist-gap-20260908",
+    "date": "2026-09-08",
+    "title": "Recurring Quarantine of a Legitimate Sender: Tracing SCL Override to HPHISH Across Four Dates",
+    "platform": "Microsoft Defender",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "email-security",
+      "microsoft-defender",
+      "quarantine",
+      "phishing",
+      "spf",
+      "dkim",
+      "dmarc",
+      "false-positive",
+      "root-cause"
+    ],
+    "concepts": [
+      "A recurring quarantine of the same legitimate sender is a configuration question, not a repeated triage question",
+      "Comparing authentication headers across dates is what isolates the change: SPF, DKIM and DMARC all passing throughout means authentication was never the trigger",
+      "The verdict escalating from an SCL override to an HPHISH block marks the point where the override stopped applying",
+      "Sender IP changes across the four dates line up with the verdict change, which points at an IP allowlist that was never updated",
+      "The analyst verdict and the configuration remediation are separate deliverables with separate owners, and the team communication has to keep them apart to be actionable"
+    ],
+    "terms": [
+      "email quarantine",
+      "SCL",
+      "HPHISH",
+      "SPF",
+      "DKIM",
+      "DMARC",
+      "authentication headers",
+      "IP allowlist",
+      "root cause"
+    ],
+    "commands": [],
+    "problems": [
+      "Legitimate banking mail kept being quarantined despite passing every authentication check, so the cause had to be found outside the message itself",
+      "The remediation sat with a different team than the verdict, and the write-up had to make that boundary explicit rather than implying the analyst would fix it"
+    ],
+    "summary": "Investigation of a recurring email quarantine affecting a legitimate banking sender. Traced the verdict escalation from an SCL override to an HPHISH block by comparing authentication headers (SPF, DKIM and DMARC all passing) against sender IP changes across four dates, and identified a gap in the IP allowlist as the probable root cause. Drafted the team communication so the analyst verdict stayed separate from ownership of the configuration remediation.",
+    "url": ""
+  },
+  {
+    "id": "soc-f5-info-leakage-fp-qradar-ponzi-dns-20260908",
+    "date": "2026-09-08",
+    "title": "F5 ASM Information Leakage FP and a QRadar Offense for Ponzi-Domain DNS Resolution",
+    "platform": "QRadar",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "siem",
+      "qradar",
+      "f5-asm",
+      "waf",
+      "aql",
+      "dns",
+      "scam-domain",
+      "false-positive",
+      "tap-mode"
+    ],
+    "concepts": [
+      "An HTTP 415 response caused by a missing Content-Type header is a client error surfacing as an Information Leakage signature, which makes the alert a false positive by construction",
+      "DNS resolution of a scam domain from an internal workstation is user behaviour, and the investigation is about exposure rather than compromise",
+      "A firewall running in TAP mode reports what it would have done: the drop action is not enforced, so the block in the log never actually happened",
+      "Knowing which controls are inline and which are passive changes the conclusion of an investigation, not just its wording",
+      "AQL is unforgiving about function usage and payload search syntax, and the queries only became correct after iterating on ASSETHOSTNAME and UTF8 payload matching"
+    ],
+    "terms": [
+      "F5 ASM",
+      "Information Leakage",
+      "HTTP 415",
+      "Content-Type header",
+      "QRadar offense",
+      "AQL",
+      "ASSETHOSTNAME",
+      "UTF8 payload search",
+      "TAP mode",
+      "Ponzi scam domain"
+    ],
+    "commands": [],
+    "problems": [
+      "The F5 signature fired on a malformed client request rather than on any leakage, and closing it required showing why the 415 explained the match",
+      "The firewall log implied the traffic was dropped while the device was in TAP mode, so the apparent block gave false assurance",
+      "Initial AQL queries failed on incorrect ASSETHOSTNAME usage and payload search syntax before returning usable results"
+    ],
+    "summary": "Two alerts in one shift. Closed an F5 ASM Information Leakage alert as a false positive, triggered by an HTTP 415 response to a request missing its Content-Type header. Then investigated a QRadar offense for DNS resolution of a known Ponzi scam domain from an internal workstation, where the firewall's TAP mode meant the drop action was never enforced. The AQL queries were iterated to correct ASSETHOSTNAME function usage and UTF8 payload search syntax.",
+    "url": ""
   }
 ]
