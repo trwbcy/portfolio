@@ -9898,5 +9898,631 @@
     ],
     "summary": "Two alerts in one shift. Closed an F5 ASM Information Leakage alert as a false positive, triggered by an HTTP 415 response to a request missing its Content-Type header. Then investigated a QRadar offense for DNS resolution of a known Ponzi scam domain from an internal workstation, where the firewall's TAP mode meant the drop action was never enforced. The AQL queries were iterated to correct ASSETHOSTNAME function usage and UTF8 payload search syntax.",
     "url": ""
+  },
+  {
+    "id": "soc-web-attack-scanner-vs-false-positive-20260909",
+    "date": "2026-09-09",
+    "title": "SOC Web Attack Triage: Active Scanner vs False Positive Discrimination",
+    "platform": "SOC",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "triage",
+      "waf",
+      "web-attack",
+      "true-positive",
+      "false-positive",
+      "scanner",
+      "user-agent",
+      "mitre-attack"
+    ],
+    "concepts": [
+      "Yang memisahkan scanner aktif dari noise bukan isi payload-nya, melainkan konteks di sekitarnya: response code, violation rating, dan apakah sumbernya terautentikasi",
+      "Probe JavaScript injection dengan User-Agent khas tooling yang datang dari VPS tetap True Positive meskipun tidak ada percobaan yang berhasil, karena yang dinilai adalah aktivitasnya",
+      "Alert WAF pada parameter API yang berisi koma ter-URL-encode adalah artefak encoding, bukan payload serangan",
+      "Probe ProxyShell CVE-2021-34473 yang sudah terblokir layak dicatat sebagai aktivitas scanning, tapi tidak menghasilkan dampak sehingga tidak diperlakukan sebagai insiden",
+      "Karakter CRLF pada submission contact form berasal dari input pengguna biasa, dan sumber yang terautentikasi menggeser bobot penilaian ke arah aktivitas sah"
+    ],
+    "terms": [
+      "active scanning",
+      "violation rating",
+      "User-Agent",
+      "ProxyShell",
+      "CVE-2021-34473",
+      "CRLF",
+      "URL encoding",
+      "true positive",
+      "false positive"
+    ],
+    "commands": [],
+    "problems": [
+      "Empat alert dengan signature serangan yang mirip harus dipisahkan menjadi satu True Positive dan tiga False Positive",
+      "Signature WAF menyala pada input yang sah, sehingga verdict tidak bisa diambil dari nama alert saja dan harus ditarik dari konteks request"
+    ],
+    "summary": "Triage beberapa alert web attack pada portal produksi. Satu di antaranya dikonfirmasi True Positive berupa active scanner yang mengirim probe JavaScript injection dari VPS dengan User-Agent khas tooling. Tiga sisanya dinyatakan False Positive: alert WAF pada parameter API dengan koma ter-URL-encode, probe ProxyShell CVE-2021-34473 yang sudah terblokir, dan submission contact form yang mengandung karakter CRLF. Intinya latihan diskriminasi sinyal berbasis konteks, yaitu response code, violation rating, dan status terautentikasi dari sumber request.",
+    "url": ""
+  },
+  {
+    "id": "soc-htaccess-information-disclosure-qradar-aql-20260909",
+    "date": "2026-09-09",
+    "title": "SOC Investigation: .htaccess Information Disclosure via QRadar AQL",
+    "platform": "QRadar",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "qradar",
+      "aql",
+      "siem",
+      "information-disclosure",
+      "web-server",
+      "misconfiguration",
+      "triage",
+      "reporting"
+    ],
+    "concepts": [
+      "HTTP 200 untuk permintaan /.htaccess adalah temuan konfigurasi, bukan eksploitasi, tapi tetap perlu diverifikasi cakupannya sebelum ditutup",
+      "AQL dipakai untuk menarik log akses dari IP yang bersangkutan, lalu hasilnya diekspor ke CSV supaya pola permintaan bisa dibaca utuh",
+      "Pertanyaan yang menentukan tingkat keparahan bukan apakah file itu terekspos, melainkan seberapa luas paparannya terhadap file sensitif lain",
+      "Verifikasi negatif sama pentingnya dengan temuan positif: .env dan file sensitif lain mengembalikan 404, sehingga paparan terbatas pada satu file saja",
+      "Temuan konfigurasi seperti ini diselesaikan lewat eskalasi ke pemilik sistem, bukan lewat tindakan containment dari sisi analis"
+    ],
+    "terms": [
+      "information disclosure",
+      "AQL",
+      "access log",
+      "HTTP 200",
+      "HTTP 404",
+      "exposure scope",
+      "eskalasi"
+    ],
+    "commands": [],
+    "problems": [
+      "Perlu memastikan apakah paparan berhenti di .htaccess atau merembet ke file konfigurasi lain yang lebih sensitif",
+      "Data mentah log akses terlalu banyak untuk dibaca langsung, sehingga butuh ekstraksi lewat AQL dan ekspor CSV"
+    ],
+    "summary": "Menyelidiki temuan information disclosure di mana sebuah IP eksternal menerima HTTP 200 untuk permintaan /.htaccess. Log akses diekstrak lewat QRadar AQL lalu diekspor ke CSV untuk memverifikasi cakupan paparan, dan hasilnya menunjukkan hanya .htaccess yang terekspos sementara .env dan file sensitif lain mengembalikan 404. Ditutup dengan catatan temuan dan eskalasi ke pemilik sistem.",
+    "url": ""
+  },
+  {
+    "id": "pt1-attempt-review-gap-analysis-20260909",
+    "date": "2026-09-09",
+    "title": "PT1 Attempt Review & Gap Analysis",
+    "platform": "Self-study",
+    "category": "writeup",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "gap-analysis",
+      "methodology",
+      "lesson-learned",
+      "privilege-escalation",
+      "web-exploitation",
+      "retake"
+    ],
+    "concepts": [
+      "Gap analysis dikerjakan sebelum retake, bukan sesudahnya, supaya waktu belajar jatuh ke area yang benar-benar kurang",
+      "Defisit terbesar ada di web app, dan itu berarti porsi latihan harus digeser ke sana alih-alih mengulang materi yang sudah kuat",
+      "Privilege escalation Windows lewat SeImpersonate gagal dituntaskan pada attempt pertama, sehingga jadi target khusus untuk dilatih ulang",
+      "Urutan pengerjaan ikut menentukan skor: AD dulu karena paling dikuasai dan paling padat poin, lalu Network, baru Web app",
+      "Mendahulukan yang dikuasai bukan soal mengejar poin mudah, tapi soal mengamankan hasil sebelum masuk ke bagian yang paling menyita waktu"
+    ],
+    "terms": [
+      "gap analysis",
+      "retake strategy",
+      "SeImpersonate",
+      "time management",
+      "scoring rubric"
+    ],
+    "commands": [],
+    "problems": [
+      "Perlu menentukan area mana yang benar-benar menyebabkan kehilangan poin, bukan sekadar merasa kurang di semua bagian",
+      "Privilege escalation Windows berhenti di tengah jalan pada attempt pertama dan penyebabnya harus dipastikan sebelum retake"
+    ],
+    "summary": "Menganalisis hasil PT1 attempt pertama untuk mengidentifikasi titik lemah sebelum retake. Hasilnya, web app adalah defisit terbesar dan privilege escalation Windows lewat SeImpersonate gagal dituntaskan. Dari situ disusun strategi retake berupa urutan pengerjaan AD lebih dulu, lalu Network, baru Web app.",
+    "url": ""
+  },
+  {
+    "id": "web-app-vulnerability-vector-mapping-20260909",
+    "date": "2026-09-09",
+    "title": "Web App Vulnerability Vector Mapping",
+    "platform": "Self-study",
+    "category": "writeup",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "web-exploitation",
+      "business-logic",
+      "idor",
+      "mass-assignment",
+      "xss",
+      "race-condition",
+      "methodology",
+      "checklist"
+    ],
+    "concepts": [
+      "Analisis variant dipakai untuk memperkirakan kerentanan apa saja yang mungkin muncul, sehingga pencarian di hari ujian tidak dimulai dari nol",
+      "Enam vektor yang dipetakan: negative transaction value, IDOR pada vault, IDOR pada credit card, mass assignment pada field role, XSS, dan race condition",
+      "Aplikasi perbankan punya pola kerentanan yang khas di sisi logika bisnis, terutama pada arah dan tanda nilai transaksi",
+      "Battle checklist berisi cara verifikasi cepat per vektor, bukan teori kerentanannya, karena yang dibutuhkan saat ujian adalah kecepatan konfirmasi",
+      "Checklist yang disiapkan di depan mengubah pencarian kerentanan dari eksplorasi bebas menjadi verifikasi terarah"
+    ],
+    "terms": [
+      "variant analysis",
+      "negative transaction value",
+      "IDOR",
+      "mass assignment",
+      "XSS",
+      "race condition",
+      "battle checklist"
+    ],
+    "commands": [],
+    "problems": [
+      "Waktu pengerjaan web app terbatas, sehingga eksplorasi bebas terlalu mahal dan perlu diganti daftar vektor yang sudah diprioritaskan",
+      "Perlu menurunkan tiap vektor menjadi langkah verifikasi konkret supaya bisa dicek cepat satu per satu"
+    ],
+    "summary": "Memetakan enam vektor kerentanan yang mungkin muncul pada web app TryBankMe berdasarkan analisis variant, yaitu negative transaction value, IDOR vault, IDOR credit card, mass assignment role, XSS, dan race condition. Tiap vektor diturunkan menjadi langkah verifikasi cepat dalam bentuk battle checklist supaya pengerjaan saat ujian bersifat terarah, bukan eksploratif.",
+    "url": ""
+  },
+  {
+    "id": "soc-vision-one-oat-macos-port-4444-false-positive-20260910",
+    "date": "2026-09-10",
+    "title": "SOC Investigation: Vision One OAT False Positive (macOS, Port 4444)",
+    "platform": "Vision One",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "vision-one",
+      "oat",
+      "macos",
+      "qradar",
+      "aql",
+      "false-positive",
+      "triage",
+      "telemetry",
+      "mitre-attack"
+    ],
+    "concepts": [
+      "Port 4444 adalah pemicu yang kuat secara reputasi, tapi nomor port saja bukan bukti dan harus diuji terhadap proses yang benar-benar memakainya",
+      "Payload mentah alert tidak terbaca utuh lewat tampilan biasa, sehingga diekspor ke CSV dulu supaya field-nya bisa diurai satu per satu",
+      "Seluruh aktivitas process dapat diatribusikan ke inventory scan agen ManageEngine UEMS dan traffic language server IDE, keduanya wajar pada endpoint developer",
+      "Telemetri port pada alert ini mengandung artefak normalisasi, sehingga angka port yang tampil tidak mencerminkan koneksi sebenarnya",
+      "Tidak adanya network flow yang berkorelasi adalah bukti negatif yang menutup kasus, karena aktivitas T1059 dan T1069 yang nyata akan meninggalkan jejak jaringan"
+    ],
+    "terms": [
+      "OAT (Observed Attack Technique)",
+      "T1059",
+      "T1069",
+      "raw payload",
+      "normalisasi telemetri",
+      "network flow",
+      "endpoint macOS"
+    ],
+    "commands": [],
+    "problems": [
+      "Alert menandai port 4444 yang secara reputasi identik dengan reverse shell, padahal atribusi prosesnya mengarah ke aktivitas sah",
+      "Field yang dibutuhkan tidak terbaca dari tampilan alert dan harus diurai dari raw payload hasil ekspor CSV"
+    ],
+    "summary": "Menganalisis alert OAT dari Vision One pada endpoint macOS yang menandai aktivitas port 4444 dengan pemetaan T1059 dan T1069. Investigasi memakai QRadar AQL dan parsing raw payload lewat ekspor CSV, dan hasilnya seluruh aktivitas process dapat diatribusikan ke inventory scan agen ManageEngine UEMS serta traffic language server IDE. Dengan adanya artefak normalisasi pada telemetri port dan tidak adanya network flow yang berkorelasi, verdict ditetapkan False Positive.",
+    "url": ""
+  },
+  {
+    "id": "soc-cortex-xdr-proxyware-c2-verdict-deskrest-20260910",
+    "date": "2026-09-10",
+    "title": "SOC Investigation: Cortex XDR Proxyware C2 Verdict (DeskRest)",
+    "platform": "Cortex XDR",
+    "category": "soc",
+    "tags": [
+      "soc",
+      "cortex-xdr",
+      "bioc",
+      "xql",
+      "c2",
+      "proxyware",
+      "pua",
+      "virustotal",
+      "qradar",
+      "ioc",
+      "true-positive",
+      "reporting"
+    ],
+    "concepts": [
+      "Klasifikasi Command and Control dari deteksi datang dari kelangkaan kombinasi User-Agent dan Server, jadi itu sinyal statistik, bukan identifikasi keluarga malware",
+      "Reputasi VirusTotal mengarah ke label proxyware dan grayware, yang mengubah pertanyaan dari apakah ini berbahaya menjadi apakah ini diinginkan",
+      "Enumerasi jaringan lewat QRadar menunjukkan puluhan destination IP global yang berotasi pada port 80 dari satu host selama berminggu-minggu, pola yang konsisten dengan proxyware",
+      "Analisis execution chain lewat Cortex XDR XQL dipakai untuk memastikan asal proses dan tidak adanya perilaku pasca-eksekusi yang khas C2 asli",
+      "Verdict akhir True Positive PUA atau proxyware, bukan C2 asli, dan perbedaan ini yang menentukan proporsi respons",
+      "Rekomendasi containment disesuaikan dengan verdict: hash blocking dan process termination sudah cukup, isolasi penuh host akan berlebihan"
+    ],
+    "terms": [
+      "BIOC",
+      "proxyware",
+      "PUA",
+      "grayware",
+      "User-Agent",
+      "XQL",
+      "execution chain",
+      "IOC table",
+      "containment"
+    ],
+    "commands": [],
+    "problems": [
+      "Nama klasifikasi deteksi mengarah ke Command and Control, sehingga verdict berisiko dilebih-lebihkan kalau diterima apa adanya",
+      "Pola rotasi destination IP perlu dibedakan antara beaconing C2 dan perilaku normal proxyware sebelum menentukan tingkat respons"
+    ],
+    "summary": "Menyelidiki alert Cortex XDR BIOC yang terklasifikasi Command and Control karena kombinasi User-Agent dan Server yang langka. Reputasi VirusTotal memberi label proxyware dan grayware, enumerasi QRadar menunjukkan puluhan destination IP global yang berotasi pada port 80 dari satu host selama berminggu-minggu, dan analisis execution chain lewat XQL melengkapi gambarannya. Verdict ditetapkan True Positive PUA atau proxyware, bukan C2 asli, lalu disusun laporan investigasi formal berisi tabel IOC, timeline, dan rekomendasi containment yang proporsional berupa hash blocking dan process termination.",
+    "url": ""
+  },
+  {
+    "id": "pt1-retake-preparation-logging-setup-20260910",
+    "date": "2026-09-10",
+    "title": "Retake Preparation & Logging Setup",
+    "platform": "Self-study",
+    "category": "writeup",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "methodology",
+      "documentation",
+      "logging",
+      "reporting",
+      "active-directory",
+      "retake"
+    ],
+    "concepts": [
+      "Dokumentasi real-time lewat script logging membuat writeup disusun dari log attempt yang masih segar, bukan dari ingatan setelah ujian selesai",
+      "Menyiapkan mekanisme pencatatan di depan menghilangkan pilihan antara mengerjakan cepat atau mencatat rapi, karena keduanya jalan bersamaan",
+      "Peninjauan ulang difokuskan pada teknik AD dan Network yang sudah dikuasai, supaya eksekusinya otomatis dan waktu bisa dialihkan ke bagian yang lemah",
+      "Kualitas laporan adalah komponen skor tersendiri, jadi kesiapan dokumentasi setara pentingnya dengan kesiapan teknis"
+    ],
+    "terms": [
+      "script logging",
+      "real-time documentation",
+      "comprehensive writeup",
+      "retake methodology"
+    ],
+    "commands": [],
+    "problems": [
+      "Pada attempt sebelumnya penyusunan writeup mahal karena detail harus direkonstruksi setelah sesi berakhir",
+      "Perlu memastikan pencatatan berjalan tanpa memperlambat pengerjaan saat ujian"
+    ],
+    "summary": "Menyiapkan metodologi retake dengan penekanan pada dokumentasi real-time berbasis script logging, supaya writeup comprehensive bisa disusun dari log attempt yang masih fresh. Sekaligus meninjau ulang teknik AD dan Network yang sudah dikuasai agar eksekusinya cepat dan waktu tersisa bisa dialokasikan ke bagian yang lebih lemah.",
+    "url": ""
+  },
+  {
+    "id": "pt1-ad-smb-anonymous-share-to-domain-user-20260911",
+    "date": "2026-09-11",
+    "title": "AD Foothold: SMB Anonymous Share to Domain User",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "active-directory",
+      "smb",
+      "enumeration",
+      "password-cracking",
+      "john",
+      "winrm",
+      "evil-winrm",
+      "initial-access"
+    ],
+    "concepts": [
+      "Share SMB non-default adalah yang pertama diperiksa, karena keberadaannya sendiri sudah menandakan sesuatu yang sengaja dibuat dan mungkin lupa dibatasi",
+      "Akses anonim ke share mengubah enumerasi jadi pengambilan file, tanpa perlu kredensial apa pun sebagai modal awal",
+      "Arsip terproteksi password bukan jalan buntu selama hash-nya bisa diekstrak, dan zip2john adalah jembatan dari file ke format yang bisa diserang john",
+      "Kredensial domain user yang didapat langsung diuji ke WinRM, karena status Pwn3d menandakan akses shell penuh dan bukan sekadar autentikasi berhasil"
+    ],
+    "terms": [
+      "SMB share",
+      "anonymous access",
+      "zip2john",
+      "john",
+      "domain user",
+      "WinRM",
+      "Pwn3d"
+    ],
+    "commands": [],
+    "problems": [
+      "Tidak ada kredensial awal, sehingga foothold harus datang dari resource yang bisa diakses tanpa autentikasi",
+      "Arsip yang diambil dari share terproteksi password dan harus dipecahkan dulu sebelum isinya berguna"
+    ],
+    "summary": "Mengeksploitasi share SMB non-default yang dapat diakses secara anonim, lalu mengekstrak arsip terproteksi dari dalamnya. Password arsip dipecahkan dengan zip2john dan john sehingga menghasilkan kredensial domain user, dan kredensial tersebut memberi akses WinRM penuh dengan status Pwn3d.",
+    "url": ""
+  },
+  {
+    "id": "pt1-ad-chisel-reverse-socks-tunnel-20260911",
+    "date": "2026-09-11",
+    "title": "AD Pivoting: Chisel Reverse SOCKS Tunnel",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "active-directory",
+      "pivoting",
+      "chisel",
+      "proxychains",
+      "evil-winrm",
+      "socks",
+      "enumeration"
+    ],
+    "concepts": [
+      "Domain Controller yang tidak dapat dijangkau langsung membuat pivot jadi prasyarat, bukan pelengkap, karena tanpa itu seluruh enumerasi domain tidak bisa dimulai",
+      "Reverse SOCKS dipilih karena arah koneksinya keluar dari host yang sudah dikuasai, sehingga tidak bergantung pada port inbound yang terbuka",
+      "Chisel harus dijalankan sebagai background process lewat evil-winrm supaya tunnel tetap hidup setelah perintah dikembalikan",
+      "Setelah tunnel berdiri, proxychains menjadi lapisan yang menyalurkan seluruh tooling enumerasi domain melalui jalur yang sama tanpa mengubah cara pakainya",
+      "Stabilitas tunnel menentukan kelancaran tahap berikutnya, jadi memastikan pivot benar-benar hidup lebih dulu menghemat waktu di tahap Kerberoasting dan BloodHound"
+    ],
+    "terms": [
+      "reverse SOCKS",
+      "Chisel",
+      "proxychains",
+      "evil-winrm",
+      "background process",
+      "Domain Controller",
+      "pivot"
+    ],
+    "commands": [],
+    "problems": [
+      "Domain Controller berada di segmen yang tidak dapat dijangkau langsung dari mesin penyerang",
+      "Proses tunnel berpotensi mati begitu sesi perintah selesai, sehingga harus dijalankan terpisah di latar belakang"
+    ],
+    "summary": "Membangun tunnel reverse SOCKS ke Domain Controller yang tidak dapat dijangkau langsung. Chisel dijalankan sebagai background process lewat evil-winrm agar tunnel tetap hidup, lalu seluruh enumerasi domain disalurkan melalui proxychains di atas jalur tersebut.",
+    "url": ""
+  },
+  {
+    "id": "pt1-ad-kerberoasting-to-domain-admin-acl-abuse-20260911",
+    "date": "2026-09-11",
+    "title": "AD Privilege Escalation: Kerberoasting to Domain Admin via ACL Abuse",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "active-directory",
+      "kerberoasting",
+      "bloodhound",
+      "jq",
+      "acl-abuse",
+      "bloodyad",
+      "dcsync",
+      "pass-the-hash",
+      "privilege-escalation"
+    ],
+    "concepts": [
+      "Kerberoasting menyerang service account tanpa menyentuh DC secara langsung, sehingga cocok dilakukan lebih dulu dari balik tunnel",
+      "Data BloodHound bisa dibaca langsung dengan jq ketika analisis ACE lebih cepat dilakukan di level data daripada lewat antarmuka grafisnya",
+      "GenericAll terhadap grup Domain Admins adalah write primitive, dan cara termurah menyalahgunakannya adalah menambahkan anggota, bukan mereset password",
+      "bloodyAD dengan add groupMember mengubah keanggotaan grup sehingga akun yang dikuasai langsung mewarisi hak Domain Admin",
+      "DCSync dipakai untuk menarik hash dari DC, lalu Pass-the-Hash mengubah hash itu menjadi sesi terautentikasi tanpa perlu memecahkan password"
+    ],
+    "terms": [
+      "Kerberoasting",
+      "TGS hash",
+      "service account",
+      "BloodHound",
+      "jq",
+      "ACE",
+      "GenericAll",
+      "bloodyAD",
+      "add groupMember",
+      "DCSync",
+      "Pass-the-Hash"
+    ],
+    "commands": [],
+    "problems": [
+      "Jalur dari domain user biasa ke Domain Admin tidak terlihat dari enumerasi manual dan harus ditarik dari relasi ACL",
+      "Analisis ACE perlu dilakukan langsung di atas data BloodHound supaya jalur yang relevan bisa ditemukan cepat"
+    ],
+    "summary": "Melakukan Kerberoasting pada service account lalu memecahkan TGS hash yang didapat. Analisis ACE dikerjakan langsung dari data BloodHound menggunakan jq, dan ditemukan GenericAll terhadap grup Domain Admins. Hak tersebut disalahgunakan dengan bloodyAD lewat add groupMember, dilanjutkan DCSync dan Pass-the-Hash untuk menguasai Domain Controller.",
+    "url": ""
+  },
+  {
+    "id": "pt1-network-dtale-unauthenticated-rce-20260911",
+    "date": "2026-09-11",
+    "title": "Network: D-Tale Unauthenticated RCE (Linux)",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "linux",
+      "rce",
+      "python",
+      "unauthenticated",
+      "reverse-shell",
+      "web-exploitation"
+    ],
+    "concepts": [
+      "D-Tale 3.4.0 yang berjalan tanpa autentikasi membuat seluruh fiturnya terbuka, termasuk yang seharusnya hanya dipakai pemilik data",
+      "Fitur custom filter mengevaluasi ekspresi Python di sisi server, dan evaluasi ekspresi adalah jarak paling pendek menuju eksekusi perintah",
+      "Custom filter tidak aktif secara default sehingga harus dinyalakan dulu lewat update-settings, yang berarti eksploitasi butuh dua langkah, bukan satu",
+      "Pembuktian RCE dilakukan dengan payload os.system lebih dulu, karena konfirmasi eksekusi harus dipisahkan dari usaha mendapatkan shell",
+      "Peningkatan ke reverse shell interaktif memakai base64 encoding supaya karakter khusus pada payload tidak rusak saat melewati parsing ekspresi"
+    ],
+    "terms": [
+      "D-Tale",
+      "custom filter",
+      "server-side expression evaluation",
+      "update-settings",
+      "os.system",
+      "base64 encoding",
+      "reverse shell"
+    ],
+    "commands": [],
+    "problems": [
+      "Fitur yang rentan dalam keadaan nonaktif sehingga harus diaktifkan lebih dulu sebelum bisa dieksploitasi",
+      "Payload reverse shell mengandung karakter yang bermasalah saat dilewatkan sebagai ekspresi, sehingga perlu di-encode"
+    ],
+    "summary": "Mengeksploitasi D-Tale 3.4.0 yang berjalan tanpa autentikasi melalui fitur custom filter yang mengevaluasi ekspresi Python di sisi server. Custom filter diaktifkan dulu lewat update-settings, RCE dibuktikan dengan payload os.system, lalu ditingkatkan menjadi reverse shell interaktif menggunakan base64 encoding.",
+    "url": ""
+  },
+  {
+    "id": "pt1-network-linux-privesc-sudo-strace-20260911",
+    "date": "2026-09-11",
+    "title": "Network: Linux Privilege Escalation via sudo strace (GTFOBins)",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "linux",
+      "privilege-escalation",
+      "sudo",
+      "gtfobins",
+      "strace"
+    ],
+    "concepts": [
+      "Entri sudo NOPASSWD adalah tempat pertama yang diperiksa, karena setiap binary di daftar itu berpotensi jadi jalur root",
+      "strace bisa menjalankan program lain sebagai bagian dari proses tracing, dan itulah yang membuatnya masuk GTFOBins meskipun fungsinya sekadar alat debug",
+      "Menjalankan strace terhadap /bin/sh sebagai root menghasilkan shell dengan privilege yang diwarisi dari konteks sudo",
+      "bash -p dipakai agar privilege tidak dilepas, karena shell biasa akan menurunkan effective UID kembali ke pengguna semula"
+    ],
+    "terms": [
+      "sudo NOPASSWD",
+      "strace",
+      "GTFOBins",
+      "root shell",
+      "bash -p",
+      "effective UID"
+    ],
+    "commands": [],
+    "problems": [
+      "Perlu mengenali bahwa binary debug yang tampak tidak berbahaya justru punya kemampuan menjalankan program lain",
+      "Shell hasil eksploitasi berisiko kehilangan privilege kalau tidak dipertahankan secara eksplisit"
+    ],
+    "summary": "Menyalahgunakan konfigurasi sudo NOPASSWD pada binary strace untuk memperoleh root shell sesuai teknik GTFOBins. strace dijalankan terhadap /bin/sh sebagai root, lalu privilege dipertahankan dengan bash -p.",
+    "url": ""
+  },
+  {
+    "id": "pt1-network-picshare-unrestricted-file-upload-iis-20260911",
+    "date": "2026-09-11",
+    "title": "Network: PicShare Unrestricted File Upload (Windows IIS)",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "windows",
+      "iis",
+      "file-upload",
+      "webshell",
+      "aspx",
+      "feroxbuster",
+      "rce",
+      "enumeration"
+    ],
+    "concepts": [
+      "Fitur upload yang tidak memvalidasi ekstensi pada aplikasi IIS 10.0 membuat webshell .aspx bisa diunggah apa adanya",
+      "Upload berhasil tidak berarti eksekusi berhasil, karena direktori tempat file disimpan harus ditemukan lebih dulu",
+      "IIS mengembalikan HTTP 500 generic untuk banyak path, sehingga penyaringan hasil feroxbuster berdasarkan status code jadi tidak berguna",
+      "Filter berdasarkan response size adalah jalan keluarnya, karena ukuran respons tetap membedakan halaman yang benar-benar ada dari error seragam",
+      "Shell yang didapat berjalan sebagai IIS application pool identity, yaitu akun dengan hak terbatas, sehingga privilege escalation menjadi langkah lanjutan yang wajib"
+    ],
+    "terms": [
+      "unrestricted file upload",
+      "webshell",
+      "aspx",
+      "IIS 10.0",
+      "feroxbuster",
+      "response size filter",
+      "application pool identity"
+    ],
+    "commands": [],
+    "problems": [
+      "Direktori upload tidak diketahui dan harus ditemukan lewat enumerasi konten",
+      "Respons HTTP 500 yang seragam dari IIS mengaburkan hasil enumerasi sehingga penyaringan harus dipindahkan ke ukuran respons"
+    ],
+    "summary": "Mengunggah webshell .aspx lewat fitur upload yang tidak memvalidasi ekstensi pada aplikasi IIS 10.0. Direktori upload ditemukan dengan feroxbuster memakai filter response size, karena IIS mengembalikan HTTP 500 generic yang membuat penyaringan berbasis status code tidak berguna. Hasilnya RCE sebagai IIS application pool identity.",
+    "url": ""
+  },
+  {
+    "id": "pt1-network-windows-privesc-godpotato-system-20260911",
+    "date": "2026-09-11",
+    "title": "Network: Windows Privilege Escalation to SYSTEM via GodPotato",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "windows",
+      "privilege-escalation",
+      "seimpersonate",
+      "token-impersonation",
+      "godpotato",
+      "iis"
+    ],
+    "concepts": [
+      "Ini adalah penuntasan langkah yang gagal pada attempt pertama, sehingga urutannya dimulai dari memastikan prasyaratnya benar-benar terpenuhi",
+      "SeImpersonatePrivilege dikonfirmasi dalam keadaan enabled lebih dulu, karena tanpa hak itu seluruh keluarga teknik Potato tidak relevan",
+      "Akun service seperti application pool identity justru sering memegang SeImpersonate, dan itulah yang membuat privilege escalation di IIS terasa pendek",
+      "GodPotato-NET4 dipilih menyesuaikan versi .NET yang tersedia di target, karena salah varian membuat teknik yang benar tetap gagal jalan",
+      "Token impersonation mengubah hak tersebut menjadi eksekusi perintah sebagai NT AUTHORITY\\SYSTEM, yang membuka file yang tidak dapat diakses akun IIS"
+    ],
+    "terms": [
+      "SeImpersonatePrivilege",
+      "token impersonation",
+      "GodPotato",
+      ".NET 4",
+      "NT AUTHORITY\\SYSTEM",
+      "application pool identity"
+    ],
+    "commands": [],
+    "problems": [
+      "Privilege escalation pada jalur ini gagal dituntaskan di attempt pertama dan jadi target khusus untuk diperbaiki",
+      "Akun IIS tidak punya akses baca ke flag, sehingga eskalasi ke SYSTEM adalah satu-satunya jalan menyelesaikan target"
+    ],
+    "summary": "Menuntaskan privilege escalation yang gagal pada attempt pertama. SeImpersonatePrivilege dikonfirmasi enabled, GodPotato-NET4 diunggah ke target, lalu token impersonation dipakai untuk mengeksekusi perintah sebagai NT AUTHORITY\\SYSTEM dan membaca flag yang tidak dapat diakses oleh akun IIS.",
+    "url": ""
+  },
+  {
+    "id": "pt1-web-trybankme-business-logic-stored-xss-20260911",
+    "date": "2026-09-11",
+    "title": "Web App: Broken Business Logic & Stored XSS (TryBankMe)",
+    "platform": "TryHackMe",
+    "category": "ctf",
+    "tags": [
+      "tryhackme",
+      "pt1",
+      "exam",
+      "web-exploitation",
+      "business-logic",
+      "stored-xss",
+      "xss",
+      "react",
+      "sanitization-bypass"
+    ],
+    "concepts": [
+      "Broken Business Logic di sini bukan soal input yang tidak disaring, tapi soal tanda nilai: amount negatif membalik arah pergerakan dana",
+      "Kerentanan logika bisnis tidak terdeteksi oleh pemeriksaan payload karena nilainya sah secara format dan hanya salah secara makna",
+      "Field description pada loan dirender lewat dangerouslySetInnerHTML, dan sink itulah yang mengubah nilai tersimpan menjadi skrip yang dieksekusi",
+      "Dampak cross-user adalah yang membuat temuan XSS ini bernilai, karena payload dieksekusi di sesi pengguna lain dan bukan di sesi sendiri",
+      "Sanitasi pada karakter kutip dilewati dengan String.fromCharCode, sehingga payload tetap terbentuk tanpa memakai karakter yang diblokir",
+      "Verifikasi dilakukan lewat endpoint /xss supaya eksekusi payload terbukti dan tidak berhenti di dugaan"
+    ],
+    "terms": [
+      "Broken Business Logic",
+      "negative amount",
+      "Stored XSS",
+      "dangerouslySetInnerHTML",
+      "cross-user impact",
+      "String.fromCharCode",
+      "sanitization bypass"
+    ],
+    "commands": [],
+    "problems": [
+      "Sanitasi pada karakter kutip memblokir bentuk payload yang biasa dipakai sehingga harus dibangun ulang tanpa kutip",
+      "Web app adalah defisit terbesar pada attempt pertama, sehingga bagian ini yang paling menentukan selisih skor"
+    ],
+    "summary": "Mengeksploitasi dua kerentanan pada aplikasi perbankan TryBankMe. Broken Business Logic muncul lewat transaksi dengan amount negatif yang membalik arah pergerakan dana. Stored XSS ditemukan pada field description loan yang dirender via dangerouslySetInnerHTML, dengan payload cross-user yang diverifikasi melalui endpoint /xss dan disusun memakai String.fromCharCode untuk menghindari sanitasi kutip. Attempt kedua ditutup dengan skor akhir 742/750.",
+    "url": ""
   }
 ]
