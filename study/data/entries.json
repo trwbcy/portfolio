@@ -10524,5 +10524,796 @@
     ],
     "summary": "Mengeksploitasi dua kerentanan pada aplikasi perbankan TryBankMe. Broken Business Logic muncul lewat transaksi dengan amount negatif yang membalik arah pergerakan dana. Stored XSS ditemukan pada field description loan yang dirender via dangerouslySetInnerHTML, dengan payload cross-user yang diverifikasi melalui endpoint /xss dan disusun memakai String.fromCharCode untuk menghindari sanitasi kutip. Attempt kedua ditutup dengan skor akhir 742/750.",
     "url": ""
+  },
+  {
+    "id": "ad-kerberoasting-to-dcsync-acl-abuse-20260912",
+    "date": "2026-09-12",
+    "title": "Kerberoasting to DCSync through ACL abuse",
+    "platform": "TryHackMe",
+    "category": "Technique / Active Directory",
+    "tags": [
+      "active-directory",
+      "smb",
+      "null-session",
+      "password-cracking",
+      "winrm",
+      "chisel",
+      "socks-tunnel",
+      "kerberoasting",
+      "bloodhound",
+      "acl-abuse"
+    ],
+    "concepts": [
+      "Enumerasi SMB lewat null session dipakai sebagai langkah awal untuk menemukan share non default yang tidak muncul di enumerasi biasa",
+      "Arsip terenkripsi yang ditemukan di share dipecah secara offline dengan zip2john dan john, sehingga proses cracking tidak menyentuh target sama sekali",
+      "Kredensial domain hasil cracking dipakai untuk masuk lewat WinRM sebagai jalur foothold yang sah menurut sudut pandang target",
+      "Reverse SOCKS tunnel dengan Chisel dipakai supaya tooling lokal bisa menjangkau domain controller yang tidak reachable dari jaringan awal",
+      "Kerberoasting dijalankan dari balik tunnel untuk mendapatkan service account tanpa perlu akses langsung ke domain controller",
+      "Analisis hak yang bisa disalahgunakan dikerjakan di level data dengan jq di atas output JSON BloodHound, bukan lewat antarmuka grafisnya"
+    ],
+    "terms": [
+      "SMB null session",
+      "non default share",
+      "zip2john",
+      "john",
+      "WinRM",
+      "reverse SOCKS tunnel",
+      "Chisel",
+      "Kerberoasting",
+      "service account",
+      "ACL",
+      "BloodHound"
+    ],
+    "commands": [
+      "zip2john",
+      "john",
+      "chisel",
+      "evil-winrm",
+      "jq"
+    ],
+    "problems": [
+      "Domain controller tidak reachable langsung dari jaringan awal, sehingga seluruh tooling harus dijalankan lewat proxy tunnel",
+      "Share yang berisi arsip terenkripsi bukan share standar, jadi harus ditemukan lebih dulu lewat enumerasi null session"
+    ],
+    "summary": "Mengerjakan rantai serangan Active Directory penuh di lingkungan ujian. Dimulai dari enumerasi SMB lewat null session yang menemukan share non default berisi arsip terenkripsi, lalu arsip itu dipecah secara offline dengan zip2john dan john sampai keluar kredensial domain. Kredensial tersebut dipakai untuk masuk lewat WinRM. Dari titik itu dibangun reverse SOCKS tunnel memakai Chisel supaya domain controller yang tidak bisa diakses langsung tetap terjangkau. Kerberoasting dijalankan dari balik tunnel dan menghasilkan service account, lalu data ACL dari output JSON BloodHound dianalisis dengan jq untuk mencari hak yang bisa disalahgunakan.",
+    "url": ""
+  },
+  {
+    "id": "ad-genericall-to-domain-admin-bloodyad-20260912",
+    "date": "2026-09-12",
+    "title": "From GenericAll to Domain Admin with bloodyAD",
+    "platform": "TryHackMe",
+    "category": "Technique / Active Directory",
+    "tags": [
+      "active-directory",
+      "acl-abuse",
+      "genericall",
+      "bloodyad",
+      "dcsync",
+      "pass-the-hash",
+      "privilege-escalation"
+    ],
+    "concepts": [
+      "GenericAll terhadap grup Domain Admins adalah write primitive, dan cara termurah menyalahgunakannya adalah menambahkan anggota ke grup itu",
+      "Setelah keanggotaan grup berubah, akun yang dikuasai langsung mewarisi hak Domain Admin tanpa perlu kredensial tambahan",
+      "DCSync dipakai untuk menarik hash NTLM akun Administrator bawaan langsung dari domain controller",
+      "Pass the Hash mengubah hash menjadi sesi terautentikasi tanpa perlu memecahkan passwordnya lebih dulu",
+      "Hak istimewa di Active Directory tidak selalu berbentuk kredensial, kadang berbentuk izin objek yang terlihat sepele di permukaan"
+    ],
+    "terms": [
+      "GenericAll",
+      "group membership",
+      "Domain Admins",
+      "bloodyAD",
+      "DCSync",
+      "NTLM hash",
+      "Pass the Hash",
+      "evil-winrm"
+    ],
+    "commands": [
+      "bloodyAD",
+      "secretsdump",
+      "evil-winrm"
+    ],
+    "problems": [
+      "Menentukan objek mana yang benar benar bisa dieksploitasi dari puluhan relasi ACL yang muncul di output BloodHound",
+      "Relasi yang secara teori bisa disalahgunakan belum tentu punya jalur yang praktis dari akun yang sudah dikuasai"
+    ],
+    "summary": "Lanjutan dari analisis ACL. Ditemukan service account memiliki GenericAll terhadap grup Domain Admins, lalu bloodyAD dipakai untuk memasukkan akun tersebut ke dalam grup itu. Setelah berstatus Domain Admin, DCSync dijalankan untuk menarik hash NTLM akun Administrator bawaan, dilanjutkan Pass the Hash lewat evil-winrm. Pelajaran utamanya adalah hak istimewa di Active Directory tidak selalu berbentuk kredensial, kadang berbentuk izin objek yang terlihat sepele di permukaan.",
+    "url": ""
+  },
+  {
+    "id": "web-unauthenticated-rce-data-analysis-tool-20260912",
+    "date": "2026-09-12",
+    "title": "Unauthenticated RCE in a data analysis web tool",
+    "platform": "TryHackMe",
+    "category": "Web Exploitation",
+    "tags": [
+      "web-exploitation",
+      "rce",
+      "python",
+      "sandbox-escape",
+      "feature-flag",
+      "gtfobins",
+      "privilege-escalation",
+      "linux"
+    ],
+    "concepts": [
+      "Eksploitasi tidak selalu langsung jalan, kadang butuh satu langkah persiapan berupa mengaktifkan fitur yang secara default mati lewat endpoint pengaturan",
+      "Penyuntikan os.system lewat builtins pandas dipakai sebagai jalan keluar dari pembatasan evaluasi ekspresi",
+      "Fitur custom filter yang dimaksudkan untuk kenyamanan pengguna berubah jadi jalur eksekusi kode ketika inputnya dievaluasi apa adanya",
+      "Privilege escalation memakai sudo NOPASSWD pada strace sesuai teknik yang terdokumentasi di GTFOBins"
+    ],
+    "terms": [
+      "unauthenticated RCE",
+      "feature flag",
+      "custom filter",
+      "os.system",
+      "pandas builtins",
+      "sudo NOPASSWD",
+      "strace",
+      "GTFOBins"
+    ],
+    "commands": [
+      "curl",
+      "strace"
+    ],
+    "problems": [
+      "Endpoint eksploitasinya tidak langsung jalan karena fiturnya dalam keadaan disabled, sehingga butuh satu langkah persiapan yang tidak disebut di PoC publik mana pun",
+      "Versi tool yang lawas membuat referensi eksploit publik tidak seluruhnya cocok dengan perilaku target"
+    ],
+    "summary": "Menemukan host Linux yang menjalankan tool analisis data berbasis web versi lawas. Jalur eksploitasinya lewat fitur custom filter yang secara default mati, jadi fitur itu harus diaktifkan dulu lewat endpoint pengaturan sebelum payload bisa masuk. Payloadnya menyuntik os.system lewat builtins pandas. Setelah mendapat shell, privilege escalation dilakukan lewat sudo NOPASSWD pada strace sesuai teknik GTFOBins.",
+    "url": ""
+  },
+  {
+    "id": "windows-iis-upload-to-system-seimpersonate-20260912",
+    "date": "2026-09-12",
+    "title": "IIS upload bypass to SYSTEM via SeImpersonatePrivilege",
+    "platform": "TryHackMe",
+    "category": "Privilege Escalation",
+    "tags": [
+      "windows",
+      "iis",
+      "file-upload",
+      "content-discovery",
+      "feroxbuster",
+      "seimpersonateprivilege",
+      "godpotato",
+      "privilege-escalation"
+    ],
+    "concepts": [
+      "Filter ukuran respons pada content discovery dipakai untuk membuang halaman error generik yang semuanya balik dengan kode dan panjang yang sama",
+      "Direktori upload non standar baru ketemu setelah noise hasil scan disaring, bukan dari wordlist bawaan",
+      "Upload file aspx yang tidak dibatasi memberi eksekusi kode dengan identitas application pool",
+      "SeImpersonatePrivilege yang melekat pada identitas application pool dinaikkan jadi SYSTEM lewat token impersonation",
+      "Teknik yang sama pernah gagal dijalankan pada percobaan sebelumnya, dan kali ini berhasil setelah langkah discovery diperbaiki"
+    ],
+    "terms": [
+      "IIS",
+      "application pool identity",
+      "unrestricted file upload",
+      "aspx webshell",
+      "response size filtering",
+      "SeImpersonatePrivilege",
+      "token impersonation",
+      "GodPotato"
+    ],
+    "commands": [
+      "feroxbuster",
+      "GodPotato-NET4"
+    ],
+    "problems": [
+      "Direktori upload tidak tertebak dari wordlist biasa",
+      "Noise berupa respons error generik membuat hasil scan awal tidak terbaca sampai filter ukuran respons dipasang"
+    ],
+    "summary": "Host Windows Server menjalankan aplikasi berbagi gambar di IIS. Direktori uploadnya tidak standar dan baru ketemu memakai feroxbuster dengan filter ukuran respons untuk membuang halaman error generik yang semuanya balik dengan kode dan panjang seragam. Upload file aspx tidak dibatasi, sehingga didapat eksekusi kode sebagai identitas application pool. Kenaikan ke SYSTEM dilakukan dengan GodPotato yang menyalahgunakan SeImpersonatePrivilege. Ini teknik yang sama dengan yang gagal dijalankan pada percobaan pertama, dan kali ini berhasil.",
+    "url": ""
+  },
+  {
+    "id": "web-negative-amounts-dangerouslysetinnerhtml-20260912",
+    "date": "2026-09-12",
+    "title": "Negative amounts and dangerouslySetInnerHTML",
+    "platform": "TryHackMe",
+    "category": "Web Exploitation",
+    "tags": [
+      "web-exploitation",
+      "business-logic",
+      "stored-xss",
+      "react",
+      "flask",
+      "output-encoding",
+      "payload-encoding"
+    ],
+    "concepts": [
+      "Broken business logic muncul ketika nilai transaksi negatif diterima apa adanya, sehingga arah aliran dana terbalik",
+      "Perlakuan encoding yang tidak konsisten antar field membuat satu kolom aman sementara kolom lain menyimpan input mentah",
+      "Kolom deskripsi yang disimpan mentah lalu dirender lewat dangerouslySetInnerHTML menjadi jalur stored XSS",
+      "Batasan karakter pada payload diakali dengan String.fromCharCode supaya tidak ada karakter kutip yang merusak encoding",
+      "Verifikasi XSS menuntut bukti dampak lintas pengguna, karena self XSS tidak dihitung sebagai temuan"
+    ],
+    "terms": [
+      "business logic flaw",
+      "negative amount",
+      "stored XSS",
+      "output encoding",
+      "dangerouslySetInnerHTML",
+      "String.fromCharCode",
+      "self XSS"
+    ],
+    "commands": [],
+    "problems": [
+      "Verifikasi XSS menuntut bukti dampak lintas pengguna, dan self XSS ditolak mentah mentah",
+      "Syarat pembuktian itu baru ketahuan setelah deskripsi task dibaca pelan pelan"
+    ],
+    "summary": "Dua kelemahan pada aplikasi perbankan React dengan API Flask di belakangnya. Pertama broken business logic, di mana transaksi bernilai negatif membuat arah aliran dana terbalik. Kedua stored XSS pada kolom deskripsi, yang diperlakukan berbeda dari kolom pesan transaksi yang sudah di-encode. Kolom deskripsi disimpan mentah lalu dirender memakai dangerouslySetInnerHTML. Payloadnya harus memakai String.fromCharCode supaya tidak ada karakter kutip yang merusak encoding.",
+    "url": ""
+  },
+  {
+    "id": "reporting-remediation-driven-vulnerability-class-20260912",
+    "date": "2026-09-12",
+    "title": "Remediation decides the vulnerability class, not the payload",
+    "platform": "TryHackMe",
+    "category": "Documentation",
+    "tags": [
+      "reporting",
+      "vulnerability-classification",
+      "taxonomy",
+      "remediation",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "Klasifikasi kerentanan ditentukan oleh bentuk perbaikannya, bukan oleh bentuk payload yang dipakai untuk membuktikannya",
+      "Temuan yang perbaikannya berupa upgrade versi software pihak ketiga masuk kategori outdated software, bukan command injection",
+      "Kategori injeksi baru tepat ketika kerentanannya ada di kode yang ditulis sendiri oleh target dan perbaikannya berupa sanitasi input",
+      "Kesalahan kategori berdampak langsung ke penilaian komponen Vulnerability Identification pada laporan"
+    ],
+    "terms": [
+      "vulnerability taxonomy",
+      "command injection",
+      "outdated software",
+      "remediation",
+      "Vulnerability Identification",
+      "report scoring"
+    ],
+    "commands": [],
+    "problems": [
+      "Pemilihan kategori gampang terbawa oleh cara eksploitasinya, padahal yang dinilai adalah apakah kategorinya menunjuk ke perbaikan yang benar"
+    ],
+    "summary": "Pelajaran paling mahal minggu ini. Satu temuan diklasifikasikan sebagai command injection karena payloadnya memang menyuntik perintah, padahal perbaikannya cuma upgrade versi software pihak ketiga. Klasifikasi yang benar adalah outdated software. Patokannya ada pada remediasi, bukan pada bentuk payload. Kalau kerentanannya ada di kode yang ditulis sendiri oleh target dan perbaikannya berupa sanitasi input, barulah itu injeksi. Salah kategori seperti ini memakan poin di komponen Vulnerability Identification.",
+    "url": ""
+  },
+  {
+    "id": "web-chained-vulnerabilities-guided-pentest-20260912",
+    "date": "2026-09-12",
+    "title": "Chained web vulnerabilities in a guided pentest",
+    "platform": "TryHackMe",
+    "category": "Web Exploitation",
+    "tags": [
+      "web-exploitation",
+      "idor",
+      "password-reset",
+      "file-upload",
+      "webshell",
+      "reverse-shell",
+      "nmap",
+      "gobuster"
+    ],
+    "concepts": [
+      "Rantai serangan dibangun berurutan dari recon sampai RCE, dan tiap kelemahan kecil jadi pijakan untuk kelemahan berikutnya",
+      "IDOR muncul di halaman profil sekaligus di endpoint API yang tidak membutuhkan autentikasi",
+      "Token reset password yang bocor dipakai untuk mengambil alih akses ke panel admin",
+      "Filter upload dilewati dengan ekstensi alternatif phtml yang masih dieksekusi oleh server",
+      "Web shell PHP dinaikkan jadi reverse shell supaya sesi interaktifnya lebih stabil"
+    ],
+    "terms": [
+      "IDOR",
+      "unauthenticated API endpoint",
+      "password reset token",
+      "admin panel",
+      "upload filter bypass",
+      "phtml",
+      "web shell",
+      "reverse shell"
+    ],
+    "commands": [
+      "nmap",
+      "gobuster",
+      "curl"
+    ],
+    "problems": [
+      "Filter upload menolak ekstensi PHP yang umum, sehingga harus dicari ekstensi alternatif yang masih dieksekusi oleh server"
+    ],
+    "summary": "Menyelesaikan room guided pentest web di modul Penetration Testing Foundation. Rantainya lengkap dari recon sampai RCE, mulai dari enumerasi memakai Nmap dan Gobuster, inspeksi header memakai curl, IDOR di halaman profil plus endpoint API yang tidak membutuhkan autentikasi, token reset password yang bocor, akses panel admin, bypass filter upload memakai ekstensi phtml, sampai web shell PHP yang dinaikkan menjadi reverse shell.",
+    "url": ""
+  },
+  {
+    "id": "hunting-network-telemetry-attribution-limits-20260912",
+    "date": "2026-09-12",
+    "title": "What network telemetry alone cannot tell you",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "telemetry",
+      "process-attribution",
+      "siem",
+      "edr",
+      "evidence-discipline",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "Event jaringan di SIEM hanya menyimpan alamat, port, dan waktu, sehingga tidak bisa dipakai untuk mengatribusikan trafik ke satu binary tertentu",
+      "Atribusi proses hanya bisa datang dari agen endpoint, karena agen itulah yang mencatat proses mana yang membuka socket",
+      "Kemampuan tiap sumber data harus dipetakan lebih dulu sebelum menulis kesimpulan yang terdengar meyakinkan",
+      "Kesimpulan yang kebetulan benar tetap salah secara metode kalau buktinya tidak berasal dari sumber yang memang merekam hal itu"
+    ],
+    "terms": [
+      "network telemetry",
+      "process attribution",
+      "endpoint agent",
+      "socket ownership",
+      "evidence discipline"
+    ],
+    "commands": [],
+    "problems": [
+      "Klaim yang salah lolos dari review karena hasil akhirnya kebetulan benar, jadi tidak terlihat salah sampai metodenya diperiksa ulang"
+    ],
+    "summary": "Mereview laporan investigasi sendiri dan menemukan satu klaim yang tidak berdasar. Laporannya ditulis seolah trafik keluar yang terlihat di SIEM bisa diatribusikan ke satu binary tertentu, padahal event jaringan di SIEM cuma menyimpan alamat, port, dan waktu. Yang bisa memberi atribusi proses adalah agen endpoint, karena agen itu yang mencatat proses mana yang membuka socket. Pelajarannya adalah membedakan dulu apa yang benar benar direkam oleh sumber data sebelum menulis kesimpulan yang terdengar meyakinkan.",
+    "url": ""
+  },
+  {
+    "id": "hunting-default-dataset-missing-records-20260913",
+    "date": "2026-09-13",
+    "title": "When the default dataset does not record what you need",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "xdr",
+      "xql",
+      "dataset",
+      "query-design",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "Dataset default pada platform XDR tidak mencatat koneksi TCP yang berhasil dan hanya menyimpan yang ditolak",
+      "Preset yang khusus menangani cerita jaringan memberi data lengkap untuk pertanyaan atribusi per koneksi",
+      "Hasil kosong adalah pertanyaan, bukan jawaban, jadi kemampuan sumber datanya harus dicek sebelum menyimpulkan tidak ada kejadian",
+      "Pemilihan antara dataset dan preset merupakan keputusan desain query, bukan detail teknis yang bisa diabaikan"
+    ],
+    "terms": [
+      "dataset",
+      "preset",
+      "XQL",
+      "empty result",
+      "connection attribution"
+    ],
+    "commands": [],
+    "problems": [
+      "Tidak ada pesan error apa pun ketika datanya tidak ada, hasilnya cuma tabel kosong yang gampang disalahartikan sebagai ketiadaan aktivitas"
+    ],
+    "summary": "Query atribusi per koneksi awalnya selalu balik kosong dan sempat dikira memang tidak ada trafiknya. Ternyata dataset default di platform XDR tidak mencatat koneksi TCP yang berhasil dan hanya menyimpan yang ditolak. Setelah pindah ke preset yang khusus mengurusi cerita jaringan, datanya lengkap. Pelajaran metodenya adalah hasil kosong itu pertanyaan, bukan jawaban, jadi cek dulu apakah sumbernya memang tidak punya datanya sebelum menyimpulkan tidak ada kejadiannya.",
+    "url": ""
+  },
+  {
+    "id": "hunting-hash-pivot-estate-wide-scoping-20260913",
+    "date": "2026-09-13",
+    "title": "Pivoting from one hash to every host running it",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pivoting",
+      "file-hash",
+      "incident-scoping",
+      "proxyware",
+      "indicator-expansion"
+    ],
+    "concepts": [
+      "Hash binary dipakai sebagai titik pivot untuk mencari instalasi lain dari binary yang sama di seluruh estate",
+      "Cakupan insiden ditentukan oleh sejauh mana indikator ditarik, bukan oleh jumlah alert yang kebetulan masuk",
+      "Investigasi yang berhenti di host pertama belum selesai, karena host lain bisa menjalankan binary yang sama tanpa memicu alert",
+      "Endpoint kedua yang ditemukan lewat pivot ternyata masih aktif dan mengirim data dalam jumlah besar"
+    ],
+    "terms": [
+      "file hash",
+      "estate-wide search",
+      "pivoting",
+      "incident scoping",
+      "indicator expansion"
+    ],
+    "commands": [],
+    "problems": [
+      "Cakupan insiden awalnya diasumsikan cuma satu host karena hanya satu yang muncul di antrian alert"
+    ],
+    "summary": "Setelah hash binarynya didapat, investigasi dipivot dari satu endpoint ke pencarian lintas seluruh estate untuk mencari instalasi lain dari binary yang sama. Hasilnya ditemukan endpoint kedua yang masih aktif dan mengirim data dalam jumlah besar. Pelajarannya adalah investigasi yang berhenti di host pertama itu belum selesai, karena yang menentukan cakupan insiden bukan alert yang masuk, melainkan seberapa jauh indikator yang sudah ada ditarik.",
+    "url": ""
+  },
+  {
+    "id": "hunting-traffic-asymmetry-exit-node-evidence-20260913",
+    "date": "2026-09-13",
+    "title": "Traffic asymmetry as evidence of exit node behaviour",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "proxyware",
+      "traffic-analysis",
+      "behavioural-signature",
+      "bandwidth-sharing"
+    ],
+    "concepts": [
+      "Bukti fungsi aplikasi diambil dari bentuk trafiknya, bukan dari nama prosesnya",
+      "Volume kirim yang jauh lebih besar daripada volume terima merupakan kebalikan dari pola aplikasi konsumen normal yang umumnya lebih banyak menerima",
+      "Rasio kirim terhadap terima yang konsisten di dua endpoint memperkuat kesimpulan bahwa perilakunya memang bawaan aplikasi",
+      "Ketika verdict reputasi tidak tegas, argumen harus dibangun dari perilaku yang terukur"
+    ],
+    "terms": [
+      "send versus receive ratio",
+      "proxyware",
+      "exit node",
+      "behavioural signature",
+      "multi engine reputation"
+    ],
+    "commands": [],
+    "problems": [
+      "Reputasi vendor di layanan multi engine tidak memberi jawaban tegas, sehingga argumennya harus dibangun dari perilaku, bukan dari verdict"
+    ],
+    "summary": "Bukti paling kuat bahwa aplikasi ini menjual bandwidth bukan datang dari nama prosesnya, melainkan dari bentuk trafiknya. Volume kirim jauh lebih besar daripada volume terima, kebalikan dari pola aplikasi konsumen normal yang umumnya lebih banyak menerima. Rasio ini konsisten di kedua endpoint. Pelajarannya adalah bentuk trafik bisa menjadi bukti fungsi, bukan sekadar bukti keberadaan.",
+    "url": ""
+  },
+  {
+    "id": "hunting-integrity-level-registry-autostart-signals-20260913",
+    "date": "2026-09-13",
+    "title": "Integrity level and registry autostart as triage signals",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "integrity-level",
+      "persistence",
+      "registry",
+      "run-key",
+      "artefacts",
+      "risk-assessment"
+    ],
+    "concepts": [
+      "Proses yang berjalan di integrity level Medium menandakan instalasi maupun eksekusinya tidak membutuhkan hak administrator",
+      "Asumsi bahwa aplikasi seperti ini butuh akses istimewa gugur begitu integrity levelnya diperiksa",
+      "Mekanisme autostart terbukti bukan dari pengamatan langsung, melainkan dari nilai registry yang dihapus saat proses uninstall",
+      "Jejak penghapusan kadang menjadi bukti keberadaan yang lebih jelas daripada jejak pembuatan"
+    ],
+    "terms": [
+      "integrity level",
+      "Medium integrity",
+      "registry run key",
+      "persistence",
+      "uninstall artefact"
+    ],
+    "commands": [],
+    "problems": [
+      "Mekanisme autostart sudah tidak terlihat saat investigasi dimulai, karena aplikasinya keburu dicabut"
+    ],
+    "summary": "Dua detail kecil yang mengubah penilaian risiko. Pertama, prosesnya berjalan di integrity level Medium, artinya tidak membutuhkan hak administrator untuk install maupun untuk jalan, sehingga asumsi bahwa ini butuh akses istimewa gugur. Kedua, mekanisme autostartnya terbukti bukan dari pengamatan langsung, melainkan dari nilai registry yang dihapus saat proses uninstall. Jejak penghapusan kadang jadi bukti keberadaan yang lebih jelas daripada jejak pembuatan.",
+    "url": ""
+  },
+  {
+    "id": "reporting-protocol-claim-correction-pre-publication-20260913",
+    "date": "2026-09-13",
+    "title": "Correcting the protocol claim before the report goes out",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "reporting",
+      "self-review",
+      "protocol-identification",
+      "evidence-driven",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "Draft pertama laporan menyebut jalur trafik utamanya TCP di port web standar, dan itu terbantah setelah data atribusi per koneksi lengkap",
+      "Jalur utama yang sebenarnya adalah UDP di port tinggi ke infrastruktur luar negeri, sementara TCP hanya bagian kecil",
+      "Seluruh bagian teknis laporan direvisi sebelum dikirim, karena laporan yang belum dikirim masih berstatus draft",
+      "Mencabut argumen sendiri di tengah jalan jauh lebih murah daripada dikoreksi orang lain setelah laporannya terbit"
+    ],
+    "terms": [
+      "protocol identification",
+      "UDP",
+      "TCP",
+      "connection attribution",
+      "pre-publication review"
+    ],
+    "commands": [],
+    "problems": [
+      "Asumsi protokol awal terbentuk dari alert pertama yang kebetulan cuma menunjukkan sebagian kecil trafik"
+    ],
+    "summary": "Draft pertama laporan menulis jalur trafik utamanya TCP di port web standar. Setelah data atribusi per koneksi lengkap, ternyata jalur utamanya UDP di port tinggi ke infrastruktur luar negeri, dan yang TCP cuma bagian kecil. Seluruh bagian teknis laporan direvisi sebelum dikirim. Pelajarannya adalah laporan yang belum dikirim itu masih draft, dan mencabut argumen sendiri di tengah jalan itu murah, jauh lebih murah daripada dikoreksi orang lain setelah terbit.",
+    "url": ""
+  },
+  {
+    "id": "supabase-idempotent-bulk-seeding-20260914",
+    "date": "2026-09-14",
+    "title": "Idempotent bulk seeding in Supabase",
+    "platform": "Personal Project",
+    "category": "Data Management",
+    "tags": [
+      "supabase",
+      "postgres",
+      "sql",
+      "seeding",
+      "idempotency",
+      "type-inference",
+      "data-modeling"
+    ],
+    "concepts": [
+      "Pola cross join values dipakai supaya user_id dan semester_id ikut keresolve otomatis dari baris semester yang aktif, tanpa hardcode ID",
+      "Semua baris diberi prefix ID yang seragam supaya bisa dihapus bersih dengan satu delete where id like sebelum di-insert ulang",
+      "Pola hapus sebelum insert membuat skrip seeding aman dijalankan berkali kali",
+      "Baris pertama pada daftar values butuh cast eksplisit ke text supaya type inference Postgres tidak salah tebak tipe kolomnya"
+    ],
+    "terms": [
+      "cross join",
+      "values list",
+      "idempotent seed",
+      "prefix-based cleanup",
+      "type inference",
+      "duplicate key error"
+    ],
+    "commands": [],
+    "problems": [
+      "Run kedua memberi duplicate key error, yang ternyata bukan tanda data korup melainkan tanda data lama masih ada dan butuh pola hapus sebelum insert"
+    ],
+    "summary": "Mengisi data jadwal tutorial online ke app kuliah sendiri. Memakai pola cross join values supaya user_id dan semester_id keresolve otomatis dari baris semester yang aktif, jadi tidak perlu hardcode ID. Semua baris diberi prefix ID yang seragam supaya bisa dihapus bersih memakai satu delete where id like sebelum di-insert ulang, sehingga skripnya aman dijalankan berkali kali. Satu jebakan kecil, baris pertama di daftar values butuh cast ke text supaya type inferencenya tidak salah tebak.",
+    "url": ""
+  },
+  {
+    "id": "triage-scanner-noise-versus-targeted-probing-20260915",
+    "date": "2026-09-15",
+    "title": "Separating scanner noise from targeted probing",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "alert-triage",
+      "waf",
+      "user-agent",
+      "scanning",
+      "reconnaissance",
+      "false-positive"
+    ],
+    "concepts": [
+      "Pembeda antara reconnaissance luas dan percobaan yang terarah adalah kombinasi user agent, pola request, dan kode respons",
+      "User agent yang jujur menunjukkan tooling otomatis menjadi sinyal triage pertama yang murah untuk dicek",
+      "Pola request yang menembak banyak host tanpa menyesuaikan diri dengan respons menandakan pemindaian luas, bukan percobaan terarah",
+      "Kode respons yang seragam memperkuat kesimpulan bahwa percobaannya tidak pernah mendapat pijakan"
+    ],
+    "terms": [
+      "user agent",
+      "scan breadth",
+      "targeted probing",
+      "response code pattern",
+      "WAF alert"
+    ],
+    "commands": [],
+    "problems": [
+      "Judul alert dan tingkat severity bawaan tidak bisa dipakai untuk memutuskan, sehingga karakteristik requestnya sendiri yang harus dibaca"
+    ],
+    "summary": "Triage beberapa alert WAF dalam satu sesi. Yang membedakan reconnaissance luas dari percobaan yang terarah adalah kombinasi tiga hal, yaitu user agent yang jujur menunjukkan tooling otomatis, pola request yang menembak banyak host tanpa menyesuaikan diri dengan respons, dan kode respons yang seragam. Alert yang terlihat serem di judul ternyata cuma pemindaian internet luas yang tidak pernah mendapat pijakan.",
+    "url": ""
+  },
+  {
+    "id": "triage-double-encoded-cookie-false-positive-20260915",
+    "date": "2026-09-15",
+    "title": "Double-encoded analytics cookies as a false positive",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "alert-triage",
+      "waf",
+      "false-positive",
+      "url-encoding",
+      "path-traversal",
+      "root-cause-analysis"
+    ],
+    "concepts": [
+      "Pemicu alert path traversal ternyata cookie dari pustaka analitik pihak ketiga yang nilainya ter-encode dua kali",
+      "Hasil encoding berlapis kebetulan mengandung pola yang cocok dengan signature traversal",
+      "Pembuktiannya dilakukan dengan mendekode nilai cookie lapis demi lapis sampai isi aslinya terlihat",
+      "Signature match pada field yang bukan path layak dicurigai lebih dulu sebagai false positive"
+    ],
+    "terms": [
+      "double URL encoding",
+      "path traversal signature",
+      "analytics cookie",
+      "false positive",
+      "root cause analysis"
+    ],
+    "commands": [],
+    "problems": [
+      "Payloadnya benar benar cocok dengan pola traversal secara literal, sehingga tidak bisa dibantah tanpa menunjukkan asal usul nilainya"
+    ],
+    "summary": "Alert path traversal yang setelah ditelusuri ternyata bukan serangan sama sekali. Pemicunya cookie dari pustaka analitik pihak ketiga yang nilainya ter-encode dua kali, dan hasil encodingnya kebetulan mengandung pola yang cocok dengan signature traversal. Cara memastikannya dengan mendekode manual nilai cookie itu lapis demi lapis sampai isi aslinya terlihat. Pelajarannya adalah signature match di field yang bukan path itu layak dicurigai duluan sebagai false positive.",
+    "url": ""
+  },
+  {
+    "id": "reporting-impact-calibration-session-token-binding-20260915",
+    "date": "2026-09-15",
+    "title": "Calibrating impact before you name it",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "reporting",
+      "severity",
+      "sensitive-data-exposure",
+      "logging",
+      "session-token",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "Dampak awal ditulis sebagai pengambilalihan akun, dan itu terbantah setelah dokumentasi aplikasinya dibaca",
+      "Token sesi diikat ke identifier browser, sehingga token yang dipegang pihak lain tidak otomatis bisa dipakai",
+      "Framing temuan diturunkan menjadi praktik logging yang tidak aman dan paparan data sensitif di log, bukan celah yang langsung bisa dieksploitasi",
+      "Severity adalah klaim teknis yang harus dibuktikan, bukan kesan pertama",
+      "Field yang menyimpan kredensial atau token tidak boleh ikut terekam utuh di log perangkat jaringan, dan maskingnya diatur lewat kebijakan logging"
+    ],
+    "terms": [
+      "sensitive data exposure",
+      "session token binding",
+      "browser identifier",
+      "severity calibration",
+      "log field masking"
+    ],
+    "commands": [],
+    "problems": [
+      "Dampak yang dilebih lebihkan di awal akan terbantah saat presentasi, dan itu merusak kredibilitas temuan yang sebenarnya valid"
+    ],
+    "summary": "Menemukan sesuatu di log lalu langsung menulis dampaknya sebagai pengambilalihan akun. Setelah dokumentasi aplikasinya dibaca, ternyata token sesinya diikat ke identifier browser, sehingga token yang dipegang orang lain tidak otomatis kepakai. Framingnya diturunkan menjadi praktik logging yang tidak aman dan paparan data sensitif di log, bukan celah yang langsung bisa dieksploitasi. Pelajarannya adalah severity itu klaim teknis yang harus dibuktikan, bukan kesan pertama. Prinsip umumnya, field yang menyimpan kredensial atau token tidak boleh ikut terekam utuh di log perangkat jaringan, dan maskingnya diatur di kebijakan logging.",
+    "url": ""
+  },
+  {
+    "id": "recon-web-app-fingerprinting-page-source-20260915",
+    "date": "2026-09-15",
+    "title": "Fingerprinting a web app from its page source",
+    "platform": "Work",
+    "category": "Reconnaissance",
+    "tags": [
+      "reconnaissance",
+      "passive-recon",
+      "fingerprinting",
+      "debug-flag",
+      "end-of-life",
+      "javascript-library",
+      "scope-discipline"
+    ],
+    "concepts": [
+      "Postur keamanan aplikasi web bisa dinilai dari page source tanpa pengujian aktif sama sekali",
+      "Flag debug yang terbawa ke produksi membocorkan detail internal yang tidak seharusnya terlihat dari browser biasa",
+      "String versi platform bisa dicocokkan ke tanggal akhir dukungan untuk menilai risiko perangkat lunak yang sudah habis masa dukungannya",
+      "Versi pustaka JavaScript sisi klien bisa dicek ke daftar kerentanan publik tanpa menyentuh servernya",
+      "Semua sinyal itu berasal dari respons yang memang dikirim server ke browser biasa"
+    ],
+    "terms": [
+      "passive fingerprinting",
+      "page source",
+      "debug flag",
+      "end of life",
+      "client-side library version",
+      "public vulnerability list"
+    ],
+    "commands": [],
+    "problems": [
+      "Godaan untuk langsung menguji proof of concept itu besar, padahal tanpa izin tertulis itu garis yang tidak boleh dilewati, apalagi kalau asetnya milik entitas lain"
+    ],
+    "summary": "Latihan membaca page source untuk menentukan postur keamanan aplikasi web tanpa menyentuh apa pun. Tiga hal yang paling cepat memberi gambaran, yaitu flag debug yang terbawa ke produksi dan membocorkan detail internal, string versi platform yang bisa dicocokkan ke tanggal akhir dukungan, dan versi pustaka JavaScript yang bisa dicek ke daftar kerentanan publik. Semuanya dari respons yang memang dikirim server ke browser biasa, tanpa pengujian aktif sama sekali.",
+    "url": ""
+  },
+  {
+    "id": "detection-cross-platform-query-translation-20260916",
+    "date": "2026-09-16",
+    "title": "Translating hunting logic between two query languages",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "detection-engineering",
+      "query-language",
+      "siem",
+      "xdr",
+      "threat-hunting",
+      "payload-search"
+    ],
+    "concepts": [
+      "Menerjemahkan query hunting antar platform bukan cuma soal sintaks, tapi soal aturan urutan klausa yang kaku di salah satunya",
+      "Pengurutan harus ditulis sebelum pembatasan jumlah, dan pembatasan jumlah harus ditulis sebelum klausa rentang waktu",
+      "Pencarian di payload mentah membutuhkan fungsi konversi teks, karena operator pencocokan pola tidak jalan langsung di field payload",
+      "Query yang secara logika benar tetap ditolak parser kalau urutan klausanya salah"
+    ],
+    "terms": [
+      "query translation",
+      "clause ordering",
+      "sort before limit",
+      "time range clause",
+      "payload text conversion",
+      "pattern matching operator"
+    ],
+    "commands": [],
+    "problems": [
+      "Pesan error dari parser tidak menunjuk ke urutan klausa sebagai penyebabnya, sehingga penyebab sebenarnya baru ketemu lewat percobaan"
+    ],
+    "summary": "Menerjemahkan dua query hunting dari bahasa query XDR ke bahasa query SIEM. Yang dipelajari bukan sintaksnya saja, melainkan urutan klausa yang kaku di salah satunya, yaitu pengurutan harus sebelum pembatasan jumlah, dan pembatasan jumlah harus sebelum klausa rentang waktu. Untuk pencarian di payload mentah, fungsi konversi teks wajib dipasang, karena operator pencocokan pola tidak jalan langsung di field payload.",
+    "url": ""
+  },
+  {
+    "id": "detection-hash-filtering-custom-property-20260916",
+    "date": "2026-09-16",
+    "title": "A platform limit that was actually a configuration difference",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "detection-engineering",
+      "siem",
+      "custom-property",
+      "parsing",
+      "file-hash",
+      "configuration",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "Pemfilteran berdasarkan hash file sempat dianggap mustahil di SIEM karena tidak ada field bawaannya",
+      "Pemfilteran itu ternyata bisa lewat properti hasil ekstraksi kustom yang dibuat dari log sumber endpoint",
+      "Properti kustom harus diset supaya di-parse di awal, bukan cuma saat ditampilkan di antarmuka",
+      "Kalau opsi parse di awal mati, query terstruktur balik kosong padahal pencarian cepat di antarmuka menunjukkan ada hasilnya",
+      "Kalimat platform ini tidak bisa sering sebenarnya berarti instance ini belum dikonfigurasi begitu"
+    ],
+    "terms": [
+      "custom extracted property",
+      "parse time",
+      "display time",
+      "file hash filtering",
+      "platform capability",
+      "configuration"
+    ],
+    "commands": [],
+    "problems": [
+      "Gejalanya menyesatkan, karena antarmuka menunjukkan datanya ada tapi query terstruktur balik kosong tanpa error"
+    ],
+    "summary": "Sempat yakin pemfilteran berdasarkan hash file tidak mungkin dilakukan di SIEM, karena memang tidak ada field bawaannya. Ternyata bisa, lewat properti hasil ekstraksi kustom yang dibuat dari log sumber endpoint. Syaratnya properti itu harus diset supaya di-parse di awal, bukan cuma saat ditampilkan di antarmuka. Kalau opsi itu mati, query balik kosong padahal pencarian cepat di antarmuka menunjukkan ada hasilnya. Pelajarannya, kalimat platform ini tidak bisa sering sebenarnya berarti instance ini belum dikonfigurasi begitu.",
+    "url": ""
+  },
+  {
+    "id": "pt1-junior-penetration-tester-certification-passed-20260917",
+    "date": "2026-09-17",
+    "title": "Junior Penetration Tester certification passed",
+    "platform": "TryHackMe",
+    "category": "Lesson Learned / Methodology",
+    "tags": [
+      "certification",
+      "pt1",
+      "tryhackme",
+      "hands-on-exam",
+      "appeal",
+      "report-writing",
+      "business-risk",
+      "remediation-prioritisation"
+    ],
+    "concepts": [
+      "Sertifikasi hands-on berbayar pertama, lulus setelah pengajuan manual review diterima dan skornya disesuaikan",
+      "Surat banding yang sopan, fokus ke satu item spesifik, dan membawa bukti skor komponen terbukti efektif",
+      "Skor bagian ringkasan konsisten di bawah maksimal pada semua komponen",
+      "Ringkasan yang kurang menerjemahkan temuan teknis menjadi risiko bisnis dan kurang memberi urutan prioritas perbaikan jadi kelemahan yang berulang",
+      "Kelemahan menulis ini akan menggigit lagi kalau tidak dibenahi, karena sifatnya bukan kelemahan teknis"
+    ],
+    "terms": [
+      "hands-on certification",
+      "manual review",
+      "structured appeal",
+      "executive summary",
+      "business risk framing",
+      "remediation prioritisation"
+    ],
+    "commands": [],
+    "problems": [
+      "Kemampuan eksploitasi dan pengumpulan bukti sudah kuat, tapi kemampuan menulis ringkasan untuk pembaca non teknis masih ketinggalan"
+    ],
+    "summary": "Lulus ujian PT1 setelah pengajuan manual review diterima dan skornya disesuaikan. Ini sertifikasi hands-on berbayar pertama. Pelajaran yang terbawa dari proses banding adalah surat yang sopan, fokus ke satu item spesifik, dan membawa bukti skor komponen itu efektif. Pelajaran yang masih jadi PR adalah skor bagian ringkasan konsisten di bawah maksimal di semua komponen, karena ringkasannya kurang menerjemahkan temuan teknis jadi risiko bisnis dan kurang memberi urutan prioritas perbaikan. Ini kelemahan menulis yang akan menggigit lagi kalau tidak dibenerin.",
+    "url": ""
   }
 ]
