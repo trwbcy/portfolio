@@ -878,6 +878,7 @@ body {
 .ea-col-offense .ea-cert:hover,
 .ea-col-offense .ea-cert:focus-visible { background: oklch(0.16 0.04 25 / 0.55); border-right-color: var(--ea-red-dim); padding-right: 16px; }
 .ea-col-offense .ea-cert-year { color: oklch(0.55 0.06 25); }
+.ea-col-offense .ea-cert-merit  { color: var(--ea-red); }
 .ea-col-offense .ea-cert-issuer { color: var(--ea-red-mut); }
 .ea-col-offense .ea-cert-ev   { color: oklch(0.62 0.1 25); }
 
