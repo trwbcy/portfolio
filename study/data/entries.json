@@ -11315,5 +11315,492 @@
     ],
     "summary": "Lulus ujian PT1 setelah pengajuan manual review diterima dan skornya disesuaikan. Ini sertifikasi hands-on berbayar pertama. Pelajaran yang terbawa dari proses banding adalah surat yang sopan, fokus ke satu item spesifik, dan membawa bukti skor komponen itu efektif. Pelajaran yang masih jadi PR adalah skor bagian ringkasan konsisten di bawah maksimal di semua komponen, karena ringkasannya kurang menerjemahkan temuan teknis jadi risiko bisnis dan kurang memberi urutan prioritas perbaikan. Ini kelemahan menulis yang akan menggigit lagi kalau tidak dibenerin.",
     "url": ""
+  },
+  {
+    "id": "triage-low-and-slow-subnet-correlation-20260919",
+    "date": "2026-09-19",
+    "title": "Linking low-and-slow probes across a single subnet",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "alert-triage",
+      "reconnaissance",
+      "correlation",
+      "user-agent",
+      "web-attack",
+      "campaign-detection"
+    ],
+    "concepts": [
+      "Dua alert yang dibaca terpisah terlihat sebagai kejadian berdiri sendiri, dan hubungannya baru muncul setelah dijejerkan",
+      "Sumber yang berbeda alamat tapi masih berada dalam satu blok /24 menandakan kedekatan yang layak dicurigai",
+      "Target yang sama berupa berkas dump basis data memperkuat dugaan bahwa keduanya bagian dari satu rangkaian",
+      "Pergantian user agent antara Linux Chrome dan Windows Firefox merupakan usaha menyamarkan asal yang sama",
+      "Pola yang sengaja dibuat pelan dan disebar membuat tiap alert terlihat sepele saat dilihat sendiri sendiri",
+      "Triage per alert bisa melewatkan campaign, jadi kedekatan sumber dan kesamaan target perlu dicek sebelum kasus ditutup"
+    ],
+    "terms": [
+      "low and slow reconnaissance",
+      "subnet correlation",
+      "/24 block",
+      "User-Agent rotation",
+      "sensitive file probing",
+      "T1595"
+    ],
+    "commands": [],
+    "problems": [
+      "Tiap alert kalau dibaca sendiri sendiri cuma terlihat seperti satu request nyasar, sehingga korelasinya harus dicari manual"
+    ],
+    "summary": "Dua alert terpisah yang mencari berkas backup basis data di web server awalnya terlihat seperti dua kejadian yang tidak nyambung. Setelah dijejerkan, sumbernya berasal dari dua alamat berbeda tapi masih satu blok /24, menargetkan jenis berkas yang sama berupa dump SQL, dan user agentnya berganti ganti antara Linux Chrome dan Windows Firefox. Polanya pelan dan disebar supaya tiap alert terlihat sepele. Pelajarannya, triage per alert bisa melewatkan campaign, jadi cek juga kedekatan sumber dan kesamaan target sebelum menutup kasus.",
+    "url": ""
+  },
+  {
+    "id": "triage-redirect-is-not-a-block-20260919",
+    "date": "2026-09-19",
+    "title": "A redirect is not a block",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "alert-triage",
+      "http-status",
+      "redirect",
+      "data-exposure",
+      "verification",
+      "closure-quality"
+    ],
+    "concepts": [
+      "Respons 301 berarti server mengarahkan permintaan ke tempat lain, bukan menolaknya seperti 404 atau 403",
+      "Kalau tujuan redirect ternyata mengembalikan 200, berkas yang dicari benar benar ada dan bisa diunduh",
+      "Kasus seperti itu naik kelas dari sekadar reconnaissance menjadi paparan data",
+      "Sebelum menutup alert reconnaissance, tujuan redirect perlu dicek manual, jangan menganggap semua respons non 200 otomatis aman"
+    ],
+    "terms": [
+      "HTTP 301",
+      "HTTP 403",
+      "HTTP 404",
+      "redirect target",
+      "recon versus exposure",
+      "closure verification"
+    ],
+    "commands": [],
+    "problems": [
+      "Template penutupan standar cenderung meratakan semua respons non 200 menjadi gagal, padahal 3xx butuh satu langkah verifikasi tambahan"
+    ],
+    "summary": "Salah satu probe ke path berkas backup mendapat respons 301, bukan 404 atau 403. Kode 301 artinya server mengarahkan ke tempat lain, bukan menolak. Kalau tujuan redirectnya ternyata mengembalikan 200, berarti berkas backupnya benar benar ada dan bisa diunduh, dan itu sudah bukan reconnaissance lagi melainkan paparan data. Pelajarannya, sebelum menutup alert reconnaissance, cek dulu tujuan redirectnya secara manual, jangan anggap semua respons non 200 itu aman.",
+    "url": ""
+  },
+  {
+    "id": "detection-aql-external-traffic-query-fix-20260919",
+    "date": "2026-09-19",
+    "title": "Fixing and extending an AQL external-traffic query",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "detection-engineering",
+      "aql",
+      "siem",
+      "query-design",
+      "rfc1918",
+      "aggregation"
+    ],
+    "concepts": [
+      "Query gagal karena filter NOT INCIDR ditulis tanpa keyword WHERE di depannya",
+      "Ketiga rentang alamat privat RFC1918 dikecualikan supaya yang tersisa hanya trafik eksternal",
+      "DOMAINNAME dipakai untuk mengganti ID domain menjadi nama domain supaya hasilnya terbaca manusia",
+      "UNIQUECOUNT pada alamat sumber membedakan volume tinggi dari satu alamat saja dengan sweep yang datang dari banyak sumber",
+      "Kolom hitungan sumber unik itu yang paling menentukan saat menilai apakah aktivitasnya terpusat atau tersebar"
+    ],
+    "terms": [
+      "AQL",
+      "NOT INCIDR",
+      "RFC1918",
+      "DOMAINNAME",
+      "UNIQUECOUNT",
+      "distributed sweep"
+    ],
+    "commands": [
+      "NOT INCIDR()",
+      "DOMAINNAME()",
+      "UNIQUECOUNT()"
+    ],
+    "problems": [
+      "Pesan errornya tidak langsung menunjuk ke keyword yang hilang, sehingga struktur klausanya harus dibaca ulang dari awal"
+    ],
+    "summary": "Query AQL error karena filter NOT INCIDR ditulis tanpa keyword WHERE di depannya. Setelah dibetulkan, querynya sekalian dilebarkan, yaitu mengecualikan ketiga rentang RFC1918 supaya yang tersisa hanya trafik eksternal, mengganti ID domain menjadi nama domain memakai DOMAINNAME supaya hasilnya terbaca, dan menambahkan UNIQUECOUNT pada alamat sumber. Kolom terakhir itu yang paling berguna, karena bisa membedakan volume tinggi dari satu alamat saja dengan sweep yang datang dari banyak sumber.",
+    "url": ""
+  },
+  {
+    "id": "hunting-least-frequency-endpoint-dataset-20260920",
+    "date": "2026-09-20",
+    "title": "Least frequency analysis on a large endpoint dataset",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "least-frequency-analysis",
+      "stack-counting",
+      "baseline",
+      "normalization",
+      "command-line"
+    ],
+    "concepts": [
+      "Baseline exclusion dipakai lebih dulu untuk membuang noise yang sudah dikenal seperti agen monitoring infrastruktur",
+      "Stack counting baru berguna setelah GUID dan angka yang berubah ubah di command line dinormalisasi",
+      "Tanpa normalisasi, command yang sebenarnya sama akan terhitung sebagai ribuan entri unik dan menutupi yang benar benar langka",
+      "Yang tersisa di ekor distribusi adalah tempat temuan biasanya duduk",
+      "Data berukuran besar perlu dikecilkan lewat dua langkah itu supaya bisa dibaca sama sekali"
+    ],
+    "terms": [
+      "least frequency analysis",
+      "stack counting",
+      "baseline exclusion",
+      "command line normalization",
+      "GUID",
+      "long tail"
+    ],
+    "commands": [],
+    "problems": [
+      "Data mentahnya terlalu banyak untuk dibaca manual",
+      "Tanpa normalisasi, yang terlihat langka isinya cuma variasi GUID, bukan aktivitas yang benar benar jarang"
+    ],
+    "summary": "Hunting di data proses endpoint dengan jumlah baris yang sangat besar. Dua langkah yang membuat datanya bisa dibaca, pertama baseline exclusion untuk membuang noise yang sudah dikenal seperti agen monitoring infrastruktur, kedua stack counting, tapi sebelum dihitung, GUID dan angka yang berubah ubah di command line dinormalisasi dulu. Tanpa normalisasi, command yang sebenarnya sama akan terhitung sebagai ribuan entri unik dan menutupi yang benar benar langka. Dari yang tersisa di ekor distribusi, ketemu satu temuan utama.",
+    "url": ""
+  },
+  {
+    "id": "hunting-file-association-hijacking-userchoice-20260920",
+    "date": "2026-09-20",
+    "title": "File association hijacking that bypasses Office protections",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "file-association",
+      "registry",
+      "userchoice",
+      "unsigned-binary",
+      "office-security",
+      "causality"
+    ],
+    "concepts": [
+      "Aplikasi PUA mengambil alih asosiasi berkas untuk puluhan ekstensi, termasuk format Office yang bisa memuat macro",
+      "Pengambilalihannya dilakukan dengan menulis langsung nilai Hash pada key registry UserChoice lewat reg.exe",
+      "Notifikasi pergantian aplikasi bawaan dimatikan supaya pengguna tidak sadar asosiasinya berubah",
+      "Dampaknya berkas Office dibuka lewat binary tidak bertanda tangan milik aplikasi itu, bukan lewat Office, sehingga Protected View dan blokir macro terlewat",
+      "Causality actor pada hampir semua eventnya adalah peramban, yang membuktikan aplikasinya dipasang sendiri oleh pengguna dari unduhan, bukan lewat penggelaran terpusat",
+      "Query penyebaran dipakai untuk memastikan cakupannya, dan hasilnya hanya satu endpoint yang terkena"
+    ],
+    "terms": [
+      "PUA",
+      "file association hijacking",
+      "UserChoice hash",
+      "reg.exe",
+      "UNSIGNED binary",
+      "Protected View",
+      "macro",
+      "causality actor",
+      "T1546.001",
+      "T1112",
+      "T1562.001"
+    ],
+    "commands": [
+      "reg.exe"
+    ],
+    "problems": [
+      "Asosiasi berkas terlihat seperti pengaturan biasa, sehingga dampak keamanannya baru kelihatan setelah dipikirkan lewat jalur mana berkas Office itu dibuka"
+    ],
+    "summary": "Temuan dari hunting least frequency, yaitu aplikasi PUA bernama UltimateFileViewer yang mengambil alih asosiasi berkas untuk puluhan ekstensi, termasuk format Office yang bisa berisi macro. Caranya dengan menulis langsung nilai Hash di key registry UserChoice lewat reg.exe, lalu mematikan notifikasi pergantian aplikasi bawaan supaya pengguna tidak sadar. Dampaknya, berkas Office dibuka lewat binary tidak bertanda tangan dari aplikasi itu, bukan lewat Office, sehingga Protected View dan blokir macro terlewat. Causality actor dari hampir semua eventnya adalah peramban, yang membuktikan ini dipasang sendiri oleh pengguna dari unduhan, bukan lewat penggelaran terpusat. Query penyebaran menunjukkan hanya satu endpoint yang terkena.",
+    "url": ""
+  },
+  {
+    "id": "triage-manual-versus-automated-web-attack-20260920",
+    "date": "2026-09-20",
+    "title": "Reading manual intent from web attack artifacts",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "alert-triage",
+      "waf",
+      "sql-injection",
+      "csrf-token",
+      "user-agent",
+      "fingerprinting"
+    ],
+    "concepts": [
+      "Alert pertama berupa pemindaian ProxyShell dengan user agent zgrab, sifatnya oportunistik dan otomatis",
+      "Alert kedua berupa percobaan SQL injection untuk melewati autentikasi di formulir login, dan sinyalnya berbeda",
+      "Peramban sungguhan disertai token CSRF yang valid menandakan ada orang yang membuka halamannya lebih dulu lalu mengetik payload secara manual",
+      "Payload memakai sintaks komentar MySQL sementara aplikasinya berbasis ASP.NET yang biasanya menempel ke SQL Server",
+      "Ketidakcocokan antara sintaks payload dan basis data di belakang menandakan payload generik yang dicoba coba, bukan serangan yang sudah melakukan fingerprinting"
+    ],
+    "terms": [
+      "ProxyShell",
+      "zgrab",
+      "SQL injection",
+      "authentication bypass",
+      "CSRF token",
+      "MySQL comment syntax",
+      "ASP.NET",
+      "SQL Server"
+    ],
+    "commands": [],
+    "problems": [
+      "Kedua alert terlihat sama di level judul, dan perbedaannya baru kelihatan setelah detail requestnya dibaca"
+    ],
+    "summary": "Dua alert WAF dengan karakter berbeda. Yang pertama pemindaian ProxyShell dengan user agent zgrab, oportunistik dan otomatis. Yang kedua percobaan SQL injection untuk melewati autentikasi di formulir login, dan di sini sinyalnya berbeda, yaitu peramban sungguhan dan token CSRF yang valid, artinya ada orang yang membuka halamannya dulu lalu mengetik payload secara manual. Payloadnya memakai sintaks komentar MySQL padahal aplikasinya ASP.NET, yang biasanya menempel ke SQL Server. Itu tanda payload generik yang dicoba coba, bukan serangan yang sudah melakukan fingerprinting terhadap target.",
+    "url": ""
+  },
+  {
+    "id": "reporting-terminology-integrity-investigation-report-20260920",
+    "date": "2026-09-20",
+    "title": "Readable reports keep technical terms intact",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "reporting",
+      "technical-writing",
+      "terminology",
+      "document-integrity",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "Laporan yang gampang dibaca bukan laporan yang istilah teknisnya diterjemahkan",
+      "Istilah seperti UserChoice, UNSIGNED, Protected View, dan macro dipertahankan dalam bahasa aslinya karena itu yang dipakai dan dicari orang",
+      "Yang disederhanakan adalah kalimat di sekitar istilah itu, bukan istilahnya",
+      "Nomor dokumen atau referensi tidak boleh dikarang, karena identifier tanpa sumber membuat seluruh laporan kehilangan kepercayaan"
+    ],
+    "terms": [
+      "technical writing",
+      "terminology consistency",
+      "mixed audience",
+      "document integrity",
+      "reference identifier"
+    ],
+    "commands": [],
+    "problems": [
+      "Niat membuat laporan ramah pembaca malah membuat istilahnya jadi asing dan susah dicocokkan ke sumber aslinya"
+    ],
+    "summary": "Menyusun laporan investigasi formal untuk temuan file association hijacking, lalu merevisinya. Pelajaran pertama, laporan yang gampang dibaca itu bukan laporan yang istilah teknisnya diterjemahkan. Istilah seperti UserChoice, UNSIGNED, Protected View, dan macro tetap dalam bahasa aslinya karena itu yang dipakai dan dicari orang, yang dibuat sederhana adalah kalimat di sekitarnya. Pelajaran kedua, jangan pernah mengarang nomor dokumen atau referensi. Identifier yang tidak ada sumbernya membuat laporan terlihat tidak bisa dipercaya.",
+    "url": ""
+  },
+  {
+    "id": "triage-build-pipeline-process-tree-reconstruction-20260921",
+    "date": "2026-09-21",
+    "title": "Clearing a build pipeline through process tree reconstruction",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "alert-triage",
+      "xql",
+      "process-tree",
+      "causality",
+      "ci-cd",
+      "false-positive",
+      "mitre"
+    ],
+    "concepts": [
+      "Alert agregasi menyatukan beberapa taktik MITRE sekaligus pada satu host, dan itu terdengar berat sebelum diperiksa",
+      "Process tree lengkap direkonstruksi dari hasil ekspor XQL yang jumlah barisnya ribuan",
+      "Causality group owner ternyata agen self-hosted Azure DevOps yang sedang menjalankan pipeline build dan deploy",
+      "Koneksi ke layanan penyimpanan objek yang tampak mencurigakan jatuh persis di dalam jendela waktu task unggah aset pada pipeline itu",
+      "Alert yang mengumpulkan banyak taktik sering hanya menandakan proses otomatis yang pekerjaannya memang banyak",
+      "Jawaban dari alert seperti itu ada pada siapa pemilik rantai prosesnya"
+    ],
+    "terms": [
+      "aggregation alert",
+      "causality group owner",
+      "process tree",
+      "XQL export",
+      "self-hosted agent",
+      "build pipeline",
+      "object storage",
+      "false positive"
+    ],
+    "commands": [],
+    "problems": [
+      "Banyak taktik MITRE sekaligus pada satu host terdengar berat, sehingga kesimpulannya harus dibuktikan dengan timeline, bukan cuma dengan dugaan bahwa itu proses build"
+    ],
+    "summary": "Alert agregasi yang menyatukan beberapa taktik MITRE sekaligus di satu host. Dari hasil ekspor XQL yang barisnya ribuan, process tree lengkap direkonstruksi dan ketemu causality group ownernya adalah agen self-hosted Azure DevOps yang sedang menjalankan pipeline build dan deploy Dynamics 365. Koneksi ke Azure Blob Storage yang terlihat mencurigakan jatuh persis di dalam jendela waktu task unggah aset pada pipeline itu. Kasusnya ditutup sebagai False Positive. Pelajarannya, alert yang mengumpulkan banyak taktik sering cuma tanda proses otomatis yang kerjanya banyak, dan jawabannya ada di siapa pemilik rantai prosesnya.",
+    "url": ""
+  },
+  {
+    "id": "docs-playbook-library-from-alert-queue-20260921",
+    "date": "2026-09-21",
+    "title": "Building a playbook library from a real alert queue",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "playbook",
+      "runbook",
+      "coverage-mapping",
+      "prioritisation",
+      "data-verification"
+    ],
+    "concepts": [
+      "Library playbook dan runbook dibangun dari data alert yang benar benar masuk, bukan dari template umum",
+      "Langkah pertamanya membuat peta cakupan, yaitu mengelompokkan alert per jenis, menghitung seberapa sering muncul, lalu membaginya ke tier",
+      "Pembagian tier membuat jelas mana yang harus dikerjakan lebih dulu",
+      "Runbook dipakai untuk teknik investigasi yang berlaku lintas banyak alert, playbook untuk alur keputusan per jenis alert",
+      "Angka turunan harus dihitung ulang dari data mentah, bukan disalin dari catatan sebelumnya, karena satu kesalahan hitung bisa menyebar ke banyak halaman"
+    ],
+    "terms": [
+      "playbook",
+      "runbook",
+      "coverage map",
+      "tier prioritisation",
+      "derived numbers",
+      "alert taxonomy"
+    ],
+    "commands": [],
+    "problems": [
+      "Kalau dimulai dari playbook lebih dulu, register di dalamnya tidak bisa diisi karena teknik investigasinya belum didokumentasikan",
+      "Satu kesalahan hitung persentase cakupan sempat terbawa ke beberapa halaman dan baru ketahuan saat visualisasinya dibuat"
+    ],
+    "summary": "Mulai membangun library playbook dan runbook pribadi dari data alert XDR yang benar benar masuk selama tiga minggu, bukan dari template umum. Langkah pertamanya membuat peta cakupan, yaitu alert dikelompokkan per jenis, dihitung seberapa sering muncul, lalu dibagi ke tier supaya jelas mana yang harus dikerjakan duluan. Pemisahannya, runbook untuk teknik investigasi yang dipakai lintas banyak alert, playbook untuk alur keputusan per jenis alert. Satu kesalahan hitung persentase cakupan sempat terbawa ke beberapa halaman dan baru ketahuan saat visualisasinya dibuat, jadi angka turunan harus dihitung ulang dari data mentah, bukan disalin dari catatan sebelumnya.",
+    "url": ""
+  },
+  {
+    "id": "docs-relation-property-playbook-runbook-20260922",
+    "date": "2026-09-22",
+    "title": "Relations over title matching in a documentation database",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "notion",
+      "database-design",
+      "many-to-many",
+      "naming-convention",
+      "deduplication"
+    ],
+    "concepts": [
+      "Mencocokkan dokumen lewat judul rusak begitu ada yang berganti nama, jadi tidak layak dipakai sebagai penghubung",
+      "Satu runbook dipakai banyak playbook dan satu playbook butuh banyak runbook, sehingga hubungannya many-to-many",
+      "Relation property dua arah dipakai supaya hubungan antar dokumen tetap utuh meski judulnya berubah",
+      "Pola judul diseragamkan, playbook memakai nama alert persis seperti di konsol, runbook memakai pola nama tool diikuti kata kerja dan objek",
+      "Dokumen yang isinya tumpang tindih dibandingkan, yang lebih baik dipertahankan, isinya digabung, dan duplikatnya dihapus"
+    ],
+    "terms": [
+      "relation property",
+      "many-to-many",
+      "naming convention",
+      "deduplication",
+      "documentation database"
+    ],
+    "commands": [],
+    "problems": [
+      "Sistem kode atau penamaan yang harus dihafal akan ditinggalkan, jadi hubungan antar dokumen harus bisa terlihat tanpa perlu mengingat apa apa"
+    ],
+    "summary": "Menyambungkan basis data playbook dan runbook di Notion. Awalnya terpikir mencocokkan lewat judul, tapi satu runbook dipakai banyak playbook dan satu playbook butuh banyak runbook, jadi hubungannya many-to-many dan pencocokan judul akan rusak begitu ada yang berganti nama. Solusinya relation property dua arah. Sekalian diseragamkan pola judulnya, playbook memakai nama alert persis seperti di konsol, runbook memakai pola nama tool diikuti kata kerja dan objek. Ditambah satu aturan, kalau ada dua dokumen yang isinya tumpang tindih, keduanya dibandingkan, yang lebih baik dipertahankan, isinya digabung, dan duplikatnya dihapus.",
+    "url": ""
+  },
+  {
+    "id": "docs-closure-note-quality-tier2-playbooks-20260923",
+    "date": "2026-09-23",
+    "title": "Closure notes are tomorrow's playbook data",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "playbook",
+      "closure-note",
+      "knowledge-capture",
+      "alert-aggregation",
+      "lesson-learned"
+    ],
+    "concepts": [
+      "Seluruh playbook tier kedua diselesaikan, mencakup jenis alert seperti LOLBin ke host eksternal yang langka, unggahan besar lewat HTTPS, pembatasan penanda tangan digital, proteksi shellcode in-process, koneksi gagal, dan ActiveX yang memanggil perintah shell",
+      "Dua alert agregasi digabung menjadi satu halaman karena alur penanganannya sama",
+      "Register di hampir semua playbook tipis karena catatan penutupan kasus lama tidak menyimpan detail yang bisa dipakai ulang",
+      "Detail yang hilang antara lain nama penanda tangan, identitas LOLBin, path skrip, dan tujuan koneksi",
+      "Catatan penutupan yang cuma menyebut false positive tidak bisa dipakai lagi oleh siapa pun",
+      "Detail itu harus ikut ditulis pada saat kasus ditutup, karena itu bahan baku playbook berikutnya"
+    ],
+    "terms": [
+      "playbook register",
+      "closure note",
+      "knowledge capture",
+      "alert aggregation",
+      "LOLBin",
+      "digital signer"
+    ],
+    "commands": [],
+    "problems": [
+      "Dokumennya bisa disusun dari data lama, tapi bagian yang paling berguna berupa daftar kasus nyata dan polanya tetap kosong karena datanya tidak pernah dicatat"
+    ],
+    "summary": "Menyelesaikan seluruh playbook tier kedua, antara lain LOLBin ke host eksternal yang langka, unggahan besar lewat HTTPS, pembatasan penanda tangan digital, proteksi shellcode in-process, koneksi gagal, dan ActiveX yang memanggil perintah shell, ditambah dua alert agregasi yang digabung jadi satu halaman karena alurnya sama. Pelajaran terbesarnya, register di hampir semua playbook tipis, karena catatan penutupan kasus lama tidak menyimpan detail seperti nama penanda tangan, identitas LOLBin, path skrip, atau tujuan koneksi. Catatan penutupan yang cuma bilang false positive itu tidak bisa dipakai lagi. Ke depannya detail itu harus ikut ditulis waktu menutup kasus, karena itu bahan baku playbook berikutnya.",
+    "url": ""
+  },
+  {
+    "id": "detection-aql-geo-country-filtering-20260923",
+    "date": "2026-09-23",
+    "title": "Filtering SIEM results by country with GEO lookups",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "detection-engineering",
+      "aql",
+      "siem",
+      "geolocation",
+      "enrichment",
+      "data-quality"
+    ],
+    "concepts": [
+      "Query disusun untuk menyaring event yang alamat sumbernya berasal dari satu negara saja, lengkap dengan kolom detail",
+      "Hasil GEO lookup berbentuk JSON sehingga strukturnya harus dibaca lebih dulu sebelum bisa dipakai sebagai filter",
+      "Beberapa blok alamat milik ISP lokal punya record GEO yang kosong, sehingga filter berdasarkan negara bisa melewatkan sebagian alamat yang sebenarnya lokal",
+      "Tabel breakdown per alamat dibaca lewat tiga hal, yaitu jumlah event, rentang waktu pertama dan terakhir muncul, dan seberapa beragam jenis eventnya",
+      "Alamat dengan banyak jenis event berbeda lebih menarik daripada alamat yang cuma mengulang satu jenis event berkali kali"
+    ],
+    "terms": [
+      "GEO lookup",
+      "geolocation enrichment",
+      "country filtering",
+      "QID diversity",
+      "first and last seen",
+      "data quality"
+    ],
+    "commands": [],
+    "problems": [
+      "Filter negara terlihat presisi, padahal akurasinya cuma sebagus basis data GEO yang ada di belakangnya"
+    ],
+    "summary": "Membuat query AQL untuk menyaring event yang sumbernya berasal dari alamat Indonesia saja, dengan kolom detail lengkap. Hasil GEO lookupnya berbentuk JSON dan harus dibaca dulu strukturnya, dan ternyata ada beberapa blok alamat dari ISP lokal yang record GEOnya kosong, jadi filter berdasarkan negara bisa melewatkan sebagian alamat yang sebenarnya lokal. Lalu belajar membaca tabel breakdown per alamat, yaitu jumlah event, rentang waktu pertama dan terakhir muncul, dan seberapa beragam QIDnya. Alamat dengan banyak jenis event berbeda itu lebih menarik daripada alamat yang cuma mengulang satu jenis event berkali kali.",
+    "url": ""
+  },
+  {
+    "id": "yntkts-blue-team-lolbin-reference-20260924",
+    "date": "2026-09-24",
+    "title": "yntkts: a blue-team reference for abusable binaries",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "personal-project",
+      "web-app",
+      "lolbin",
+      "blue-team",
+      "reference",
+      "threat-hunting",
+      "xql",
+      "aql"
+    ],
+    "concepts": [
+      "Aplikasi web dibuat untuk mengumpulkan daftar binary beserta potensi penyalahgunaannya",
+      "Konsepnya mirip GTFOBins tapi disusun dari sudut pandang blue team, bukan dari sudut pandang penyerang",
+      "Tujuannya bukan cuma jadi referensi, tapi jadi dasar untuk menyusun teknik threat hunting memakai XQL dan AQL",
+      "Rancangannya menyiapkan tempat supaya tiap binary nantinya bisa dipasangkan dengan cara deteksinya"
+    ],
+    "terms": [
+      "living off the land binaries",
+      "LOLBin",
+      "GTFOBins",
+      "blue team reference",
+      "hunting hypothesis",
+      "XQL",
+      "AQL"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Membuat yntkts, aplikasi web yang mengumpulkan daftar binary beserta potensi penyalahgunaannya, konsepnya mirip GTFOBins tapi dari sudut pandang blue team. Tujuannya bukan cuma jadi referensi, melainkan jadi dasar untuk menyusun teknik threat hunting memakai XQL dan AQL, sehingga tiap binary nantinya bisa dipasangkan dengan cara deteksinya.",
+    "url": "https://trwbcy.github.io/yntkts"
   }
 ]
