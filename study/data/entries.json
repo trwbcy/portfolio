@@ -11802,5 +11802,481 @@
     "problems": [],
     "summary": "Membuat yntkts, aplikasi web yang mengumpulkan daftar binary beserta potensi penyalahgunaannya, konsepnya mirip GTFOBins tapi dari sudut pandang blue team. Tujuannya bukan cuma jadi referensi, melainkan jadi dasar untuk menyusun teknik threat hunting memakai XQL dan AQL, sehingga tiap binary nantinya bisa dipasangkan dengan cara deteksinya.",
     "url": "https://trwbcy.github.io/yntkts"
+  },
+  {
+    "id": "web-domino-exploitation-chain-to-rce-20260926",
+    "date": "2026-09-26",
+    "title": "THM Domino - Web Exploitation Chain to RCE",
+    "platform": "TryHackMe",
+    "category": "Web Exploitation",
+    "tags": [
+      "ctf",
+      "web",
+      "tryhackme"
+    ],
+    "concepts": [
+      "authentication bypass",
+      "insecure deserialization of config",
+      "remote file inclusion"
+    ],
+    "terms": [
+      "AES-128-ECB",
+      "IDOR",
+      "JWT",
+      "alg:none",
+      "RFI",
+      "eval",
+      "RCE"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyelesaikan rantai web exploitation di room Domino. Mulai dari dekripsi konfigurasi AES-128-ECB yang key-nya hardcoded di app.js, enumerasi username lewat perbedaan response forgot.php, logika reset password yang bocorin token di JSON response, IDOR buat baca profil admin, lalu forge JWT lewat bypass alg:none, dan terakhir RFI plus eval buat dapat RCE sebagai www-data.",
+    "url": ""
+  },
+  {
+    "id": "privesc-domino-linux-cron-suid-20260926",
+    "date": "2026-09-26",
+    "title": "THM Domino - Linux Privilege Escalation",
+    "platform": "TryHackMe",
+    "category": "Privilege Escalation",
+    "tags": [
+      "ctf",
+      "linux",
+      "privesc",
+      "tryhackme"
+    ],
+    "concepts": [
+      "credential reuse",
+      "cron abuse"
+    ],
+    "terms": [
+      "credential reuse",
+      "cron",
+      "world-writable",
+      "SUID",
+      "bash -p"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Lanjut dari foothold www-data ke root. Reuse kredensial database buat pindah ke user devops, lalu abuse script monitoring yang world-writable dan dijalankan root lewat cron tiap menit. Script-nya diselipin perintah set SUID pada bash, lalu eksekusi bash -p buat jadi root.",
+    "url": ""
+  },
+  {
+    "id": "hunting-proxyware-install-chain-reconstruction-20260927",
+    "date": "2026-09-27",
+    "title": "Proxyware Install-Chain Reconstruction",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "edr",
+      "siem"
+    ],
+    "concepts": [
+      "software bundling",
+      "persistence",
+      "cross-tool timeline"
+    ],
+    "terms": [
+      "proxyware",
+      "Infatica",
+      "PUA",
+      "scheduled task",
+      "UAC",
+      "persistence"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Investigasi proxyware (PUA) jenis Infatica yang masuk lewat bundling di installer codec pack yang didownload lewat browser. Rekonstruksi install chain dari EDR dan SIEM: eksekusi awal oleh user biasa, lalu installer jalan elevated beberapa detik setelahnya (konsisten dengan prompt UAC), dan persistence lewat scheduled task. Latihan nyambungin event dari dua tools jadi satu timeline yang utuh.",
+    "url": ""
+  },
+  {
+    "id": "hunting-proxyware-traffic-symmetry-20260927",
+    "date": "2026-09-27",
+    "title": "Confirming Proxying via Traffic Symmetry",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "traffic-analysis"
+    ],
+    "concepts": [
+      "traffic analysis",
+      "signed PUA limitation"
+    ],
+    "terms": [
+      "proxyware",
+      "upload/download symmetry",
+      "signed PUA",
+      "AV scan"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Membuktikan proxyware beneran aktif nyewain koneksi, bukan sekadar beacon. Indikatornya traffic upload dan download yang simetris ke banyak IP acak. Pelajaran metode: PUA yang signed nggak ikut kehapus sama AV scan biasa, jadi alert yang sudah diclose sebagai known issue perlu dicek ulang apakah prosesnya beneran hilang atau cuma di-scan.",
+    "url": ""
+  },
+  {
+    "id": "triage-waf-xss-office-generated-html-20260930",
+    "date": "2026-09-30",
+    "title": "Triaging a WAF XSS Signature on Office-Generated HTML",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "waf",
+      "false-positive"
+    ],
+    "concepts": [
+      "signature false positive",
+      "file upload inspection"
+    ],
+    "terms": [
+      "F5 ASM",
+      "WAF",
+      "XSS",
+      "multipart upload",
+      "meta tag signature"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Analisis payload alert XSS dari F5 ASM yang kena signature meta tag. Ternyata yang ke-upload file HTML hasil export Microsoft Word (banyak meta tag Office) lewat form upload, bukan serangan XSS beneran. Latihan bedain pola file dokumen yang wajar dari injeksi script, dan paham kenapa signature meta tag gampang false positive buat konten Office.",
+    "url": ""
+  },
+  {
+    "id": "hunting-unmanaged-device-dns-mac-fingerprint-20261003",
+    "date": "2026-10-03",
+    "title": "Fingerprinting an Unmanaged Device from DNS and MAC Patterns",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "dns",
+      "pua"
+    ],
+    "concepts": [
+      "device fingerprinting",
+      "persistence vs new install"
+    ],
+    "terms": [
+      "DNS",
+      "PUA",
+      "randomized MAC",
+      "time-series query"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Alert spyware/PUA ke sebuah domain, tapi device-nya nggak ada di EDR. Latihan identifikasi pemilik device cuma dari pola jaringan: MAC address yang di-randomize plus pola DNS vendor HP (domain Xiaomi/MIUI) nunjukin ini HP Android personal, bukan aset korporat. Dibuktiin juga temuannya persisten, bukan install baru, pakai query time-series yang nunjukin volume stabil dari awal window.",
+    "url": ""
+  },
+  {
+    "id": "triage-benign-unsigned-binaries-self-generated-alerts-20261003",
+    "date": "2026-10-03",
+    "title": "Classifying Benign Unsigned Binaries and Self-Generated Alerts",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "unsigned-binary",
+      "false-positive"
+    ],
+    "concepts": [
+      "process attribution",
+      "reputation check"
+    ],
+    "terms": [
+      "unsigned binary",
+      "WMIC",
+      "parent process"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Dua alert yang ujungnya benign. Binary game unsigned di laptop kerja yang ternyata cuma traffic game/Steam yang sah, dan alert blocked process WMIC yang ternyata dibangkitin sama agent EDR sendiri. Latihan telusuri parent process dan reputasi biner sebelum buru-buru naikin severity.",
+    "url": ""
+  },
+  {
+    "id": "triage-ips-block-web-path-traversal-20261003",
+    "date": "2026-10-03",
+    "title": "IPS Block on a Web Path-Traversal Attempt",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "ips",
+      "web"
+    ],
+    "concepts": [
+      "true positive blocked"
+    ],
+    "terms": [
+      "FortiGate",
+      "IPS",
+      "path traversal",
+      "RCE"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Alert IPS FortiGate buat percobaan path traversal/RCE ke service web. Dikonfirmasi true positive yang udah diblok di sisi IPS, jadi nggak ada dampak. Latihan baca signature IPS dan mastiin action-nya beneran block, bukan cuma detect.",
+    "url": ""
+  },
+  {
+    "id": "detection-credential-dumping-alert-domain-controller-20261003",
+    "date": "2026-10-03",
+    "title": "Credential-Dumping Alert Analysis on a Domain Controller",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "detection",
+      "windows",
+      "credential-extraction"
+    ],
+    "concepts": [
+      "audit event analysis",
+      "false positive confirmation"
+    ],
+    "terms": [
+      "credential dumping",
+      "lsass",
+      "Windows Security events",
+      "4673",
+      "4674",
+      "4703",
+      "SYSTEM"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Alert credential dumping di sebuah domain controller. Ditelusuri lewat Windows Security event (4673, 4674, 4703) dan dinilai kemungkinan besar false positive karena semua aktivitas berasal dari lsass sendiri dalam konteks SYSTEM/machine account, tanpa proses eksternal yang nyentuh memori lsass. Latihan baca audit event sekitar lsass buat bedain dump beneran dari aktivitas normal OS.",
+    "url": ""
+  },
+  {
+    "id": "coursework-flowchart-pseudocode-tiered-overtime-20261003",
+    "date": "2026-10-03",
+    "title": "Flowchart and Pseudocode for Tiered Overtime Pay",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "algorithms"
+    ],
+    "concepts": [
+      "conditional logic",
+      "test cases"
+    ],
+    "terms": [
+      "flowchart",
+      "pseudocode"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Tugas kuliah algoritma: bikin flowchart dan pseudocode buat hitung gaji plus lembur bertingkat (gaji pokok per grade karyawan, persentase lembur per jam). Termasuk test table beberapa case buat validasi logikanya.",
+    "url": ""
+  },
+  {
+    "id": "docs-waf-closure-env-file-endpoint-scanning-20261004",
+    "date": "2026-10-04",
+    "title": "WAF Closure Notes for Env-File and Endpoint Scanning",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "waf",
+      "reporting"
+    ],
+    "concepts": [
+      "closure documentation",
+      "alert correlation"
+    ],
+    "terms": [
+      "WAF",
+      "AndroxGh0st",
+      ".env",
+      "Laravel",
+      "endpoint scanning"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Nulis closure note buat beberapa alert WAF: percobaan AndroxGh0st yang nyari file .env Laravel, dan dua percobaan scanning ke endpoint tertentu yang berkorelasi (aset dan timestamp sama). Latihan cocokin isi template closure ke bukti log yang spesifik, dan nandain case yang perlu di-cross-reference.",
+    "url": ""
+  },
+  {
+    "id": "hunting-dns-attribution-svchost-masking-20261004",
+    "date": "2026-10-04",
+    "title": "DNS Alert Attribution When svchost Masks the Caller",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "dns",
+      "process-attribution"
+    ],
+    "concepts": [
+      "source port correlation",
+      "candidate elimination"
+    ],
+    "terms": [
+      "DNS",
+      "svchost",
+      "source port",
+      "DNS client"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Alert DNS yang subjeknya berulang dari kasus sebelumnya. Tantangannya svchost (DNS client Windows) nutupin aplikasi asli yang manggil DNS. Latihan korelasi source port antara log firewall dan EDR buat nyoba balikin ke proses asli, dan nyingkirin kandidat proses satu-satu lewat window waktu.",
+    "url": ""
+  },
+  {
+    "id": "coursework-discrete-logic-rational-inequalities-20261005",
+    "date": "2026-10-05",
+    "title": "Discrete Logic and Rational Inequalities",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "math"
+    ],
+    "concepts": [
+      "logical reasoning"
+    ],
+    "terms": [
+      "propositional logic",
+      "truth table",
+      "inference rules",
+      "rational inequality"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Ngerjain diskusi matematika: tabel kebenaran dan aturan inferensi logika proposisi, plus penyelesaian pertidaksamaan rasional. Latihan dasar logika yang kepake juga buat mikir kondisi di detection rule.",
+    "url": ""
+  },
+  {
+    "id": "coursework-os-scheduling-memory-concepts-20261005",
+    "date": "2026-10-05",
+    "title": "Operating System Scheduling and Memory Concepts",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "operating-systems"
+    ],
+    "concepts": [
+      "process scheduling",
+      "memory management"
+    ],
+    "terms": [
+      "process states",
+      "PCB",
+      "FCFS",
+      "SJF",
+      "Round Robin",
+      "deadlock",
+      "paging"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Belajar konsep OS lewat bikin kuis latihan sendiri: state proses, PCB, algoritma scheduling (FCFS, SJF, Round Robin), sinkronisasi, deadlock, dan paging memori.",
+    "url": ""
+  },
+  {
+    "id": "hunting-store-app-potential-proxyware-20261006",
+    "date": "2026-10-06",
+    "title": "Assessing a Store App as Potential Proxyware",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "malware-analysis"
+    ],
+    "concepts": [
+      "MSIX package signing",
+      "data exfiltration risk"
+    ],
+    "terms": [
+      "proxyware",
+      "MSIX",
+      "WindowsApps",
+      "UNSIGNED",
+      "plain HTTP"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Evaluasi app screen recorder dari Microsoft Store yang dicurigai proxyware. Catatan metode: di app MSIX yang di-sign itu package-nya, bukan exe di dalam folder WindowsApps, jadi exe UNSIGNED di situ wajar dan bukan bukti jahat. Yang bikin menarik justru traffic plain HTTP ke server asing, karena kalau dia upload isi layar risikonya data sensitif keluar. Ketemu juga asset hostname di SIEM yang stale beda sama EDR, jadi pegang yang dari EDR.",
+    "url": ""
+  },
+  {
+    "id": "hunting-circumvention-tool-endpoint-xql-20261006",
+    "date": "2026-10-06",
+    "title": "Locating a Circumvention Tool Endpoint via XQL",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "xql"
+    ],
+    "concepts": [
+      "query from network indicator to process"
+    ],
+    "terms": [
+      "Psiphon",
+      "PUA",
+      "circumvention tool",
+      "XQL"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Deteksi Psiphon (circumvention tool/PUA) yang diblok firewall. Nulis query XQL buat nemuin endpoint yang jalanin tool-nya dan nilai risikonya. Latihan nyusun XQL dari indikator jaringan ke proses.",
+    "url": ""
+  },
+  {
+    "id": "docs-waf-closure-config-exposure-known-exploit-20261006",
+    "date": "2026-10-06",
+    "title": "WAF Closure Notes for Config Exposure and Known-Exploit Scanning",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "waf",
+      "reporting"
+    ],
+    "concepts": [
+      "closure documentation"
+    ],
+    "terms": [
+      "WAF",
+      "git config exposure",
+      "ProxyShell",
+      "path probing"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Nulis closure note buat alert WAF: percobaan akses file git config yang kebuka, scanning pola ProxyShell, dan probing path plugin file manager. Latihan jaga konsistensi template sambil benerin field data biar cocok sama log mentahnya.",
+    "url": ""
+  },
+  {
+    "id": "vuln-linux-kernel-cve-patch-assessment-20261006",
+    "date": "2026-10-06",
+    "title": "Linux Kernel CVE Patch Assessment",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "remediation",
+      "linux",
+      "cve"
+    ],
+    "concepts": [
+      "advisory reading",
+      "remediation recommendation"
+    ],
+    "terms": [
+      "Linux kernel",
+      "CVE",
+      "patch management"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Nilai sebuah CVE kernel Linux dan susun rekomendasi patch. Latihan baca detail CVE, cek versi kernel yang kena, dan terjemahin jadi saran remediasi yang jelas.",
+    "url": ""
   }
 ]
