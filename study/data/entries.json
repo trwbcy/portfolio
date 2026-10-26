@@ -12278,5 +12278,1612 @@
     "problems": [],
     "summary": "Nilai sebuah CVE kernel Linux dan susun rekomendasi patch. Latihan baca detail CVE, cek versi kernel yang kena, dan terjemahin jadi saran remediasi yang jelas.",
     "url": ""
+  },
+  {
+    "id": "reporting-aligning-ticket-templates-quality-scoring-rubric-20261007",
+    "date": "2026-10-07",
+    "title": "Aligning Ticket Templates to a Quality Scoring Rubric",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "reporting",
+      "soc",
+      "documentation"
+    ],
+    "concepts": [
+      "ticket quality",
+      "evidence-based analysis",
+      "impact statement"
+    ],
+    "terms": [
+      "5W1H",
+      "severity",
+      "impact",
+      "closure note"
+    ],
+    "commands": [],
+    "problems": [
+      "Skor dimensi Why dan Impact rendah karena analisis tidak menyebut alasan dan dampak secara tegas"
+    ],
+    "summary": "Membedah kenapa ticket alert dapat skor rendah di beberapa dimensi penilaian kualitas, lalu menulis ulang template WAF supaya tiap section langsung menjawab kriteria penilaian: severity disebut eksplisit, analisis pakai pola 'X karena Y', dan dampak ditulis definitif. Juga bikin aturan supaya IP atau IOC yang tidak ada di payload ticket itu tidak ikut tertulis.",
+    "url": ""
+  },
+  {
+    "id": "triage-recon-mcp-endpoint-probing-python-scanner-20261007",
+    "date": "2026-10-07",
+    "title": "Recon Triage: MCP Endpoint Probing by a Python Scanner",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "waf",
+      "recon"
+    ],
+    "concepts": [
+      "reconnaissance",
+      "timestamp normalization"
+    ],
+    "terms": [
+      "MCP",
+      "python-httpx",
+      "HTTP 302",
+      "T1595"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Triage request POST ke endpoint /mcp dari scanner berbasis python-httpx yang dibalas 302. Diklasifikasikan sebagai active scanning (T1595). Latihan menulis closure yang hanya memuat fakta dari log, dan menandai bagian yang belum diverifikasi alih-alih mengisinya dengan asumsi.",
+    "url": ""
+  },
+  {
+    "id": "coursework-flowchart-pseudocode-walkthrough-video-20261008",
+    "date": "2026-10-08",
+    "title": "Flowchart and Pseudocode Walkthrough Video",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "algorithm"
+    ],
+    "concepts": [
+      "flowchart",
+      "pseudocode",
+      "conditional logic"
+    ],
+    "terms": [
+      "flowchart",
+      "pseudocode",
+      "OBS Studio"
+    ],
+    "commands": [
+      "ffmpeg -i test.mp4 -af volumedetect -f null -"
+    ],
+    "problems": [
+      "Rekaman terdengar seperti tanpa suara, ternyata level mic sangat rendah"
+    ],
+    "summary": "Membuat video penjelasan flowchart dan pseudocode untuk perhitungan gaji berdasarkan grade dan jam lembur. Setup OBS untuk rekam layar plus webcam, lalu diagnosa audio yang terlalu pelan dengan membaca peak dan mean dB langsung dari file video pakai ffmpeg volumedetect.",
+    "url": ""
+  },
+  {
+    "id": "triage-bundleware-office-suite-install-chain-20261009",
+    "date": "2026-10-09",
+    "title": "Bundleware Triage in an Office Suite Install Chain",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "edr",
+      "false-positive"
+    ],
+    "concepts": [
+      "causality chain",
+      "software bundling",
+      "signer verification"
+    ],
+    "terms": [
+      "WPS Office",
+      "bundleware",
+      "add-in",
+      "causality owner"
+    ],
+    "commands": [],
+    "problems": [
+      "Causality owner tercatat sebagai Excel sehingga terlihat seperti eksekusi dari dokumen"
+    ],
+    "summary": "Triage alert instalasi WPS Office yang causality owner-nya Excel. Penyebabnya add-in WPS yang ter-load di Office, dan installer membawa browser bundling. Verifikasi signer dan path tiga binary sebelum menutup sebagai false positive.",
+    "url": ""
+  },
+  {
+    "id": "triage-jwt-url-parameters-assessing-real-token-20261009",
+    "date": "2026-10-09",
+    "title": "JWT in URL Parameters: Assessing Real Token Risk",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "jwt",
+      "data-exposure"
+    ],
+    "concepts": [
+      "token lifespan",
+      "sensitive data in logs"
+    ],
+    "terms": [
+      "JWT",
+      "exp claim",
+      "base64url",
+      "query string"
+    ],
+    "commands": [
+      "echo '<payload>' | base64 -d",
+      "TZ=Asia/Jakarta date -d @<exp>"
+    ],
+    "problems": [],
+    "summary": "Menilai risiko JWT yang ikut terbawa di parameter URL dengan decode bagian payload dan konversi claim exp ke waktu lokal. Lifespan token jadi penentu seberapa besar risiko sebenarnya. Pelajaran tambahan: token utuh tidak boleh ditempel ke ticket karena itu sendiri jadi kebocoran.",
+    "url": ""
+  },
+  {
+    "id": "vuln-linux-kernel-cve-patch-recommendation-20261009",
+    "date": "2026-10-09",
+    "title": "Linux Kernel CVE Patch Recommendation",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "vuln-management",
+      "linux",
+      "cve"
+    ],
+    "concepts": [
+      "advisory reading",
+      "remediation recommendation"
+    ],
+    "terms": [
+      "Linux kernel",
+      "CVE",
+      "patch management"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyusun rekomendasi untuk satu CVE kernel Linux: baca advisory, cek rentang versi yang terdampak, lalu terjemahkan jadi saran patch yang jelas untuk tim infrastruktur.",
+    "url": ""
+  },
+  {
+    "id": "triage-ips-signature-encrypted-vnc-reading-action-20261010",
+    "date": "2026-10-10",
+    "title": "IPS Signature on Encrypted VNC: Reading Action Fields in Context",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "ips",
+      "ndr",
+      "siem",
+      "edr"
+    ],
+    "concepts": [
+      "sensor deployment mode",
+      "signature mismatch",
+      "baseline traffic"
+    ],
+    "terms": [
+      "VNC",
+      "vnc-encrypted",
+      "IPS",
+      "TAP mode",
+      "use-after-free"
+    ],
+    "commands": [],
+    "problems": [
+      "Nama asset di SIEM tidak sama dengan hostname sebenarnya di EDR",
+      "Telemetry VNC tidak muncul di EDR walau host punya agent"
+    ],
+    "summary": "Investigasi alert signature libVNC use-after-free pada trafik VNC internal. Pelajaran metode: sensor yang dideploy mode TAP bisa mencatat aksi 'drop' padahal trafiknya tidak benar-benar diblok, jadi field action harus dibaca sesuai mode deployment. Baseline koneksi 7 hari menunjukkan pola rutin, dan VNC terenkripsi rawan salah cocok signature karena payload tidak bisa diinspeksi. Ditutup sebagai false positive.",
+    "url": ""
+  },
+  {
+    "id": "triage-web-recon-closure-admin-panel-path-20261010",
+    "date": "2026-10-10",
+    "title": "Web Recon Closure: Admin Panel Path Probing",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "web",
+      "recon"
+    ],
+    "concepts": [
+      "timestamp normalization",
+      "reconnaissance"
+    ],
+    "terms": [
+      "phpMyAdmin",
+      "IIS",
+      "UTC",
+      "WIB",
+      "T1595"
+    ],
+    "commands": [],
+    "problems": [
+      "Timestamp log IIS dalam UTC, bukan WIB"
+    ],
+    "summary": "Menutup case probing path phpMyAdmin dari log IIS. Koreksi waktu kejadian karena log IIS pakai UTC, dan membaca User-Agent yang spasinya diganti tanda plus. Diklasifikasikan sebagai reconnaissance (T1595).",
+    "url": ""
+  },
+  {
+    "id": "hunting-remote-access-tool-anchored-regex-xql-20261013",
+    "date": "2026-10-13",
+    "title": "Remote Access Tool Hunting with Anchored Regex in XQL",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "edr",
+      "pua",
+      "xql"
+    ],
+    "concepts": [
+      "regex anchoring",
+      "version-based risk",
+      "portable binaries"
+    ],
+    "terms": [
+      "RustDesk",
+      "UltraViewer",
+      "PUA",
+      "XQL",
+      "CVE"
+    ],
+    "commands": [],
+    "problems": [
+      "Regex tanpa anchor bikin noise besar, misal pola tor.exe ikut cocok ke Coordinator.exe"
+    ],
+    "summary": "PUA hunting di EDR pakai XQL. Regex awal yang tidak di-anchor menghasilkan banyak false match, lalu diperbaiki dengan anchoring. Hunting diarahkan ke RustDesk setelah riset CVE sendiri: analisis versi menemukan RustDesk portable versi lama di bawah versi patch yang dijalankan di luar deployment IT. Hasilnya jadi laporan hunting plus ticket uninstall.",
+    "url": ""
+  },
+  {
+    "id": "hunting-portable-anydesk-investigation-dll-hash-pivot-20261013",
+    "date": "2026-10-13",
+    "title": "Portable AnyDesk Investigation via DLL Hash Pivot",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "edr",
+      "siem",
+      "pua"
+    ],
+    "concepts": [
+      "hash pivoting",
+      "version identification",
+      "session verification"
+    ],
+    "terms": [
+      "AnyDesk",
+      "gcapi.dll",
+      "LOAD_IMAGE",
+      "revoked certificate",
+      "CVE-2020-35483"
+    ],
+    "commands": [],
+    "problems": [
+      "Hash gcapi.dll tidak bisa dipakai menentukan versi AnyDesk karena DLL itu dipakai lintas versi"
+    ],
+    "summary": "Alert hash gcapi.dll ditelusuri ke AnyDesk portable. Versi harus diambil dari hash AnyDesk.exe, bukan dari DLL-nya. Versi yang ditemukan memakai sertifikat yang sudah direvoke, CVE-2020-35483 di-rule out karena di luar rentang versi, dan verifikasi network session dari beberapa sudut tidak menemukan sesi remote. Disimpulkan policy violation, bukan kompromi.",
+    "url": ""
+  },
+  {
+    "id": "soar-responder-debugging-mail-responder-json-escaping-20261013",
+    "date": "2026-10-13",
+    "title": "SOAR Responder Debugging: Mail Responder and JSON Escaping",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "soar",
+      "debugging",
+      "thehive"
+    ],
+    "concepts": [
+      "traceback reading",
+      "input escaping"
+    ],
+    "terms": [
+      "TheHive",
+      "Cortex responder",
+      "SMTPRecipientsRefused",
+      "JSON",
+      "HTTP 400"
+    ],
+    "commands": [],
+    "problems": [
+      "Responder email gagal karena tag case terbaca sebagai alamat penerima",
+      "Submit ticket gagal HTTP 400 karena tanda kutip ganda merusak JSON"
+    ],
+    "summary": "Mendiagnosa dua error otomasi: traceback responder email di TheHive yang ternyata dipicu tag case yang ikut terbaca sebagai recipient, dan error 400 saat submit ticket karena karakter kutip ganda dan ampersand tidak di-escape dengan benar saat body JSON dibangun.",
+    "url": ""
+  },
+  {
+    "id": "triage-yara-c2-implant-alert-go-build-20261014",
+    "date": "2026-10-14",
+    "title": "YARA C2 Implant Alert Triage: Go Build Artifacts",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "edr",
+      "false-positive",
+      "xql"
+    ],
+    "concepts": [
+      "YARA false positive",
+      "multi-indicator sweep",
+      "developer activity baselining"
+    ],
+    "terms": [
+      "Sliver",
+      "YARA",
+      "Go binary",
+      "a.out.exe",
+      "C2"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Alert YARA yang menandai binary sebagai kemungkinan implant Sliver ternyata hasil build Go dari aktivitas development yang dijalankan lewat AI coding agent. Konfirmasi lewat sweep XQL 30 hari ke banyak indikator Sliver (string, pola nama proses, spawnto, port, persistence, binary unsigned) dan tidak ada artefak yang cocok.",
+    "url": ""
+  },
+  {
+    "id": "siem-aql-regex-field-extraction-firewall-key-20261014",
+    "date": "2026-10-14",
+    "title": "AQL Regex Field Extraction from Firewall key=value Logs",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "aql",
+      "regex",
+      "qradar"
+    ],
+    "concepts": [
+      "search-time parsing",
+      "capture groups",
+      "session deduplication"
+    ],
+    "terms": [
+      "REPLACEFIRST",
+      "capture group",
+      "UNIQUECOUNT",
+      "sessionid",
+      "FortiGate"
+    ],
+    "commands": [
+      "REPLACEFIRST('^.*\\bapp=\"?([^\" ]+).*$', UTF8(payload), '$1')"
+    ],
+    "problems": [
+      "Log interim FortiGate bikin hitungan sesi dobel",
+      "Nilai hasil extract terurut sebagai string, bukan angka"
+    ],
+    "summary": "Belajar regex untuk AQL: extract field dari payload FortiGate key=value pakai REPLACEFIRST dengan backreference $1, dedupe log interim pakai UNIQUECOUNT pada sessionid, dan cast hasil extract dengan LONG() supaya sorting numerik benar.",
+    "url": ""
+  },
+  {
+    "id": "docs-playbook-unauthorized-remote-access-tools-20261014",
+    "date": "2026-10-14",
+    "title": "Playbook: Unauthorized Remote Access Tools",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "playbook",
+      "pua"
+    ],
+    "concepts": [
+      "playbook design",
+      "decision tree"
+    ],
+    "terms": [
+      "AnyDesk",
+      "RustDesk",
+      "Mermaid",
+      "playbook"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mengubah dua case remote access tool jadi satu playbook topik (bukan per alert): kapan dipakai, data yang dikumpulkan dulu, decision tree Mermaid, aturan keputusan, query pendukung, standar response, dan pitfall seperti menentukan versi dari hash exe.",
+    "url": ""
+  },
+  {
+    "id": "triage-x-forwarded-for-spoofing-analysis-20261014",
+    "date": "2026-10-14",
+    "title": "X-Forwarded-For Spoofing Analysis",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "web",
+      "http-headers"
+    ],
+    "concepts": [
+      "proxy hop analysis",
+      "header trust",
+      "access control bypass"
+    ],
+    "terms": [
+      "X-Forwarded-For",
+      "127.0.0.1",
+      "c-ip",
+      "reverse proxy"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Membedah event web yang source IP-nya tampil 127.0.0.1. Penyebabnya header X-Forwarded-For yang dikontrol client diisi localhost di entry paling kiri. Latihan memisahkan IP attacker asli, hop proxy internal, dan nilai palsu, plus memahami kenapa entry paling kiri XFF tidak bisa dipercaya untuk atribusi.",
+    "url": ""
+  },
+  {
+    "id": "coursework-operating-systems-race-conditions-synchronization-20261014",
+    "date": "2026-10-14",
+    "title": "Operating Systems: Race Conditions and Synchronization",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "operating-systems"
+    ],
+    "concepts": [
+      "race condition",
+      "mutual exclusion",
+      "virtual memory"
+    ],
+    "terms": [
+      "Peterson's solution",
+      "TestAndSet",
+      "mutex",
+      "cache memory",
+      "virtual memory"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mengerjakan tugas Sistem Operasi: race condition pada skenario transaksi bank, perbandingan Peterson's solution, TestAndSet, dan lock (kesimpulannya mutex paling cocok), serta peran cache dan virtual memory saat beban naik.",
+    "url": ""
+  },
+  {
+    "id": "coursework-basic-math-field-axioms-inequalities-relations-20261014",
+    "date": "2026-10-14",
+    "title": "Basic Math: Field Axioms, Inequalities, and Relations",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "math"
+    ],
+    "concepts": [
+      "field axioms",
+      "absolute value inequality",
+      "directed graph"
+    ],
+    "terms": [
+      "aksioma lapangan",
+      "pertidaksamaan",
+      "relasi",
+      "graf berarah"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mengerjakan tugas Matematika Dasar: aksioma lapangan, pertidaksamaan termasuk nilai mutlak, relasi antar dua himpunan, dan interpretasi graf berarah termasuk arah sisi dan loop.",
+    "url": ""
+  },
+  {
+    "id": "coursework-information-systems-scm-tps-digital-commerce-20261014",
+    "date": "2026-10-14",
+    "title": "Information Systems: SCM, TPS, and Digital Commerce",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "information-systems"
+    ],
+    "concepts": [
+      "supply chain management",
+      "transaction processing"
+    ],
+    "terms": [
+      "SCM",
+      "TPS",
+      "e-commerce"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mengerjakan tugas Pengantar Sistem Informasi: peran TI di supply chain management, transaction processing system, serta keuntungan dan tantangan menjual produk digital lewat e-commerce.",
+    "url": ""
+  },
+  {
+    "id": "siem-qradar-architecture-eps-fundamentals-20261015",
+    "date": "2026-10-15",
+    "title": "QRadar Architecture and EPS Fundamentals",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "qradar",
+      "study"
+    ],
+    "concepts": [
+      "SIEM architecture",
+      "event throughput",
+      "event normalization"
+    ],
+    "terms": [
+      "EPS",
+      "Event Collector",
+      "Event Processor",
+      "DSM",
+      "QID",
+      "CEP",
+      "coalescing",
+      "network hierarchy",
+      "magnitude"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Belajar ulang fondasi QRadar: average vs peak EPS, burst handling, komponen arsitektur dari log source sampai console, serta istilah kunci seperti DSM, QID, CEP, coalescing, building block, dan network hierarchy. Sekalian merapikan cara menjelaskan setup SOAR dengan enrichment otomatis dan response human-in-the-loop.",
+    "url": ""
+  },
+  {
+    "id": "reporting-ticket-quality-self-review-against-why-20261015",
+    "date": "2026-10-15",
+    "title": "Ticket Quality Self-Review Against Why and Impact Criteria",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "reporting",
+      "self-review"
+    ],
+    "concepts": [
+      "evidence chain",
+      "actual vs potential impact"
+    ],
+    "terms": [
+      "HTTP 301",
+      "HTTP 404",
+      "scanner fingerprint",
+      "zgrab"
+    ],
+    "commands": [],
+    "problems": [
+      "Response 404 sempat ditulis sebagai Blocked",
+      "Klaim reputasi buruk tanpa menyebut sumber threat intel"
+    ],
+    "summary": "Review mandiri beberapa ticket yang skor Why dan Impact-nya rendah. Kesalahan yang ditemukan: fingerprint scanner di User-Agent terlewat, kesimpulan block bertentangan dengan temuan sendiri soal kepemilikan IP, 404 dilabeli Blocked, dan redirect 301 tidak dijelaskan. Hasilnya struktur analisis 5 poin dan dampak 4 poin yang bisa dipakai ulang.",
+    "url": ""
+  },
+  {
+    "id": "portfolio-mth-story-series-episode-1-draft-20261015",
+    "date": "2026-10-15",
+    "title": "MTH Story Series: Episode 1 Draft",
+    "platform": "Personal Project",
+    "category": "Documentation",
+    "tags": [
+      "writing",
+      "storytelling",
+      "portfolio"
+    ],
+    "concepts": [
+      "fictionalized case study",
+      "sanitization checklist"
+    ],
+    "terms": [
+      "clock skew",
+      "SIEM",
+      "EDR",
+      "T1176"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyiapkan database episode untuk seri cerita investigasi bergaya Darknet Diaries, lalu menulis penuh Episode 1 tentang forensik DNS yang terpecahkan setelah menemukan selisih jam antara SIEM dan EDR. Semua detail kasus difiksikan, sementara metode, tools, dan mapping MITRE tetap asli di bagian Behind the Case.",
+    "url": ""
+  },
+  {
+    "id": "siem-log-source-health-unparsed-event-triage-20261016",
+    "date": "2026-10-16",
+    "title": "SIEM Log Source Health and Unparsed Event Triage",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "qradar",
+      "aql",
+      "visibility"
+    ],
+    "concepts": [
+      "log source coverage",
+      "generic DSM",
+      "auto-discovery misclassification"
+    ],
+    "terms": [
+      "generic DSM",
+      "log source type",
+      "EPS",
+      "unparsed event"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Belajar cara mengaudit kesehatan log source di SIEM: membaca distribusi EPS, menelusuri event yang jatuh ke generic DSM sampai ke pengirim dan akar masalahnya, dan mengenali log source yang salah terklasifikasi oleh auto-discovery. Hasilnya peta visibility pribadi plus jadwal belajar 4 minggu soal alur log, kegagalan parsing, search-time parsing, dan SIEM health.",
+    "url": ""
+  },
+  {
+    "id": "siem-first-qradar-custom-event-property-regex-20261016",
+    "date": "2026-10-16",
+    "title": "First QRadar Custom Event Property: Regex Debugging",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "qradar",
+      "regex",
+      "cep"
+    ],
+    "concepts": [
+      "field extraction",
+      "multiline payload",
+      "query caching"
+    ],
+    "terms": [
+      "Custom Event Property",
+      "regex",
+      "[\\s\\S]",
+      "DLP",
+      "JSON payload"
+    ],
+    "commands": [],
+    "problems": [
+      "Regex dengan titik gagal match karena payload multiline",
+      "AQL masih menampilkan N/A setelah CEP disimpan karena hasil search ter-cache"
+    ],
+    "summary": "Membuat Custom Event Property pertama untuk extract risk score dari log DLP berformat JSON. Regex awal gagal karena payload multiline, diperbaiki pakai [\\s\\S]. Nilai sempat tampil N/A di AQL padahal event detail sudah terisi, ternyata cache search, terbukti setelah rentang waktu query diubah sedikit.",
+    "url": ""
+  },
+  {
+    "id": "triage-rpa-script-execution-temp-power-automate-20261016",
+    "date": "2026-10-16",
+    "title": "RPA Script Execution from Temp: Power Automate Desktop FP",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "edr",
+      "false-positive"
+    ],
+    "concepts": [
+      "process chain verification",
+      "RPA behavior"
+    ],
+    "terms": [
+      "Power Automate Desktop",
+      "Execution From a Restricted Folder",
+      "PowerShell",
+      "Temp folder"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Alert eksekusi script PowerShell dari folder Temp ternyata perilaku Power Automate Desktop saat menjalankan flow buatan user. Dikonfirmasi lewat query XQL ke process chain, lalu ditutup sebagai false positive.",
+    "url": ""
+  },
+  {
+    "id": "docs-xql-field-alias-standardization-across-soc-20261017",
+    "date": "2026-10-17",
+    "title": "XQL Field Alias Standardization Across SOC Docs",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "xql",
+      "edr"
+    ],
+    "concepts": [
+      "naming convention",
+      "query readability"
+    ],
+    "terms": [
+      "XQL",
+      "alter",
+      "fields as",
+      "comp by",
+      "snake_case"
+    ],
+    "commands": [],
+    "problems": [
+      "comp by butuh alias dibuat dulu lewat alter",
+      "Dua catatan lama saling bertentangan soal field yang valid di tenant"
+    ],
+    "summary": "Menyeragamkan alias field XQL di puluhan halaman query, runbook, dan playbook supaya output lebih mudah dibaca, plus membuat kamus field sebagai rujukan. Aturan yang dipegang: filter tetap pakai nama field asli, rename lewat fields as hanya berlaku di stage sesudahnya, dan comp by butuh alter dulu.",
+    "url": ""
+  },
+  {
+    "id": "docs-completing-tier-3-soc-playbooks-20261017",
+    "date": "2026-10-17",
+    "title": "Completing Tier 3 SOC Playbooks",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "playbook"
+    ],
+    "concepts": [
+      "playbook consolidation",
+      "alert coverage mapping"
+    ],
+    "terms": [
+      "Staged Malware Activity",
+      "Script Engine Activity",
+      "Reverse Shell",
+      "Malicious Tool",
+      "Random-Looking Domain Names"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyelesaikan enam playbook Tier 3 untuk alert Cortex XDR, dengan beberapa alert yang mirip digabung jadi satu halaman. Dengan ini library playbook pribadi tertutup di 19 halaman. Register kasus yang tidak diingat detailnya sengaja dikosongkan daripada diisi data karangan.",
+    "url": ""
+  },
+  {
+    "id": "triage-dns-attack-classes-doh-alert-investigation-20261017",
+    "date": "2026-10-17",
+    "title": "DNS Attack Classes and a DoH Alert Investigation",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "dns",
+      "study"
+    ],
+    "concepts": [
+      "DNS tunneling",
+      "DGA",
+      "DNS over HTTPS"
+    ],
+    "terms": [
+      "DoH",
+      "DNS tunneling",
+      "DGA",
+      "SIGRed",
+      "use-application-dns.net"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Belajar kelas serangan DNS (tunneling, C2, DGA, spoofing, amplification, zone transfer, subdomain takeover). Lalu investigasi alert berkategori DNS exploit yang ternyata trafik DNS over HTTPS dari browser ke resolver publik, dengan langkah verifikasi lewat agregasi SIEM dan atribusi proses di EDR.",
+    "url": ""
+  },
+  {
+    "id": "coursework-java-data-types-operators-salary-calculator-20261017",
+    "date": "2026-10-17",
+    "title": "Java Data Types, Operators, and a Salary Calculator",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "java",
+      "algorithm"
+    ],
+    "concepts": [
+      "data types",
+      "operators",
+      "conditional statements"
+    ],
+    "terms": [
+      "Java",
+      "if-else",
+      "operator"
+    ],
+    "commands": [
+      "javac GajiKaryawan.java",
+      "java GajiKaryawan"
+    ],
+    "problems": [],
+    "summary": "Mengerjakan diskusi tipe data dan operator Java dengan contoh kode yang dikompilasi dan dites, lalu membuat program kalkulator gaji pakai if-statement dan operator sesuai spesifikasi tugas, lengkap dengan laporan dan naskah video presentasi.",
+    "url": ""
+  },
+  {
+    "id": "siem-runbook-tracing-silent-log-source-20261018",
+    "date": "2026-10-18",
+    "title": "Runbook: Tracing a Silent Log Source",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "qradar",
+      "runbook"
+    ],
+    "concepts": [
+      "log pipeline troubleshooting",
+      "device time vs ingest time"
+    ],
+    "terms": [
+      "syslog",
+      "log rotation",
+      "devicetime",
+      "starttime",
+      "SIM Audit"
+    ],
+    "commands": [],
+    "problems": [
+      "Payload search ikut menangkap teks query sendiri dari log SIM Audit"
+    ],
+    "summary": "Belajar dasar syslog lalu menyusun runbook untuk melacak log source yang berhenti mengirim log, lengkap dengan AQL siap pakai. Plus runbook template query untuk permintaan investigasi dadakan yang diorganisir per petunjuk awal (IP, host, user, hash, domain, keyword). Pelajaran AQL: selalu exclude SIM Audit di payload search.",
+    "url": ""
+  },
+  {
+    "id": "ad-active-directory-kerberos-concepts-log-analysis-20261018",
+    "date": "2026-10-18",
+    "title": "Active Directory and Kerberos Concepts for Log Analysis",
+    "platform": "Work",
+    "category": "Concept / Active Directory",
+    "tags": [
+      "active-directory",
+      "kerberos",
+      "dns",
+      "study"
+    ],
+    "concepts": [
+      "AD structure",
+      "Kerberos ticketing",
+      "DNS resolution"
+    ],
+    "terms": [
+      "forest",
+      "domain",
+      "OU",
+      "domain controller",
+      "TGT",
+      "Golden Ticket",
+      "Silver Ticket",
+      "FQDN",
+      "resolver"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Belajar konsep yang sering muncul di log: beda resolver internal dan DNS internet, FQDN vs qname, struktur Active Directory (forest, domain, OU, DC), serta cara kerja tiket Kerberos dan beda Golden vs Silver Ticket dari sudut pandang analisis log blue team.",
+    "url": ""
+  },
+  {
+    "id": "triage-process-termination-alert-parent-child-verification-20261018",
+    "date": "2026-10-18",
+    "title": "Process Termination Alert: Parent and Child Verification",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "edr",
+      "false-positive"
+    ],
+    "concepts": [
+      "parent-child process",
+      "benign admin activity"
+    ],
+    "terms": [
+      "taskkill",
+      "taskmgr.exe",
+      "explorer.exe",
+      "parent process"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Triage alert taskkill yang menargetkan taskmgr.exe. Query XQL memastikan parent-nya explorer.exe (aksi user interaktif), jadi ditutup sebagai benign. Sekalian memperkuat pemahaman istilah parent dan child process.",
+    "url": ""
+  },
+  {
+    "id": "siem-qradar-internals-log-source-offense-20261019",
+    "date": "2026-10-19",
+    "title": "QRadar Internals: From Log Source to Offense",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "qradar",
+      "study"
+    ],
+    "concepts": [
+      "data flow",
+      "rule engine",
+      "offense lifecycle"
+    ],
+    "terms": [
+      "log source",
+      "DSM",
+      "building block",
+      "rule",
+      "offense",
+      "custom rule engine"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Deep dive internal QRadar langsung di environment dengan akses read-only: alur data dari log source, parsing, building block, rule, sampai offense, mengikuti roadmap visual. Fokusnya memahami di titik mana event bisa hilang atau salah prioritas.",
+    "url": ""
+  },
+  {
+    "id": "hunting-hardening-aql-hunt-queries-anchored-regex-20261019",
+    "date": "2026-10-19",
+    "title": "Hardening AQL Hunt Queries with Anchored Regex",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "aql",
+      "regex",
+      "web"
+    ],
+    "concepts": [
+      "exclusion logic",
+      "response size analysis"
+    ],
+    "terms": [
+      "REPLACEFIRST",
+      "anchored regex",
+      "CVE-2024-4577",
+      "PHP-CGI",
+      "response size"
+    ],
+    "commands": [],
+    "problems": [
+      "Exclusion pola %keyword% terlalu rapuh dan ikut menyembunyikan trafik penting"
+    ],
+    "summary": "Menulis ulang tiga query hunting web: exclusion %keyword% diganti anchored regex dan field di-extract pakai REPLACEFIRST, sehingga request ke path seperti /.env dan /.git/config yang sebelumnya tersembunyi jadi kelihatan. Juga memverifikasi satu percobaan CVE-2024-4577 (PHP-CGI) gagal dengan membandingkan ukuran response.",
+    "url": ""
+  },
+  {
+    "id": "hunting-pua-behavior-name-20261020",
+    "date": "2026-10-20",
+    "title": "Hunting PUA by Behavior, Not by Name",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "edr",
+      "siem"
+    ],
+    "concepts": [
+      "behavioral hunting",
+      "host rarity",
+      "unsigned execution"
+    ],
+    "terms": [
+      "PUA",
+      "proxyware",
+      "signature vendor",
+      "appcat",
+      "XQL",
+      "AQL"
+    ],
+    "commands": [],
+    "problems": [
+      "Filter signature vendor tidak menangkap nilai null kalau tidak ditambah klausa = null"
+    ],
+    "summary": "Menyusun runbook hunting PUA berbasis ciri, bukan blocklist nama: lokasi eksekusi tidak wajar, kelangkaan di fleet, perilaku jaringan, dan kategori aplikasi di firewall. Query XQL dan AQL disiapkan untuk game, proxyware, dan sejenisnya.",
+    "url": ""
+  },
+  {
+    "id": "vuln-remote-access-tool-risk-research-revocation-20261020",
+    "date": "2026-10-20",
+    "title": "Remote Access Tool Risk Research: Revocation and CVEs",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "vuln-management",
+      "pua",
+      "research"
+    ],
+    "concepts": [
+      "certificate revocation",
+      "CVE mapping",
+      "version verification"
+    ],
+    "terms": [
+      "AnyDesk",
+      "code signing certificate",
+      "VirusTotal",
+      "CVE"
+    ],
+    "commands": [],
+    "problems": [
+      "Beberapa CVE tidak bisa dipastikan cocok dengan versi yang ditemukan"
+    ],
+    "summary": "Riset risiko versi AnyDesk yang ditemukan di endpoint: konfirmasi versi lewat VirusTotal, latar belakang revokasi sertifikat code signing vendor tahun 2024, dan mapping CVE yang relevan sambil menandai CVE yang kecocokannya belum pasti.",
+    "url": ""
+  },
+  {
+    "id": "ir-clickfix-investigation-finger-exe-lolbin-delivery-20261021",
+    "date": "2026-10-21",
+    "title": "ClickFix Investigation: finger.exe LOLBIN Delivery Chain",
+    "platform": "Work",
+    "category": "DFIR",
+    "tags": [
+      "incident-response",
+      "edr",
+      "lolbin",
+      "true-positive"
+    ],
+    "concepts": [
+      "social engineering",
+      "LOLBIN abuse",
+      "payload staging"
+    ],
+    "terms": [
+      "ClickFix",
+      "fake CAPTCHA",
+      "finger.exe",
+      "TCP 79",
+      "msiexec /qn",
+      "MSI padding"
+    ],
+    "commands": [],
+    "problems": [
+      "Command line di field biasa terpotong, versi utuh ada di causality_actor_process_command_line"
+    ],
+    "summary": "Investigasi true positive ClickFix: situs WordPress yang dikompromi menampilkan CAPTCHA palsu, user menempel perintah ter-obfuscate ke Run dialog, finger.exe dipakai mengambil perintah lanjutan, lalu MSI yang di-padding besar didownload, di-rename jadi .pdf, dan dijalankan silent lewat msiexec /qn. Rekonstruksi process tree, file, dan network lewat XQL.",
+    "url": ""
+  },
+  {
+    "id": "ir-clickfix-scoping-lateral-movement-check-20261021",
+    "date": "2026-10-21",
+    "title": "ClickFix Scoping and Lateral Movement Check",
+    "platform": "Work",
+    "category": "DFIR",
+    "tags": [
+      "incident-response",
+      "scoping",
+      "edr",
+      "siem"
+    ],
+    "concepts": [
+      "blast radius",
+      "lateral movement",
+      "cross-tool correlation"
+    ],
+    "terms": [
+      "scoping",
+      "lateral movement",
+      "devicetime",
+      "private IP regex"
+    ],
+    "commands": [],
+    "problems": [
+      "Fungsi incidr() ditolak editor query, diganti regex range IP private",
+      "Absennya event network tidak bisa dianggap bukti host bersih"
+    ],
+    "summary": "Scoping 30 hari untuk memastikan tidak ada host lain yang menjalankan rantai yang sama, lalu cek lateral movement ke host satu LAN. Korelasi SIEM pakai waktu device karena waktu ingest tertinggal beberapa menit. Pelajaran penting: klaim 'payload tereksekusi' diturunkan jadi 'percobaan install terjadi, keberhasilan belum terkonfirmasi' karena bukti hanya sampai proses msiexec start.",
+    "url": ""
+  },
+  {
+    "id": "reporting-incident-report-timeline-mitre-attack-20261021",
+    "date": "2026-10-21",
+    "title": "Incident Report: Timeline and MITRE ATT&CK Mapping",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "reporting",
+      "incident-response",
+      "mitre"
+    ],
+    "concepts": [
+      "incident timeline",
+      "remediation sequencing"
+    ],
+    "terms": [
+      "MITRE ATT&CK",
+      "IOC",
+      "reimage",
+      "DOCX"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyusun laporan investigasi DOCX lengkap (timeline, mapping MITRE ATT&CK, IOC, rekomendasi) dan ticket ringkas. Termasuk menjelaskan reimage endpoint dengan bahasa awam beserta urutannya: amankan sampel dulu, backup dokumen saja, reset password, baru reimage.",
+    "url": ""
+  },
+  {
+    "id": "detection-engineering-php2shell-cve-2026-109618-109619-20261021",
+    "date": "2026-10-21",
+    "title": "Detection Engineering for php2shell (CVE-2026-109618/109619)",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "detection-engineering",
+      "cve",
+      "aql",
+      "xql"
+    ],
+    "concepts": [
+      "layered detection",
+      "telemetry visibility check",
+      "baseline"
+    ],
+    "terms": [
+      "php2shell",
+      "session.upload_progress",
+      "mod_php",
+      "WAF request body",
+      "post-exploitation"
+    ],
+    "commands": [],
+    "problems": [
+      "Tidak semua log source WAF mencatat request body, jadi deteksi attempt harus disesuaikan dengan sumber log yang ada"
+    ],
+    "summary": "Membangun deteksi 3 lapis untuk php2shell segera setelah patch rilis: deteksi percobaan, gejala crash dari percobaan gagal, dan perilaku post-exploitation. Mulai dengan cek sumber log mana yang benar-benar menyimpan request body sebelum menulis query, lalu baseline child process host PHP. Dua anomali dibuktikan sebagai perilaku aplikasi normal. Query yang belum dijalankan ditandai jelas sebagai belum diverifikasi.",
+    "url": ""
+  },
+  {
+    "id": "triage-lolbin-paas-domain-20261021",
+    "date": "2026-10-21",
+    "title": "LOLBin to PaaS Domain Triage",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "lolbin",
+      "false-positive"
+    ],
+    "concepts": [
+      "PaaS abuse awareness",
+      "command line review"
+    ],
+    "terms": [
+      "curl.exe",
+      "Git for Windows",
+      "render.com",
+      "onrender.com",
+      "LOLBin"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Triage curl.exe ke domain PaaS. Pelajaran: domain PaaS gratis sering dipakai staging payload dan C2, jadi harus dicek bukan diabaikan. Dari command line terlihat yang diakses domain resmi (bukan subdomain user), binary dari Git for Windows, dan file yang diambil hanya JSON schema, jadi aman.",
+    "url": ""
+  },
+  {
+    "id": "thm-php2shell-use-after-free-aslr-bypass-20261022",
+    "date": "2026-10-22",
+    "title": "THM PHP2Shell: Use-After-Free to ASLR Bypass and RCE",
+    "platform": "TryHackMe",
+    "category": "Web Exploitation",
+    "tags": [
+      "ctf",
+      "thm",
+      "memory-corruption",
+      "php"
+    ],
+    "concepts": [
+      "use-after-free",
+      "dangling pointer",
+      "ASLR bypass",
+      "HashTable forgery"
+    ],
+    "terms": [
+      "session.upload_progress",
+      "OOM bailout",
+      "CWE-824",
+      "ASLR",
+      "RCE",
+      "pwncat"
+    ],
+    "commands": [],
+    "problems": [
+      "Reverse shell gagal karena kode PHP dikirim ke interpreter shell, bukan PHP"
+    ],
+    "summary": "Menyelesaikan room PHP2Shell: bug use-after-free di fitur session.upload_progress, OOM bailout yang meninggalkan dangling pointer, leak memori untuk bypass ASLR, sampai RCE sebagai www-data. Lanjut post-exploitation mandiri: debug permission volume Docker dan memperbaiki reverse shell yang gagal sampai dapat shell pwncat.",
+    "url": ""
+  },
+  {
+    "id": "vuln-evaluating-fake-poc-repository-20261022",
+    "date": "2026-10-22",
+    "title": "Evaluating a Fake PoC Repository",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "research",
+      "poc",
+      "threat-intel"
+    ],
+    "concepts": [
+      "PoC validation",
+      "root cause verification"
+    ],
+    "terms": [
+      "PoC",
+      "GitHub",
+      "root cause"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menilai repo PoC php2shell yang mencurigakan: klaim root cause tidak sesuai, rantai eksploitasi mustahil, dan teknik yang tidak berhubungan ditumpuk supaya terlihat lengkap. Tidak ada malware, tapi repo tidak layak dipakai sebagai rujukan.",
+    "url": ""
+  },
+  {
+    "id": "hunting-game-client-steam-service-lpe-research-20261022",
+    "date": "2026-10-22",
+    "title": "Game Client Hunting and Steam Service LPE Research",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "edr",
+      "xql"
+    ],
+    "concepts": [
+      "noise reduction",
+      "vulnerability-driven prioritization",
+      "hash-based interim block"
+    ],
+    "terms": [
+      "Steam",
+      "steamservice.exe",
+      "BrokenPipe",
+      "BlueStacks",
+      "Roblox",
+      "LPE"
+    ],
+    "commands": [],
+    "problems": [
+      "Backslash di filter path bikin syntax error, diganti regex",
+      "Hash block cepat basi karena auto-update Steam mengganti hash"
+    ],
+    "summary": "Hunting game di endpoint lewat XQL: perbaiki syntax filter path, buang noise dari tooling developer dan OEM, lalu pindah ke hunt by name. Riset menemukan teknik local privilege escalation publik pada service Steam, jadi temuan Steam diprioritaskan di atas PUA biasa. Child process hunting tidak menemukan tanda eksploitasi. Runbook PUA ikut di-update.",
+    "url": ""
+  },
+  {
+    "id": "siem-xql-visualization-time-series-process-charts-20261022",
+    "date": "2026-10-22",
+    "title": "XQL Visualization: Time-Series Process Charts",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "xql",
+      "dashboard",
+      "visualization"
+    ],
+    "concepts": [
+      "time-series charting",
+      "widget building"
+    ],
+    "terms": [
+      "view graph",
+      "_time",
+      "series",
+      "Chart Editor"
+    ],
+    "commands": [
+      "| view graph type = line xaxis = _time yaxis = starts series = hostname"
+    ],
+    "problems": [
+      "Tombol Save widget nonaktif sebelum setting chart disinkronkan lewat Add to query"
+    ],
+    "summary": "Membuat chart process start per jam per host di XQL. Pie chart diganti line/column untuk data time-series, dan setting Chart Editor harus dimasukkan ke query lewat Add to query supaya bisa disimpan jadi widget.",
+    "url": ""
+  },
+  {
+    "id": "coursework-math-function-domains-composition-set-cardinality-20261022",
+    "date": "2026-10-22",
+    "title": "Math: Function Domains, Composition, and Set Cardinality",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "math"
+    ],
+    "concepts": [
+      "function domain",
+      "function composition",
+      "countable sets"
+    ],
+    "terms": [
+      "domain",
+      "komposisi fungsi",
+      "bilangan kardinal",
+      "himpunan terhingga"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mengerjakan diskusi Matematika Dasar soal domain fungsi, komposisi fungsi, bilangan kardinal, serta himpunan terhingga, tak hingga, dan terhitung.",
+    "url": ""
+  },
+  {
+    "id": "coursework-operating-systems-disk-management-storage-architectures-20261022",
+    "date": "2026-10-22",
+    "title": "Operating Systems: Disk Management and Storage Architectures",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "operating-systems"
+    ],
+    "concepts": [
+      "disk scheduling",
+      "storage redundancy"
+    ],
+    "terms": [
+      "disk scheduling",
+      "bad sector",
+      "fragmentation",
+      "RAID",
+      "NAS",
+      "SAN"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mengerjakan diskusi Sistem Operasi soal manajemen disk: disk scheduling, formatting, bad sector, fragmentasi, serta perbandingan RAID, NAS, dan SAN.",
+    "url": ""
+  },
+  {
+    "id": "lab-php2shell-why-exploit-works-8-7-20261023",
+    "date": "2026-10-23",
+    "title": "PHP2Shell Lab: Why the Exploit Works on 8.x but Not 7.x",
+    "platform": "Personal Lab",
+    "category": "Reverse Engineering",
+    "tags": [
+      "lab",
+      "docker",
+      "php",
+      "memory-corruption"
+    ],
+    "concepts": [
+      "version-dependent exploitability",
+      "function offsets",
+      "engine internals"
+    ],
+    "terms": [
+      "Zend Engine 3",
+      "Zend Engine 4",
+      "heap leak",
+      "zif_system",
+      "affected vs exploitable"
+    ],
+    "commands": [
+      "readelf -sW libphp.so | grep -E 'zif_system|zval_ptr_dtor'",
+      "docker compose up -d"
+    ],
+    "problems": [
+      "Permission Docker dan beda syntax docker-compose v1 vs v2",
+      "Versi script exploit tidak cocok dengan dokumentasi"
+    ],
+    "summary": "Membangun lab Docker berisi dua container PHP berbeda versi untuk membandingkan secara empiris. Ambil offset fungsi dari kedua binary pakai readelf dan menemukan pergeseran offset yang besar antar versi. RCE berhasil di lab 8.x, sedangkan 7.x gagal sejak tahap heap leak karena Zend Engine 3 tidak menghasilkan dangling pointer yang bisa dieksploitasi. Pelajaran kunci: 'affected' tidak sama dengan 'exploitable'.",
+    "url": ""
+  },
+  {
+    "id": "lab-comparing-struct-layouts-across-php-versions-20261023",
+    "date": "2026-10-23",
+    "title": "Comparing Struct Layouts Across PHP Versions",
+    "platform": "Personal Lab",
+    "category": "Reverse Engineering",
+    "tags": [
+      "lab",
+      "reverse-engineering",
+      "php"
+    ],
+    "concepts": [
+      "struct layout diffing",
+      "debug info"
+    ],
+    "terms": [
+      "zval",
+      "zend_string",
+      "HashTable",
+      "zend_types.h",
+      "pahole"
+    ],
+    "commands": [
+      "diff <(sed -n '/struct _zval_struct/,/};/p' 7.4/zend_types.h) <(sed -n '/struct _zval_struct/,/};/p' 8.3/zend_types.h)",
+      "pahole -C _zval_struct php",
+      "gdb -batch -ex 'ptype /o struct _zval_struct' php"
+    ],
+    "problems": [],
+    "summary": "Mulai belajar teknik reverse engineering untuk membandingkan layout struct antar versi PHP: diff source zend_types.h antar git tag, lalu rencana lanjut ke pahole dan gdb ptype /o untuk offset level byte. Struct yang dipelajari: zval, zend_string, HashTable, zend_refcounted_h.",
+    "url": ""
+  },
+  {
+    "id": "vuln-authorized-web-vulnerability-assessment-formal-report-20261023",
+    "date": "2026-10-23",
+    "title": "Authorized Web Vulnerability Assessment and Formal Report",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "vuln-assessment",
+      "web",
+      "reporting",
+      "authorized"
+    ],
+    "concepts": [
+      "authorized testing",
+      "empirical non-exploitability",
+      "TLS review"
+    ],
+    "terms": [
+      "nikto",
+      "testssl.sh",
+      "feroxbuster",
+      "socat",
+      "security headers"
+    ],
+    "commands": [
+      "socat TCP-LISTEN:8080,fork OPENSSL:<target>:443,verify=0"
+    ],
+    "problems": [
+      "Script exploit hanya bicara HTTP mentah, dijembatani ke HTTPS pakai socat"
+    ],
+    "summary": "Menjalankan pengujian terotorisasi dengan batasan payload yang disepakati untuk membuktikan target tidak bisa dieksploitasi, lalu melebarkan ke vulnerability assessment (nikto, testssl.sh, feroxbuster, cek header). Semua temuan disusun jadi laporan DOCX formal dengan tabel severity dan placeholder screenshot.",
+    "url": ""
+  },
+  {
+    "id": "vuln-node2shell-cve-2026-111497-runtime-inventory-20261024",
+    "date": "2026-10-24",
+    "title": "Node2Shell (CVE-2026-111497): Runtime Inventory via Hash Cross-Referencing",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "vuln-management",
+      "nodejs",
+      "xql",
+      "inventory"
+    ],
+    "concepts": [
+      "asset inventory",
+      "binary hash correlation",
+      "exposure prioritization"
+    ],
+    "terms": [
+      "Node2Shell",
+      "Brotli",
+      "Node.js",
+      "Bun",
+      "SHA256",
+      "reverse proxy"
+    ],
+    "commands": [],
+    "problems": [
+      "Ekstrak versi pakai regex dari path banyak salah tangkap (versi tool lain, tanggal)"
+    ],
+    "summary": "Belajar mekanisme Node2Shell (bug di Brotli decoder Node.js) lalu inventarisasi runtime Node dan Bun di fleet lewat XQL. Pelajaran metode: versi dari regex path tidak bisa dipercaya, yang reliabel adalah cross-reference hash binary antar host karena hash identik berarti versi identik. Juga memisahkan instalasi asli dari runtime yang dibundel tool lain.",
+    "url": ""
+  },
+  {
+    "id": "networking-fundamentals-proxies-shells-port-forwarding-20261024",
+    "date": "2026-10-24",
+    "title": "Networking Fundamentals: Proxies, Shells, and Port Forwarding",
+    "platform": "Work",
+    "category": "Networking",
+    "tags": [
+      "networking",
+      "study",
+      "linux"
+    ],
+    "concepts": [
+      "proxy direction",
+      "shell direction",
+      "tunneling",
+      "network segmentation"
+    ],
+    "terms": [
+      "reverse proxy",
+      "forward proxy",
+      "bind shell",
+      "reverse shell",
+      "local port forwarding",
+      "remote port forwarding",
+      "DMZ",
+      "ingress",
+      "egress"
+    ],
+    "commands": [
+      "ss -tlnp",
+      "sudo -l",
+      "find / -perm -4000 2>/dev/null"
+    ],
+    "problems": [],
+    "summary": "Sesi fundamental jaringan: reverse vs forward proxy, bind vs reverse shell, local, remote, dan reverse port forwarding (dikaitkan ke pengalaman pakai Chisel), fungsi DMZ dan logika blast radius, serta istilah inbound/outbound vs ingress/egress. Checklist enumerasi Linux ikut diperluas (listening port, cron, sudo -l, file writable, group).",
+    "url": ""
+  },
+  {
+    "id": "triage-reverse-shell-bioc-baselining-ai-ops-20261024",
+    "date": "2026-10-24",
+    "title": "Reverse Shell BIOC Triage: Baselining an AI Ops Agent",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "edr",
+      "linux",
+      "false-positive"
+    ],
+    "concepts": [
+      "command history baselining",
+      "AI agent behavior"
+    ],
+    "terms": [
+      "BIOC",
+      "/dev/tcp",
+      "bash -c",
+      "node",
+      "causality_actor_process_command_line"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Alert kemungkinan reverse shell (bash membuka /dev/tcp, di-spawn proses node) ditelusuri dengan menarik seluruh command dari proses induk selama 16 hari. Hasilnya agent AI ops yang sedang troubleshooting konektivitas secara sah, jadi ditutup sebagai false positive. Pelajaran: baseline riwayat command lebih kuat daripada menilai satu event sendirian.",
+    "url": ""
+  },
+  {
+    "id": "vuln-linux-kernel-cve-recommendation-tipc-20261024",
+    "date": "2026-10-24",
+    "title": "Linux Kernel CVE Recommendation (TIPC)",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "vuln-management",
+      "linux",
+      "cve"
+    ],
+    "concepts": [
+      "advisory reading",
+      "remediation recommendation"
+    ],
+    "terms": [
+      "Linux kernel",
+      "TIPC",
+      "CVE",
+      "patch management"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyusun rekomendasi untuk kerentanan kernel Linux di modul TIPC dalam versi Bahasa Indonesia dan Inggris: cek versi kernel yang terdampak dan susun saran patch serta mitigasi sementara.",
+    "url": ""
+  },
+  {
+    "id": "triage-game-client-spawning-elevated-recon-powershell-20261025",
+    "date": "2026-10-25",
+    "title": "Game Client Spawning Elevated Recon PowerShell",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "edr",
+      "pua",
+      "policy-violation"
+    ],
+    "concepts": [
+      "policy violation vs malware",
+      "severity calibration",
+      "telemetry reliability"
+    ],
+    "terms": [
+      "PowerShell",
+      "elevated",
+      "signed downloader",
+      "action_file_size",
+      "file_count"
+    ],
+    "commands": [],
+    "problems": [
+      "Field ukuran file di EDR sering kosong, total_size tidak bisa dipakai menilai download selesai"
+    ],
+    "summary": "Command PowerShell recon dengan hak elevated ternyata di-spawn client game yang dipasang lewat downloader bertanda tangan. Disimpulkan instalasi software tidak sah (policy violation), bukan malware, dan severity diturunkan sesuai. Pelajaran telemetry: file_count dan waktu last_seen lebih bisa diandalkan daripada total ukuran file.",
+    "url": ""
+  },
+  {
+    "id": "triage-office-servicing-scheduled-task-20261025",
+    "date": "2026-10-25",
+    "title": "Office Servicing Scheduled Task Triage",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "false-positive",
+      "scheduled-task"
+    ],
+    "concepts": [
+      "benign persistence",
+      "verification checklist"
+    ],
+    "terms": [
+      "officesvcmgr.exe",
+      "Click-to-Run",
+      "scheduled task",
+      "signer"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Triage pembuatan scheduled task oleh officesvcmgr.exe. Perilaku ini konsisten dengan servicing Office Click-to-Run, dicek lewat path, argumen, signer, pembuat task, dan timing, lalu ditutup sebagai false positive. Sekalian merapikan template IR untuk kasus download file mencurigakan.",
+    "url": ""
   }
 ]
