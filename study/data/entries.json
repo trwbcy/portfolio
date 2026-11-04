@@ -4160,7 +4160,7 @@
     "title": "VsCodeExtLure",
     "category": "project",
     "tags": ["vscode", "reverse-shell", "initial-access", "nodejs", "red-team", "poc"],
-    "description": "Proof of Concept: malicious VSCode extension as initial access vector. Built automated toolchain (Python + Node.js) to scaffold, inject payload (reverse shell via net.Socket + child_process), and package .vsix. Delivered to Windows 10 victim VM, shell callback confirmed on port 9098. Published to VS Marketplace. MITRE: T1566.001, T1204.002, T1059.007, T1571.",
+    "description": "Proof of Concept: malicious VSCode extension as initial access vector. Built automated toolchain (Python + Node.js) to scaffold, inject payload (reverse shell via net.Socket + child_process), and package .vsix. Delivered to Windows 10 victim VM, shell callback confirmed on port 9098. Published to the VS Marketplace for lab use only, with an explicit malware warning in the listing. MITRE: T1566.001, T1204.002, T1059.007, T1571.",
     "difficulty": "medium",
     "status": "completed"
   },
