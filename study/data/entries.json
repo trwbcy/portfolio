@@ -13885,5 +13885,1542 @@
     "problems": [],
     "summary": "Triage pembuatan scheduled task oleh officesvcmgr.exe. Perilaku ini konsisten dengan servicing Office Click-to-Run, dicek lewat path, argumen, signer, pembuat task, dan timing, lalu ditutup sebagai false positive. Sekalian merapikan template IR untuk kasus download file mencurigakan.",
     "url": ""
+  },
+  {
+    "id": "waf-coverage-mapping-retrieving-post-bodies-20261027",
+    "date": "2026-10-27",
+    "title": "WAF Coverage Mapping and Retrieving POST Bodies",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "waf",
+      "siem",
+      "visibility"
+    ],
+    "concepts": [
+      "enforcement vs monitoring placement",
+      "log metadata vs request body",
+      "WAF vs backend response"
+    ],
+    "terms": [
+      "F5 ASM",
+      "Sophos XGS",
+      "TAP mode",
+      "reverse proxy log",
+      "ModSecurity",
+      "packet capture"
+    ],
+    "commands": [],
+    "problems": [
+      "Syslog WAF standar cuma bawa metadata, body POST harus diambil dari reverse proxy log, packet capture, atau logging di backend"
+    ],
+    "summary": "Memetakan WAF yang melindungi tiap entitas dan posisi tiap perangkat di jalur trafik (enforcement vs mode TAP yang cuma monitoring). Belajar opsi untuk mendapatkan body POST, dan bahwa HTTP 403 dengan response time normal tanpa block reason kemungkinan datang dari backend, bukan WAF.",
+    "url": ""
+  },
+  {
+    "id": "hunting-web-server-process-spawn-spikes-20261027",
+    "date": "2026-10-27",
+    "title": "Investigating Process Spawn Spikes from Web Servers",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "xql",
+      "edr",
+      "linux",
+      "runbook"
+    ],
+    "concepts": [
+      "worker recycling vs suspicious child process",
+      "parent vs child process fields",
+      "per-host process graphs"
+    ],
+    "terms": [
+      "php-fpm",
+      "apache2",
+      "httpd",
+      "actor_process_image_name",
+      "action_process_image_name",
+      "view graph"
+    ],
+    "commands": [
+      "alter series = concat(agent_hostname, \" / \", action_process_image_name) | view graph"
+    ],
+    "problems": [
+      "seriescolor() yang di-hardcode ke nama series lama bikin graph rusak setelah alias diganti"
+    ],
+    "summary": "Membedakan worker recycling php-fpm/apache2/httpd yang normal dari child process web server yang beneran mencurigakan. Graph per host dan proses dibuat dengan menggabungkan keduanya jadi satu alias dulu. Hasilnya ditulis jadi runbook, sekaligus jadi cara cek server mana yang belum terpasang agent EDR.",
+    "url": ""
+  },
+  {
+    "id": "siem-aql-operator-precedence-syntax-pitfalls-20261027",
+    "date": "2026-10-27",
+    "title": "AQL Operator Precedence and Syntax Pitfalls",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "aql",
+      "qradar"
+    ],
+    "concepts": [
+      "AND binds tighter than OR",
+      "cross-source correlation with devicetime",
+      "clock skew"
+    ],
+    "terms": [
+      "AQL",
+      "ILIKE",
+      "UTF8(payload)",
+      "LOGSOURCETYPENAME",
+      "SIM Audit",
+      "devicetime"
+    ],
+    "commands": [
+      "WHERE (a OR b) AND LOGSOURCETYPENAME(devicetype) <> 'SIM Audit' LAST 24 HOURS",
+      "SELECT sourceip, COUNT(*), MIN(starttime), MAX(starttime) FROM events WHERE UTF8(payload) ILIKE '%pattern%' GROUP BY sourceip LAST 24 HOURS"
+    ],
+    "problems": [
+      "Grup OR tanpa kurung bikin filter cuma nempel ke kondisi terakhir",
+      "ILIKE untuk string yang ada di query sendiri ikut nge-match audit log"
+    ],
+    "summary": "Memperbaiki query AQL: grup OR wajib dibungkus kurung karena AND lebih kuat, satuan waktu harus lengkap (LAST 24 HOURS), alias pakai single quote dan custom property pakai double quote. Korelasi lintas log source pakai devicetime dengan window dilebarkan karena skew jam antar perangkat bisa lebih dari 15 menit.",
+    "url": ""
+  },
+  {
+    "id": "hunting-remote-access-tools-unapproved-security-software-20261027",
+    "date": "2026-10-27",
+    "title": "Hunting Remote Access Tools and Unapproved Security Software",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "edr",
+      "policy-violation"
+    ],
+    "concepts": [
+      "policy violation vs malware",
+      "portable vs installed software"
+    ],
+    "terms": [
+      "AnyDesk",
+      "Kaspersky Endpoint Security",
+      "PUA",
+      "--local-service"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Hunting remote access tool dan software keamanan yang tidak disetujui di endpoint. AnyDesk portable kelihatan dari path di folder profil user (bukan Program Files) dan argumen --local-service. Antivirus pihak ketiga yang masuk daftar PUA tetap dicatat sebagai policy violation.",
+    "url": ""
+  },
+  {
+    "id": "triage-c2-labelled-ip-shadow-it-20261027",
+    "date": "2026-10-27",
+    "title": "Triage: C2-Labelled IP Turns Out to Be Shadow IT",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "shadow-it",
+      "threat-intel"
+    ],
+    "concepts": [
+      "threat intel label vs actual behavior",
+      "shadow IT"
+    ],
+    "terms": [
+      "Chrome PWA",
+      "SSH",
+      "PuTTY",
+      "C2"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Koneksi dari Chrome PWA ke IP berlabel C2 ternyata akses user ke server pribadi lewat SSH/PuTTY. Disimpulkan shadow IT, bukan komunikasi C2, setelah dicek alur proses dan pola koneksinya.",
+    "url": ""
+  },
+  {
+    "id": "docs-adapting-vendor-hunting-query-field-aliases-20261027",
+    "date": "2026-10-27",
+    "title": "Adapting a Vendor Hunting Query to Standard Field Aliases",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "xql",
+      "detection-engineering"
+    ],
+    "concepts": [
+      "post-exploitation detection vs prevention",
+      "field alias standardization"
+    ],
+    "terms": [
+      "Unit 42",
+      "PHP2Shell",
+      "XQL",
+      "field alias"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyesuaikan query hunting PHP2Shell dari Unit 42 ke kamus alias field XQL tim, lalu disimpan di database query. Catatan penting: query ini mendeteksi post-exploitation, bukan mencegah. Pencegahan tetap lewat patching, NGFW block mode, dan agent protection.",
+    "url": ""
+  },
+  {
+    "id": "triage-productivity-app-policy-violation-20261028",
+    "date": "2026-10-28",
+    "title": "Triage: Productivity App as Policy Violation",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "pua",
+      "policy-violation"
+    ],
+    "concepts": [
+      "true positive by policy",
+      "verdict consistency"
+    ],
+    "terms": [
+      "Notion desktop",
+      "PUA list"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Aplikasi Notion desktop di endpoint ditutup sebagai true positive policy violation karena masuk daftar PUA organisasi, walaupun aplikasinya sendiri tidak berbahaya.",
+    "url": ""
+  },
+  {
+    "id": "vuln-cve-applicability-remote-access-tool-versions-20261028",
+    "date": "2026-10-28",
+    "title": "CVE Applicability Check for Remote Access Tool Versions",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "vuln-management",
+      "cve",
+      "pua"
+    ],
+    "concepts": [
+      "version matching",
+      "exploit preconditions",
+      "policy-only justification"
+    ],
+    "terms": [
+      "AnyDesk",
+      "CVE",
+      "affected versions"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mengecek apakah versi AnyDesk yang ditemukan benar-benar terdampak CVE. Versi 6.0.x punya CVE yang relevan, sedangkan 9.0.14 tidak ada CVE terkonfirmasi sehingga alasannya murni policy violation. CVE hanya dicantumkan kalau versi dan precondition-nya cocok.",
+    "url": ""
+  },
+  {
+    "id": "dfir-forensic-acquisition-prep-hashing-prefetch-20261028",
+    "date": "2026-10-28",
+    "title": "Forensic Acquisition Prep: Hashing and Prefetch",
+    "platform": "Work",
+    "category": "Disk Forensics",
+    "tags": [
+      "dfir",
+      "forensics",
+      "windows",
+      "evidence-integrity"
+    ],
+    "concepts": [
+      "hash as evidence integrity",
+      "execution artifacts",
+      "acquisition environment"
+    ],
+    "terms": [
+      "WinPE",
+      "Hiren's BootCD",
+      "Intel RST",
+      "VMD",
+      "Prefetch",
+      ".pf",
+      "SHA256"
+    ],
+    "commands": [
+      "sha256sum <file>"
+    ],
+    "problems": [
+      "Disk tidak terbaca di WinPE biasanya karena driver Intel RST/VMD, bukan disk rusak"
+    ],
+    "summary": "Persiapan forensik PC korban ClickFix yang sudah di-isolate. Hash di sumber dan tujuan harus sama sebagai bukti file tidak berubah, sekaligus dipakai untuk cek VirusTotal dan sweep IOC. Prefetch (.pf) jadi bukti program pernah jalan, dan modified time-nya kira-kira waktu terakhir dijalankan.",
+    "url": ""
+  },
+  {
+    "id": "coursework-math-function-composition-inverse-proofs-20261028",
+    "date": "2026-10-28",
+    "title": "Function Composition, Inverses, and Proof Methods",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "math"
+    ],
+    "concepts": [
+      "function composition",
+      "inverse function",
+      "piecewise function graphs",
+      "number theory proofs",
+      "proof methods"
+    ],
+    "terms": [
+      "komposisi fungsi",
+      "invers",
+      "fungsi piecewise",
+      "pembuktian langsung",
+      "kontradiksi"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Tugas Matematika Dasar: komposisi dan invers fungsi, menggambar grafik fungsi piecewise, pembuktian teori bilangan, dan metode pembuktian logika.",
+    "url": ""
+  },
+  {
+    "id": "coursework-operating-systems-file-management-backup-scheduling-20261028",
+    "date": "2026-10-28",
+    "title": "File Management, Backup Strategy, and Process Scheduling",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "operating-systems",
+      "backup"
+    ],
+    "concepts": [
+      "3-2-1 backup rule",
+      "RPO and RTO",
+      "Windows vs Linux scheduling"
+    ],
+    "terms": [
+      "3-2-1",
+      "RPO",
+      "RTO",
+      "CFS",
+      "priority scheduling"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Tugas Sistem Operasi: manfaat manajemen file dan direktori, strategi backup dengan aturan 3-2-1 serta RPO/RTO, perbandingan process scheduling Windows vs Linux, dan sejarah Windows.",
+    "url": ""
+  },
+  {
+    "id": "coursework-information-systems-sdlc-methodologies-data-breach-20261028",
+    "date": "2026-10-28",
+    "title": "SDLC Methodologies and Data Breach Response",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "information-systems",
+      "privacy"
+    ],
+    "concepts": [
+      "SDLC phases",
+      "methodology comparison",
+      "project communication",
+      "breach response under data protection law"
+    ],
+    "terms": [
+      "SDLC",
+      "Waterfall",
+      "Prototyping",
+      "Spiral",
+      "RAD",
+      "Scrum",
+      "UU PDP"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Tugas Pengantar Sistem Informasi: tahapan SDLC, perbandingan Waterfall, Prototyping, Spiral, RAD, dan Agile/Scrum, pentingnya komunikasi proyek, serta studi kasus respons data breach berdasarkan UU PDP.",
+    "url": ""
+  },
+  {
+    "id": "hunting-game-installs-firewall-edr-file-events-20261028",
+    "date": "2026-10-28",
+    "title": "Hunting Game Installs via Firewall Logs and EDR File Events",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "xql",
+      "firewall"
+    ],
+    "concepts": [
+      "specific regex terms",
+      "installed-but-never-run detection",
+      "retention limits"
+    ],
+    "terms": [
+      "FortiGate",
+      "ENUM.FILE",
+      "steamapps",
+      "Live Terminal"
+    ],
+    "commands": [
+      "event_type = ENUM.FILE | filter action_file_path ~= \"(?i)steam\\.exe|steamapps|steamwebhelper|steamservice\""
+    ],
+    "problems": [
+      "Regex \"steam\" ikut nge-match MSTeams, jadi harus pakai term yang spesifik"
+    ],
+    "summary": "Hunting instalasi game lewat log firewall dan file event EDR. Tanpa Live Terminal, game yang terinstall tapi belum pernah dijalankan masih bisa ditemukan dari event file berdasarkan nama folder, dengan batasan retensi file event.",
+    "url": ""
+  },
+  {
+    "id": "docs-playbook-vs-runbook-teaching-why-20261028",
+    "date": "2026-10-28",
+    "title": "Playbook vs Runbook: Writing Runbooks That Teach Why",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "playbook",
+      "runbook",
+      "team"
+    ],
+    "concepts": [
+      "playbook decides what, runbook explains how",
+      "avoiding autopilot analysts",
+      "persuading with examples"
+    ],
+    "terms": [
+      "playbook",
+      "runbook",
+      "L2"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Diskusi dengan L2 soal kekhawatiran runbook bikin analis autopilot. Kesimpulannya masalah ada di cara menulis: runbook yang bagus menjelaskan pertanyaan apa yang dijawab query dan hasil seperti apa yang patut dicurigai. Framing yang lebih mudah diterima: runbook adalah referensi teknik yang dirujuk dari playbook.",
+    "url": ""
+  },
+  {
+    "id": "malware-deobfuscating-malicious-msi-javascript-20261029",
+    "date": "2026-10-29",
+    "title": "Deobfuscating a Malicious MSI's JavaScript",
+    "platform": "Work",
+    "category": "Malware Analysis",
+    "tags": [
+      "malware-analysis",
+      "javascript",
+      "deobfuscation",
+      "msi",
+      "clickfix"
+    ],
+    "concepts": [
+      "static MSI analysis",
+      "layered string decoding",
+      "expression folding"
+    ],
+    "terms": [
+      "msiinfo",
+      "CustomAction",
+      "webcrack",
+      "isolated-vm",
+      "nvm"
+    ],
+    "commands": [
+      "msiinfo suminfo <file>",
+      "msiinfo tables <file>",
+      "msiinfo export <file> CustomAction",
+      "nvm use 22"
+    ],
+    "problems": [
+      "webcrack butuh isolated-vm yang tidak kompatibel dengan Node 26, solusinya pakai Node 22/24 lewat nvm"
+    ],
+    "summary": "Membongkar MSI dari kasus ClickFix dan men-deobfuscate JavaScript di dalamnya pakai script folding ekspresi aritmatika plus webcrack, lalu decode string berlapis secara manual.",
+    "url": ""
+  },
+  {
+    "id": "re-aes-payload-reflective-pe-20261029",
+    "date": "2026-10-29",
+    "title": "Decrypting an AES-256-CBC Payload to a Reflective PE",
+    "platform": "Work",
+    "category": "Reverse Engineering",
+    "tags": [
+      "reverse-engineering",
+      "pe",
+      "aes",
+      "python"
+    ],
+    "concepts": [
+      "reflective loading",
+      "payload decryption",
+      "PE emulation"
+    ],
+    "terms": [
+      "AES-256-CBC",
+      "PE x64",
+      "pefile",
+      "capstone",
+      "Speakeasy",
+      "reflective loading"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Payload di-decrypt dengan AES-256-CBC dan menghasilkan PE x64 sekitar 531 KB yang di-load secara reflective langsung ke memori tanpa menulis ke disk. Dianalisis pakai pefile dan capstone, dengan percobaan emulasi lewat Speakeasy.",
+    "url": ""
+  },
+  {
+    "id": "dfir-proving-malware-install-failed-20261029",
+    "date": "2026-10-29",
+    "title": "Proving a Malware Install Failed",
+    "platform": "Work",
+    "category": "DFIR",
+    "tags": [
+      "dfir",
+      "windows-event-log",
+      "prefetch",
+      "evidence"
+    ],
+    "concepts": [
+      "corroborating evidence",
+      "absence of success events",
+      "byte-level comparison"
+    ],
+    "terms": [
+      "MsiInstaller",
+      "Event ID 1040",
+      "Event ID 1042",
+      "Event ID 11707",
+      "Event ID 1033",
+      "Prefetch",
+      "Chrome History"
+    ],
+    "commands": [
+      "cmp <victim_file> <sample>",
+      "sqlite3 History \"SELECT url, last_visit_time FROM urls\""
+    ],
+    "problems": [],
+    "summary": "Kesimpulan malware tidak terinstall dibangun dari beberapa bukti yang saling menguatkan: event MsiInstaller 1040/1042 ada tapi 11707/1033 tidak ada, prefetch executable-nya tidak ada, folder instalasi tidak ada, dan file di PC korban terbukti download yang tidak lengkap lewat cmp byte per byte. Timeline akses situs lure diambil dari Chrome History.",
+    "url": ""
+  },
+  {
+    "id": "hunting-sandbox-c2-discovery-scoping-20261029",
+    "date": "2026-10-29",
+    "title": "C2 Discovery via Sandbox and 30-Day Scoping Hunt",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "sandbox",
+      "scoping",
+      "threat-intel"
+    ],
+    "concepts": [
+      "public sandbox privacy",
+      "scoping by IOC",
+      "toolkit attribution by shared artifacts"
+    ],
+    "terms": [
+      "ANY.RUN",
+      "C2",
+      "IOC",
+      "PDB path",
+      "Huntress"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "C2 ditemukan lewat sandbox ANY.RUN tier public (ingat sample di tier ini bisa dilihat orang lain), lalu di-hunt 30 hari ke belakang dan tidak ada host lain yang kontak. Artefak dicocokkan dengan laporan publik: kesamaan CustomAction dan path PDB menguatkan toolkit yang sama, perbedaan nama folder dan ukuran payload menunjukkan toolkit di-build ulang per campaign.",
+    "url": ""
+  },
+  {
+    "id": "reporting-two-tier-malware-analysis-report-20261029",
+    "date": "2026-10-29",
+    "title": "Two-Tier Malware Analysis Report",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "reporting",
+      "malware-analysis",
+      "documentation"
+    ],
+    "concepts": [
+      "executive vs technical audience",
+      "reproducible evidence package"
+    ],
+    "terms": [
+      "executive summary",
+      "password-protected sample archive"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menulis laporan analisis malware dua tingkat (executive summary dan technical) dan menyiapkan arsip berpassword berisi kode hasil deobfuscation plus toolkit untuk di-review atasan.",
+    "url": ""
+  },
+  {
+    "id": "triage-waf-proxyshell-recon-signature-false-positives-20261029",
+    "date": "2026-10-29",
+    "title": "WAF Blocks: ProxyShell Recon vs Signature False Positives",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "waf",
+      "false-positive",
+      "recon"
+    ],
+    "concepts": [
+      "attack signature vs violation type",
+      "benign protocol behavior"
+    ],
+    "terms": [
+      "ProxyShell",
+      "T1595",
+      "F5 ASM",
+      "attack signature",
+      "AutoDiscover"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "WAF memblok recon ProxyShell (T1595) lewat attack signature match, mekanismenya beda dari violation type. Di sisi lain, signature yang ke-trigger konten biner upload JPEG dan request /AutoDiscover/autodiscover.xml dari ISP adalah false positive.",
+    "url": ""
+  },
+  {
+    "id": "malware-legacy-mailbox-laroux-macro-virus-20261029",
+    "date": "2026-10-29",
+    "title": "Legacy Mailbox Containing a Laroux Macro Virus",
+    "platform": "Work",
+    "category": "Malware Analysis",
+    "tags": [
+      "malware-analysis",
+      "office-macro",
+      "oletools"
+    ],
+    "concepts": [
+      "static macro analysis without execution",
+      "legacy malware persistence"
+    ],
+    "terms": [
+      "mbox",
+      "Laroux",
+      "oletools",
+      "XLStart",
+      "AUTO2000.xls"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mailbox lama yang di-flag Defender ternyata benar berisi file Excel yang terinfeksi macro virus keluarga Laroux dengan persistence ke XLStart/AUTO2000.xls. Dicek pakai oletools tanpa eksekusi, lalu hunting AUTO2000.xls di endpoint hasilnya kosong.",
+    "url": ""
+  },
+  {
+    "id": "siem-missing-log-source-onboarding-after-rename-20261029",
+    "date": "2026-10-29",
+    "title": "Detecting Missing Log Source Onboarding After a Server Rename",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "siem",
+      "qradar",
+      "visibility",
+      "log-source"
+    ],
+    "concepts": [
+      "log source health",
+      "misclassified log sources"
+    ],
+    "terms": [
+      "log source type",
+      "Log Sources tab",
+      "event volume"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Server yang di-rename cuma punya event dari nama lama, ter-klasifikasi sebagai log source type yang salah dengan volume kecil. Artinya server baru belum di-onboard ulang dengan log source type Linux yang benar, dicek langsung di tab Log Sources.",
+    "url": ""
+  },
+  {
+    "id": "coursework-java-salary-program-video-script-20261030",
+    "date": "2026-10-30",
+    "title": "Java Salary Program and Video Walkthrough Script",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "java",
+      "algorithm"
+    ],
+    "concepts": [
+      "flowchart to code",
+      "explaining code on video"
+    ],
+    "terms": [
+      "Java",
+      "flowchart",
+      "pseudocode"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Tugas Algoritma dan Pemrograman: menyelesaikan program GajiKaryawan.java dari flowchart dan pseudocode sebelumnya, plus menulis naskah video penjelasannya.",
+    "url": ""
+  },
+  {
+    "id": "coursework-national-resilience-globalization-essay-20261030",
+    "date": "2026-10-30",
+    "title": "Essay: National Resilience and Globalization",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "civics",
+      "writing"
+    ],
+    "concepts": [
+      "Astagatra framework",
+      "glocalization",
+      "premature deindustrialization"
+    ],
+    "terms": [
+      "Astagatra",
+      "Lemhannas",
+      "glokalisasi",
+      "UUD 1945 Pasal 30, 32, 33"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Esai PKn tentang ketahanan nasional dan globalisasi: kerangka Astagatra Lemhannas, glokalisasi, deindustrialisasi dini, dan kaitannya dengan Pasal 30, 32, dan 33 UUD 1945.",
+    "url": ""
+  },
+  {
+    "id": "research-ai-policy-security-programs-certifications-20261031",
+    "date": "2026-10-31",
+    "title": "AI Policies in Security Programs and Certifications",
+    "platform": "Self-study",
+    "category": "Learning / Research",
+    "tags": [
+      "career",
+      "certification",
+      "ai-policy",
+      "compliance"
+    ],
+    "concepts": [
+      "program tiers and guardrails",
+      "per-certification AI rules",
+      "standard versioning"
+    ],
+    "terms": [
+      "CVP",
+      "OffSec",
+      "OSAI",
+      "OSEE",
+      "ISO 27001:2022"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Riset kebijakan AI: Cyber Verification Program Anthropic punya tier Defense, Red Team, dan Specialized Access, dan individu hanya bisa mendapat Defense. Kebijakan AI di ujian OffSec beda per sertifikasi (OSAI dan OSEE mengizinkan). ISO 27001 yang berlaku masih edisi 2022 plus amandemen iklim 2024.",
+    "url": ""
+  },
+  {
+    "id": "edr-compute-units-hot-cold-storage-20261031",
+    "date": "2026-10-31",
+    "title": "EDR Compute Units and Hot vs Cold Storage",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "edr",
+      "xql",
+      "platform",
+      "cost"
+    ],
+    "concepts": [
+      "query cost model",
+      "hot vs cold retention",
+      "syslog vs API integrations"
+    ],
+    "terms": [
+      "Compute Units",
+      "cold_dataset",
+      "XQL Query API",
+      "CEF",
+      "LEEF",
+      "syslog PRI"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Compute Units adalah kuota harian yang hanya dipakai query cold_dataset dan XQL lewat API, sedangkan query biasa di UI ke hot storage tidak memakai CU. Cold storage dipakai untuk dwell time panjang, retro-hunt IOC, dan audit. Integrasi syslog (CEF/LEEF) bisa dibedakan dari integrasi API lewat bentuk raw payload-nya.",
+    "url": ""
+  },
+  {
+    "id": "hunting-trojanized-ide-extension-20261031",
+    "date": "2026-10-31",
+    "title": "Hunting a Trojanized IDE Extension",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "supply-chain",
+      "edr",
+      "ide-extension"
+    ],
+    "concepts": [
+      "supply chain exposure check",
+      "visibility-honest conclusions",
+      "version window analysis"
+    ],
+    "terms": [
+      "VS Code",
+      "Cursor Marketplace",
+      "extension",
+      "FILE_OPEN",
+      "SSH backdoor"
+    ],
+    "commands": [],
+    "problems": [
+      "Event FILE_OPEN di EDR tidak membawa file_sha256"
+    ],
+    "summary": "Inisiatif hunting extension Claude Code versi trojanized yang disebar lewat Cursor Marketplace dan memasang SSH backdoor. Hasilnya No Impact: fleet hanya pakai VS Code dan host yang punya extension sudah update sebelum jendela berbahaya. Kesimpulan di domain dengan telemetry tipis ditulis sebagai \"tidak ada jejak di log yang tersedia\", bukan \"pasti aman\".",
+    "url": ""
+  },
+  {
+    "id": "edr-xql-ip-fields-anchored-regex-20261101",
+    "date": "2026-11-01",
+    "title": "XQL IP Fields and Anchored IP Regex",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "xql",
+      "edr",
+      "regex"
+    ],
+    "concepts": [
+      "field types per tenant",
+      "anchored regex for IPs",
+      "VPN address lookup"
+    ],
+    "terms": [
+      "action_local_ip",
+      "action_remote_ip",
+      "agent_ip_addresses",
+      "arrayexpand",
+      "ENUM.NETWORK"
+    ],
+    "commands": [
+      "filter agent_ip_addresses ~= \"(^|[^0-9.])10\\.\\d+\\.\\d+\\.\\d+\"",
+      "filter event_type = ENUM.NETWORK and action_local_ip ~= \"^10\\.\""
+    ],
+    "problems": [
+      "agent_ip_addresses ternyata string, bukan array, jadi arrayexpand error"
+    ],
+    "summary": "Tidak ada field source_ip langsung, jadi pakai action_local_ip/action_remote_ip. Regex IP di-anchor per oktet supaya \"10.\" tidak ke-match di tengah alamat lain, dan IP VPN yang tidak muncul di agent_ip_addresses dicari lewat network event.",
+    "url": ""
+  },
+  {
+    "id": "triage-portable-remote-access-tool-ip-mapping-20261101",
+    "date": "2026-11-01",
+    "title": "Portable Remote Access Tool and Host-to-IP Mapping",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "pua",
+      "edr",
+      "xql"
+    ],
+    "concepts": [
+      "last known internal IP",
+      "unique IP-to-host mapping",
+      "agent coverage check"
+    ],
+    "terms": [
+      "AnyDesk",
+      "portable",
+      "comp count()"
+    ],
+    "commands": [
+      "filter action_local_ip = \"<ip>\" | comp count(), min(_time), max(_time) by agent_hostname"
+    ],
+    "problems": [],
+    "summary": "Kasus AnyDesk portable lain. Belajar cara menemukan IP internal terakhir sebuah host, memastikan IP itu hanya dipakai satu host di periode yang sama, dan mengecek apakah host punya agent EDR lewat network event.",
+    "url": ""
+  },
+  {
+    "id": "career-cpts-certification-planning-20261101",
+    "date": "2026-11-01",
+    "title": "Planning for HTB CPTS",
+    "platform": "Self-study",
+    "category": "Learning / Research",
+    "tags": [
+      "career",
+      "certification",
+      "pentest"
+    ],
+    "concepts": [
+      "certification roadmap",
+      "cost comparison"
+    ],
+    "terms": [
+      "HTB CPTS",
+      "Penetration Tester path",
+      "Student plan",
+      "Silver Annual"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Membandingkan harga voucher HTB CPTS, Student plan, dan Silver Annual. Syaratnya menyelesaikan Penetration Tester path, dengan target ujian sekitar akhir Q1 atau awal Q2 2027.",
+    "url": ""
+  },
+  {
+    "id": "triage-x-forwarded-for-blocking-right-layer-20261101",
+    "date": "2026-11-01",
+    "title": "Reading X-Forwarded-For and Blocking at the Right Layer",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "web",
+      "http-headers",
+      "cdn"
+    ],
+    "concepts": [
+      "real client IP behind CDN",
+      "blocking layer selection",
+      "recon vs active attack"
+    ],
+    "terms": [
+      "X-Forwarded-For",
+      "Cloudflare WAF",
+      "load balancer",
+      "rest_route"
+    ],
+    "commands": [],
+    "problems": [
+      "Memblokir IP infrastruktur CDN/LB di firewall bisa menyebabkan outage"
+    ],
+    "summary": "Di belakang Cloudflare dan load balancer, IP client asli ada di X-Forwarded-For, bukan sourceip. Blokir harus di Cloudflare WAF, bukan di firewall perimeter. Satu request GET /?rest_route=/ adalah recon WordPress, bukan serangan aktif.",
+    "url": ""
+  },
+  {
+    "id": "triage-macro-pad-driver-persistence-alert-20261102",
+    "date": "2026-11-02",
+    "title": "Triage: Macro Pad Driver Flagged for Persistence",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "edr",
+      "false-positive",
+      "persistence"
+    ],
+    "concepts": [
+      "benign autostart",
+      "embedded browser helpers"
+    ],
+    "terms": [
+      "Stream Dock",
+      "--RunInBackground",
+      "CefViewWing.exe",
+      "Chromium Embedded Framework"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Driver macro pad Stream Dock ke-flag persistence karena argumen --RunInBackground (autostart). CefViewWing.exe ternyata helper Chromium Embedded Framework. Disimpulkan kemungkinan benign.",
+    "url": ""
+  },
+  {
+    "id": "leadership-situational-leadership-ii-20261102",
+    "date": "2026-11-02",
+    "title": "Situational Leadership II",
+    "platform": "Self-study",
+    "category": "Learning / Research",
+    "tags": [
+      "leadership",
+      "soft-skill"
+    ],
+    "concepts": [
+      "matching style to development level",
+      "fixed standards, flexible communication"
+    ],
+    "terms": [
+      "S1 Directing",
+      "S2 Coaching",
+      "S3 Supporting",
+      "S4 Delegating",
+      "D1-D4"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Mempelajari Situational Leadership II: empat gaya kepemimpinan disesuaikan dengan tingkat perkembangan anggota tim. Standar tetap, tapi cara menyampaikannya yang fleksibel. Latihan: diagnosis level anggota tim junior dan jurnal observasi.",
+    "url": ""
+  },
+  {
+    "id": "leadership-empathy-types-and-agency-20261102",
+    "date": "2026-11-02",
+    "title": "Cognitive vs Affective Empathy and High Agency",
+    "platform": "Self-study",
+    "category": "Learning / Research",
+    "tags": [
+      "leadership",
+      "soft-skill"
+    ],
+    "concepts": [
+      "affective vs cognitive empathy",
+      "high vs low agency",
+      "handling perceived competition"
+    ],
+    "terms": [
+      "cognitive empathy",
+      "affective empathy",
+      "agency"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Affective empathy berarti ikut merasakan, cognitive empathy berarti paham apa yang dirasakan orang, dan yang kedua bisa dilatih secara sadar. Orang high agency mencari jalan sendiri saat mentok. Soal rekan yang merasa tersaingi: libatkan mereka di bagian dengan scope jelas dan beri kredit.",
+    "url": ""
+  },
+  {
+    "id": "triage-remote-access-tool-hash-reuse-across-cases-20261103",
+    "date": "2026-11-03",
+    "title": "Remote Access Tool Cases: Reusing Hash Evidence",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "pua",
+      "hash-pivot"
+    ],
+    "concepts": [
+      "same hash across cases means genuine component",
+      "policy violation reasoning"
+    ],
+    "terms": [
+      "AnyDesk",
+      "gcapi.dll",
+      "SHA256"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "gcapi.dll adalah komponen bawaan yang di-drop AnyDesk. Hash yang sama muncul di beberapa kasus berbeda, jadi itu komponen asli dan bukan file yang dimodifikasi.",
+    "url": ""
+  },
+  {
+    "id": "edr-rbac-ai-assistant-cold-storage-20261103",
+    "date": "2026-11-03",
+    "title": "EDR RBAC for the AI Assistant and Cold Storage",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "edr",
+      "rbac",
+      "platform"
+    ],
+    "concepts": [
+      "permission-scoped features",
+      "data coverage per tenant"
+    ],
+    "terms": [
+      "RBAC",
+      "Cortex Agentic Assistant Agents",
+      "cold storage"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Akses AI assistant di platform EDR butuh permission khusus, bukan otomatis admin-only, dan akses cold storage juga tergantung RBAC. EDR hanya punya data satu entitas, entitas lain harus di-hunt lewat SIEM.",
+    "url": ""
+  },
+  {
+    "id": "triage-ips-alert-unmanaged-device-20261103",
+    "date": "2026-11-03",
+    "title": "Triage: IPS Alert from an Unmanaged Device",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "ips",
+      "firewall",
+      "visibility"
+    ],
+    "concepts": [
+      "L3 hop MAC vs endpoint MAC",
+      "IP-to-hostname mapping",
+      "pivoting without endpoint telemetry"
+    ],
+    "terms": [
+      "HTTP.Null.Session",
+      "srcmac",
+      "srchwvendor",
+      "DHCP"
+    ],
+    "commands": [],
+    "problems": [
+      "srcmac di firewall adalah MAC hop L3 terakhir (core switch), bukan endpoint"
+    ],
+    "summary": "Alert IPS dari device yang tidak ada di EDR, jadi investigasi pindah ke SIEM. Mapping IP ke hostname dilakukan lewat DHCP atau daftar endpoint, bukan dari MAC di log firewall.",
+    "url": ""
+  },
+  {
+    "id": "triage-wscript-js-inside-zip-20261103",
+    "date": "2026-11-03",
+    "title": "Triage: wscript.exe Running a .js From a ZIP",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "edr",
+      "false-positive",
+      "script"
+    ],
+    "concepts": [
+      "user action vs malicious execution",
+      "absence of follow-on activity"
+    ],
+    "terms": [
+      "wscript.exe",
+      ".js",
+      "ZIP"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "wscript.exe menjalankan file .js dari dalam ZIP ternyata user double-click file config. Tidak ada koneksi network atau child process, ditutup sebagai false positive.",
+    "url": ""
+  },
+  {
+    "id": "triage-remote-exec-service-legacy-server-20261103",
+    "date": "2026-11-03",
+    "title": "Remote Execution Service on a Legacy Server",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "legacy",
+      "risk-acceptance"
+    ],
+    "concepts": [
+      "documented management decision",
+      "EOL system risk"
+    ],
+    "terms": [
+      "RemComSvc.exe",
+      "Windows Server 2012 R2",
+      "EOL"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "RemComSvc.exe di server legacy yang sudah EOL. Sudah pernah dibahas dan diputuskan monitor only oleh manajemen SOC, jadi triage cukup memastikan aktivitasnya konsisten dengan keputusan itu.",
+    "url": ""
+  },
+  {
+    "id": "research-self-hosted-ai-soc-agent-frameworks-20261103",
+    "date": "2026-11-03",
+    "title": "Self-Hosted AI SOC Platforms and Agent Frameworks",
+    "platform": "Self-study",
+    "category": "Learning / Research",
+    "tags": [
+      "research",
+      "ai",
+      "soc",
+      "homelab"
+    ],
+    "concepts": [
+      "lab sizing",
+      "persistent agent memory"
+    ],
+    "terms": [
+      "AiSOC",
+      "Kafka",
+      "ClickHouse",
+      "Neo4j",
+      "Ollama",
+      "Hermes Agent"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Riset AiSOC, platform SOC berbasis AI self-hosted (Kafka, ClickHouse, Neo4j, Ollama) yang butuh sekitar 10-12 GB RAM dan 4 vCPU untuk dicoba di lab, serta Hermes Agent dari Nous Research sebagai framework agent open-source dengan memory persisten.",
+    "url": ""
+  },
+  {
+    "id": "web-open-redirect-ssrf-broken-access-control-20261104",
+    "date": "2026-11-04",
+    "title": "From Suspected SSRF to Broken Access Control",
+    "platform": "Work",
+    "category": "Web Exploitation",
+    "tags": [
+      "web",
+      "owasp",
+      "access-control",
+      "authorized"
+    ],
+    "concepts": [
+      "open redirect vs SSRF",
+      "dead callback infrastructure",
+      "vuln class classification"
+    ],
+    "terms": [
+      "open redirect",
+      "SSRF",
+      "interact.sh",
+      "Laravel",
+      "OWASP A01:2021",
+      "OWASP A05:2021",
+      "CWE-284",
+      "CWE-862"
+    ],
+    "commands": [],
+    "problems": [
+      "redirect_to ke domain luar yang balikin 200 kelihatan seperti SSRF padahal bukan"
+    ],
+    "summary": "Temuan yang awalnya terlihat seperti SSRF ternyata bukan: open redirect mengarahkan browser user (client-side), SSRF membuat server melakukan request (server-side), dan nameserver callback-nya SERVFAIL. Temuan aslinya halaman /register bawaan Laravel terbuka publik sehingga akun self-register bisa melihat data internal: Broken Access Control via Unrestricted Self-Registration. Log 30 hari hanya menunjukkan registrasi tes dari tim sendiri.",
+    "url": ""
+  },
+  {
+    "id": "triage-unapproved-ai-desktop-app-ransomware-heuristic-20261104",
+    "date": "2026-11-04",
+    "title": "Triage: Unapproved AI Desktop App Flagged as Ransomware",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "pua",
+      "ai-software",
+      "siem"
+    ],
+    "concepts": [
+      "heuristic false positive vs policy true positive",
+      "pivoting via SIEM JSON"
+    ],
+    "terms": [
+      "Vision One",
+      "Open WebUI",
+      "ransomware behavior"
+    ],
+    "commands": [],
+    "problems": [
+      "Tidak punya akses console, jadi detail alert ditarik dari JSON di SIEM"
+    ],
+    "summary": "Alert ransomware behavior pada Open WebUI Desktop kemungkinan heuristic false positive, tapi aplikasinya sendiri software AI yang belum disetujui sehingga verdict tetap true positive policy violation.",
+    "url": ""
+  },
+  {
+    "id": "hunting-hash-blocklist-detected-vs-prevented-20261104",
+    "date": "2026-11-04",
+    "title": "Hash Blocklist Sweep: Detected vs Prevented",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "edr",
+      "hash-control",
+      "xql"
+    ],
+    "concepts": [
+      "detected means logged, not removed",
+      "LOAD_IMAGE is an attempt",
+      "measure by host_count",
+      "blocklist hygiene"
+    ],
+    "terms": [
+      "Administrative Hash Exception",
+      "detected (scanned)",
+      "Detected (On Write)",
+      "prevented (blocked)",
+      "LOAD_IMAGE",
+      "host_count"
+    ],
+    "commands": [],
+    "problems": [
+      "LOAD_IMAGE bukan bukti DLL sukses jalan, harus dicocokkan dengan alert prevented di detik yang sama",
+      "Scan mingguan bikin alert dobel, skala diukur dari host_count bukan alert_count"
+    ],
+    "summary": "Sweep file yang masuk blocklist hash. Eksekusi diblok tapi file dibiarkan di disk, sehingga scan mingguan terus menemukan file yang sama. Tidak semua isi blocklist jahat, ada kandidat hash legit yang salah masuk.",
+    "url": ""
+  },
+  {
+    "id": "hunting-cracked-game-siem-sweep-20261104",
+    "date": "2026-11-04",
+    "title": "Finding a Cracked Game via SIEM Sweep of EDR Logs",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "pua",
+      "piracy",
+      "siem"
+    ],
+    "concepts": [
+      "hunting outside alert pipeline",
+      "cracked software risk"
+    ],
+    "terms": [
+      "steam_api.dll",
+      "trojan.crack",
+      "VirusTotal",
+      "consent.exe"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Kasus game bajakan yang tidak naik jadi incident, ditemukan sendiri saat sweep log EDR di SIEM. steam_api.dll di folder Crack terdeteksi 38/71 di VirusTotal dengan tag via-tor dan detect-debug-environment. Game sempat dijalankan, installer berhenti di prompt UAC.",
+    "url": ""
+  },
+  {
+    "id": "branding-linkedin-rebrand-20261104",
+    "date": "2026-11-04",
+    "title": "LinkedIn Profile Rebrand",
+    "platform": "Personal Project",
+    "category": "Documentation",
+    "tags": [
+      "branding",
+      "linkedin",
+      "writing"
+    ],
+    "concepts": [
+      "consistent positioning",
+      "English-first profile"
+    ],
+    "terms": [
+      "Headline",
+      "About",
+      "Experience",
+      "Skills"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Merombak profil LinkedIn ke bahasa Inggris dengan judul pengalaman \"Security Analyst\" tanpa level, mencakup Headline, About, Experience, dan Skills.",
+    "url": ""
+  },
+  {
+    "id": "triage-severity-calibration-cracked-game-dll-20261105",
+    "date": "2026-11-05",
+    "title": "Severity Calibration for a Cracked Game DLL",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "severity",
+      "pua"
+    ],
+    "concepts": [
+      "why not Low, why not High",
+      "escalation triggers",
+      "CEF severity mapping"
+    ],
+    "terms": [
+      "CEF severity",
+      "Medium",
+      "local admin",
+      "Tor"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menentukan severity Medium: bukan Low karena DLL berbahaya sempat di-load, file masih di disk, dan telemetry bolong; bukan High karena tidak ada follow-on activity, elevasi, atau host lain. Severity CEF 6 sejalan. Naik ke High kalau ada koneksi Tor, temuan scan, atau user ternyata local admin.",
+    "url": ""
+  },
+  {
+    "id": "docs-runbook-hash-blocklist-files-left-on-disk-20261105",
+    "date": "2026-11-05",
+    "title": "Runbook: Hunting Blocklisted Files Left on Disk",
+    "platform": "Work",
+    "category": "Documentation",
+    "tags": [
+      "documentation",
+      "runbook",
+      "edr",
+      "hash-control"
+    ],
+    "concepts": [
+      "action semantics table",
+      "common pitfalls section"
+    ],
+    "terms": [
+      "runbook",
+      "Hash Control",
+      "detected",
+      "prevented"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menulis runbook hunting file blocklist yang masih tertinggal di disk, berisi arti tiap action (scanned, on write, blocked) dan jebakan yang sering muncul. Format playbook, runbook, dan temuan MTH ini sekarang dipakai jadi standar tim.",
+    "url": ""
+  },
+  {
+    "id": "vuln-linux-kernel-ipv4-uaf-rcu-20261105",
+    "date": "2026-11-05",
+    "title": "Linux Kernel IPv4 Use-After-Free Patch Recommendation",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "vuln-management",
+      "linux",
+      "cve",
+      "kernel"
+    ],
+    "concepts": [
+      "RCU-protected memory",
+      "use-after-free root cause"
+    ],
+    "terms": [
+      "use-after-free",
+      "RCU",
+      "kfree()",
+      "kfree_rcu()",
+      "inet_opt",
+      "ireq_opt"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyusun rekomendasi patch untuk CVE use-after-free di ipv4: inet_opt/ireq_opt di-free pakai kfree() biasa padahal masih dibaca di bawah RCU, perbaikannya ganti ke kfree_rcu(). IPv6 tidak kena isu pertama.",
+    "url": ""
+  },
+  {
+    "id": "triage-clickonce-app-supply-chain-hygiene-20261105",
+    "date": "2026-11-05",
+    "title": "Triage: ClickOnce App with Supply Chain Hygiene Gaps",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "triage",
+      "false-positive",
+      "supply-chain"
+    ],
+    "concepts": [
+      "standard ClickOnce execution chain",
+      "FP with hygiene finding"
+    ],
+    "terms": [
+      "ClickOnce",
+      "appref-ms",
+      "dfshim",
+      "dfsvc",
+      "invalid signature"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Aplikasi internal ClickOnce ke-flag, tapi alur appref-ms ke dfshim ke dfsvc standar dan dipakai rutin. Ditutup false positive dengan catatan hygiene: update lewat HTTP polos dan signature invalid adalah jalur supply chain.",
+    "url": ""
+  },
+  {
+    "id": "hunting-threat-hunting-backlog-planning-20261105",
+    "date": "2026-11-05",
+    "title": "Planning the Next Threat Hunting Backlog",
+    "platform": "Work",
+    "category": "Threat Hunting",
+    "tags": [
+      "threat-hunting",
+      "planning"
+    ],
+    "concepts": [
+      "hypothesis backlog",
+      "prioritizing from side findings"
+    ],
+    "terms": [
+      "remote tunnel",
+      "cloudflared",
+      "ngrok",
+      "devtunnel",
+      "RMM"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menyusun backlog hunting berikutnya: alert malware yang cuma Detected, remote tunnel dari endpoint (code-tunnel, devtunnel, cloudflared, ngrok), VBS kiriman chat yang memasang RMM, dan sweep software bajakan, plus koneksi SSH keluar ke tujuan yang tidak dikenal dari hunting sebelumnya.",
+    "url": ""
+  },
+  {
+    "id": "portfolio-editorial-redesign-typography-20261105",
+    "date": "2026-11-05",
+    "title": "Portfolio Editorial Redesign: Typography",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "portfolio",
+      "design",
+      "typography"
+    ],
+    "concepts": [
+      "editorial layout",
+      "image-less project cards"
+    ],
+    "terms": [
+      "Instrument Serif",
+      "Familjen Grotesk",
+      "JetBrains Mono"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Redesign portfolio dengan gaya editorial yang kalem: project card tanpa gambar dan kombinasi font Instrument Serif, Familjen Grotesk, dan JetBrains Mono.",
+    "url": ""
+  },
+  {
+    "id": "career-cyber-job-market-portable-skills-20261106",
+    "date": "2026-11-06",
+    "title": "Cyber Job Market Data and Building Portable Skills",
+    "platform": "Self-study",
+    "category": "Learning / Research",
+    "tags": [
+      "career",
+      "research",
+      "detection-engineering"
+    ],
+    "concepts": [
+      "skills gap vs headcount gap",
+      "vendor-neutral detections",
+      "sanitized investigation narratives"
+    ],
+    "terms": [
+      "BLS",
+      "ISC2",
+      "Sigma"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "BLS memproyeksikan lapangan kerja information security analyst tumbuh 29% (2024-2034), dan 95% responden ISC2 2025 melaporkan skills gap. Level senior dicari, entry makin sulit. Karena akses tools kantor tidak ikut pindah kerja, logika query perlu diterjemahkan ke format vendor-neutral seperti Sigma dan didokumentasikan.",
+    "url": ""
+  },
+  {
+    "id": "coursework-religious-studies-forum-tolerance-20261106",
+    "date": "2026-11-06",
+    "title": "Forum Discussion: Rahmatan lil Alamin and Interfaith Harmony",
+    "platform": "Universitas Terbuka",
+    "category": "Learning / Research",
+    "tags": [
+      "coursework",
+      "religious-studies",
+      "writing"
+    ],
+    "concepts": [
+      "rahmatan lil alamin",
+      "ukhuwah islamiyah",
+      "interfaith harmony"
+    ],
+    "terms": [
+      "rahmatan lil alamin",
+      "ukhuwah islamiyah"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Diskusi forum PAI tentang rahmatan lil alamin, ukhuwah islamiyah, dan kerukunan antarumat beragama.",
+    "url": ""
+  },
+  {
+    "id": "portfolio-prototype-css-3d-playwright-recording-20261106",
+    "date": "2026-11-06",
+    "title": "Portfolio Prototype: Pure CSS Motion and Recorded Demos",
+    "platform": "Personal Project",
+    "category": "Web Development",
+    "tags": [
+      "portfolio",
+      "css",
+      "animation",
+      "automation"
+    ],
+    "concepts": [
+      "CSS-only animation",
+      "3D transforms",
+      "automated screen recording"
+    ],
+    "terms": [
+      "transition",
+      "keyframes",
+      "perspective",
+      "rotateY",
+      "Pillow",
+      "Playwright",
+      "ffmpeg"
+    ],
+    "commands": [],
+    "problems": [],
+    "summary": "Menentukan tech stack prototipe portfolio: HTML dan CSS murni dengan animasi transition, keyframes, dan 3D transform (perspective, rotateY). Gambar di-recolor pakai Pillow, video demo direkam pakai Playwright Chromium headless lalu diolah ffmpeg.",
+    "url": ""
   }
 ]
