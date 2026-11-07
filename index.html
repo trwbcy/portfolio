@@ -1,547 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRWBCY - Security Analyst</title>
-    <meta name="description" content="Tri Wibowo Cahyo - Purple Team Security Specialist. Top 5 Indonesia.">
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="img/helmet.png">
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tri Wibowo Cahyo · TRWBCY · Security Analyst, Purple Team</title>
+<meta name="description" content="Tri Wibowo Cahyo (TRWBCY): Security Analyst and purple teamer from Indonesia. Incident reports, detection work, red team research and 70 rooted machines.">
+<meta property="og:title" content="TRWBCY · Tri Wibowo Cahyo">
+<meta property="og:description" content="Security Analyst · Purple Team · #5 offensive and #5 defensive, Hacktrace Indonesia">
+<meta property="og:type" content="website">
+<link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="viewport">
+  <div class="stage" id="stage">
 
-    <div id="spotlight"></div>
-
-    <div class="loader" id="loader">
-        <div class="loader-inner">
-            <div class="loader-shield">
-                <svg viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M24 2L3 11v16c0 11.2 8.9 21.7 21 24 12.1-2.3 21-12.8 21-24V11L24 2z" stroke="#BD86F5" stroke-width="1.5"/>
-                    <path d="M24 2L3 11v16c0 11.2 8.9 21.7 21 24 12.1-2.3 21-12.8 21-24V11L24 2z" fill="#BD86F5" opacity="0.08"/>
-                    <path d="M15 28l6 6 12-14" stroke="#BD86F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div class="loader-label" id="loaderLabel">INITIALIZING</div>
-            <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
-            <div class="loader-pct" id="loaderPct">0%</div>
-            <div class="loader-sub" id="loaderSub">LOADING SECURITY MODULES...</div>
+    <header class="top">
+      <div class="brand">
+        <div class="brand-text">
+          <span class="brand-name">TRWBCY©</span>
+          <span class="brand-sub">indonesia · © 2026</span>
         </div>
-    </div>
-
-    <div class="cursor-dot" id="cursorDot"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
-
-    <div class="la-tt" id="laTT" aria-hidden="true">
-        <div class="la-tt-date" id="laTTDate"></div>
-        <div class="la-tt-val"  id="laTTVal"></div>
-    </div>
-
-    <nav class="nav">
-        <div class="nav-site" id="navSite">
-            <img src="img/helmet.png" class="nav-helmet-icon" alt="">TRWBCY
+        <div class="flip" aria-hidden="true">
+          <div class="flip-inner" id="flip">
+            <div class="flip-face">
+              <div class="idcard"><span>TRWBCY</span><img src="img/me/portrait-card.jpg" alt=""></div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="idcard"><span>TRWBCY</span><img src="img/me/helmet-mark.jpg" alt=""></div>
+            </div>
+          </div>
         </div>
-        <div class="nav-vol">VOL. 1 / 2026</div>
-        <a href="https://www.linkedin.com/in/tri-wibowo-cahyo/" target="_blank" rel="noopener" class="nav-linkedin" title="LinkedIn">
-            <img src="img/icon-linkedin.png" alt="LinkedIn">
-        </a>
-<button class="nav-toggle" id="navToggle">☰</button>
-    </nav>
-
-    <div class="nav-fade-mask"></div>
-
-    <div class="mobile-drawer" id="mobileDrawer">
-    </div>
-
-    <section class="hero" id="home">
-        <img class="hero-art" src="img/hero-portrait.png" alt="" aria-hidden="true">
-        <div class="hero-wash-l" aria-hidden="true"></div>
-        <div class="hero-wash-b" aria-hidden="true"></div>
-        <div class="hero-scan" aria-hidden="true"></div>
-
-        <div class="hero-content">
-            <div class="hero-bar">
-                <span>/ SECURITY ANALYST / P. 001</span>
-                <span class="hero-scroll">↓ SCROLL TO BREACH IN</span>
-            </div>
-
-            <div class="hero-center">
-                <h1 class="hero-name"><span class="l1">TRI WIBOWO</span><span class="l2">CAHYO.</span></h1>
-            </div>
-
-            <div class="hero-foot">
-                <div class="hero-tagline">/ <b id="typedRole"></b><span class="hero-caret">▋</span></div>
-                <div class="hero-cta">
-                    <a class="hero-btn hero-btn-primary" href="#projects">EXECUTE PROJECTS →</a>
-                    <a class="hero-btn hero-btn-ghost" href="assets/Tri-Wibowo-Cahyo-CV.pdf" download>DOWNLOAD CV ↗</a>
-                </div>
-            </div>
+        <nav aria-label="Main" class="menu">
+          <span class="menu-label">Menu</span>
+          <div class="mnav" id="nav"></div>
+        </nav>
+      </div>
+      <div class="meta">
+        <button type="button" class="mute" id="mute" aria-pressed="true">Alerts <b>Muted</b> —</button>
+        <div class="meta-col">
+          <span class="strong">Defending globally</span>
+          <span class="mono muted">Indonesia, <span id="clock">--:--</span> WIB</span>
         </div>
-    </section>
-
-    <section class="manifesto" id="manifesto">
-        <div class="manifesto-kicker">/ MANIFESTO / P. 002</div>
-
-        <p class="manifesto-text" id="manifestoText">
-            <span class="mw c-dim">THE</span> <span class="mw c-dim">GOAL</span> <span class="mw c-dim">WAS</span> <span class="mw c-dim">NEVER</span>
-            <span class="mw c-mid">RECOGNITION.</span>
-            <span class="mw c-dim">IT</span> <span class="mw c-dim">WAS</span>
-            <span class="mw c-purple">FREEDOM.</span>
-            <span class="mw c-dim">FREEDOM</span> <span class="mw c-dim">TO</span> <span class="mw c-dim">CHOOSE</span>
-            <span class="mw c-bright">MEANINGFUL</span> <span class="mw c-bright">WORK.</span>
-            <span class="mw c-dim">FREEDOM</span> <span class="mw c-dim">TO</span>
-            <span class="mw c-bright">SAY</span> <span class="mw c-bright">NO</span>
-            <span class="mw c-dim">WITHOUT</span> <span class="mw c-dim">FEAR.</span>
-            <span class="mw c-dim">FREEDOM</span> <span class="mw c-dim">TO</span> <span class="mw c-dim">HELP</span>
-            <span class="mw c-bright">THE</span> <span class="mw c-bright">PEOPLE</span> <span class="mw c-bright">I</span> <span class="mw c-bright">CARE</span> <span class="mw c-bright">ABOUT.</span>
-        </p>
-
-        <div class="manifesto-closer" id="manifestoCloser">
-            <span class="manifesto-closer-line"></span>
-            <span class="manifesto-closer-text">EVERYTHING HERE IS BUILT TOWARD THAT.</span>
+        <div class="meta-row">
+          <span class="muted">For hiring</span>
+          <a href="mailto:twibowo288@gmail.com" class="strong">twibowo288@gmail.com</a>
         </div>
-    </section>
+      </div>
+    </header>
 
-    <section class="hunt" id="about">
-        <div class="hunt-inner">
+    <main id="main"></main>
 
-            <div class="hunt-statusbar">
-                <span>/ SYSTEM STATUS / P. 003</span>
-                <span class="hunt-tracking">◎ TRACKING — 5 LOCKED</span>
-            </div>
-
-            <div class="hunt-grid">
-
-                <div class="hunt-lead">
-                    <div class="hunt-reticle" aria-hidden="true">
-                        <span class="hr-ring hr-ring-1"></span>
-                        <span class="hr-ring hr-ring-2"></span>
-                        <span class="hr-cross-h"></span>
-                        <span class="hr-cross-v"></span>
-                    </div>
-                    <h2 class="hunt-title">WHAT I<br><em>HUNT.</em></h2>
-                    <div class="hunt-bio">
-                        <p>I'm an SMK grad turned self-taught Security Analyst. My foundation wasn't built in a classroom — it came from countless nights in home labs, tracing how attacks actually work, layer by layer.</p>
-                        <p>I learn the way I secure: build it, break it, then map exactly how it works under the hood. The only way to protect a system is to think like the attacker trying to compromise it.</p>
-                        <p>Self-taught from SMK to SOC floor, ranked <b>Top 5 Indonesia</b> on the platforms I train on. No tuition, no shortcut. Still becoming.</p>
-                    </div>
-                </div>
-
-                <div class="hunt-panel">
-                    <div class="hunt-radarwrap">
-                        <div class="radar" aria-hidden="true">
-                            <span class="rad-ring rad-ring-1"></span>
-                            <span class="rad-ring rad-ring-2"></span>
-                            <span class="rad-ring rad-ring-3"></span>
-                            <span class="rad-cross-h"></span>
-                            <span class="rad-cross-v"></span>
-                            <span class="rad-sweep"></span>
-                            <span class="rad-blip rad-blip-blue"></span>
-                            <span class="rad-blip rad-blip-red"></span>
-                            <span class="rad-blip rad-blip-core"></span>
-                        </div>
-                    </div>
-
-                    <div class="targets">
-                        <div class="target target-purple">
-                            <span class="target-mark">⊕</span>
-                            <span class="target-label">TRYHACKME_RANK</span>
-                            <span class="target-leader"></span>
-                            <span class="target-value">#5</span>
-                            <span class="target-tag">LOCK</span>
-                        </div>
-                        <div class="target target-blue">
-                            <span class="target-mark">⊕</span>
-                            <span class="target-label">HACKTRACE_DEFENSE</span>
-                            <span class="target-leader"></span>
-                            <span class="target-value">#5</span>
-                            <span class="target-tag">LOCK</span>
-                        </div>
-                        <div class="target target-red">
-                            <span class="target-mark">⊕</span>
-                            <span class="target-label">HACKTRACE_OFFENSIVE</span>
-                            <span class="target-leader"></span>
-                            <span class="target-value">#5</span>
-                            <span class="target-tag">LOCK</span>
-                        </div>
-                        <div class="target target-vol">
-                            <span class="target-mark">⊕</span>
-                            <span class="target-label">SOC_COVERAGE</span>
-                            <span class="target-leader"></span>
-                            <span class="target-value">24/7</span>
-                            <span class="target-tag">4 UNITS</span>
-                        </div>
-                        <div class="target target-vol">
-                            <span class="target-mark">⊕</span>
-                            <span class="target-label">WRITEUPS_WRITTEN</span>
-                            <span class="target-leader"></span>
-                            <span class="target-value">70</span>
-                            <span class="target-tag">DOCS</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="operate" id="career">
-        <div class="op-inner">
-            <div class="op-kicker">/ CAREER LOG / P. 004</div>
-            <h2 class="op-title">WHAT I <em>OPERATE.</em></h2>
-
-            <div class="op-list">
-
-                <article class="op-role op-role-defense">
-                    <div class="op-period">
-                        <span class="op-phase">CURRENT</span>
-                        <span class="op-dates">2025 — PRESENT</span>
-                    </div>
-                    <div class="op-spine"><span class="op-line"></span><span class="op-node"></span></div>
-                    <div class="op-body">
-                        <div class="op-head">
-                            <span class="op-name">SECURITY ANALYST</span>
-                            <span class="op-tag">DEFENSE</span>
-                        </div>
-                        <div class="op-org">PT Mitra Pinasthika Mulia</div>
-                        <div class="op-points">
-                            <div class="op-point"><span class="op-mark">+</span><span>Triage alerts from Cortex XDR and TheHive across a multi-entity enterprise environment, using IBM QRadar to <b>correlate and scope incidents</b> beyond the original alert.</span></div>
-                            <div class="op-point"><span class="op-mark">+</span><span>Run <b>proactive threat hunting</b> with custom AQL and XQL queries, including uncovering <b>proxyware (PUA)</b> on corporate endpoints that existing detection rules had not flagged.</span></div>
-                            <div class="op-point"><span class="op-mark">+</span><span>Correlate evidence across SIEM, EDR, NDR, WAF, and firewall logs to <b>attribute network alerts to the exact process</b>, including handling clock skew between log sources.</span></div>
-                            <div class="op-point"><span class="op-mark">+</span><span>Surface <b>security misconfigurations</b> found during investigations, such as session tokens exposed in WAF logs and management services reachable from the internet.</span></div>
-                            <div class="op-point"><span class="op-mark">+</span><span>Built a <b>5W-based investigation framework</b> for TheHive and a reusable <b>AQL/XQL query library</b>, and write formal investigation reports for the SOC team.</span></div>
-                            <div class="op-point"><span class="op-mark">+</span><span>Initiated <b>alert playbooks, investigation runbooks, and a standardized threat-hunting finding format</b>, which the SOC team later adopted as its working standard.</span></div>
-                        </div>
-                        <div class="op-chips">
-                            <span class="op-chip">ALERT TRIAGE</span>
-                            <span class="op-chip">THREAT HUNTING</span>
-                            <span class="op-chip">CROSS-SOURCE CORRELATION</span>
-                            <span class="op-chip">QRADAR · CORTEX XDR</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="op-role op-role-offense">
-                    <div class="op-period">
-                        <span class="op-phase">OFFENSIVE</span>
-                        <span class="op-dates">APR — MAY 2025</span>
-                    </div>
-                    <div class="op-spine"><span class="op-line"></span><span class="op-node"></span></div>
-                    <div class="op-body">
-                        <div class="op-head">
-                            <span class="op-name">RED TEAM INTERN</span>
-                            <span class="op-tag">OFFENSE</span>
-                        </div>
-                        <div class="op-org">Hack Secure</div>
-                        <div class="op-points">
-                            <div class="op-point"><span class="op-mark">!</span><span>Built a <b>command-and-control lab</b> using Sliver and Starkiller — implants deployed across target VMs for end-to-end adversary simulation.</span></div>
-                            <div class="op-point"><span class="op-mark">!</span><span>Documented each simulated attack into <b>assessment reports</b> with CVSS scoring and remediation.</span></div>
-                        </div>
-                        <div class="op-chips">
-                            <span class="op-chip">C2 LAB</span>
-                            <span class="op-chip">SLIVER · STARKILLER</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="op-role op-role-foundation">
-                    <div class="op-period">
-                        <span class="op-phase">PREV</span>
-                        <span class="op-dates">2023 — 2025</span>
-                    </div>
-                    <div class="op-spine"><span class="op-line"></span><span class="op-node"></span></div>
-                    <div class="op-body">
-                        <div class="op-head">
-                            <span class="op-name">L2 SUPPORT ENGINEER</span>
-                            <span class="op-tag">FOUNDATION</span>
-                        </div>
-                        <div class="op-org">PT Solusi247</div>
-                        <div class="op-points">
-                            <div class="op-point"><span class="op-mark">+</span><span>L2 support for AI/ML platforms — Apache Airflow, Cloudera, Hadoop — via SQL, Bash, Python.</span></div>
-                            <div class="op-point"><span class="op-mark">+</span><span><b>Root cause analysis</b> on recurring platform issues — the analytical discipline I lean on in security investigations.</span></div>
-                            <div class="op-point"><span class="op-mark">+</span><span>Automated repetitive troubleshooting workflows while consistently meeting <b>SLA targets</b>.</span></div>
-                        </div>
-                        <div class="op-chips">
-                            <span class="op-chip">RCA WORKFLOWS</span>
-                            <span class="op-chip">SLA</span>
-                        </div>
-                    </div>
-                </article>
-
-            </div>
-        </div>
-    </section>
-
-    <section class="stack" id="skills">
-        <div class="ts-inner">
-            <div class="ts-kicker">/ TECH STACK / P. 005</div>
-
-            <div class="ts-grid">
-                <div class="ts-side ts-side-def">
-                    <div class="ts-eyebrow">THE DEFENSE</div>
-                    <h2 class="ts-title"><span>WHAT I</span><span class="ts-accent">DETECT.</span></h2>
-                    <div class="ts-rows">
-                        <div class="ts-row"><span class="ts-cat">SIEM</span><span class="ts-tools">QRadar (AQL) · Wazuh · Splunk</span></div>
-                        <div class="ts-row"><span class="ts-cat">EDR/XDR</span><span class="ts-tools">Cortex · MS Defender</span></div>
-                        <div class="ts-row"><span class="ts-cat">EMAIL</span><span class="ts-tools">Defender for O365</span></div>
-                        <div class="ts-row"><span class="ts-cat">NDR</span><span class="ts-tools">Palo Alto</span></div>
-                        <div class="ts-row"><span class="ts-cat">RE/MALWARE</span><span class="ts-tools">dnSpy · ILSpy</span></div>
-                        <div class="ts-row"><span class="ts-cat">FORENSICS</span><span class="ts-tools">FTK · PCAP · LNK</span></div>
-                    </div>
-                </div>
-
-                <div class="ts-seam" aria-hidden="true"></div>
-
-                <div class="ts-side ts-side-off">
-                    <div class="ts-eyebrow">THE OFFENSE</div>
-                    <h2 class="ts-title"><span>WHAT I</span><span class="ts-accent">BREAK.</span></h2>
-                    <div class="ts-rows">
-                        <div class="ts-row"><span class="ts-tools">Burp · SQLMap · OWASP</span><span class="ts-cat">WEB</span></div>
-                        <div class="ts-row"><span class="ts-tools">BloodHound · Impacket</span><span class="ts-cat">AD</span></div>
-                        <div class="ts-row"><span class="ts-tools">Metasploit · Sliver</span><span class="ts-cat">C2</span></div>
-                        <div class="ts-row"><span class="ts-tools">LOLBins · Fileless · AMSI</span><span class="ts-cat">EVASION</span></div>
-                        <div class="ts-row"><span class="ts-tools">LinPEAS · WinPEAS · GTFOBins</span><span class="ts-cat">PRIVESC</span></div>
-                        <div class="ts-row"><span class="ts-tools">Pwn · Web · Forensics · Boot2Root</span><span class="ts-cat">CTF</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="proj-section" id="projects">
-        <div class="proj-inner" id="projInner">
-            <div class="proj-left">
-                <div class="section-tag">/ PROJECT MODULES / P. 006</div>
-                <div class="big-heading">WHAT I<br><span class="accent">BUILT.</span></div>
-                <div class="filter-row">
-                    <button class="ftab active" data-filter="all">ALL</button>
-                    <button class="ftab" data-filter="red">OFFENSIVE</button>
-                    <button class="ftab" data-filter="blue">DEFENSIVE</button>
-                </div>
-                <div class="proj-counter">
-                    <span class="proj-counter-cur" id="projCurrent">01</span>
-                    <span> / </span>
-                    <span id="projTotal">12</span>
-                </div>
-                <div class="proj-progress-bar"><div class="proj-progress-fill" id="projProgressFill"></div></div>
-            </div>
-            <div class="proj-track-outer">
-                <div class="proj-hscroll-track" id="projectsGrid"></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="earned" id="certs">
-        <div class="ea-ghost" aria-hidden="true">EARNED</div>
-
-        <div class="ea-inner">
-            <header class="ea-header">
-                <span class="ea-kicker">/ CERTIFICATIONS / P. 007</span>
-                <h2 class="ea-title">WHAT I <em>EARNED.</em></h2>
-                <p class="ea-meta">7 CREDENTIALS · 2 WITH MERIT</p>
-            </header>
-
-            <div class="ea-board">
-                <!-- DEFENSE -->
-                <div class="ea-col ea-col-defense">
-                    <div class="ea-col-label"><span class="ea-rule"></span>DEFENSE</div>
-
-                    <a class="ea-cert" href="https://drive.google.com/file/d/1-Bb-n_D1DiiYCAYBilZkvrQpXZ2LbmRT/view?usp=sharing" target="_blank" rel="noopener">
-                        <div class="ea-cert-row">
-                            <span class="ea-cert-name">BLUE TEAM PRACTITIONER</span>
-                            <span class="ea-cert-year ea-cert-merit">★ MERIT '26</span>
-                        </div>
-                        <div class="ea-cert-meta">
-                            <span class="ea-cert-issuer">THE SECOPS GROUP</span>
-                            <span class="ea-cert-ev">EVIDENCE ↗</span>
-                        </div>
-                    </a>
-
-                    <a class="ea-cert" href="https://drive.google.com/file/d/1n3vkEEz4tGQjkw7M0-AJ-gqs6zbWM8jx/view" target="_blank" rel="noopener">
-                        <div class="ea-cert-row">
-                            <span class="ea-cert-name">NETWORK SECURITY PRACTITIONER</span>
-                            <span class="ea-cert-year ea-cert-merit">★ MERIT '25</span>
-                        </div>
-                        <div class="ea-cert-meta">
-                            <span class="ea-cert-issuer">THE SECOPS GROUP</span>
-                            <span class="ea-cert-ev">EVIDENCE ↗</span>
-                        </div>
-                    </a>
-
-                    <a class="ea-cert" href="https://drive.google.com/file/d/1MfZSdU-bP97LJ1Ihr-O48aqbDfZcBdaS/view?usp=sharing" target="_blank" rel="noopener">
-                        <div class="ea-cert-row">
-                            <span class="ea-cert-name">CYBER SECURITY 101 (SEC1)</span>
-                            <span class="ea-cert-year ea-cert-dim">'26</span>
-                        </div>
-                        <div class="ea-cert-meta">
-                            <span class="ea-cert-issuer">TRYHACKME</span>
-                            <span class="ea-cert-ev">EVIDENCE ↗</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="ea-divider" aria-hidden="true"></div>
-
-                <!-- OFFENSE -->
-                <div class="ea-col ea-col-offense">
-                    <div class="ea-col-label">OFFENSE<span class="ea-rule"></span></div>
-
-                    <a class="ea-cert" href="https://drive.google.com/file/d/1HJr5ppW_6Kvd_NF7cfRnhTKF1CiIyui9/view?usp=sharing" target="_blank" rel="noopener">
-                        <div class="ea-cert-row">
-                            <span class="ea-cert-name">JUNIOR PENETRATION TESTER (PT1)</span>
-                            <span class="ea-cert-year ea-cert-merit">◆ HANDS-ON '26</span>
-                        </div>
-                        <div class="ea-cert-meta">
-                            <span class="ea-cert-ev">EVIDENCE ↗</span>
-                            <span class="ea-cert-issuer">TRYHACKME</span>
-                        </div>
-                    </a>
-
-                    <a class="ea-cert" href="https://drive.google.com/file/d/1niU5gbyWGn9RKDlraltHsQJB2qQcSuJt/view" target="_blank" rel="noopener">
-                        <div class="ea-cert-row">
-                            <span class="ea-cert-name">RED TEAM INTERNSHIP</span>
-                            <span class="ea-cert-year">'25</span>
-                        </div>
-                        <div class="ea-cert-meta">
-                            <span class="ea-cert-ev">EVIDENCE ↗</span>
-                            <span class="ea-cert-issuer">HACKSECURE</span>
-                        </div>
-                    </a>
-
-                    <a class="ea-cert" href="https://drive.google.com/file/d/1CRK94BK63ABk-ajIGjfTTr02uAQHlVX0/view" target="_blank" rel="noopener">
-                        <div class="ea-cert-row">
-                            <span class="ea-cert-name">API SECURITY PRACTITIONER</span>
-                            <span class="ea-cert-year">'25</span>
-                        </div>
-                        <div class="ea-cert-meta">
-                            <span class="ea-cert-ev">EVIDENCE ↗</span>
-                            <span class="ea-cert-issuer">APISEC UNIVERSITY</span>
-                        </div>
-                    </a>
-
-                </div>
-            </div>
-
-            <a class="ea-foundation" href="https://drive.google.com/file/d/1RB5ehE_-DovC1sgoII2FhV55qoF9Zdgr/view" target="_blank" rel="noopener">
-                <span class="ea-foundation-tag">FOUNDATION /</span>
-                <span>IT SUPPORT SPECIALIST — GOOGLE '23</span>
-                <span class="ea-cert-ev">EVIDENCE ↗</span>
-            </a>
-        </div>
-    </section>
-
-    <section class="study" id="learning">
-        <div class="st-inner">
-
-            <div class="st-head">
-                <div>
-                    <div class="st-kicker">/ LEARNING ACTIVITY / P. 008</div>
-                    <h2 class="st-title">WHAT I <em>STUDY.</em></h2>
-                </div>
-                <span class="st-year">2026</span>
-            </div>
-
-            <div class="st-heatmap">
-                <div class="st-months">
-                    <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
-                    <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
-                </div>
-                <div class="st-grid" id="stGrid" aria-label="2026 learning activity heatmap"></div>
-                <div class="st-legend">
-                    <span>Less</span>
-                    <i style="background:var(--st-h0)"></i><i style="background:var(--st-h1)"></i><i style="background:var(--st-h2)"></i><i style="background:var(--st-h3)"></i><i style="background:var(--st-h4)"></i>
-                    <span>More</span>
-                </div>
-            </div>
-
-            <div class="st-stats">
-                <div class="st-stat"><span class="st-num" id="stTotal">—</span><span class="st-label">TOTAL ACTIVITIES</span></div>
-                <div class="st-stat"><span class="st-num" id="stDays">—</span><span class="st-label">ACTIVE DAYS</span></div>
-                <div class="st-stat"><span class="st-num" id="stStreak">—</span><span class="st-label">CURRENT STREAK</span></div>
-            </div>
-
-            <div class="st-feed">
-                <div class="st-feed-track" id="stFeed"></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="evidence-wall" id="ctf">
-        <div class="ew-ghost" aria-hidden="true">PWNED</div>
-
-        <header class="ew-header">
-            <span class="ew-kicker">/ HACKTRACE RANGES — CASE BOARD</span>
-            <h2 class="ew-title">WHAT I <em>PWNED.</em></h2>
-        </header>
-
-        <div class="ew-board">
-            <div>
-                <figure class="ew-capture ew-blue">
-                    <div class="ew-capture-bar">
-                        <span><span class="ew-dot"></span>EVIDENCE_01 — CAPTURED</span>
-                        <span class="ew-filename">defensive_rank.png</span>
-                    </div>
-                    <img class="ew-capture-img" src="img/rank-blue.png" alt="Hacktrace defensive leaderboard — TRWBCY ranked #5 in Indonesia">
-                    <figcaption class="ew-capture-footer">
-                        <span class="ew-rank-group">
-                            <span class="ew-rank">#5</span>
-                            <span class="ew-rank-label">DEFENSIVE — INDONESIA 🇮🇩</span>
-                        </span>
-                        <span class="ew-lp">MAX LP</span>
-                    </figcaption>
-                </figure>
-                <div class="ew-stat ew-blue">
-                    <div class="ew-stat-num">29</div>
-                    <div class="ew-stat-label">MATCHES ANALYZED</div>
-                </div>
-            </div>
-
-            <div>
-                <figure class="ew-capture ew-red">
-                    <div class="ew-capture-bar">
-                        <span><span class="ew-dot"></span>EVIDENCE_02 — CAPTURED</span>
-                        <span class="ew-filename">offensive_rank.png</span>
-                    </div>
-                    <img class="ew-capture-img" src="img/rank-red.png" alt="Hacktrace offensive leaderboard — TRWBCY ranked #5 in Indonesia">
-                    <figcaption class="ew-capture-footer">
-                        <span class="ew-rank-group">
-                            <span class="ew-rank">#5</span>
-                            <span class="ew-rank-label">OFFENSIVE — INDONESIA 🇮🇩</span>
-                        </span>
-                        <span class="ew-lp">MAX LP</span>
-                    </figcaption>
-                </figure>
-                <div class="ew-stat ew-red">
-                    <div class="ew-stat-num">41</div>
-                    <div class="ew-stat-label">MATCHES ROOTED</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="ew-string ew-string-left" aria-hidden="true"></div>
-        <div class="ew-string ew-string-right" aria-hidden="true"></div>
-
-        <div class="ew-stamp">
-            <div class="ew-stamp-num" data-target="70">70</div>
-            <div class="ew-stamp-label">MACHINES — ROOTED</div>
-        </div>
-
-        <footer class="ew-footnote">
-            ——&nbsp;&nbsp;WRITEUPS REMOVED PER HACKTRACE COMMUNITY RULES — PROOF AVAILABLE UPON REQUEST&nbsp;&nbsp;——
-        </footer>
-    </section>
-
-    <footer class="footer">
-        <span>TRWBCY</span>
-        <span>Connection established. Still hunting.</span>
-        <a href="https://www.linkedin.com/in/tri-wibowo-cahyo/" target="_blank" rel="noopener" class="footer-linkedin" title="LinkedIn">
-            <img src="img/icon-linkedin.png" alt="LinkedIn">
-        </a>
+    <footer class="foot">
+      <span class="muted">Security Analyst · Purple Team · #5 offensive and #5 defensive, Hacktrace Indonesia</span>
+      <button type="button" class="foot-link" id="goLab">70 writeups, on request ▸</button>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-    
-    <script src="script.js"></script>
+    <div id="overlay"></div>
+  </div>
+</div>
+
+<noscript><p style="padding:24px;font-family:sans-serif">This portfolio needs JavaScript. Contact: twibowo288@gmail.com</p></noscript>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
